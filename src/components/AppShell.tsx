@@ -75,7 +75,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           className="mx-auto flex w-full max-w-xl items-center px-2"
           onSubmit={(e) => {
             e.preventDefault();
-            void navigate({ to: "/", search: { q: query || undefined } });
+            void navigate({ to: "/", search: query ? { q: query } : {} });
           }}
         >
           <Input

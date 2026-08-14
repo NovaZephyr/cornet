@@ -63,7 +63,7 @@ function AdminPage() {
       return (data ?? []) as {
         id: string;
         user_id: string;
-        motivation: string;
+        message: string;
         status: string;
         created_at: string;
       }[];
@@ -77,10 +77,10 @@ function AdminPage() {
         .delete()
         .eq("user_id", userId)
         .eq("role", role);
-      if (error) return toast.error(error.message);
+      if (error) { toast.error(error.message); return; }
     } else {
       const { error } = await supabase.from("user_roles").insert({ user_id: userId, role });
-      if (error) return toast.error(error.message);
+      if (error) { toast.error(error.message); return; }
     }
     toast.success("Roles actualizados");
     void qc.invalidateQueries({ queryKey: ["admin-users"] });
@@ -88,14 +88,14 @@ function AdminPage() {
 
   const toggleVerified = async (userId: string, value: boolean) => {
     const { error } = await supabase.from("profiles").update({ is_verified: value }).eq("id", userId);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     toast.success(value ? "Canal verificado" : "Verificación retirada");
     void qc.invalidateQueries({ queryKey: ["admin-users"] });
   };
 
   const resolveApplication = async (id: string, userId: string, status: string) => {
     const { error } = await supabase.from("partner_applications").update({ status }).eq("id", id);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     if (status === "approved") {
       await supabase.from("user_roles").insert({ user_id: userId, role: "partner" });
     }
@@ -235,7 +235,7 @@ function AdminPage() {
                         {a.status}
                       </Badge>
                     </div>
-                    <p className="mt-3 whitespace-pre-wrap text-sm">{a.motivation}</p>
+                    <p className="mt-3 whitespace-pre-wrap text-sm">{a.message}</p>
                     {a.status === "pending" && (
                       <div className="mt-3 flex gap-2">
                         <Button
