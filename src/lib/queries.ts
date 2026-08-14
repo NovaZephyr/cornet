@@ -22,16 +22,13 @@ export async function fetchProfilesByIds(ids: string[]): Promise<Map<string, Pro
 export async function fetchVideos(options?: { search?: string; userId?: string }) {
   let q = supabase
     .from("videos")
-    .select("id, user_id, title, thumbnail_path, duration_seconds, views, created_at")
+    .select("id, code, user_id, title, thumbnail_path, duration_seconds, views, created_at")
     .order("created_at", { ascending: false })
     .limit(60);
-
   if (options?.search) q = q.ilike("title", `%${options.search}%`);
   if (options?.userId) q = q.eq("user_id", options.userId);
-
   const { data, error } = await q;
   if (error) throw error;
-
   const rows = (data ?? []) as Omit<VideoWithChannel, "profiles">[];
   const profiles = await fetchProfilesByIds(rows.map((r) => r.user_id));
   return rows.map((r) => ({ ...r, profiles: profiles.get(r.user_id) ?? null })) as VideoWithChannel[];
