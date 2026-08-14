@@ -1,7 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { BadgeCheck, Search, ShieldCheck } from "lucide-react";
+import {
+  AlertTriangle,
+  Ban,
+  BadgeCheck,
+  Search,
+  ShieldCheck,
+  Trash2,
+  Video as VideoIcon,
+} from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { AppShell } from "@/components/AppShell";
@@ -20,7 +28,7 @@ export const Route = createFileRoute("/admin")({
       { title: "Panel de administración — TocinoTube" },
       {
         name: "description",
-        content: "Gestiona usuarios, roles, verificación y solicitudes del programa Partner.",
+        content: "Gestiona usuarios, roles, verificación, videos y solicitudes del programa Partner.",
       },
       { property: "og:title", content: "Panel de administración — TocinoTube" },
       { property: "og:description", content: "Herramientas de moderación de TocinoTube." },
@@ -31,10 +39,30 @@ export const Route = createFileRoute("/admin")({
 
 const ROLES: AppRole[] = ["admin", "moderator", "partner", "user"];
 
+// Estas columnas/tablas son adicionales a lo que ya tenías:
+// - profiles.is_banned (boolean, default false)
+// - profiles.warnings_count (integer, default 0)
+// - tabla user_warnings (id, user_id, reason, issued_by, created_at)
+// Ajusta los nombres si en tu base de datos se llaman distinto.
+type AdminProfile = Profile & {
+  roles: AppRole[];
+  is_banned?: boolean;
+  warnings_count?: number;
+};
+
+interface AdminVideo {
+  id: string;
+  title: string;
+  user_id: string;
+  view_count: number | null;
+  created_at: string;
+}
+
 function AdminPage() {
-  const { isAdmin, loading } = useAuth();
+  const { user, isAdmin, loading } = useAuth();
   const qc = useQueryClient();
   const [q, setQ] = useState("");
+  const [videoQ, setVideoQ] = useState("");
 
   const { data: users } = useQuery({
     queryKey: ["admin-users"],
@@ -45,7 +73,7 @@ function AdminPage() {
         supabase.from("user_roles").select("user_id, role"),
       ]);
       const roleRows = (roles ?? []) as { user_id: string; role: AppRole }[];
-      return ((profiles ?? []) as Profile[]).map((p) => ({
+      return ((profiles ?? []) as AdminProfile[]).map((p) => ({
         ...p,
         roles: roleRows.filter((r) => r.user_id === p.id).map((r) => r.role),
       }));
@@ -70,6 +98,18 @@ function AdminPage() {
     },
   });
 
+  const { data: videos } = useQuery({
+    queryKey: ["admin-videos"],
+    enabled: isAdmin,
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("videos")
+        .select("id, title, user_id, view_count, created_at")
+        .order("created_at", { ascending: false });
+      return (data ?? []) as AdminVideo[];
+    },
+  });
+
   const toggleRole = async (userId: string, role: AppRole, has: boolean) => {
     if (has) {
       const { error } = await supabase
@@ -91,6 +131,65 @@ function AdminPage() {
     if (error) { toast.error(error.message); return; }
     toast.success(value ? "Canal verificado" : "Verificación retirada");
     void qc.invalidateQueries({ queryKey: ["admin-users"] });
+  };
+
+  const toggleBanned = async (userId: string, value: boolean) => {
+    if (value && !window.confirm("¿Banear a este usuario? No podrá acceder a su cuenta mientras esté baneado.")) {
+      return;
+    }
+    const { error } = await supabase.from("profiles").update({ is_banned: value }).eq("id", userId);
+    if (error) { toast.error(error.message); return; }
+    toast.success(value ? "Usuario baneado" : "Usuario desbaneado");
+    void qc.invalidateQueries({ queryKey: ["admin-users"] });
+  };
+
+  const warnUser = async (target: AdminProfile) => {
+    const reason = window.prompt("Motivo de la advertencia (el usuario podrá verlo):");
+    if (!reason) return;
+
+    const { error: warnError } = await supabase.from("user_warnings").insert({
+      user_id: target.id,
+      reason,
+      issued_by: user?.id,
+    });
+    if (warnError) { toast.error(warnError.message); return; }
+
+    const { error: countError } = await supabase
+      .from("profiles")
+      .update({ warnings_count: (target.warnings_count ?? 0) + 1 })
+      .eq("id", target.id);
+    if (countError) { toast.error(countError.message); return; }
+
+    toast.success("Advertencia enviada");
+    void qc.invalidateQueries({ queryKey: ["admin-users"] });
+  };
+
+  const deleteUser = async (userId: string) => {
+    if (
+      !window.confirm(
+        "¿Eliminar esta cuenta de forma permanente? Se borrarán su perfil y su acceso. Esta acción no se puede deshacer.",
+      )
+    ) {
+      return;
+    }
+    // Borrar un usuario de auth.users requiere la service role key, así que esto
+    // se delega a una Edge Function (ver supabase/functions/admin-delete-user).
+    const { error } = await supabase.functions.invoke("admin-delete-user", {
+      body: { userId },
+    });
+    if (error) { toast.error(error.message); return; }
+    toast.success("Cuenta eliminada");
+    void qc.invalidateQueries({ queryKey: ["admin-users"] });
+  };
+
+  const deleteVideo = async (videoId: string) => {
+    if (!window.confirm("¿Eliminar este video de la plataforma? Esta acción no se puede deshacer.")) {
+      return;
+    }
+    const { error } = await supabase.from("videos").delete().eq("id", videoId);
+    if (error) { toast.error(error.message); return; }
+    toast.success("Video eliminado");
+    void qc.invalidateQueries({ queryKey: ["admin-videos"] });
   };
 
   const resolveApplication = async (id: string, userId: string, status: string) => {
@@ -131,6 +230,10 @@ function AdminPage() {
       u.display_name?.toLowerCase().includes(q.toLowerCase()),
   );
 
+  const filteredVideos = (videos ?? []).filter((v) =>
+    v.title?.toLowerCase().includes(videoQ.toLowerCase()),
+  );
+
   return (
     <AppShell>
       <div className="mx-auto max-w-5xl">
@@ -141,6 +244,7 @@ function AdminPage() {
         <Tabs defaultValue="users">
           <TabsList>
             <TabsTrigger value="users">Usuarios y roles</TabsTrigger>
+            <TabsTrigger value="videos">Videos</TabsTrigger>
             <TabsTrigger value="partners">
               Solicitudes Partner
               {applications?.some((a) => a.status === "pending") && (
@@ -172,9 +276,19 @@ function AdminPage() {
                       size={44}
                     />
                     <div className="min-w-0 flex-1">
-                      <p className="flex items-center gap-1 font-medium">
+                      <p className="flex flex-wrap items-center gap-1.5 font-medium">
                         {u.display_name || u.username}
                         {u.is_verified && <VerifiedBadge className="h-4 w-4" />}
+                        {u.is_banned && (
+                          <Badge variant="destructive" className="rounded-full text-[10px]">
+                            Baneado
+                          </Badge>
+                        )}
+                        {!!u.warnings_count && (
+                          <Badge variant="secondary" className="rounded-full text-[10px]">
+                            {u.warnings_count} advertencia{u.warnings_count === 1 ? "" : "s"}
+                          </Badge>
+                        )}
                       </p>
                       <p className="text-xs text-muted-foreground">
                         @{u.username} · se unió {timeAgo(u.created_at)}
@@ -205,9 +319,80 @@ function AdminPage() {
                       );
                     })}
                   </div>
+
+                  <div className="mt-3 flex flex-wrap gap-2 border-t pt-3">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="rounded-full"
+                      onClick={() => void warnUser(u)}
+                    >
+                      <AlertTriangle className="mr-1.5 h-3.5 w-3.5" /> Advertencia
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant={u.is_banned ? "outline" : "destructive"}
+                      className="rounded-full"
+                      onClick={() => void toggleBanned(u.id, !u.is_banned)}
+                    >
+                      <Ban className="mr-1.5 h-3.5 w-3.5" />
+                      {u.is_banned ? "Quitar baneo" : "Banear"}
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="destructive"
+                      className="rounded-full"
+                      onClick={() => void deleteUser(u.id)}
+                    >
+                      <Trash2 className="mr-1.5 h-3.5 w-3.5" /> Eliminar cuenta
+                    </Button>
+                  </div>
                 </div>
               ))}
               {filtered.length === 0 && (
+                <p className="py-12 text-center text-muted-foreground">Sin resultados.</p>
+              )}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="videos" className="pt-5">
+            <div className="mb-4 flex items-center gap-2 rounded-full bg-surface px-4">
+              <Search className="h-4 w-4 text-muted-foreground" />
+              <Input
+                value={videoQ}
+                onChange={(e) => setVideoQ(e.target.value)}
+                placeholder="Buscar video por título"
+                className="border-0 bg-transparent focus-visible:ring-0"
+              />
+            </div>
+
+            <div className="space-y-3">
+              {filteredVideos.map((v) => {
+                const author = users?.find((u) => u.id === v.user_id);
+                return (
+                  <div key={v.id} className="flex items-center gap-3 rounded-xl bg-surface p-4">
+                    <div className="flex h-10 w-10 flex-none items-center justify-center rounded-lg bg-primary/10">
+                      <VideoIcon className="h-5 w-5 text-primary" />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate font-medium">{v.title}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {author?.display_name || author?.username || "Usuario"} · subido{" "}
+                        {timeAgo(v.created_at)} · {v.view_count ?? 0} vistas
+                      </p>
+                    </div>
+                    <Button
+                      size="sm"
+                      variant="destructive"
+                      className="rounded-full"
+                      onClick={() => void deleteVideo(v.id)}
+                    >
+                      <Trash2 className="mr-1.5 h-3.5 w-3.5" /> Eliminar
+                    </Button>
+                  </div>
+                );
+              })}
+              {filteredVideos.length === 0 && (
                 <p className="py-12 text-center text-muted-foreground">Sin resultados.</p>
               )}
             </div>
