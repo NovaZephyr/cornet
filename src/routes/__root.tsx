@@ -79,14 +79,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "TocinoTube — Videos, comunidad y creadores" },
+      { title: "CoreNetwork — Free Yourself!" },
       {
         name: "description",
         content:
-          "Mira videos, sigue canales, participa en la comunidad y crea tu propio canal en TocinoTube.",
+          "Watch videos, subscribe canales, join to the community in CoreNetwork.",
       },
-      { name: "author", content: "TocinoTube" },
-      { property: "og:title", content: "TocinoTube — Videos, comunidad y creadores" },
+      { name: "author", content: "CoreNetwork" },
+      { property: "og:title", content: "CoreNetwork — Free Yourself" },
       {
         property: "og:description",
         content: "La plataforma de video donde tu canal se ve como tú quieras.",
