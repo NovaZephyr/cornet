@@ -12,16 +12,16 @@ export const Route = createFileRoute("/")({
     typeof search["q"] === "string" && search["q"] ? { q: search["q"] } : {},
   head: () => ({
     meta: [
-      { title: "TocinoTube — Videos, comunidad y creadores" },
+      { title: "CoreNetwork — Free Yourself" },
       {
         name: "description",
         content:
-          "Mira, sube y comparte videos. Canales personalizables, pestaña de comunidad y programa partner.",
+          "Watch videos, subscribe channels and join to the community in CoreNetwork.",
       },
-      { property: "og:title", content: "TocinoTube — Videos, comunidad y creadores" },
+      { property: "og:title", content: "CoreNetwork — Free Yourself" },
       {
         property: "og:description",
-        content: "Mira, sube y comparte videos en TocinoTube.",
+        content: "Watch videos, subscribe channels and join to the community in CoreNetwork",
       },
     ],
   }),
