@@ -1,24 +1,73 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
+import { AppShell } from "@/components/AppShell";
+import { VideoCard } from "@/components/VideoCard";
+import { fetchVideos } from "@/lib/queries";
+import { Skeleton } from "@/components/ui/skeleton";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
+type HomeSearch = { q?: string };
+
 export const Route = createFileRoute("/")({
-  component: Index,
+  validateSearch: (search: Record<string, unknown>): HomeSearch =>
+    typeof search["q"] === "string" && search["q"] ? { q: search["q"] } : {},
+  head: () => ({
+    meta: [
+      { title: "TocinoTube — Videos, comunidad y creadores" },
+      {
+        name: "description",
+        content:
+          "Mira, sube y comparte videos. Canales personalizables, pestaña de comunidad y programa partner.",
+      },
+      { property: "og:title", content: "TocinoTube — Videos, comunidad y creadores" },
+      {
+        property: "og:description",
+        content: "Mira, sube y comparte videos en TocinoTube.",
+      },
+    ],
+  }),
+  component: Home,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
-function Index() {
+function Home() {
+  const { q } = Route.useSearch();
+  const { data, isLoading } = useQuery({
+    queryKey: ["videos", q ?? null],
+    queryFn: () => fetchVideos(q ? { search: q } : {}),
+  });
+
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
+    <AppShell>
+      <h1 className="sr-only">Videos recomendados en TocinoTube</h1>
+      {q && (
+        <p className="mb-4 text-sm text-muted-foreground">
+          Resultados para <span className="text-foreground">“{q}”</span>
+        </p>
+      )}
+
+      {isLoading ? (
+        <div className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {Array.from({ length: 8 }).map((_, i) => (
+            <div key={i} className="space-y-3">
+              <Skeleton className="aspect-video w-full rounded-xl" />
+              <Skeleton className="h-4 w-3/4" />
+              <Skeleton className="h-3 w-1/2" />
+            </div>
+          ))}
+        </div>
+      ) : data && data.length > 0 ? (
+        <div className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {data.map((v) => (
+            <VideoCard key={v.id} video={v} />
+          ))}
+        </div>
+      ) : (
+        <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-border py-24 text-center">
+          <p className="text-lg font-medium">Todavía no hay videos aquí</p>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Sube el primer video y empieza tu canal.
+          </p>
+        </div>
+      )}
+    </AppShell>
   );
 }
