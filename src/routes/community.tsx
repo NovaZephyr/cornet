@@ -5,13 +5,13 @@ import { CommunityFeed } from "@/components/CommunityFeed";
 export const Route = createFileRoute("/community")({
   head: () => ({
     meta: [
-      { title: "Comunidad — TocinoTube" },
+      { title: "Community — CoreNetwork" },
       {
         name: "description",
-        content: "Publicaciones, encuestas y novedades de los canales que sigues en TocinoTube.",
+        content: "Community in CoreNetwork.",
       },
-      { property: "og:title", content: "Comunidad — TocinoTube" },
-      { property: "og:description", content: "Habla con los creadores y su comunidad." },
+      { property: "og:title", content: "Community — CoreNetwork" },
+      { property: "og:description", content: "Talk and make ideas with other creator content." },
     ],
   }),
   component: CommunityPage,
@@ -20,7 +20,7 @@ export const Route = createFileRoute("/community")({
 function CommunityPage() {
   return (
     <AppShell>
-      <h1 className="mx-auto mb-6 max-w-2xl text-2xl font-bold">Comunidad</h1>
+      <h1 className="mx-auto mb-6 max-w-2xl text-2xl font-bold">Community</h1>
       <CommunityFeed />
     </AppShell>
   );
