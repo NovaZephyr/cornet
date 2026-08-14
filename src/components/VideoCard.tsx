@@ -5,6 +5,7 @@ import { formatDuration, formatViews, timeAgo } from "@/lib/format";
 
 export type VideoWithChannel = {
   id: string;
+  code: string;
   title: string;
   thumbnail_path: string | null;
   duration_seconds: number;
@@ -22,12 +23,11 @@ export type VideoWithChannel = {
 export function VideoCard({ video, compact = false }: { video: VideoWithChannel; compact?: boolean }) {
   const channel = video.profiles;
   const name = channel?.display_name || channel?.username || "Canal";
-
   return (
     <div className={compact ? "flex gap-2" : "flex flex-col gap-3"}>
       <Link
-        to="/watch/$videoId"
-        params={{ videoId: video.id }}
+        to="/watch"
+        search={{ v: video.code }}
         className={
           compact
             ? "relative aspect-video w-40 shrink-0 overflow-hidden rounded-lg bg-surface"
@@ -48,7 +48,6 @@ export function VideoCard({ video, compact = false }: { video: VideoWithChannel;
           {formatDuration(video.duration_seconds)}
         </span>
       </Link>
-
       <div className="flex gap-3">
         {!compact && (
           <Link to="/c/$username" params={{ username: channel?.username ?? "" }}>
@@ -57,8 +56,8 @@ export function VideoCard({ video, compact = false }: { video: VideoWithChannel;
         )}
         <div className="min-w-0 flex-1">
           <Link
-            to="/watch/$videoId"
-            params={{ videoId: video.id }}
+            to="/watch"
+            search={{ v: video.code }}
             className="line-clamp-2 text-sm font-medium leading-5"
           >
             {video.title}
