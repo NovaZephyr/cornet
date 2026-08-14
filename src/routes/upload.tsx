@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/select";
 import { useAuth } from "@/hooks/useAuth";
 import { uploadFile } from "@/lib/storage";
+import { generateVideoCode } from "@/lib/videoCode";
 
 export const Route = createFileRoute("/upload")({
   head: () => ({
@@ -67,22 +68,40 @@ function UploadPage() {
       const duration = await readDuration(video);
       const videoPath = await uploadFile("videos", user.id, video);
       const thumbPath = thumb ? await uploadFile("media", user.id, thumb, "thumb-") : null;
-      const { data, error } = await supabase
-        .from("videos")
-        .insert({
-          user_id: user.id,
-          title,
-          description,
-          visibility,
-          video_path: videoPath,
-          thumbnail_path: thumbPath,
-          duration_seconds: duration,
-        })
-        .select("id")
-        .single();
-      if (error) throw error;
+
+      // Reintenta si el code corto choca con uno existente (muy poco probable con 8 chars).
+      let code = generateVideoCode();
+      let data: { code: string } | null = null;
+      for (let attempt = 0; attempt < 3 && !data; attempt++) {
+        const { data: inserted, error } = await supabase
+          .from("videos")
+          .insert({
+            user_id: user.id,
+            code,
+            title,
+            description,
+            visibility,
+            video_path: videoPath,
+            thumbnail_path: thumbPath,
+            duration_seconds: duration,
+          })
+          .select("code")
+          .single();
+        if (!error) {
+          data = inserted as { code: string };
+          break;
+        }
+        // 23505 = unique_violation en Postgres
+        if ((error as { code?: string }).code === "23505") {
+          code = generateVideoCode();
+          continue;
+        }
+        throw error;
+      }
+      if (!data) throw new Error("No se pudo generar un código único para el video");
+
       toast.success("Video publicado");
-      void navigate({ to: "/watch/$videoId", params: { videoId: (data as { id: string }).id } });
+      void navigate({ to: "/watch", search: { v: data.code } });
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "No se pudo subir el video");
     } finally {
