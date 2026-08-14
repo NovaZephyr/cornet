@@ -37,7 +37,7 @@ function Home() {
 
   return (
     <AppShell>
-      <h1 className="sr-only">Videos recomendados en TocinoTube</h1>
+      <h1 className="sr-only">Videos recomendados en CoreNetwork</h1>
       {q && (
         <p className="mb-4 text-sm text-muted-foreground">
           Resultados para <span className="text-foreground">“{q}”</span>
