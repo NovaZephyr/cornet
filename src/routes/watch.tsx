@@ -7,6 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { AppShell } from "@/components/AppShell";
 import { ChannelAvatar, VerifiedBadge } from "@/components/Media";
 import { VideoCard } from "@/components/VideoCard";
+import { VideoPlayer } from "@/components/VideoPlayer";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useAuth } from "@/hooks/useAuth";
@@ -14,7 +15,12 @@ import { useSignedUrl } from "@/lib/storage";
 import { fetchProfilesByIds, fetchVideos, type ProfileLite } from "@/lib/queries";
 import { formatViews, timeAgo } from "@/lib/format";
 
-export const Route = createFileRoute("/watch/$videoId")({
+// Antes: /watch/$videoId (con el UUID completo en la URL).
+// Ahora: /watch?v=<code>, con un código corto guardado en videos.code.
+export const Route = createFileRoute("/watch")({
+  validateSearch: (search: Record<string, unknown>): { v: string } => ({
+    v: typeof search.v === "string" ? search.v : "",
+  }),
   head: () => ({
     meta: [
       { title: "Reproduciendo un video — TocinoTube" },
@@ -28,6 +34,7 @@ export const Route = createFileRoute("/watch/$videoId")({
 
 type VideoRow = {
   id: string;
+  code: string;
   user_id: string;
   title: string;
   description: string;
@@ -37,18 +44,19 @@ type VideoRow = {
 };
 
 function Watch() {
-  const { videoId } = Route.useParams();
+  const { v: code } = Route.useSearch();
   const { user } = useAuth();
   const qc = useQueryClient();
   const [comment, setComment] = useState("");
 
   const { data } = useQuery({
-    queryKey: ["video", videoId],
+    queryKey: ["video", code],
+    enabled: !!code,
     queryFn: async () => {
       const { data: video, error } = await supabase
         .from("videos")
-        .select("id, user_id, title, description, video_path, views, created_at")
-        .eq("id", videoId)
+        .select("id, code, user_id, title, description, video_path, views, created_at")
+        .eq("code", code)
         .maybeSingle();
       if (error) throw error;
       if (!video) return null;
@@ -63,23 +71,25 @@ function Watch() {
   const videoUrl = useSignedUrl(data?.video.video_path);
 
   const { data: likes } = useQuery({
-    queryKey: ["likes", videoId],
+    queryKey: ["likes", data?.video.id],
+    enabled: !!data?.video.id,
     queryFn: async () => {
       const { data: rows } = await supabase
         .from("video_likes")
         .select("user_id, is_like")
-        .eq("video_id", videoId);
+        .eq("video_id", data!.video.id);
       return (rows ?? []) as { user_id: string; is_like: boolean }[];
     },
   });
 
   const { data: comments } = useQuery({
-    queryKey: ["comments", videoId],
+    queryKey: ["comments", data?.video.id],
+    enabled: !!data?.video.id,
     queryFn: async () => {
       const { data: rows } = await supabase
         .from("comments")
         .select("id, user_id, content, created_at")
-        .eq("video_id", videoId)
+        .eq("video_id", data!.video.id)
         .order("created_at", { ascending: false });
       const list = (rows ?? []) as { id: string; user_id: string; content: string; created_at: string }[];
       const profiles = await fetchProfilesByIds(list.map((c) => c.user_id));
@@ -105,8 +115,8 @@ function Watch() {
   });
 
   useEffect(() => {
-    void supabase.rpc("increment_views", { _video_id: videoId });
-  }, [videoId]);
+    if (data?.video.id) void supabase.rpc("increment_views", { _video_id: data.video.id });
+  }, [data?.video.id]);
 
   if (data === null) {
     return (
@@ -123,18 +133,18 @@ function Watch() {
   const isSubscribed = !!subs?.some((s) => s.subscriber_id === user?.id);
 
   const react = async (isLike: boolean) => {
-    if (!user) {
+    if (!user || !data) {
       toast.error("Inicia sesión para reaccionar");
       return;
     }
     if (myLike && myLike.is_like === isLike) {
-      await supabase.from("video_likes").delete().eq("video_id", videoId).eq("user_id", user.id);
+      await supabase.from("video_likes").delete().eq("video_id", data.video.id).eq("user_id", user.id);
     } else {
       await supabase
         .from("video_likes")
-        .upsert({ video_id: videoId, user_id: user.id, is_like: isLike });
+        .upsert({ video_id: data.video.id, user_id: user.id, is_like: isLike });
     }
-    void qc.invalidateQueries({ queryKey: ["likes", videoId] });
+    void qc.invalidateQueries({ queryKey: ["likes", data.video.id] });
   };
 
   const toggleSub = async () => {
@@ -158,36 +168,27 @@ function Watch() {
 
   const postComment = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!user) {
+    if (!user || !data) {
       toast.error("Inicia sesión para comentar");
       return;
     }
     if (!comment.trim()) return;
     const { error } = await supabase
       .from("comments")
-      .insert({ video_id: videoId, user_id: user.id, content: comment.trim() });
+      .insert({ video_id: data.video.id, user_id: user.id, content: comment.trim() });
     if (error) {
       toast.error(error.message);
       return;
     }
     setComment("");
-    void qc.invalidateQueries({ queryKey: ["comments", videoId] });
+    void qc.invalidateQueries({ queryKey: ["comments", data.video.id] });
   };
 
   return (
     <AppShell>
       <div className="mx-auto flex max-w-[1600px] flex-col gap-6 lg:flex-row">
         <div className="min-w-0 flex-1">
-          <div className="aspect-video w-full overflow-hidden rounded-xl bg-black">
-            {videoUrl ? (
-              // eslint-disable-next-line jsx-a11y/media-has-caption
-              <video src={videoUrl} controls autoPlay className="h-full w-full" />
-            ) : (
-              <div className="flex h-full items-center justify-center text-sm text-muted-foreground">
-                Cargando video…
-              </div>
-            )}
-          </div>
+          <VideoPlayer src={videoUrl} autoPlay />
 
           <h1 className="mt-4 text-xl font-semibold">{data?.video.title ?? ""}</h1>
 
@@ -287,7 +288,7 @@ function Watch() {
                       size="icon"
                       onClick={async () => {
                         await supabase.from("comments").delete().eq("id", c.id);
-                        void qc.invalidateQueries({ queryKey: ["comments", videoId] });
+                        void qc.invalidateQueries({ queryKey: ["comments", data?.video.id] });
                       }}
                     >
                       <Trash2 className="h-4 w-4" />
@@ -302,7 +303,7 @@ function Watch() {
         <aside className="w-full shrink-0 space-y-3 lg:w-96">
           <h2 className="text-sm font-semibold text-muted-foreground">Siguiente</h2>
           {suggestions
-            ?.filter((v) => v.id !== videoId)
+            ?.filter((v) => v.id !== data?.video.id)
             .slice(0, 12)
             .map((v) => (
               <VideoCard key={v.id} video={v} compact />
