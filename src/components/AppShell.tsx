@@ -50,6 +50,7 @@ export function AppShell({ children }: { children: ReactNode }) {
     { to: "/", label: "Inicio", icon: Home },
     { to: "/community", label: "Comunidad", icon: Users },
     { to: "/partner", label: "Programa Partner", icon: Sparkles },
+    { to: "/rules", label: "Guidelines", icon: Sparkles },
   ];
   if (user) {
     items.push({ to: "/upload", label: "Subir video", icon: Upload });
