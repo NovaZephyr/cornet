@@ -32,7 +32,7 @@ function Logo() {
       <span className="flex h-6 w-9 items-center justify-center rounded-md bg-primary">
         <span className="ml-0.5 h-0 w-0 border-y-[5px] border-l-[8px] border-y-transparent border-l-primary-foreground" />
       </span>
-      <span className="text-xl font-bold tracking-tighter">TocinoTube</span>
+      <span className="text-xl font-bold tracking-tighter">CoreNetwork</span>
     </Link>
   );
 }
