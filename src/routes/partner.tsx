@@ -13,13 +13,13 @@ import { useAuth } from "@/hooks/useAuth";
 export const Route = createFileRoute("/partner")({
   head: () => ({
     meta: [
-      { title: "Programa Partner — TocinoTube" },
+      { title: "Be Partner — CoreNetwork" },
       {
         name: "description",
-        content: "Únete al programa Partner: insignia, verificación, estadísticas y monetización.",
+        content: "Join to the good parter program on CoreNetwork.",
       },
-      { property: "og:title", content: "Programa Partner — TocinoTube" },
-      { property: "og:description", content: "Beneficios para creadores en TocinoTube." },
+      { property: "og:title", content: "Be Partner — CoreNetwork" },
+      { property: "og:description", content: "Partner in CoreNetwork." },
     ],
   }),
   component: PartnerPage,
@@ -98,15 +98,15 @@ function PartnerPage() {
           {isPartner ? (
             <p className="text-center">
               <BadgeCheck className="mx-auto mb-2 h-8 w-8 text-partner" />
-              Ya eres Partner de TocinoTube. ¡Gracias por crear aquí!
+              You are partner of CoreNetwork, thanks for helping our community!
             </p>
           ) : !user ? (
             <p className="text-center text-muted-foreground">
-              Inicia sesión para postularte al programa.
+              Log in for join to 0+ creators in the creator program!
             </p>
           ) : application && application.status === "pending" ? (
             <p className="text-center text-muted-foreground">
-              Tu solicitud está en revisión. Te avisaremos con la respuesta.
+              Your request is waiting, sit down and do another thing!
             </p>
           ) : (
             <form onSubmit={apply} className="space-y-4">
