@@ -27,7 +27,7 @@ export const Route = createFileRoute("/settings")({
 });
 
 function SettingsPage() {
-  const { user, profile, refreshProfile } = useAuth();
+  const { user, profile, refresh } = useAuth();
   const [displayName, setDisplayName] = useState("");
   const [username, setUsername] = useState("");
   const [description, setDescription] = useState("");
@@ -52,7 +52,7 @@ function SettingsPage() {
         .update({ [field]: path })
         .eq("id", user.id);
       if (error) throw error;
-      await refreshProfile();
+      await refresh();
       toast.success("Imagen actualizada");
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "No se pudo subir la imagen");
@@ -76,7 +76,7 @@ function SettingsPage() {
         })
         .eq("id", user.id);
       if (error) throw error;
-      await refreshProfile();
+      await refresh();
       toast.success("Perfil guardado");
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "No se pudo guardar");
