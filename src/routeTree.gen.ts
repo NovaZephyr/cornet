@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as CommunityRouteImport } from './routes/community'
+import { Route as PartnerRouteImport } from './routes/partner'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as UploadRouteImport } from './routes/upload'
 import { Route as CUsernameRouteImport } from './routes/c.$username'
@@ -36,6 +37,11 @@ const AuthRoute = AuthRouteImport.update({
 const CommunityRoute = CommunityRouteImport.update({
   id: '/community',
   path: '/community',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PartnerRoute = PartnerRouteImport.update({
+  id: '/partner',
+  path: '/partner',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SettingsRoute = SettingsRouteImport.update({
@@ -64,6 +70,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRoute
   '/auth': typeof AuthRoute
   '/community': typeof CommunityRoute
+  '/partner': typeof PartnerRoute
   '/settings': typeof SettingsRoute
   '/upload': typeof UploadRoute
   '/c/$username': typeof CUsernameRoute
@@ -74,6 +81,7 @@ export interface FileRoutesByTo {
   '/admin': typeof AdminRoute
   '/auth': typeof AuthRoute
   '/community': typeof CommunityRoute
+  '/partner': typeof PartnerRoute
   '/settings': typeof SettingsRoute
   '/upload': typeof UploadRoute
   '/c/$username': typeof CUsernameRoute
@@ -85,6 +93,7 @@ export interface FileRoutesById {
   '/admin': typeof AdminRoute
   '/auth': typeof AuthRoute
   '/community': typeof CommunityRoute
+  '/partner': typeof PartnerRoute
   '/settings': typeof SettingsRoute
   '/upload': typeof UploadRoute
   '/c/$username': typeof CUsernameRoute
@@ -97,6 +106,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/auth'
     | '/community'
+    | '/partner'
     | '/settings'
     | '/upload'
     | '/c/$username'
@@ -107,6 +117,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/auth'
     | '/community'
+    | '/partner'
     | '/settings'
     | '/upload'
     | '/c/$username'
@@ -117,6 +128,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/auth'
     | '/community'
+    | '/partner'
     | '/settings'
     | '/upload'
     | '/c/$username'
@@ -128,6 +140,7 @@ export interface RootRouteChildren {
   AdminRoute: typeof AdminRoute
   AuthRoute: typeof AuthRoute
   CommunityRoute: typeof CommunityRoute
+  PartnerRoute: typeof PartnerRoute
   SettingsRoute: typeof SettingsRoute
   UploadRoute: typeof UploadRoute
   CUsernameRoute: typeof CUsernameRoute
@@ -162,6 +175,13 @@ declare module '@tanstack/react-router' {
       path: '/community'
       fullPath: '/community'
       preLoaderRoute: typeof CommunityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/partner': {
+      id: '/partner'
+      path: '/partner'
+      fullPath: '/partner'
+      preLoaderRoute: typeof PartnerRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/settings': {
@@ -200,6 +220,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminRoute: AdminRoute,
   AuthRoute: AuthRoute,
   CommunityRoute: CommunityRoute,
+  PartnerRoute: PartnerRoute,
   SettingsRoute: SettingsRoute,
   UploadRoute: UploadRoute,
   CUsernameRoute: CUsernameRoute,
