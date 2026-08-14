@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as CommunityRouteImport } from './routes/community'
+import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as UploadRouteImport } from './routes/upload'
 import { Route as CUsernameRouteImport } from './routes/c.$username'
 import { Route as WatchVideoIdRouteImport } from './routes/watch.$videoId'
@@ -29,6 +30,11 @@ const AuthRoute = AuthRouteImport.update({
 const CommunityRoute = CommunityRouteImport.update({
   id: '/community',
   path: '/community',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
   getParentRoute: () => rootRouteImport,
 } as any)
 const UploadRoute = UploadRouteImport.update({
@@ -51,6 +57,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/community': typeof CommunityRoute
+  '/settings': typeof SettingsRoute
   '/upload': typeof UploadRoute
   '/c/$username': typeof CUsernameRoute
   '/watch/$videoId': typeof WatchVideoIdRoute
@@ -59,6 +66,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/community': typeof CommunityRoute
+  '/settings': typeof SettingsRoute
   '/upload': typeof UploadRoute
   '/c/$username': typeof CUsernameRoute
   '/watch/$videoId': typeof WatchVideoIdRoute
@@ -68,6 +76,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/community': typeof CommunityRoute
+  '/settings': typeof SettingsRoute
   '/upload': typeof UploadRoute
   '/c/$username': typeof CUsernameRoute
   '/watch/$videoId': typeof WatchVideoIdRoute
@@ -78,6 +87,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/community'
+    | '/settings'
     | '/upload'
     | '/c/$username'
     | '/watch/$videoId'
@@ -86,6 +96,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/community'
+    | '/settings'
     | '/upload'
     | '/c/$username'
     | '/watch/$videoId'
@@ -94,6 +105,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/community'
+    | '/settings'
     | '/upload'
     | '/c/$username'
     | '/watch/$videoId'
@@ -103,6 +115,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRoute: typeof AuthRoute
   CommunityRoute: typeof CommunityRoute
+  SettingsRoute: typeof SettingsRoute
   UploadRoute: typeof UploadRoute
   CUsernameRoute: typeof CUsernameRoute
   WatchVideoIdRoute: typeof WatchVideoIdRoute
@@ -129,6 +142,13 @@ declare module '@tanstack/react-router' {
       path: '/community'
       fullPath: '/community'
       preLoaderRoute: typeof CommunityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/upload': {
@@ -159,6 +179,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRoute: AuthRoute,
   CommunityRoute: CommunityRoute,
+  SettingsRoute: SettingsRoute,
   UploadRoute: UploadRoute,
   CUsernameRoute: CUsernameRoute,
   WatchVideoIdRoute: WatchVideoIdRoute,
