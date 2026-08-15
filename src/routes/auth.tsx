@@ -29,7 +29,7 @@ export const Route = createFileRoute("/auth")({
 // (Dashboard de Cloudflare → Turnstile → Add Site). También debes
 // pegar la Secret Key correspondiente en Supabase → Authentication →
 // Attack Protection → Enable Captcha protection → Turnstile.
-const TURNSTILE_SITE_KEY = "0x0000000000000000000000AA"; // TODO: reemplazar
+const TURNSTILE_SITE_KEY = "0x4AAAAAAEQ5ZW7lCUTxm4os"; // TODO: reemplazar
 
 declare global {
   interface Window {
