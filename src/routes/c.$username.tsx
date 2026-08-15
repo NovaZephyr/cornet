@@ -46,8 +46,9 @@ function Channel() {
     queryKey: ["channel-roles", profile?.id],
     enabled: !!profile?.id,
     queryFn: async () => {
-      const { data } = await supabase.from("user_roles").select("role").eq("user_id", profile!.id);
-      return ((data ?? []) as { role: AppRole }[]).map((r) => r.role);
+      const { data, error } = await supabase.rpc("get_public_badges", { _user_id: profile!.id });
+      if (error) throw error;
+      return (data ?? []) as AppRole[];
     },
   });
 
