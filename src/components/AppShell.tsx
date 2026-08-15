@@ -25,6 +25,7 @@ import {
 import { ChannelAvatar } from "@/components/Media";
 import { useAuth } from "@/hooks/useAuth";
 import { cn } from "@/lib/utils";
+import logoMark from "@/assets/corenetwork-mark.png";
 
 function Logo() {
   return (
@@ -102,6 +103,13 @@ export function AppShell({ children }: { children: ReactNode }) {
         <div className="ml-auto flex items-center gap-2">
           {user ? (
             <>
+              {isAdmin && (
+                <Button asChild variant="secondary" className="hidden rounded-full sm:inline-flex">
+                  <Link to="/admin">
+                    <Shield className="mr-1.5 h-4 w-4" /> Administración
+                  </Link>
+                </Button>
+              )}
               <Button asChild variant="ghost" size="icon" className="rounded-full">
                 <Link to="/upload" aria-label="Subir video">
                   <Video className="h-5 w-5" />

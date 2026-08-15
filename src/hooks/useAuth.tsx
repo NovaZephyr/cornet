@@ -19,6 +19,9 @@ export type Profile = {
   avatar_path: string | null;
   banner_path: string | null;
   background_path: string | null;
+  gif_path: string | null;
+  is_banned: boolean;
+  warnings_count: number;
   accent_color: string;
   is_verified: boolean;
   created_at: string;
