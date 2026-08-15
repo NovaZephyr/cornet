@@ -27,7 +27,8 @@ export const Route = createFileRoute("/settings")({
 });
 
 function SettingsPage() {
-  const { user, profile, refresh } = useAuth();
+  const { user, profile, refresh, isPartner, isAdmin } = useAuth();
+  const canCustomize = isPartner || isAdmin;
   const [displayName, setDisplayName] = useState("");
   const [username, setUsername] = useState("");
   const [description, setDescription] = useState("");
@@ -42,18 +43,18 @@ function SettingsPage() {
     setAccent(profile.accent_color ?? "#ff0033");
   }, [profile]);
 
-  const uploadTo = async (field: "avatar_path" | "banner_path" | "background_path", file: File) => {
+  const uploadTo = async (
+    field: "avatar_path" | "banner_path" | "background_path" | "gif_path",
+    file: File,
+  ) => {
     if (!user) return;
     setBusy(true);
     try {
       const path = await uploadFile("media", user.id, file, `${field}-`);
-      const patch =
-        field === "avatar_path"
-          ? { avatar_path: path }
-          : field === "banner_path"
-            ? { banner_path: path }
-            : { background_path: path };
-      const { error } = await supabase.from("profiles").update(patch).eq("id", user.id);
+      const { error } = await supabase
+        .from("profiles")
+        .update({ [field]: path })
+        .eq("id", user.id);
       if (error) throw error;
       await refresh();
       toast.success("Imagen actualizada");
