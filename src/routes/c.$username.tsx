@@ -70,7 +70,9 @@ function Channel() {
   });
 
   const background = useSignedUrl(profile?.background_path);
+  const partnerGif = useSignedUrl(profile?.gif_path);
   const isSubscribed = !!subs?.some((s) => s.subscriber_id === user?.id);
+  const isPartnerChannel = !!roles?.includes("partner");
 
   const toggleSub = async () => {
     if (!user || !profile) {
@@ -131,13 +133,22 @@ function Channel() {
           </div>
 
           <div className="mt-5 flex flex-col items-start gap-5 sm:flex-row sm:items-center">
-            <ChannelAvatar
-              path={profile.avatar_path}
-              name={profile.display_name || profile.username}
-              size={112}
-              className="ring-4"
-              // eslint-disable-next-line react/forbid-dom-props
-            />
+            <div className="relative shrink-0">
+              <ChannelAvatar
+                path={profile.avatar_path}
+                name={profile.display_name || profile.username}
+                size={112}
+                className="ring-4"
+                // eslint-disable-next-line react/forbid-dom-props
+              />
+              {isPartnerChannel && partnerGif && (
+                <img
+                  src={partnerGif}
+                  alt={`GIF de perfil de ${profile.display_name || profile.username}`}
+                  className="absolute -bottom-1 -right-1 h-9 w-9 rounded-full border-2 border-background object-cover"
+                />
+              )}
+            </div>
             <div className="min-w-0 flex-1">
               <h1 className="flex items-center gap-2 text-2xl font-bold">
                 {profile.display_name || profile.username}
