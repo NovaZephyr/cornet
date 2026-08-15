@@ -15,7 +15,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 
-export const Route = createFileRoute("/reglas")({
+export const Route = createFileRoute("/rules")({
   head: () => ({
     meta: [
       { title: "Normas de la comunidad — TocinoTube" },

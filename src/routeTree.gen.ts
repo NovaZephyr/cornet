@@ -14,11 +14,11 @@ import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as CommunityRouteImport } from './routes/community'
 import { Route as PartnerRouteImport } from './routes/partner'
+import { Route as RulesRouteImport } from './routes/rules'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as UploadRouteImport } from './routes/upload'
+import { Route as WatchRouteImport } from './routes/watch'
 import { Route as CUsernameRouteImport } from './routes/c.$username'
-import { Route as WatchVideoIdRouteImport } from './routes/watch'
-import { Route as RulesRouteImport } from './routes/rules'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -45,6 +45,11 @@ const PartnerRoute = PartnerRouteImport.update({
   path: '/partner',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RulesRoute = RulesRouteImport.update({
+  id: '/rules',
+  path: '/rules',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SettingsRoute = SettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
@@ -55,19 +60,14 @@ const UploadRoute = UploadRouteImport.update({
   path: '/upload',
   getParentRoute: () => rootRouteImport,
 } as any)
+const WatchRoute = WatchRouteImport.update({
+  id: '/watch',
+  path: '/watch',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CUsernameRoute = CUsernameRouteImport.update({
   id: '/c/$username',
   path: '/c/$username',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const RulesRoute = RulesRouteImport.update({
-  id: '/rules',
-  path: '/rules',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const WatchVideoIdRoute = WatchVideoIdRouteImport.update({
-  id: '/watch',
-  path: '/watch',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -77,11 +77,11 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/community': typeof CommunityRoute
   '/partner': typeof PartnerRoute
+  '/rules': typeof RulesRoute
   '/settings': typeof SettingsRoute
   '/upload': typeof UploadRoute
+  '/watch': typeof WatchRoute
   '/c/$username': typeof CUsernameRoute
-  '/watch': typeof WatchVideoIdRoute
-  '/rules': typeof RulesRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -89,11 +89,11 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/community': typeof CommunityRoute
   '/partner': typeof PartnerRoute
+  '/rules': typeof RulesRoute
   '/settings': typeof SettingsRoute
   '/upload': typeof UploadRoute
+  '/watch': typeof WatchRoute
   '/c/$username': typeof CUsernameRoute
-  '/watch': typeof WatchVideoIdRoute
-  '/rules': typeof RulesRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -102,11 +102,11 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/community': typeof CommunityRoute
   '/partner': typeof PartnerRoute
+  '/rules': typeof RulesRoute
   '/settings': typeof SettingsRoute
   '/upload': typeof UploadRoute
+  '/watch': typeof WatchRoute
   '/c/$username': typeof CUsernameRoute
-  '/watch': typeof WatchVideoIdRoute
-  '/rules': typeof RulesRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -116,11 +116,11 @@ export interface FileRouteTypes {
     | '/auth'
     | '/community'
     | '/partner'
+    | '/rules'
     | '/settings'
     | '/upload'
-    | '/c/$username'
     | '/watch'
-    | '/rules'
+    | '/c/$username'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -128,11 +128,11 @@ export interface FileRouteTypes {
     | '/auth'
     | '/community'
     | '/partner'
+    | '/rules'
     | '/settings'
     | '/upload'
-    | '/c/$username'
     | '/watch'
-    | '/rules'
+    | '/c/$username'
   id:
     | '__root__'
     | '/'
@@ -140,11 +140,11 @@ export interface FileRouteTypes {
     | '/auth'
     | '/community'
     | '/partner'
+    | '/rules'
     | '/settings'
     | '/upload'
-    | '/c/$username'
     | '/watch'
-    | '/rules'
+    | '/c/$username'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -153,11 +153,11 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   CommunityRoute: typeof CommunityRoute
   PartnerRoute: typeof PartnerRoute
+  RulesRoute: typeof RulesRoute
   SettingsRoute: typeof SettingsRoute
   UploadRoute: typeof UploadRoute
+  WatchRoute: typeof WatchRoute
   CUsernameRoute: typeof CUsernameRoute
-  WatchVideoIdRoute: typeof WatchVideoIdRoute
-  RulesRoute: typeof RulesRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -197,6 +197,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PartnerRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/rules': {
+      id: '/rules'
+      path: '/rules'
+      fullPath: '/rules'
+      preLoaderRoute: typeof RulesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/settings': {
       id: '/settings'
       path: '/settings'
@@ -211,25 +218,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UploadRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/watch': {
+      id: '/watch'
+      path: '/watch'
+      fullPath: '/watch'
+      preLoaderRoute: typeof WatchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/c/$username': {
       id: '/c/$username'
       path: '/c/$username'
       fullPath: '/c/$username'
       preLoaderRoute: typeof CUsernameRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/watch': {
-      id: '/watch'
-      path: '/watch'
-      fullPath: '/watch'
-      preLoaderRoute: typeof WatchVideoIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/rules': {
-      id: '/rules'
-      path: '/rules'
-      fullPath: '/rules'
-      preLoaderRoute: typeof RulesRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -241,11 +241,11 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   CommunityRoute: CommunityRoute,
   PartnerRoute: PartnerRoute,
+  RulesRoute: RulesRoute,
   SettingsRoute: SettingsRoute,
   UploadRoute: UploadRoute,
+  WatchRoute: WatchRoute,
   CUsernameRoute: CUsernameRoute,
-  WatchVideoIdRoute: WatchVideoIdRoute,
-  RulesRoute: RulesRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
