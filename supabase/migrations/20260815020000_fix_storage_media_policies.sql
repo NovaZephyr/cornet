@@ -26,3 +26,30 @@ USING (
     )
   )
 );
+
+CREATE POLICY "comments_update" ON public.comments
+FOR UPDATE TO authenticated
+USING (auth.uid() = user_id)
+WITH CHECK (auth.uid() = user_id);
+
+DROP POLICY IF EXISTS "roles_public_read" ON public.user_roles;
+
+CREATE POLICY "roles_read_own_or_admin" ON public.user_roles
+FOR SELECT TO authenticated
+USING (auth.uid() = user_id OR public.has_role(auth.uid(), 'admin'));
+
+CREATE OR REPLACE FUNCTION public.get_public_badges(_user_id uuid)
+RETURNS public.app_role[]
+LANGUAGE sql
+STABLE
+SECURITY DEFINER
+SET search_path = public
+AS $$
+  SELECT coalesce(array_agg(role), '{}')
+  FROM public.user_roles
+  WHERE user_id = _user_id
+    AND role IN ('admin', 'moderator', 'partner')
+$$;
+
+REVOKE ALL ON FUNCTION public.get_public_badges(uuid) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION public.get_public_badges(uuid) TO anon, authenticated;
