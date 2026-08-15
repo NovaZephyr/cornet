@@ -19,11 +19,15 @@ export async function fetchProfilesByIds(ids: string[]): Promise<Map<string, Pro
   return new Map(((data ?? []) as ProfileLite[]).map((p) => [p.id, p]));
 }
 
-export async function fetchVideos(options?: { search?: string; userId?: string }) {
+export async function fetchVideos(options?: {
+  search?: string;
+  userId?: string;
+  orderBy?: "recent" | "views";
+}) {
   let q = supabase
     .from("videos")
     .select("id, code, user_id, title, thumbnail_path, duration_seconds, views, created_at")
-    .order("created_at", { ascending: false })
+    .order(options?.orderBy === "views" ? "views" : "created_at", { ascending: false })
     .limit(60);
   if (options?.search) q = q.ilike("title", `%${options.search}%`);
   if (options?.userId) q = q.eq("user_id", options.userId);
