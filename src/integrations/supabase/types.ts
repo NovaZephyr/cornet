@@ -129,10 +129,13 @@ export type Database = {
           created_at: string
           description: string
           display_name: string
+          gif_path: string | null
           id: string
+          is_banned: boolean
           is_verified: boolean
           updated_at: string
           username: string
+          warnings_count: number
         }
         Insert: {
           accent_color?: string
@@ -142,10 +145,13 @@ export type Database = {
           created_at?: string
           description?: string
           display_name?: string
+          gif_path?: string | null
           id: string
+          is_banned?: boolean
           is_verified?: boolean
           updated_at?: string
           username: string
+          warnings_count?: number
         }
         Update: {
           accent_color?: string
@@ -155,10 +161,13 @@ export type Database = {
           created_at?: string
           description?: string
           display_name?: string
+          gif_path?: string | null
           id?: string
+          is_banned?: boolean
           is_verified?: boolean
           updated_at?: string
           username?: string
+          warnings_count?: number
         }
         Relationships: []
       }
@@ -197,6 +206,30 @@ export type Database = {
           created_at?: string
           id?: string
           role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_warnings: {
+        Row: {
+          created_at: string
+          id: string
+          issued_by: string | null
+          reason: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          issued_by?: string | null
+          reason: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          issued_by?: string | null
+          reason?: string
           user_id?: string
         }
         Relationships: []
