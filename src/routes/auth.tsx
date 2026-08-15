@@ -12,13 +12,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
-      { title: "Entrar o crear cuenta — TocinoTube" },
+      { title: "Entrar o crear cuenta — CoreNetwork" },
       {
         name: "description",
         content: "Inicia sesión o crea tu cuenta para subir videos y personalizar tu canal.",
       },
-      { property: "og:title", content: "Entrar o crear cuenta — TocinoTube" },
-      { property: "og:description", content: "Accede a tu canal en TocinoTube." },
+      { property: "og:title", content: "Entrar o crear cuenta — CoreNetwork" },
+      { property: "og:description", content: "Accede a tu canal en CoreNetwork." },
     ],
   }),
   component: AuthPage,
@@ -96,7 +96,7 @@ function AuthPage() {
               <span className="ml-0.5 h-0 w-0 border-y-[5px] border-l-[8px] border-y-transparent border-l-primary" />
             </span>
             <span className="text-xl font-bold tracking-tighter text-primary-foreground">
-              TocinoTube
+              CoreNetwork
             </span>
           </Link>
         </div>
@@ -111,7 +111,7 @@ function AuthPage() {
         </div>
 
         <div className="relative flex items-center gap-2 text-xs text-primary-foreground/70">
-          <span>© {new Date().getFullYear()} TocinoTube</span>
+          <span>© {new Date().getFullYear()} CoreNetwork</span>
         </div>
       </div>
 
@@ -122,7 +122,7 @@ function AuthPage() {
             <span className="flex h-6 w-9 items-center justify-center rounded-md bg-primary">
               <span className="ml-0.5 h-0 w-0 border-y-[5px] border-l-[8px] border-y-transparent border-l-primary-foreground" />
             </span>
-            <span className="text-xl font-bold tracking-tighter">TocinoTube</span>
+            <span className="text-xl font-bold tracking-tighter">CoreNetwork</span>
           </Link>
 
           {sent ? (

@@ -25,13 +25,18 @@ import {
 import { ChannelAvatar } from "@/components/Media";
 import { useAuth } from "@/hooks/useAuth";
 import { cn } from "@/lib/utils";
+import logoMark from "@/assets/corenetwork-mark.png";
 
 function Logo() {
   return (
-    <Link to="/" className="flex items-center gap-1.5">
-      <span className="flex h-6 w-9 items-center justify-center rounded-md bg-primary">
-        <span className="ml-0.5 h-0 w-0 border-y-[5px] border-l-[8px] border-y-transparent border-l-primary-foreground" />
-      </span>
+    <Link to="/" className="flex items-center gap-2">
+      <img
+        src={logoMark}
+        alt="Logo de CoreNetwork"
+        width={512}
+        height={512}
+        className="h-8 w-8 rounded-lg"
+      />
       <span className="text-xl font-bold tracking-tighter">CoreNetwork</span>
     </Link>
   );
@@ -98,6 +103,13 @@ export function AppShell({ children }: { children: ReactNode }) {
         <div className="ml-auto flex items-center gap-2">
           {user ? (
             <>
+              {isAdmin && (
+                <Button asChild variant="secondary" className="hidden rounded-full sm:inline-flex">
+                  <Link to="/admin">
+                    <Shield className="mr-1.5 h-4 w-4" /> Administración
+                  </Link>
+                </Button>
+              )}
               <Button asChild variant="ghost" size="icon" className="rounded-full">
                 <Link to="/upload" aria-label="Subir video">
                   <Video className="h-5 w-5" />

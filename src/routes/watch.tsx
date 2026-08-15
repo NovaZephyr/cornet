@@ -19,14 +19,14 @@ import { formatViews, timeAgo } from "@/lib/format";
 // Ahora: /watch?v=<code>, con un código corto guardado en videos.code.
 export const Route = createFileRoute("/watch")({
   validateSearch: (search: Record<string, unknown>): { v: string } => ({
-    v: typeof search.v === "string" ? search.v : "",
+    v: typeof search["v"] === "string" ? (search["v"] as string) : "",
   }),
   head: () => ({
     meta: [
-      { title: "Reproduciendo un video — TocinoTube" },
+      { title: "Reproduciendo un video — CoreNetwork" },
       { name: "description", content: "Mira videos, comenta y suscríbete a tus canales favoritos." },
-      { property: "og:title", content: "Reproduciendo un video — TocinoTube" },
-      { property: "og:description", content: "Mira videos y únete a la conversación en TocinoTube." },
+      { property: "og:title", content: "Reproduciendo un video — CoreNetwork" },
+      { property: "og:description", content: "Mira videos y únete a la conversación en CoreNetwork." },
     ],
   }),
   component: Watch,
@@ -188,7 +188,7 @@ function Watch() {
     <AppShell>
       <div className="mx-auto flex max-w-[1600px] flex-col gap-6 lg:flex-row">
         <div className="min-w-0 flex-1">
-          <VideoPlayer src={videoUrl} autoPlay />
+          <VideoPlayer src={videoUrl ?? ""} autoPlay />
 
           <h1 className="mt-4 text-xl font-semibold">{data?.video.title ?? ""}</h1>
 

@@ -21,17 +21,18 @@ import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAuth, type AppRole, type Profile } from "@/hooks/useAuth";
 import { timeAgo } from "@/lib/format";
+import { deleteUserAccount as deleteAccount } from "@/lib/admin.functions";
 
 export const Route = createFileRoute("/admin")({
   head: () => ({
     meta: [
-      { title: "Panel de administración — TocinoTube" },
+      { title: "Panel de administración — CoreNetwork" },
       {
         name: "description",
         content: "Gestiona usuarios, roles, verificación, videos y solicitudes del programa Partner.",
       },
-      { property: "og:title", content: "Panel de administración — TocinoTube" },
-      { property: "og:description", content: "Herramientas de moderación de TocinoTube." },
+      { property: "og:title", content: "Panel de administración — CoreNetwork" },
+      { property: "og:description", content: "Herramientas de moderación de CoreNetwork." },
     ],
   }),
   component: AdminPage,
@@ -54,7 +55,7 @@ interface AdminVideo {
   id: string;
   title: string;
   user_id: string;
-  view_count: number | null;
+  views: number | null;
   created_at: string;
 }
 
@@ -73,7 +74,7 @@ function AdminPage() {
         supabase.from("user_roles").select("user_id, role"),
       ]);
       const roleRows = (roles ?? []) as { user_id: string; role: AppRole }[];
-      return ((profiles ?? []) as AdminProfile[]).map((p) => ({
+      return ((profiles ?? []) as unknown as AdminProfile[]).map((p) => ({
         ...p,
         roles: roleRows.filter((r) => r.user_id === p.id).map((r) => r.role),
       }));
@@ -104,7 +105,7 @@ function AdminPage() {
     queryFn: async () => {
       const { data } = await supabase
         .from("videos")
-        .select("id, title, user_id, view_count, created_at")
+        .select("id, title, user_id, views, created_at")
         .order("created_at", { ascending: false });
       return (data ?? []) as AdminVideo[];
     },
@@ -150,7 +151,7 @@ function AdminPage() {
     const { error: warnError } = await supabase.from("user_warnings").insert({
       user_id: target.id,
       reason,
-      issued_by: user?.id,
+      issued_by: user?.id ?? null,
     });
     if (warnError) { toast.error(warnError.message); return; }
 
@@ -172,13 +173,13 @@ function AdminPage() {
     ) {
       return;
     }
-    // Borrar un usuario de auth.users requiere la service role key, así que esto
-    // se delega a una Edge Function (ver supabase/functions/admin-delete-user).
-    const { error } = await supabase.functions.invoke("admin-delete-user", {
-      body: { userId },
-    });
-    if (error) { toast.error(error.message); return; }
-    toast.success("Cuenta eliminada");
+    try {
+      await deleteAccount({ data: { userId } });
+      toast.success("Cuenta eliminada");
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "No se pudo eliminar la cuenta");
+      return;
+    }
     void qc.invalidateQueries({ queryKey: ["admin-users"] });
   };
 
@@ -378,7 +379,7 @@ function AdminPage() {
                       <p className="truncate font-medium">{v.title}</p>
                       <p className="text-xs text-muted-foreground">
                         {author?.display_name || author?.username || "Usuario"} · subido{" "}
-                        {timeAgo(v.created_at)} · {v.view_count ?? 0} vistas
+                        {timeAgo(v.created_at)} · {v.views ?? 0} vistas
                       </p>
                     </div>
                     <Button

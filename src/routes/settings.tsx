@@ -14,12 +14,12 @@ import { uploadFile } from "@/lib/storage";
 export const Route = createFileRoute("/settings")({
   head: () => ({
     meta: [
-      { title: "Personalizar canal — TocinoTube" },
+      { title: "Personalizar canal — CoreNetwork" },
       {
         name: "description",
         content: "Cambia tu avatar, banner, fondo, color de acento y descripción de canal.",
       },
-      { property: "og:title", content: "Personalizar canal — TocinoTube" },
+      { property: "og:title", content: "Personalizar canal — CoreNetwork" },
       { property: "og:description", content: "Haz que tu canal se vea como tú quieras." },
     ],
   }),
@@ -144,17 +144,46 @@ function SettingsPage() {
             </div>
           </div>
 
-          <div>
-            <Label>Fondo del canal</Label>
-            <Input
-              type="file"
-              accept="image/*"
-              className="mt-2"
-              onChange={(e) => {
-                const f = e.target.files?.[0];
-                if (f) void uploadTo("background_path", f);
-              }}
-            />
+          <div className="rounded-xl border border-border p-4">
+            <div className="flex items-center justify-between gap-2">
+              <Label>Fondo del canal y GIF de perfil</Label>
+              <span className="rounded-full bg-primary/15 px-2 py-0.5 text-[11px] font-medium text-primary">
+                Solo Partners
+              </span>
+            </div>
+            {canCustomize ? (
+              <div className="mt-3 space-y-4">
+                <div>
+                  <Label className="text-xs text-muted-foreground">Fondo del canal</Label>
+                  <Input
+                    type="file"
+                    accept="image/*"
+                    className="mt-2"
+                    onChange={(e) => {
+                      const f = e.target.files?.[0];
+                      if (f) void uploadTo("background_path", f);
+                    }}
+                  />
+                </div>
+                <div>
+                  <Label className="text-xs text-muted-foreground">GIF animado del perfil</Label>
+                  <Input
+                    type="file"
+                    accept="image/gif"
+                    className="mt-2"
+                    onChange={(e) => {
+                      const f = e.target.files?.[0];
+                      if (f) void uploadTo("gif_path", f);
+                    }}
+                  />
+                </div>
+              </div>
+            ) : (
+              <p className="mt-2 text-sm text-muted-foreground">
+                Únete al Programa Partner para poner un fondo personalizado y un GIF animado en tu
+                canal.
+              </p>
+            )}
           </div>
         </section>
 
