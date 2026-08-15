@@ -21,6 +21,7 @@ import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAuth, type AppRole, type Profile } from "@/hooks/useAuth";
 import { timeAgo } from "@/lib/format";
+import { deleteUserAccount as deleteAccount } from "@/lib/admin.functions";
 
 export const Route = createFileRoute("/admin")({
   head: () => ({
