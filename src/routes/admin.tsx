@@ -172,13 +172,13 @@ function AdminPage() {
     ) {
       return;
     }
-    // Borrar un usuario de auth.users requiere la service role key, así que esto
-    // se delega a una Edge Function (ver supabase/functions/admin-delete-user).
-    const { error } = await supabase.functions.invoke("admin-delete-user", {
-      body: { userId },
-    });
-    if (error) { toast.error(error.message); return; }
-    toast.success("Cuenta eliminada");
+    try {
+      await deleteAccount({ data: { userId } });
+      toast.success("Cuenta eliminada");
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "No se pudo eliminar la cuenta");
+      return;
+    }
     void qc.invalidateQueries({ queryKey: ["admin-users"] });
   };
 
