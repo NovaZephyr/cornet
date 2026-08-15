@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
@@ -7,6 +7,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export const Route = createFileRoute("/auth")({
@@ -24,14 +25,91 @@ export const Route = createFileRoute("/auth")({
   component: AuthPage,
 });
 
+// Reemplaza esto con tu Site Key real de Cloudflare Turnstile
+// (Dashboard de Cloudflare → Turnstile → Add Site). También debes
+// pegar la Secret Key correspondiente en Supabase → Authentication →
+// Attack Protection → Enable Captcha protection → Turnstile.
+const TURNSTILE_SITE_KEY = "0x4AAAAAAEQ5ZW7lCUTxm4os"; // TODO: reemplazar
+
+declare global {
+  interface Window {
+    turnstile?: {
+      render: (
+        container: HTMLElement,
+        options: {
+          sitekey: string;
+          callback: (token: string) => void;
+          "expired-callback"?: () => void;
+          "error-callback"?: () => void;
+          theme?: "light" | "dark" | "auto";
+        },
+      ) => string;
+      reset: (widgetId?: string) => void;
+    };
+  }
+}
+
+function useTurnstile(onToken: (token: string) => void) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const widgetId = useRef<string | null>(null);
+
+  useEffect(() => {
+    if (document.getElementById("turnstile-script")) {
+      if (window.turnstile && containerRef.current && widgetId.current === null) {
+        widgetId.current = window.turnstile.render(containerRef.current, {
+          sitekey: TURNSTILE_SITE_KEY,
+          theme: "dark",
+          callback: onToken,
+          "expired-callback": () => onToken(""),
+          "error-callback": () => onToken(""),
+        });
+      }
+      return;
+    }
+    const script = document.createElement("script");
+    script.id = "turnstile-script";
+    script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js";
+    script.async = true;
+    script.defer = true;
+    script.onload = () => {
+      if (window.turnstile && containerRef.current) {
+        widgetId.current = window.turnstile.render(containerRef.current, {
+          sitekey: TURNSTILE_SITE_KEY,
+          theme: "dark",
+          callback: onToken,
+          "expired-callback": () => onToken(""),
+          "error-callback": () => onToken(""),
+        });
+      }
+    };
+    document.head.appendChild(script);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const reset = () => {
+    if (window.turnstile && widgetId.current !== null) {
+      window.turnstile.reset(widgetId.current);
+    }
+  };
+
+  return { containerRef, reset };
+}
+
 function AuthPage() {
   const navigate = useNavigate();
   const { user } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
+  const [acceptedRules, setAcceptedRules] = useState(false);
   const [busy, setBusy] = useState(false);
   const [sent, setSent] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState("");
+
+  const { containerRef: signinCaptchaRef, reset: resetSigninCaptcha } =
+    useTurnstile(setCaptchaToken);
+  const { containerRef: signupCaptchaRef, reset: resetSignupCaptcha } =
+    useTurnstile(setCaptchaToken);
 
   useEffect(() => {
     if (user) void navigate({ to: "/" });
@@ -39,16 +117,37 @@ function AuthPage() {
 
   const signIn = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!captchaToken) {
+      toast.error("Completa la verificación anti-robots");
+      return;
+    }
     setBusy(true);
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+      options: { captchaToken },
+    });
     setBusy(false);
-    if (error) { toast.error(error.message); return; }
+    resetSigninCaptcha();
+    setCaptchaToken("");
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
     toast.success("¡Bienvenido de vuelta!");
     void navigate({ to: "/" });
   };
 
   const signUp = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!acceptedRules) {
+      toast.error("Debes aceptar las Normas de la comunidad para crear una cuenta");
+      return;
+    }
+    if (!captchaToken) {
+      toast.error("Completa la verificación anti-robots");
+      return;
+    }
     setBusy(true);
     const { data, error } = await supabase.auth.signUp({
       email,
@@ -56,10 +155,16 @@ function AuthPage() {
       options: {
         emailRedirectTo: window.location.origin,
         data: { username, display_name: username },
+        captchaToken,
       },
     });
     setBusy(false);
-    if (error) { toast.error(error.message); return; }
+    resetSignupCaptcha();
+    setCaptchaToken("");
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
     if (!data.session) {
       setSent(true);
       return;
@@ -133,7 +238,14 @@ function AuthPage() {
               </p>
             </div>
           ) : (
-            <Tabs defaultValue="signin">
+            <Tabs
+              defaultValue="signin"
+              onValueChange={() => {
+                setCaptchaToken("");
+                resetSigninCaptcha();
+                resetSignupCaptcha();
+              }}
+            >
               <h1 className="mb-6 text-center text-2xl font-bold tracking-tight">
                 Inicia sesión
               </h1>
@@ -178,6 +290,9 @@ function AuthPage() {
                       ¿Olvidaste la contraseña?
                     </button>
                   </div>
+
+                  <div ref={signinCaptchaRef} className="flex justify-center" />
+
                   <Button type="submit" disabled={busy} className="h-12 w-full rounded-full text-base font-semibold">
                     Inicia sesión
                   </Button>
@@ -222,7 +337,30 @@ function AuthPage() {
                       onChange={(e) => setPassword(e.target.value)}
                     />
                   </div>
-                  <Button type="submit" disabled={busy} className="h-12 w-full rounded-full text-base font-semibold">
+
+                  <div className="flex items-start gap-2 px-1">
+                    <Checkbox
+                      id="accept-rules"
+                      checked={acceptedRules}
+                      onCheckedChange={(v) => setAcceptedRules(v === true)}
+                      className="mt-0.5"
+                    />
+                    <Label htmlFor="accept-rules" className="text-xs font-normal leading-snug text-muted-foreground">
+                      He leído y acepto las{" "}
+                      <Link to="/rules" target="_blank" className="text-primary hover:underline">
+                        Normas de la comunidad
+                      </Link>{" "}
+                      de CoreNetwork.
+                    </Label>
+                  </div>
+
+                  <div ref={signupCaptchaRef} className="flex justify-center" />
+
+                  <Button
+                    type="submit"
+                    disabled={busy || !acceptedRules}
+                    className="h-12 w-full rounded-full text-base font-semibold"
+                  >
                     Registrarse
                   </Button>
                 </form>
