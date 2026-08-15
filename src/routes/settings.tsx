@@ -14,12 +14,12 @@ import { uploadFile } from "@/lib/storage";
 export const Route = createFileRoute("/settings")({
   head: () => ({
     meta: [
-      { title: "Personalizar canal — TocinoTube" },
+      { title: "Personalizar canal — CoreNetwork" },
       {
         name: "description",
         content: "Cambia tu avatar, banner, fondo, color de acento y descripción de canal.",
       },
-      { property: "og:title", content: "Personalizar canal — TocinoTube" },
+      { property: "og:title", content: "Personalizar canal — CoreNetwork" },
       { property: "og:description", content: "Haz que tu canal se vea como tú quieras." },
     ],
   }),

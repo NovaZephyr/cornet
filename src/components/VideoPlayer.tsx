@@ -31,7 +31,7 @@ function formatTime(seconds: number): string {
 export function VideoPlayer({ src, poster, autoPlay, className }: VideoPlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const hideTimer = useRef<ReturnType<typeof setTimeout>>();
+  const hideTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   const [playing, setPlaying] = useState(false);
   const [muted, setMuted] = useState(false);

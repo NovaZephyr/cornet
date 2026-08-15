@@ -16,9 +16,9 @@ import { fetchVideos } from "@/lib/queries";
 export const Route = createFileRoute("/c/$username")({
   head: () => ({
     meta: [
-      { title: "Canal — TocinoTube" },
-      { name: "description", content: "Videos, comunidad e información del canal en TocinoTube." },
-      { property: "og:title", content: "Canal — TocinoTube" },
+      { title: "Canal — CoreNetwork" },
+      { name: "description", content: "Videos, comunidad e información del canal en CoreNetwork." },
+      { property: "og:title", content: "Canal — CoreNetwork" },
       { property: "og:description", content: "Descubre los videos y publicaciones de este canal." },
     ],
   }),
@@ -201,7 +201,7 @@ function Channel() {
                   {profile.description || "Este canal aún no escribió una descripción."}
                 </p>
                 <p className="mt-4 text-muted-foreground">
-                  En TocinoTube desde {new Date(profile.created_at).toLocaleDateString("es")}
+                  En CoreNetwork desde {new Date(profile.created_at).toLocaleDateString("es")}
                 </p>
               </div>
             </TabsContent>

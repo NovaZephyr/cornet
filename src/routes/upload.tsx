@@ -22,10 +22,10 @@ import { generateVideoCode } from "@/lib/videoCode";
 export const Route = createFileRoute("/upload")({
   head: () => ({
     meta: [
-      { title: "Subir video — TocinoTube" },
+      { title: "Subir video — CoreNetwork" },
       { name: "description", content: "Sube un video a tu canal con miniatura, título y descripción." },
-      { property: "og:title", content: "Subir video — TocinoTube" },
-      { property: "og:description", content: "Publica tu contenido en TocinoTube." },
+      { property: "og:title", content: "Subir video — CoreNetwork" },
+      { property: "og:description", content: "Publica tu contenido en CoreNetwork." },
     ],
   }),
   component: UploadPage,
