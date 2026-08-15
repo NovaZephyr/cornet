@@ -29,7 +29,7 @@ export const Route = createFileRoute("/auth")({
 // (Dashboard de Cloudflare → Turnstile → Add Site). También debes
 // pegar la Secret Key correspondiente en Supabase → Authentication →
 // Attack Protection → Enable Captcha protection → Turnstile.
-const TURNSTILE_SITE_KEY = "0x4AAAAAAEQ5ZW7lCUTxm4os"; // TODO: reemplazar
+const TURNSTILE_SITE_KEY = "0x0000000000000000000000AA"; // TODO: reemplazar
 
 declare global {
   interface Window {
@@ -111,6 +111,17 @@ function AuthPage() {
   const { containerRef: signupCaptchaRef, reset: resetSignupCaptcha } =
     useTurnstile(setCaptchaToken);
 
+  // Como Lovable Cloud no expone el CAPTCHA nativo de Supabase Auth,
+  // verificamos el token nosotros mismos contra Cloudflare vía una
+  // Edge Function propia antes de dejar pasar el login/registro.
+  const verifyCaptcha = async (token: string) => {
+    const { data, error } = await supabase.functions.invoke("verify-captcha", {
+      body: { token },
+    });
+    if (error || !data?.success) return false;
+    return true;
+  };
+
   useEffect(() => {
     if (user) void navigate({ to: "/" });
   }, [user, navigate]);
@@ -122,11 +133,15 @@ function AuthPage() {
       return;
     }
     setBusy(true);
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-      options: { captchaToken },
-    });
+    const captchaOk = await verifyCaptcha(captchaToken);
+    if (!captchaOk) {
+      setBusy(false);
+      resetSigninCaptcha();
+      setCaptchaToken("");
+      toast.error("No pudimos verificar que no eres un robot. Inténtalo de nuevo.");
+      return;
+    }
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
     setBusy(false);
     resetSigninCaptcha();
     setCaptchaToken("");
@@ -149,13 +164,20 @@ function AuthPage() {
       return;
     }
     setBusy(true);
+    const captchaOk = await verifyCaptcha(captchaToken);
+    if (!captchaOk) {
+      setBusy(false);
+      resetSignupCaptcha();
+      setCaptchaToken("");
+      toast.error("No pudimos verificar que no eres un robot. Inténtalo de nuevo.");
+      return;
+    }
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
         emailRedirectTo: window.location.origin,
         data: { username, display_name: username },
-        captchaToken,
       },
     });
     setBusy(false);
