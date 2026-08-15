@@ -12,6 +12,8 @@ import {
   LogOut,
   User as UserIcon,
   Video,
+  Compass,
+  Bell,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -44,6 +46,22 @@ function Logo() {
 
 type NavItem = { to: string; label: string; icon: typeof Home };
 
+// Enlaces de la bottom bar móvil, estilo YouTube/VidLii
+function bottomBarItems(user: unknown, username: string | undefined): NavItem[] {
+  const items: NavItem[] = [
+    { to: "/", label: "Inicio", icon: Home },
+    { to: "/explore", label: "Explorar", icon: Compass },
+  ];
+  if (user) {
+    items.push({ to: "/upload", label: "Subir", icon: Upload });
+    items.push({ to: "/notifications", label: "Alertas", icon: Bell });
+    items.push({ to: "/c/$username", label: "Tú", icon: UserIcon });
+  } else {
+    items.push({ to: "/auth", label: "Tú", icon: UserIcon });
+  }
+  return items;
+}
+
 export function AppShell({ children }: { children: ReactNode }) {
   const { user, profile, isAdmin, signOut } = useAuth();
   const navigate = useNavigate();
@@ -53,15 +71,19 @@ export function AppShell({ children }: { children: ReactNode }) {
 
   const items: NavItem[] = [
     { to: "/", label: "Inicio", icon: Home },
+    { to: "/explore", label: "Explorar", icon: Compass },
     { to: "/community", label: "Comunidad", icon: Users },
     { to: "/partner", label: "Programa Partner", icon: Sparkles },
     { to: "/rules", label: "Guidelines", icon: Sparkles },
   ];
   if (user) {
     items.push({ to: "/upload", label: "Subir video", icon: Upload });
+    items.push({ to: "/notifications", label: "Notificaciones", icon: Bell });
     items.push({ to: "/settings", label: "Personalizar canal", icon: Settings });
   }
   if (isAdmin) items.push({ to: "/admin", label: "Administración", icon: Shield });
+
+  const mobileItems = bottomBarItems(user, profile?.username);
 
   return (
     <div className="min-h-screen bg-background">
@@ -110,7 +132,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                   </Link>
                 </Button>
               )}
-              <Button asChild variant="ghost" size="icon" className="rounded-full">
+              <Button asChild variant="ghost" size="icon" className="hidden rounded-full sm:inline-flex">
                 <Link to="/upload" aria-label="Subir video">
                   <Video className="h-5 w-5" />
                 </Link>
@@ -189,8 +211,43 @@ export function AppShell({ children }: { children: ReactNode }) {
           </nav>
         </aside>
 
-        <main className="min-w-0 flex-1 px-4 pb-16 pt-2">{children}</main>
+        <main className="min-w-0 flex-1 px-4 pb-20 pt-2 md:pb-16">{children}</main>
       </div>
+
+      {/* Bottom bar — solo móvil, estilo YouTube/VidLii */}
+      <nav className="fixed inset-x-0 bottom-0 z-50 flex h-14 items-center border-t border-border bg-background md:hidden">
+        {mobileItems.map((item) => {
+          const Icon = item.icon;
+          const linkClass = (active: boolean) =>
+            cn(
+              "flex flex-1 flex-col items-center justify-center gap-0.5 text-[10px] text-muted-foreground transition-colors",
+              active && "text-foreground",
+            );
+
+          if (item.to === "/c/$username") {
+            const active = pathname === `/c/${profile?.username ?? ""}`;
+            return (
+              <Link
+                key={item.label}
+                to="/c/$username"
+                params={{ username: profile?.username ?? "" }}
+                className={linkClass(active)}
+              >
+                <Icon className="h-5 w-5" />
+                <span>{item.label}</span>
+              </Link>
+            );
+          }
+
+          const active = pathname === item.to;
+          return (
+            <Link key={item.label} to={item.to} className={linkClass(active)}>
+              <Icon className="h-5 w-5" />
+              <span>{item.label}</span>
+            </Link>
+          );
+        })}
+      </nav>
     </div>
   );
 }
