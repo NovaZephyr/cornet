@@ -119,8 +119,11 @@ CREATE POLICY "playlist_items_owner_write" ON public.playlist_items FOR ALL TO a
 );
 CREATE INDEX IF NOT EXISTS playlist_items_playlist_position_idx ON public.playlist_items(playlist_id, position);
 
--- Keep the existing atomic counter callable by anonymous visitors.
-CREATE OR REPLACE FUNCTION public.increment_views(_video_id uuid)
+-- The original migration creates this function as void. Drop it before changing
+-- the return type so PostgreSQL can replace it safely with the atomic counter
+-- that returns the new value to the client.
+DROP FUNCTION IF EXISTS public.increment_views(uuid);
+CREATE FUNCTION public.increment_views(_video_id uuid)
 RETURNS bigint LANGUAGE plpgsql SECURITY DEFINER SET search_path = public AS $$
 DECLARE next_views bigint;
 BEGIN
