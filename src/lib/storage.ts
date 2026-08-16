@@ -19,6 +19,13 @@ export async function getSignedUrl(fullPath?: string | null): Promise<string | n
   const bucket = fullPath.slice(0, slash);
   const key = fullPath.slice(slash + 1);
 
+  // Public media never needs a signed URL. Using getPublicUrl also avoids
+  // noisy 400s when old database rows point at deleted media objects.
+  if (bucket === "media") {
+    const { data } = supabase.storage.from(bucket).getPublicUrl(key);
+    return data.publicUrl || null;
+  }
+
   const promise = supabase.storage
     .from(bucket)
     .createSignedUrl(key, TTL)
