@@ -21,17 +21,23 @@ export const Route = createFileRoute("/c/$username")({ head: () => ({ meta: [{ t
 
 type ChannelProfile = Profile & { channel_style?: "corenetwork" | "channel-1" | "channel-2" | "cosmic-panda"; subscriber_count?: number; channel_primary_color?: string; channel_secondary_color?: string; channel_surface_color?: string; channel_text_color?: string; channel_info_layout?: ChannelInfoLayout };
 
-function RetroChannel({ profile, videos, roles, subs, isSubscribed, isPartnerChannel, partnerGif, onSubscribe, onReport }: { profile: ChannelProfile; videos: Awaited<ReturnType<typeof fetchVideos>>; roles?: AppRole[]; subs: { subscriber_id: string }[]; isSubscribed: boolean; isPartnerChannel: boolean; partnerGif: string | null; onSubscribe: () => void; onReport: () => void }) {
-  const style = profile.channel_style ?? "corenetwork";
-  const infoLayout = profile.channel_info_layout ?? "left";
-  const styleClass = `cn-2012-channel cn-2012-channel--${style} cn-2012-info--${infoLayout}`;
-  const hero = videos[0];
-  const channelVars = {
+const CHANNEL_STYLE_LABELS: Record<string, string> = { corenetwork: "CoreNetwork", "channel-1": "Channel 1.0", "channel-2": "Channel 2.0", "cosmic-panda": "Cosmic Panda" };
+
+function getChannelVars(profile: ChannelProfile): React.CSSProperties {
+  return {
     "--cn-channel-primary": profile.channel_primary_color ?? "#1f4fa3",
     "--cn-channel-secondary": profile.channel_secondary_color ?? "#2aa84a",
     "--cn-channel-surface": profile.channel_surface_color ?? "#ffffff",
     "--cn-channel-text": profile.channel_text_color ?? "#222222",
   } as React.CSSProperties;
+}
+
+function RetroChannel({ profile, videos, roles, subs, isSubscribed, isPartnerChannel, partnerGif, onSubscribe, onReport }: { profile: ChannelProfile; videos: Awaited<ReturnType<typeof fetchVideos>>; roles?: AppRole[]; subs: { subscriber_id: string }[]; isSubscribed: boolean; isPartnerChannel: boolean; partnerGif: string | null; onSubscribe: () => void; onReport: () => void }) {
+  const style = profile.channel_style ?? "corenetwork";
+  const infoLayout = profile.channel_info_layout ?? "left";
+  const styleClass = `cn-2012-channel cn-2012-channel--${style} cn-2012-info--${infoLayout}`;
+  const hero = videos[0];
+  const channelVars = getChannelVars(profile);
 
   const InfoPanel = infoLayout === "hidden" ? null : (
     <aside className="cn-2012-about">
@@ -68,8 +74,6 @@ function RetroChannel({ profile, videos, roles, subs, isSubscribed, isPartnerCha
   );
 }
 
-const CHANNEL_STYLE_LABELS: Record<string, string> = { corenetwork: "CoreNetwork", "channel-1": "Channel 1.0", "channel-2": "Channel 2.0", "cosmic-panda": "Cosmic Panda" };
-
 function Channel() {
   const { username } = Route.useParams();
   const { user } = useAuth();
@@ -98,8 +102,47 @@ function Channel() {
   if (isLoading) return <AppShell><p className="py-24 text-center text-muted-foreground">Cargando canal…</p></AppShell>;
   if (!profile) return <AppShell><p className="py-24 text-center text-muted-foreground">Este canal no existe.</p></AppShell>;
   const channelVideos = videos ?? [];
+  const style = profile.channel_style ?? "corenetwork";
+  const channelVars = getChannelVars(profile);
 
   if (theme === "retro2012") return <AppShell><RetroChannel profile={profile} videos={channelVideos} roles={roles} subs={subs ?? []} isSubscribed={isSubscribed} isPartnerChannel={isPartnerChannel} partnerGif={partnerGif} onSubscribe={() => void toggleSub()} onReport={openReport} /><ReportDialog target={{ type: "channel", id: profile.id, name: profile.display_name || profile.username }} open={reportOpen} onOpenChange={setReportOpen} /></AppShell>;
 
-  return <AppShell><div className="mx-auto max-w-6xl rounded-2xl" style={background ? { backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.75), rgba(0,0,0,0.95)), url(${background})`, backgroundSize: "cover", backgroundAttachment: "fixed" } : undefined}><div className="p-2 sm:p-4"><div className="aspect-[6/1] w-full overflow-hidden rounded-2xl bg-surface"><SignedImage path={profile.banner_path} alt={`Banner de ${profile.display_name}`} className="h-full w-full object-cover" /></div><div className="mt-5 flex flex-col items-start gap-5 sm:flex-row sm:items-center"><ChannelAvatar path={profile.avatar_path} name={profile.display_name || profile.username} size={112} /><div className="min-w-0 flex-1"><h1 className="flex items-center gap-2 text-2xl font-bold">{profile.display_name || profile.username}{profile.is_verified && <VerifiedBadge className="h-5 w-5" />}</h1><p className="text-sm text-muted-foreground">@{profile.username} · {profile.subscriber_count ?? subs?.length ?? 0} suscriptores · {channelVideos.length} videos</p>{profile.description && <p className="mt-1 line-clamp-2 max-w-2xl text-sm text-muted-foreground">{profile.description}</p>}<div className="mt-2 flex gap-2">{roles?.includes("partner") && <Badge className="bg-partner text-background">Partner</Badge>}{roles?.includes("admin") && <Badge variant="secondary">Administrador</Badge>}{roles?.includes("moderator") && <Badge variant="secondary">Moderador</Badge>}</div></div><div className="flex gap-2"><Button onClick={() => void toggleSub()} variant={isSubscribed ? "secondary" : "default"} className="rounded-full" style={!isSubscribed ? { backgroundColor: profile.accent_color } : undefined}>{isSubscribed ? "Suscrito" : "Suscribirse"}</Button><Button onClick={openReport} variant="outline" className="rounded-full"><Flag className="mr-2 h-4 w-4" />Denunciar</Button></div></div><Tabs defaultValue="videos" className="mt-6"><TabsList><TabsTrigger value="videos">Videos</TabsTrigger><TabsTrigger value="community">Comunidad</TabsTrigger><TabsTrigger value="about">Información</TabsTrigger></TabsList><TabsContent value="videos" className="pt-6">{channelVideos.length > 0 ? <div className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">{channelVideos.map((v) => <VideoCard key={v.id} video={v} />)}</div> : <p className="py-12 text-center text-muted-foreground">Este canal todavía no tiene videos.</p>}</TabsContent><TabsContent value="community" className="pt-6"><CommunityFeed channelId={profile.id} /></TabsContent><TabsContent value="about" className="pt-6"><div className="max-w-2xl rounded-xl bg-surface p-5 text-sm"><p className="whitespace-pre-wrap">{profile.description || "Este canal aún no escribió una descripción."}</p><p className="mt-4 text-muted-foreground">En CoreNetwork desde {new Date(profile.created_at).toLocaleDateString("es")}</p></div></TabsContent></Tabs></div></div><ReportDialog target={{ type: "channel", id: profile.id, name: profile.display_name || profile.username }} open={reportOpen} onOpenChange={setReportOpen} /></AppShell>;
+  return (
+    <AppShell>
+      <div
+        className={`cn-modern-channel cn-modern-channel--${style}`}
+        style={background ? { ...channelVars, backgroundImage: `url(${background})` } : channelVars}
+      >
+        <div className="cn-modern-channel-overlay" aria-hidden="true" />
+        <div className="cn-modern-channel-content">
+          <div className="mx-auto max-w-6xl rounded-2xl bg-background/90 p-2 shadow-2xl backdrop-blur-[2px] sm:p-4">
+            <div className="aspect-[6/1] w-full overflow-hidden rounded-2xl bg-surface">
+              <SignedImage path={profile.banner_path} alt={`Banner de ${profile.display_name}`} className="h-full w-full object-cover" />
+            </div>
+            <div className="mt-5 flex flex-col items-start gap-5 sm:flex-row sm:items-center">
+              <ChannelAvatar path={profile.avatar_path} name={profile.display_name || profile.username} size={112} />
+              <div className="min-w-0 flex-1">
+                <h1 className="flex items-center gap-2 text-2xl font-bold">{profile.display_name || profile.username}{profile.is_verified && <VerifiedBadge className="h-5 w-5" />}</h1>
+                <p className="text-sm text-muted-foreground">@{profile.username} · {profile.subscriber_count ?? subs?.length ?? 0} suscriptores · {channelVideos.length} videos</p>
+                {profile.description && <p className="mt-1 line-clamp-2 max-w-2xl text-sm text-muted-foreground">{profile.description}</p>}
+                <div className="mt-2 flex gap-2">{roles?.includes("partner") && <Badge className="bg-partner text-background">Partner</Badge>}{roles?.includes("admin") && <Badge variant="secondary">Administrador</Badge>}{roles?.includes("moderator") && <Badge variant="secondary">Moderador</Badge>}</div>
+              </div>
+              <div className="flex gap-2"><Button onClick={() => void toggleSub()} variant={isSubscribed ? "secondary" : "default"} className="rounded-full cn-modern-channel-button">{isSubscribed ? "Suscrito" : "Suscribirse"}</Button><Button onClick={openReport} variant="outline" className="rounded-full"> <Flag className="mr-2 h-4 w-4" />Denunciar</Button></div>
+            </div>
+            <Tabs defaultValue="videos" className="mt-6">
+              <TabsList className="cn-modern-channel-tabs">
+                <TabsTrigger value="videos">Videos</TabsTrigger>
+                <TabsTrigger value="community">Comunidad</TabsTrigger>
+                <TabsTrigger value="about">Información</TabsTrigger>
+              </TabsList>
+              <TabsContent value="videos" className="pt-6">{channelVideos.length > 0 ? <div className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">{channelVideos.map((v) => <VideoCard key={v.id} video={v} />)}</div> : <p className="py-12 text-center text-muted-foreground">Este canal todavía no tiene videos.</p>}</TabsContent>
+              <TabsContent value="community" className="pt-6"><CommunityFeed channelId={profile.id} /></TabsContent>
+              <TabsContent value="about" className="pt-6"><div className="max-w-2xl rounded-xl border p-5 text-sm" style={{ background: profile.channel_surface_color ?? "var(--surface)", color: profile.channel_text_color ?? "inherit", borderColor: profile.channel_secondary_color ?? "currentColor" }}><p className="whitespace-pre-wrap">{profile.description || "Este canal aún no escribió una descripción."}</p><p className="mt-4 opacity-70">En CoreNetwork desde {new Date(profile.created_at).toLocaleDateString("es")}</p></div></TabsContent>
+            </Tabs>
+          </div>
+        </div>
+      </div>
+      <ReportDialog target={{ type: "channel", id: profile.id, name: profile.display_name || profile.username }} open={reportOpen} onOpenChange={setReportOpen} />
+    </AppShell>
+  );
 }
