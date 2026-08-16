@@ -9,10 +9,14 @@ import {
 } from "react";
 
 export const THEMES = [
-  { id: "dark", label: "Oscuro", hint: "El look clásico de CoreNetwork" },
-  { id: "light", label: "Claro", hint: "Fondo blanco, alto contraste" },
-  { id: "retro2012", label: "2012", hint: "Nostalgia estilo YouTube 2012" },
-  { id: "gradients", label: "Degradados", hint: "Fondos con color en movimiento" },
+  { id: "dark", label: "Oscuro", hint: "El look clásico de CoreNetwork", group: "Básicos" },
+  { id: "light", label: "Claro", hint: "Fondo blanco, alto contraste", group: "Básicos" },
+  { id: "retro2012", label: "2012", hint: "Nostalgia estilo YouTube 2012", group: "Básicos" },
+  { id: "gradients", label: "Aurora", hint: "Violeta, rojo y azul", group: "Degradados" },
+  { id: "grad-sunset", label: "Atardecer", hint: "Naranja y magenta", group: "Degradados" },
+  { id: "grad-ocean", label: "Océano", hint: "Azul profundo y turquesa", group: "Degradados" },
+  { id: "grad-neon", label: "Neón", hint: "Verde y cian eléctrico", group: "Degradados" },
+  { id: "grad-candy", label: "Candy", hint: "Rosa suave y lavanda", group: "Degradados" },
 ] as const;
 
 export type ThemeId = (typeof THEMES)[number]["id"];
@@ -24,7 +28,8 @@ function apply(theme: ThemeId) {
   const root = document.documentElement;
   root.dataset["theme"] = theme;
   // El variant `dark` de Tailwind sigue funcionando en los temas oscuros.
-  root.classList.toggle("dark", theme !== "light" && theme !== "retro2012");
+  const lightThemes: ThemeId[] = ["light", "retro2012", "grad-candy"];
+  root.classList.toggle("dark", !lightThemes.includes(theme));
 }
 
 type ThemeState = {
