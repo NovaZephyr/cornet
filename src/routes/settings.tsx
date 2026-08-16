@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAuth } from "@/hooks/useAuth";
 import { uploadFile } from "@/lib/storage";
 
@@ -107,122 +108,136 @@ function SettingsPage() {
       <div className="mx-auto max-w-2xl space-y-6">
         <h1 className="text-2xl font-bold">Personalizar canal</h1>
 
-        <section className="space-y-4 rounded-2xl bg-surface p-6">
-          <div>
-            <Label>Banner</Label>
-            <div className="mt-2 aspect-[6/1] w-full overflow-hidden rounded-xl bg-background">
-              <SignedImage
-                path={profile.banner_path}
-                alt="Banner del canal"
-                className="h-full w-full object-cover"
-              />
-            </div>
-            <Input
-              type="file"
-              accept="image/*"
-              className="mt-2"
-              onChange={(e) => {
-                const f = e.target.files?.[0];
-                if (f) void uploadTo("banner_path", f);
-              }}
-            />
-          </div>
+        <Tabs defaultValue="profile">
+          <TabsList>
+            <TabsTrigger value="profile">Perfil</TabsTrigger>
+            <TabsTrigger value="images">Imágenes</TabsTrigger>
+            <TabsTrigger value="partner">Partner</TabsTrigger>
+          </TabsList>
 
-          <div className="flex items-end gap-4">
-            <ChannelAvatar
-              path={profile.avatar_path}
-              name={profile.display_name || profile.username}
-              size={72}
-            />
-            <div className="flex-1">
-              <Label>Foto de perfil</Label>
-              <Input
-                type="file"
-                accept="image/*"
-                className="mt-2"
-                onChange={(e) => {
-                  const f = e.target.files?.[0];
-                  if (f) void uploadTo("avatar_path", f);
-                }}
-              />
-            </div>
-          </div>
+          <TabsContent value="profile" className="pt-5">
+            <form onSubmit={save} className="space-y-4 rounded-2xl bg-surface p-6">
+              <div className="space-y-2">
+                <Label htmlFor="dn">Nombre visible</Label>
+                <Input id="dn" value={displayName} onChange={(e) => setDisplayName(e.target.value)} />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="un">Nombre de usuario</Label>
+                <Input id="un" value={username} onChange={(e) => setUsername(e.target.value)} />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="de">Descripción</Label>
+                <Textarea
+                  id="de"
+                  rows={4}
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="ac">Color de acento</Label>
+                <input
+                  id="ac"
+                  type="color"
+                  value={accent}
+                  onChange={(e) => setAccent(e.target.value)}
+                  className="h-10 w-20 cursor-pointer rounded-md border border-border bg-transparent"
+                />
+              </div>
+              <Button type="submit" disabled={busy}>
+                Guardar cambios
+              </Button>
+            </form>
+          </TabsContent>
 
-          <div className="rounded-xl border border-border p-4">
-            <div className="flex items-center justify-between gap-2">
-              <Label>Fondo del canal y GIF de perfil</Label>
-              <span className="rounded-full bg-primary/15 px-2 py-0.5 text-[11px] font-medium text-primary">
-                Solo Partners
-              </span>
-            </div>
-            {canCustomize ? (
-              <div className="mt-3 space-y-4">
-                <div>
-                  <Label className="text-xs text-muted-foreground">Fondo del canal</Label>
+          <TabsContent value="images" className="pt-5">
+            <section className="space-y-4 rounded-2xl bg-surface p-6">
+              <div>
+                <Label>Banner</Label>
+                <div className="mt-2 aspect-[6/1] w-full overflow-hidden rounded-xl bg-background">
+                  <SignedImage
+                    path={profile.banner_path}
+                    alt="Banner del canal"
+                    className="h-full w-full object-cover"
+                  />
+                </div>
+                <Input
+                  type="file"
+                  accept="image/*"
+                  className="mt-2"
+                  onChange={(e) => {
+                    const f = e.target.files?.[0];
+                    if (f) void uploadTo("banner_path", f);
+                  }}
+                />
+              </div>
+
+              <div className="flex items-end gap-4">
+                <ChannelAvatar
+                  path={profile.avatar_path}
+                  name={profile.display_name || profile.username}
+                  size={72}
+                />
+                <div className="flex-1">
+                  <Label>Foto de perfil</Label>
                   <Input
                     type="file"
                     accept="image/*"
                     className="mt-2"
                     onChange={(e) => {
                       const f = e.target.files?.[0];
-                      if (f) void uploadTo("background_path", f);
-                    }}
-                  />
-                </div>
-                <div>
-                  <Label className="text-xs text-muted-foreground">GIF animado del perfil</Label>
-                  <Input
-                    type="file"
-                    accept="image/gif"
-                    className="mt-2"
-                    onChange={(e) => {
-                      const f = e.target.files?.[0];
-                      if (f) void uploadTo("gif_path", f);
+                      if (f) void uploadTo("avatar_path", f);
                     }}
                   />
                 </div>
               </div>
-            ) : (
-              <p className="mt-2 text-sm text-muted-foreground">
-                Únete al Programa Partner para poner un fondo personalizado y un GIF animado en tu
-                canal.
-              </p>
-            )}
-          </div>
-        </section>
+            </section>
+          </TabsContent>
 
-        <form onSubmit={save} className="space-y-4 rounded-2xl bg-surface p-6">
-          <div className="space-y-2">
-            <Label htmlFor="dn">Nombre visible</Label>
-            <Input id="dn" value={displayName} onChange={(e) => setDisplayName(e.target.value)} />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="un">Nombre de usuario</Label>
-            <Input id="un" value={username} onChange={(e) => setUsername(e.target.value)} />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="de">Descripción</Label>
-            <Textarea
-              id="de"
-              rows={4}
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="ac">Color de acento</Label>
-            <input
-              id="ac"
-              type="color"
-              value={accent}
-              onChange={(e) => setAccent(e.target.value)}
-              className="h-10 w-20 cursor-pointer rounded-md border border-border bg-transparent"
-            />
-          </div>
-          <Button type="submit" disabled={busy}>
-            Guardar cambios
-          </Button>
-        </form>
+          <TabsContent value="partner" className="pt-5">
+            <div className="rounded-2xl bg-surface p-6">
+              <div className="flex items-center justify-between gap-2">
+                <Label>Fondo del canal y GIF de perfil</Label>
+                <span className="rounded-full bg-primary/15 px-2 py-0.5 text-[11px] font-medium text-primary">
+                  Solo Partners
+                </span>
+              </div>
+              {canCustomize ? (
+                <div className="mt-3 space-y-4">
+                  <div>
+                    <Label className="text-xs text-muted-foreground">Fondo del canal</Label>
+                    <Input
+                      type="file"
+                      accept="image/*"
+                      className="mt-2"
+                      onChange={(e) => {
+                        const f = e.target.files?.[0];
+                        if (f) void uploadTo("background_path", f);
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <Label className="text-xs text-muted-foreground">GIF animado del perfil</Label>
+                    <Input
+                      type="file"
+                      accept="image/gif"
+                      className="mt-2"
+                      onChange={(e) => {
+                        const f = e.target.files?.[0];
+                        if (f) void uploadTo("gif_path", f);
+                      }}
+                    />
+                  </div>
+                </div>
+              ) : (
+                <p className="mt-2 text-sm text-muted-foreground">
+                  Únete al Programa Partner para poner un fondo personalizado y un GIF animado en tu
+                  canal.
+                </p>
+              )}
+            </div>
+          </TabsContent>
+        </Tabs>
       </div>
     </AppShell>
   );
