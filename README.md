@@ -1,24 +1,15 @@
 # CoreNetwork
 
-Haz una plataforma igual a YouTube, agrega la opcion de ver videos, usar la app en la web, tener cosas del programa partner, un panel de administrador para gestionar usuarios solo para administradores, gestionar roles, dar partner y customizar el perfil (banner, perfil, check de verificado, cambiar el como se ve, agregar un fondo) Agregar pestaña de comunidad y usar Peertube para eso
+CoreNetwork is a video-sharing platform built with TanStack Start, React, Tailwind and Supabase.
 
-This project was built with [Lovable](https://lovable.dev).
+## 2012 / Cosmic Panda mode
 
-## Build with Lovable
+The project includes an isolated `YouTube 2012 / Cosmic Panda` theme. Classic channel layouts, the category-heavy Explore page and retro visual shell are activated only while this theme is selected. Modern themes keep the current CoreNetwork presentation.
 
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/077aa008-853d-4e9e-9a93-a035ee54e3b8).
+## Platform features
 
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
-
-## Development
-
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
-
-```sh
-git clone <this-repository-url>
-cd <repository-name>
-npm i
-npm run dev
-```
+- Video uploads with categories, thumbnails, public/private visibility, SRT/WebVTT captions and chapters.
+- Atomic per-video view counting on the watch page.
+- Public/private playlists with ordering and save-to-playlist actions.
+- Search across videos and channels with sorting by subscribers, views and date.
+- Channel-era layouts: CoreNetwork, Channel 1.0, Channel 2.0 and Cosmic Panda, rendered in the 2012 theme.
