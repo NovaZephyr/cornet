@@ -1,12 +1,15 @@
+import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { SignedImage, ChannelAvatar, VerifiedBadge } from "@/components/Media";
 import { formatDuration, formatViews, timeAgo } from "@/lib/format";
+import { useSignedUrl } from "@/lib/storage";
 
 export type VideoWithChannel = {
   id: string;
   code: string;
   title: string;
   thumbnail_path: string | null;
+  video_path?: string | null;
   duration_seconds: number;
   views: number;
   created_at: string;
@@ -24,42 +27,72 @@ const NO_THUMBNAIL = "/no-thumbnail.svg";
 export function VideoCard({ video, compact = false }: { video: VideoWithChannel; compact?: boolean }) {
   const channel = video.profiles;
   const name = channel?.display_name || channel?.username || "Canal";
+  const [retro2012, setRetro2012] = useState(false);
+  const videoUrl = useSignedUrl(video.video_path);
+  const posterUrl = useSignedUrl(video.thumbnail_path);
+
+  useEffect(() => {
+    const updateTheme = () => setRetro2012(document.documentElement.dataset.theme === "retro2012");
+    updateTheme();
+    const observer = new MutationObserver(updateTheme);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+    return () => observer.disconnect();
+  }, []);
+
+  const showFeaturedPlayer = compact && retro2012 && !!videoUrl;
+
   return (
     <div className={compact ? "flex gap-2" : "flex flex-col gap-3"}>
-      <Link
-        to="/watch"
-        search={{ v: video.code }}
-        className={
-          compact
-            ? "relative aspect-video w-40 shrink-0 overflow-hidden rounded-lg bg-surface"
-            : "relative aspect-video w-full overflow-hidden rounded-xl bg-surface"
-        }
-      >
-        {video.thumbnail_path ? (
-          <SignedImage
-            path={video.thumbnail_path}
-            alt={video.title}
-            className="h-full w-full object-cover"
-            fallback={
-              <img
-                src={NO_THUMBNAIL}
-                alt=""
-                aria-hidden="true"
-                className="h-full w-full object-cover"
-              />
-            }
+      {showFeaturedPlayer ? (
+        <div className="relative aspect-video w-full min-w-0 shrink-0 overflow-hidden rounded-lg bg-black">
+          <video
+            className="block h-full w-full object-contain"
+            controls
+            playsInline
+            preload="metadata"
+            poster={posterUrl ?? undefined}
+            src={videoUrl}
           />
-        ) : (
-          <img
-            src={NO_THUMBNAIL}
-            alt="Sin miniatura"
-            className="h-full w-full object-cover"
-          />
-        )}
-        <span className="absolute bottom-1 right-1 rounded bg-black/80 px-1 py-0.5 text-[11px] font-medium text-white">
-          {formatDuration(video.duration_seconds)}
-        </span>
-      </Link>
+          <span className="absolute bottom-1 right-1 rounded bg-black/80 px-1 py-0.5 text-[11px] font-medium text-white pointer-events-none">
+            {formatDuration(video.duration_seconds)}
+          </span>
+        </div>
+      ) : (
+        <Link
+          to="/watch"
+          search={{ v: video.code }}
+          className={
+            compact
+              ? "relative aspect-video w-40 shrink-0 overflow-hidden rounded-lg bg-surface"
+              : "relative aspect-video w-full overflow-hidden rounded-xl bg-surface"
+          }
+        >
+          {video.thumbnail_path ? (
+            <SignedImage
+              path={video.thumbnail_path}
+              alt={video.title}
+              className="h-full w-full object-cover"
+              fallback={
+                <img
+                  src={NO_THUMBNAIL}
+                  alt=""
+                  aria-hidden="true"
+                  className="h-full w-full object-cover"
+                />
+              }
+            />
+          ) : (
+            <img
+              src={NO_THUMBNAIL}
+              alt="Sin miniatura"
+              className="h-full w-full object-cover"
+            />
+          )}
+          <span className="absolute bottom-1 right-1 rounded bg-black/80 px-1 py-0.5 text-[11px] font-medium text-white">
+            {formatDuration(video.duration_seconds)}
+          </span>
+        </Link>
+      )}
       <div className="flex gap-3">
         {!compact && (
           <Link to="/c/$username" params={{ username: channel?.username ?? "" }}>
