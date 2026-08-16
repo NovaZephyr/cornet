@@ -1,6 +1,5 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { AppShell } from "@/components/AppShell";
-import { Link } from "@tanstack/react-router";
 import { useTheme } from "@/hooks/useTheme";
 
 export const Route = createFileRoute("/about")({
@@ -17,6 +16,7 @@ const sections = [
   ["Privacy", "CoreNetwork utiliza datos necesarios para autenticar usuarios, mantener cuentas, vídeos, playlists y funciones de comunidad. No publiques información personal sensible."],
   ["Community Guidelines", "No se permite acoso, spam, fraude, suplantación, amenazas ni contenido que infrinja las leyes aplicables o los derechos de terceros."],
   ["Safety & Report a Bug", "Puedes comunicar problemas de seguridad, errores técnicos o contenido que infrinja las normas mediante las herramientas de soporte disponibles en la plataforma."],
+  ["Emoji", "CoreNetwork usa Twemoji para renderizar emojis de forma consistente entre plataformas. Twemoji está distribuido bajo MIT y sus gráficos bajo CC-BY 4.0."],
 ];
 
 function AboutPage() {
@@ -44,11 +44,7 @@ function AboutPage() {
             </nav>
             <div className="cn-2012-about-content">
               {sections.map(([title, body]) => (
-                <section
-                  key={title}
-                  id={title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}
-                  className="cn-2012-about-card"
-                >
+                <section key={title} id={title.toLowerCase().replace(/[^a-z0-9]+/g, "-")} className="cn-2012-about-card">
                   <h2>{title}</h2>
                   <p>{body}</p>
                 </section>
@@ -65,9 +61,7 @@ function AboutPage() {
       <div className="mx-auto max-w-4xl pb-16">
         <div className="mb-8 border-b border-border pb-5">
           <h1 className="text-3xl font-bold">CoreNetwork</h1>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Información, copyright, privacidad y normas de la plataforma.
-          </p>
+          <p className="mt-2 text-sm text-muted-foreground">Información, copyright, privacidad y normas de la plataforma.</p>
         </div>
         <div className="grid gap-4 md:grid-cols-2">
           {sections.map(([title, body]) => (
