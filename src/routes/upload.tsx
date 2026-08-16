@@ -39,7 +39,7 @@ function UploadPage() {
     el.onerror = () => resolve(0); el.src = URL.createObjectURL(file);
   });
   const selectVideo = async (file: File | null) => { setVideo(file); setDuration(file ? await readDuration(file) : 0); if (file && chapters.length === 0) setChapters([{ title: "Introducción", startSeconds: 0, endSeconds: null }]); };
-  const onCaptionFiles = (files: FileList | null) => { if (!files) return; const accepted = [...files].filter((file) => /\.(vtt|srt)$/i.test(file.name)); setCaptions((prev) => [...prev, ...accepted.map((file) => ({ id: crypto.randomUUID(), file, language: "es", label: file.name.replace(/\.(vtt|srt)$/i, ""), isDefault: false }))]); };
+  const onCaptionFiles = (files: FileList | null) => { if (!files) return; const accepted = [...files].filter((file) => /\.(vtt|srt)$/i.test(file.name)); setCaptions((prev) => [...prev, ...accepted.map((file) => ({ id: crypto.randomUUID(), file, language: "es", label: file.name.replace(/\.(srt|vtt)$/i, ""), isDefault: false }))]); };
   const addChapter = () => setChapters((prev) => [...prev, { title: "Nuevo capítulo", startSeconds: prev.length ? Math.min(duration || 60, prev[prev.length - 1].startSeconds + 60) : 0, endSeconds: null }]);
   const removeChapter = (index: number) => setChapters((prev) => prev.filter((_, i) => i !== index));
   const updateChapter = (index: number, patch: Partial<ChapterDraft>) => setChapters((prev) => prev.map((chapter, i) => (i === index ? { ...chapter, ...patch } : chapter)));
@@ -51,32 +51,107 @@ function UploadPage() {
     const chapterError = validateChapterDrafts(chapters); if (chapterError) return void toast.error(chapterError);
     if (chapters.some((chapter) => chapter.startSeconds > duration)) return void toast.error("Hay un capítulo fuera de la duración del video.");
     if (captions.filter((caption) => caption.isDefault).length > 1) return void toast.error("Selecciona como máximo un subtítulo principal.");
+
     setBusy(true);
+    let videoCode: string | null = null;
+    const postProcessErrors: string[] = [];
+
     try {
+      // These two uploads are prerequisites: without them the video itself cannot be published.
       const videoPath = await uploadFile("videos", user.id, video);
       const thumbPath = thumb ? await uploadFile("media", user.id, thumb, "thumb-") : null;
-      let data: { id: string; code: string } | null = null; let candidate = generateVideoCode();
+
+      let data: { id: string; code: string } | null = null;
+      let candidate = generateVideoCode();
       for (let attempt = 0; attempt < 3 && !data; attempt += 1) {
-        const { data: inserted, error } = await supabase.from("videos").insert({ user_id: user.id, code: candidate, title: title.trim(), description: description.trim(), visibility, category, video_path: videoPath, thumbnail_path: thumbPath, duration_seconds: duration }).select("id, code").single();
-        if (!error) data = inserted as { id: string; code: string }; else if ((error as { code?: string }).code === "23505") candidate = generateVideoCode(); else throw error;
+        const { data: inserted, error } = await supabase
+          .from("videos")
+          .insert({
+            user_id: user.id,
+            code: candidate,
+            title: title.trim(),
+            description: description.trim(),
+            visibility,
+            category,
+            video_path: videoPath,
+            thumbnail_path: thumbPath,
+            duration_seconds: duration,
+          })
+          .select("id, code")
+          .single();
+
+        if (!error) data = inserted as { id: string; code: string };
+        else if ((error as { code?: string }).code === "23505") candidate = generateVideoCode();
+        else throw error;
       }
       if (!data) throw new Error("No se pudo generar un código único para el video");
 
+      // From this point onward the video is already published. Optional metadata must
+      // never turn a successful upload into a false "No se pudo subir el video" error.
+      videoCode = data.code;
+
       for (const caption of captions) {
-        const normalized = normalizeCaptionText(await caption.file.text(), caption.file.name);
-        const normalizedFile = new File([normalized], `${caption.file.name.replace(/\.(srt|vtt)$/i, "")}.vtt`, { type: "text/vtt" });
-        const path = await uploadFile("media", user.id, normalizedFile, "captions-");
-        const { error } = await supabase.from("video_captions").insert({ video_id: data.id, user_id: user.id, language_code: caption.language.toLowerCase().slice(0, 8), label: caption.label || caption.language, caption_path: path, is_default: caption.isDefault });
-        if (error) throw error;
+        try {
+          const normalized = normalizeCaptionText(await caption.file.text(), caption.file.name);
+          const normalizedFile = new File(
+            [normalized],
+            `${caption.file.name.replace(/\.(srt|vtt)$/i, "")}.vtt`,
+            { type: "text/vtt" },
+          );
+          const path = await uploadFile("media", user.id, normalizedFile, "captions-");
+          const { error } = await supabase.from("video_captions").insert({
+            video_id: data.id,
+            user_id: user.id,
+            language_code: caption.language.toLowerCase().slice(0, 8),
+            label: caption.label || caption.language,
+            caption_path: path,
+            is_default: caption.isDefault,
+          });
+          if (error) throw error;
+        } catch (error) {
+          postProcessErrors.push(`subtítulo "${caption.label || caption.file.name}"`);
+          console.error("[Upload] Caption processing failed after video publish", error);
+        }
       }
+
       if (chapters.length) {
-        const sorted = [...chapters].sort((a, b) => a.startSeconds - b.startSeconds);
-        const { error } = await supabase.from("video_chapters").insert(sorted.map((chapter, index) => ({ video_id: data!.id, user_id: user.id, title: chapter.title.trim(), start_seconds: Math.round(chapter.startSeconds), end_seconds: chapter.endSeconds == null ? null : Math.round(chapter.endSeconds), sort_order: index })));
-        if (error) throw error;
+        try {
+          const sorted = [...chapters].sort((a, b) => a.startSeconds - b.startSeconds);
+          const { error } = await supabase.from("video_chapters").insert(
+            sorted.map((chapter, index) => ({
+              video_id: data!.id,
+              user_id: user.id,
+              title: chapter.title.trim(),
+              start_seconds: Math.round(chapter.startSeconds),
+              end_seconds: chapter.endSeconds == null ? null : Math.round(chapter.endSeconds),
+              sort_order: index,
+            })),
+          );
+          if (error) throw error;
+        } catch (error) {
+          postProcessErrors.push("capítulos");
+          console.error("[Upload] Chapter processing failed after video publish", error);
+        }
       }
-      toast.success("Video publicado"); void navigate({ to: "/watch", search: { v: data.code } });
-    } catch (err) { toast.error(err instanceof Error ? err.message : "No se pudo subir el video"); }
-    finally { setBusy(false); }
+
+      toast.success(postProcessErrors.length ? "Video publicado" : "Video publicado");
+      if (postProcessErrors.length) {
+        toast.warning(`El video se publicó, pero no se pudieron guardar: ${postProcessErrors.join(", ")}.`);
+      }
+
+      await navigate({ to: "/watch", search: { v: videoCode } });
+    } catch (err) {
+      // Only show a hard upload error before the video record is created.
+      // If a future backend change leaves us with a code, treat it as published.
+      if (videoCode) {
+        toast.warning("El video se publicó, aunque hubo un problema procesando algunos datos adicionales.");
+        await navigate({ to: "/watch", search: { v: videoCode } });
+      } else {
+        toast.error(err instanceof Error ? err.message : "No se pudo subir el video");
+      }
+    } finally {
+      setBusy(false);
+    }
   };
 
   if (!user) return <AppShell><p className="py-24 text-center text-muted-foreground">Inicia sesión para subir videos.</p></AppShell>;
