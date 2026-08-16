@@ -74,22 +74,22 @@ const videoSeoMiddleware = createMiddleware().server(async ({ request, next }) =
 
     let html = await response.text();
 
-    const removeMeta = (matcher: string) => {
-      const pattern = new RegExp(`<meta\\s+[^>]*${matcher}[^>]*>\\s*`, "gi");
+    const removeMeta = (attribute: "property" | "name", value: string) => {
+      const pattern = new RegExp(`<meta\\s+[^>]*${attribute}=[\\"']${value}[\\"'][^>]*>\\s*`, "gi");
       html = html.replace(pattern, "");
     };
 
-    removeMeta('property=[\\"\\']og:title[\\"\\']');
-    removeMeta('property=[\\"\\']og:description[\\"\\']');
-    removeMeta('property=[\\"\\']og:site_name[\\"\\']');
-    removeMeta('property=[\\"\\']og:type[\\"\\']');
-    removeMeta('property=[\\"\\']og:url[\\"\\']');
-    removeMeta('property=[\\"\\']og:image[\\"\\']');
-    removeMeta('name=[\\"\\']twitter:title[\\"\\']');
-    removeMeta('name=[\\"\\']twitter:description[\\"\\']');
-    removeMeta('name=[\\"\\']twitter:image[\\"\\']');
-    removeMeta('name=[\\"\\']author[\\"\\']');
-    html = html.replace(/<title>.*?<\\/title>\\s*/i, "");
+    removeMeta("property", "og:title");
+    removeMeta("property", "og:description");
+    removeMeta("property", "og:site_name");
+    removeMeta("property", "og:type");
+    removeMeta("property", "og:url");
+    removeMeta("property", "og:image");
+    removeMeta("name", "twitter:title");
+    removeMeta("name", "twitter:description");
+    removeMeta("name", "twitter:image");
+    removeMeta("name", "author");
+    html = html.replace(/<title>.*?<\/title>\s*/i, "");
 
     const tags = [
       `<title>${escapeAttr(title)}</title>`,
@@ -129,4 +129,4 @@ const csrfMiddleware = createCsrfMiddleware({
 export const startInstance = createStart(() => ({
   functionMiddleware: [attachSupabaseAuth],
   requestMiddleware: [errorMiddleware, videoSeoMiddleware, csrfMiddleware],
-}));
+});
