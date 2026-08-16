@@ -21,10 +21,82 @@ export const Route = createFileRoute("/watch")({ validateSearch: (search: Record
 type VideoRow = { id: string; code: string; user_id: string; title: string; description: string; video_path: string; thumbnail_path: string | null; views: number; created_at: string };
 type PlaylistLite = { id: string; title: string; visibility: "public" | "private" };
 
+function setMeta(name: string, content: string, attribute: "name" | "property" = "name") {
+  if (!content) return;
+  let element = document.head.querySelector<HTMLMetaElement>(`meta[${attribute}="${name}"]`);
+  if (!element) {
+    element = document.createElement("meta");
+    element.setAttribute(attribute, name);
+    document.head.appendChild(element);
+  }
+  element.setAttribute("content", content);
+}
+
+function setLink(rel: string, href: string) {
+  if (!href) return;
+  let element = document.head.querySelector<HTMLLinkElement>(`link[rel="${rel}"]`);
+  if (!element) {
+    element = document.createElement("link");
+    element.setAttribute("rel", rel);
+    document.head.appendChild(element);
+  }
+  element.setAttribute("href", href);
+}
+
 function Watch() {
   const { v: code } = Route.useSearch(); const { user } = useAuth(); const qc = useQueryClient(); const [comment, setComment] = useState(""); const [reportOpen, setReportOpen] = useState(false); const countedCode = useRef<string | null>(null);
   const { data } = useQuery({ queryKey: ["video", code], enabled: !!code, queryFn: async () => { const { data: video, error } = await supabase.from("videos").select("id, code, user_id, title, description, video_path, thumbnail_path, views, created_at").eq("code", code).maybeSingle(); if (error) throw error; if (!video) return null; const profiles = await fetchProfilesByIds([(video as VideoRow).user_id]); return { video: video as VideoRow, channel: profiles.get((video as VideoRow).user_id) ?? null }; } });
   const videoUrl = useSignedUrl(data?.video.video_path); const posterUrl = useSignedUrl(data?.video.thumbnail_path);
+
+  useEffect(() => {
+    const baseTitle = data?.video.title?.trim();
+    const creator = data?.channel?.display_name || data?.channel?.username || "CoreNetwork";
+    const pageUrl = `${window.location.origin}/watch?v=${encodeURIComponent(code)}`;
+
+    if (!baseTitle) {
+      document.title = "CoreNetwork";
+      return;
+    }
+
+    document.title = `${baseTitle} - CoreNetwork`;
+    setMeta("description", `${baseTitle} — creado por ${creator}. Ver en CoreNetwork.`);
+    setMeta("og:title", baseTitle, "property");
+    setMeta("og:description", `Creado por ${creator} · CoreNetwork`, "property");
+    setMeta("og:type", "video.other", "property");
+    setMeta("og:url", pageUrl, "property");
+    setMeta("og:site_name", "CoreNetwork", "property");
+    setMeta("twitter:card", "summary_large_image");
+    setMeta("twitter:title", baseTitle);
+    setMeta("twitter:description", `Creado por ${creator} · CoreNetwork`);
+
+    if (posterUrl) {
+      setMeta("og:image", posterUrl, "property");
+      setMeta("twitter:image", posterUrl);
+      setMeta("twitter:image:alt", baseTitle);
+    }
+
+    setLink("canonical", pageUrl);
+
+    return () => {
+      document.title = "CoreNetwork";
+      [
+        ["meta", "name", "description"],
+        ["meta", "property", "og:title"],
+        ["meta", "property", "og:description"],
+        ["meta", "property", "og:type"],
+        ["meta", "property", "og:url"],
+        ["meta", "property", "og:site_name"],
+        ["meta", "name", "twitter:card"],
+        ["meta", "name", "twitter:title"],
+        ["meta", "name", "twitter:description"],
+        ["meta", "property", "og:image"],
+        ["meta", "name", "twitter:image"],
+        ["meta", "name", "twitter:image:alt"],
+      ].forEach(([tag, attr, value]) => document.head.querySelector(`${tag}[${attr}="${value}"]`)?.remove());
+      document.head.querySelector('link[rel="canonical"]')?.remove();
+    };
+  }, [code, data?.video.title, data?.channel?.display_name, data?.channel?.username, posterUrl]);
+
   useEffect(() => { if (!data?.video.id || countedCode.current === code) return; countedCode.current = code; let cancelled = false; void (async () => { const { data: nextViews, error } = await supabase.rpc("increment_views", { _video_id: data.video.id }); if (error || cancelled) return; qc.setQueryData(["video", code], (previous: typeof data | undefined) => previous ? { ...previous, video: { ...previous.video, views: Number(nextViews ?? previous.video.views) } } : previous); void qc.invalidateQueries({ queryKey: ["videos"] }); })(); return () => { cancelled = true; }; }, [code, data?.video.id, qc]);
   const captionsQuery = useQuery({ queryKey: ["captions", data?.video.id], enabled: !!data?.video.id, queryFn: async () => { const { data: rows, error } = await supabase.from("video_captions").select("id, language_code, label, caption_path, is_default").eq("video_id", data!.video.id).order("created_at"); if (error) throw error; const items = await Promise.all((rows ?? []).map(async (row) => ({ src: await getSignedUrl(row.caption_path), srclang: row.language_code, label: row.label, default: row.is_default }))); return items.filter((item): item is PlayerCaption => !!item.src); } });
   const chaptersQuery = useQuery({ queryKey: ["chapters", data?.video.id], enabled: !!data?.video.id, queryFn: async () => { const { data: rows, error } = await supabase.from("video_chapters").select("id, title, start_seconds, end_seconds, sort_order").eq("video_id", data!.video.id).order("sort_order").order("start_seconds"); if (error) throw error; return (rows ?? []).map((row) => ({ id: row.id, title: row.title, startSeconds: row.start_seconds, endSeconds: row.end_seconds })) as PlayerChapter[]; } });
