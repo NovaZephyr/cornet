@@ -11,6 +11,7 @@ import { supabase } from "@/integrations/supabase/client";
 
 export type AppRole = "admin" | "moderator" | "partner" | "user";
 export type ChannelStyle = "corenetwork" | "channel-1" | "channel-2" | "cosmic-panda";
+export type ChannelInfoLayout = "left" | "right" | "top" | "hidden";
 
 export type Profile = {
   id: string;
@@ -26,6 +27,11 @@ export type Profile = {
   accent_color: string;
   is_verified: boolean;
   channel_style: ChannelStyle;
+  channel_primary_color: string;
+  channel_secondary_color: string;
+  channel_surface_color: string;
+  channel_text_color: string;
+  channel_info_layout: ChannelInfoLayout;
   subscriber_count: number;
   created_at: string;
 };
