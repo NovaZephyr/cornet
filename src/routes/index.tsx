@@ -13,7 +13,7 @@ type HomeSearch = { q?: string; sort?: SearchOrder };
 
 export const Route = createFileRoute("/")({ validateSearch: (search: Record<string, unknown>): HomeSearch => ({ ...(typeof search.q === "string" && search.q.trim() ? { q: search.q } : {}), ...(search.sort === "subscribers" || search.sort === "views" || search.sort === "recent" || search.sort === "oldest" ? { sort: search.sort } : {}) }), head: () => ({ meta: [{ title: "CoreNetwork — Free Yourself" }] }), component: Home });
 function Home() {
-  const { q, sort = "recent" } = Route.useSearch(); const navigate = Route.useNavigate(); const videoSort: VideoSort = sort === "views" ? "views" : sort === "oldest" ? "oldest" : "recent";
+  const { q, sort = "recent" } = Route.useSearch(); const navigate = Route.useNavigate(); const videoSort: VideoSort = sort;
   const videosQuery = useQuery({ queryKey: ["videos", q ?? null, videoSort], queryFn: () => fetchVideos({ ...(q ? { search: q } : {}), orderBy: videoSort }) });
   const channelsQuery = useQuery({ queryKey: ["channels", q ?? null, sort], enabled: !!q, queryFn: () => searchChannels(q, sort === "subscribers" ? "subscribers" : "recent") });
   const setSort = (next: SearchOrder) => { void navigate({ to: "/", search: q ? { q, sort: next } : { sort: next } }); };
