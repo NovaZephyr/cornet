@@ -1,5 +1,4 @@
 import { Link } from "@tanstack/react-router";
-import { Play } from "lucide-react";
 import { SignedImage, ChannelAvatar, VerifiedBadge } from "@/components/Media";
 import { formatDuration, formatViews, timeAgo } from "@/lib/format";
 
@@ -20,6 +19,8 @@ export type VideoWithChannel = {
   } | null;
 };
 
+const NO_THUMBNAIL = "/no-thumbnail.svg";
+
 export function VideoCard({ video, compact = false }: { video: VideoWithChannel; compact?: boolean }) {
   const channel = video.profiles;
   const name = channel?.display_name || channel?.username || "Canal";
@@ -34,16 +35,27 @@ export function VideoCard({ video, compact = false }: { video: VideoWithChannel;
             : "relative aspect-video w-full overflow-hidden rounded-xl bg-surface"
         }
       >
-        <SignedImage
-          path={video.thumbnail_path}
-          alt={video.title}
-          className="h-full w-full object-cover"
-          fallback={
-            <div className="flex h-full w-full items-center justify-center">
-              <Play className="h-8 w-8 text-muted-foreground" />
-            </div>
-          }
-        />
+        {video.thumbnail_path ? (
+          <SignedImage
+            path={video.thumbnail_path}
+            alt={video.title}
+            className="h-full w-full object-cover"
+            fallback={
+              <img
+                src={NO_THUMBNAIL}
+                alt=""
+                aria-hidden="true"
+                className="h-full w-full object-cover"
+              />
+            }
+          />
+        ) : (
+          <img
+            src={NO_THUMBNAIL}
+            alt="Sin miniatura"
+            className="h-full w-full object-cover"
+          />
+        )}
         <span className="absolute bottom-1 right-1 rounded bg-black/80 px-1 py-0.5 text-[11px] font-medium text-white">
           {formatDuration(video.duration_seconds)}
         </span>
