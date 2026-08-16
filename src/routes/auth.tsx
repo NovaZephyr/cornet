@@ -25,9 +25,8 @@ export const Route = createFileRoute("/auth")({
 });
 
 // Site Key pública de Cloudflare Turnstile (Dashboard de Cloudflare → Turnstile).
-// La validación real ahora la hace Supabase Auth nativamente — actívala en
-// Dashboard de Supabase → Authentication → Attack Protection → Enable Captcha
-// protection → Turnstile, pegando ahí la Secret Key correspondiente.
+// La validación real la hace Supabase Auth nativamente — Dashboard de Supabase →
+// Authentication → Attack Protection → Enable Captcha protection → Turnstile.
 const TURNSTILE_SITE_KEY = "0x4AAAAAAEQ5ZW7lCUTxm4os";
 
 declare global {
@@ -48,42 +47,58 @@ declare global {
   }
 }
 
-function useTurnstile(onToken: (token: string) => void) {
+function loadTurnstileScript(onReady: () => void) {
+  if (window.turnstile) {
+    onReady();
+    return;
+  }
+  const existing = document.getElementById("turnstile-script");
+  if (existing) {
+    existing.addEventListener("load", onReady, { once: true });
+    return;
+  }
+  const script = document.createElement("script");
+  script.id = "turnstile-script";
+  script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js";
+  script.async = true;
+  script.defer = true;
+  script.onload = onReady;
+  document.head.appendChild(script);
+}
+
+// `active` = la pestaña que contiene este widget está actualmente visible.
+// El widget solo se monta cuando active pasa a true — así no intentamos
+// renderizarlo dentro de un TabsContent que todavía no existe en el DOM.
+function useTurnstile(onToken: (token: string) => void, active: boolean) {
   const containerRef = useRef<HTMLDivElement>(null);
   const widgetId = useRef<string | null>(null);
 
   useEffect(() => {
-    if (document.getElementById("turnstile-script")) {
-      if (window.turnstile && containerRef.current && widgetId.current === null) {
-        widgetId.current = window.turnstile.render(containerRef.current, {
-          sitekey: TURNSTILE_SITE_KEY,
-          theme: "dark",
-          callback: onToken,
-          "expired-callback": () => onToken(""),
-          "error-callback": () => onToken(""),
-        });
+    if (!active || widgetId.current !== null) return;
+    let cancelled = false;
+    let attempts = 0;
+
+    const tryRender = () => {
+      if (cancelled || widgetId.current !== null) return;
+      if (!containerRef.current || !window.turnstile) {
+        if (attempts++ < 50) setTimeout(tryRender, 100);
+        return;
       }
-      return;
-    }
-    const script = document.createElement("script");
-    script.id = "turnstile-script";
-    script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js";
-    script.async = true;
-    script.defer = true;
-    script.onload = () => {
-      if (window.turnstile && containerRef.current) {
-        widgetId.current = window.turnstile.render(containerRef.current, {
-          sitekey: TURNSTILE_SITE_KEY,
-          theme: "dark",
-          callback: onToken,
-          "expired-callback": () => onToken(""),
-          "error-callback": () => onToken(""),
-        });
-      }
+      widgetId.current = window.turnstile.render(containerRef.current, {
+        sitekey: TURNSTILE_SITE_KEY,
+        theme: "dark",
+        callback: onToken,
+        "expired-callback": () => onToken(""),
+        "error-callback": () => onToken(""),
+      });
     };
-    document.head.appendChild(script);
+
+    loadTurnstileScript(tryRender);
+    return () => {
+      cancelled = true;
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [active]);
 
   const reset = () => {
     if (window.turnstile && widgetId.current !== null) {
@@ -104,11 +119,16 @@ function AuthPage() {
   const [busy, setBusy] = useState(false);
   const [sent, setSent] = useState(false);
   const [captchaToken, setCaptchaToken] = useState("");
+  const [tab, setTab] = useState<"signin" | "signup">("signin");
 
-  const { containerRef: signinCaptchaRef, reset: resetSigninCaptcha } =
-    useTurnstile(setCaptchaToken);
-  const { containerRef: signupCaptchaRef, reset: resetSignupCaptcha } =
-    useTurnstile(setCaptchaToken);
+  const { containerRef: signinCaptchaRef, reset: resetSigninCaptcha } = useTurnstile(
+    setCaptchaToken,
+    tab === "signin",
+  );
+  const { containerRef: signupCaptchaRef, reset: resetSignupCaptcha } = useTurnstile(
+    setCaptchaToken,
+    tab === "signup",
+  );
 
   useEffect(() => {
     if (user) void navigate({ to: "/" });
@@ -121,7 +141,6 @@ function AuthPage() {
       return;
     }
     setBusy(true);
-    // Supabase valida el captchaToken internamente (Attack Protection → Turnstile)
     const { error } = await supabase.auth.signInWithPassword({
       email,
       password,
@@ -180,7 +199,6 @@ function AuthPage() {
     if (error) {
       toast.error("No se pudo iniciar sesión con Google");
     }
-    // Supabase redirige a Google automáticamente; no hay nada más que hacer aquí.
   };
 
   return (
@@ -238,11 +256,10 @@ function AuthPage() {
             </div>
           ) : (
             <Tabs
-              defaultValue="signin"
-              onValueChange={() => {
+              value={tab}
+              onValueChange={(v) => {
+                setTab(v as "signin" | "signup");
                 setCaptchaToken("");
-                resetSigninCaptcha();
-                resetSignupCaptcha();
               }}
             >
               <h1 className="mb-6 text-center text-2xl font-bold tracking-tight">
