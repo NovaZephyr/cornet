@@ -17,6 +17,12 @@ function TwemojiText({ children }: { children: string }) {
       className: "twemoji",
       base: "https://cdn.jsdelivr.net/gh/jdecked/twemoji@17.0.3/assets/",
     });
+    node.querySelectorAll<HTMLImageElement>("img.twemoji").forEach((image) => {
+      image.style.height = "1em";
+      image.style.width = "1em";
+      image.style.verticalAlign = "-0.15em";
+      image.style.display = "inline-block";
+    });
   }, [children]);
 
   return <span ref={ref} />;
