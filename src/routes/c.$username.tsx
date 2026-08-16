@@ -32,12 +32,15 @@ function getChannelVars(profile: ChannelProfile): React.CSSProperties {
   } as React.CSSProperties;
 }
 
-function RetroChannel({ profile, videos, roles, subs, isSubscribed, isPartnerChannel, partnerGif, onSubscribe, onReport }: { profile: ChannelProfile; videos: Awaited<ReturnType<typeof fetchVideos>>; roles?: AppRole[]; subs: { subscriber_id: string }[]; isSubscribed: boolean; isPartnerChannel: boolean; partnerGif: string | null; onSubscribe: () => void; onReport: () => void }) {
+function RetroChannel({ profile, videos, roles, subs, isSubscribed, isPartnerChannel, partnerGif, background, onSubscribe, onReport }: { profile: ChannelProfile; videos: Awaited<ReturnType<typeof fetchVideos>>; roles?: AppRole[]; subs: { subscriber_id: string }[]; isSubscribed: boolean; isPartnerChannel: boolean; partnerGif: string | null; background: string | null; onSubscribe: () => void; onReport: () => void }) {
   const style = profile.channel_style ?? "corenetwork";
   const infoLayout = profile.channel_info_layout ?? "left";
   const styleClass = `cn-2012-channel cn-2012-channel--${style} cn-2012-info--${infoLayout}`;
   const hero = videos[0];
   const channelVars = getChannelVars(profile);
+  const channelBackground = background
+    ? { ...channelVars, backgroundImage: `url(${background})` }
+    : channelVars;
 
   const InfoPanel = infoLayout === "hidden" ? null : (
     <aside className="cn-2012-about">
@@ -52,24 +55,28 @@ function RetroChannel({ profile, videos, roles, subs, isSubscribed, isPartnerCha
   );
 
   return (
-    <div className={styleClass} style={channelVars}>
-      <div className="cn-2012-cover"><SignedImage path={profile.banner_path} alt={`Banner de ${profile.display_name}`} className="h-full w-full object-cover" /></div>
-      <div className="cn-2012-titlebar">
-        <div className="flex items-center gap-3">
-          <div className="relative"><ChannelAvatar path={profile.avatar_path} name={profile.display_name || profile.username} size={64} />{isPartnerChannel && partnerGif && <img src={partnerGif} alt="" className="absolute -bottom-1 -right-1 h-6 w-6 rounded-full border object-cover" />}</div>
-          <div className="min-w-0"><h1 className="truncate text-xl font-bold">{profile.display_name || profile.username}{profile.is_verified && <VerifiedBadge className="ml-1 inline h-4 w-4" />}</h1><p className="text-xs opacity-75">@{profile.username} · {profile.subscriber_count ?? subs.length} suscriptores · {videos.length} videos</p></div>
+    <div className={styleClass} style={channelBackground}>
+      <div className="cn-2012-channel-inner">
+        <div className="cn-2012-cover"><SignedImage path={profile.banner_path} alt={`Banner de ${profile.display_name}`} className="h-full w-full object-cover" /></div>
+        <div className="cn-2012-titlebar">
+          <div className="flex items-center gap-3">
+            <div className="relative"><ChannelAvatar path={profile.avatar_path} name={profile.display_name || profile.username} size={64} />{isPartnerChannel && partnerGif && <img src={partnerGif} alt="" className="absolute -bottom-1 -right-1 h-6 w-6 rounded-full border object-cover" />}</div>
+            <div className="min-w-0"><h1 className="truncate text-xl font-bold">{profile.display_name || profile.username}{profile.is_verified && <VerifiedBadge className="ml-1 inline h-4 w-4" />}</h1><p className="text-xs opacity-75">@{profile.username} · {profile.subscriber_count ?? subs.length} suscriptores · {videos.length} videos</p></div>
+          </div>
+          <div className="flex gap-2"><Button onClick={onSubscribe} variant={isSubscribed ? "secondary" : "default"} className="cn-2012-retro-button">{isSubscribed ? "Suscrito" : "Suscribirse"}</Button><Button onClick={onReport} variant="outline" className="cn-2012-retro-button"><Flag className="mr-2 h-4 w-4" />Denunciar</Button></div>
         </div>
-        <div className="flex gap-2"><Button onClick={onSubscribe} variant={isSubscribed ? "secondary" : "default"} className="cn-2012-retro-button">{isSubscribed ? "Suscrito" : "Suscribirse"}</Button><Button onClick={onReport} variant="outline" className="cn-2012-retro-button"><Flag className="mr-2 h-4 w-4" />Denunciar</Button></div>
+        <div className="cn-2012-tabs"><span className="is-active">Videos</span><span>Información</span><span>Comunidad</span><span>Playlists</span></div>
+        {style === "channel-1" && hero ? <div className="cn-2012-feature cn-2012-feature--channel-1"><div className="cn-2012-feature-main"><VideoCard video={hero} compact /></div><div className="cn-2012-feature-side">{videos.slice(1, 5).map((video) => <VideoCard key={video.id} video={video} compact />)}</div></div> : null}
+        {style === "channel-2" && hero ? <div className="cn-2012-feature cn-2012-feature--channel-2"><VideoCard video={hero} compact /></div> : null}
+        {style === "cosmic-panda" && hero ? <div className="cn-2012-feature cn-2012-feature--cosmic"><div className="cn-2012-cosmic-feature-label">Featured</div><VideoCard video={hero} compact /></div> : null}
+        {infoLayout === "top" && InfoPanel}
+        <div className="cn-2012-body">
+          {infoLayout === "left" && InfoPanel}
+          <section className="cn-2012-video-column"><div className="cn-2012-section-title"><span>{style === "cosmic-panda" ? "Uploads" : style === "channel-2" ? "Videos" : "Uploads"}</span><span>Ver todos</span></div>{videos.length > 0 ? <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">{videos.slice(style === "channel-2" || style === "channel-1" || style === "cosmic-panda" ? 1 : 0).map((video) => <VideoCard key={video.id} video={video} />)}</div> : <p className="cn-2012-empty">Este canal todavía no tiene videos.</p>}</section>
+          {infoLayout === "right" && InfoPanel}
+        </div>
+        {(roles?.length ?? 0) > 0 && <div className="cn-2012-badges">{roles?.includes("partner") && <Badge>Partner</Badge>}{roles?.includes("admin") && <Badge variant="secondary">Administrador</Badge>}{roles?.includes("moderator") && <Badge variant="secondary">Moderador</Badge>}</div>}
       </div>
-      <div className="cn-2012-tabs"><span className="is-active">Videos</span><span>Información</span><span>Comunidad</span><span>Playlists</span></div>
-      {style === "channel-2" && hero ? <div className="cn-2012-feature"><VideoCard video={hero} compact /></div> : null}
-      {infoLayout === "top" && InfoPanel}
-      <div className="cn-2012-body">
-        {infoLayout === "left" && InfoPanel}
-        <section className="cn-2012-video-column"><div className="cn-2012-section-title"><span>{style === "cosmic-panda" ? "Videos recientes" : style === "channel-2" ? "Videos destacados" : "Videos"}</span><span>Ver todos</span></div>{videos.length > 0 ? <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">{videos.slice(style === "channel-2" ? 1 : 0).map((video) => <VideoCard key={video.id} video={video} />)}</div> : <p className="cn-2012-empty">Este canal todavía no tiene videos.</p>}</section>
-        {infoLayout === "right" && InfoPanel}
-      </div>
-      {(roles?.length ?? 0) > 0 && <div className="cn-2012-badges">{roles?.includes("partner") && <Badge>Partner</Badge>}{roles?.includes("admin") && <Badge variant="secondary">Administrador</Badge>}{roles?.includes("moderator") && <Badge variant="secondary">Moderador</Badge>}</div>}
     </div>
   );
 }
@@ -105,55 +112,17 @@ function Channel() {
   const style = profile.channel_style ?? "corenetwork";
   const channelVars = getChannelVars(profile);
 
-  if (theme === "retro2012") return <AppShell><RetroChannel profile={profile} videos={channelVideos} roles={roles} subs={subs ?? []} isSubscribed={isSubscribed} isPartnerChannel={isPartnerChannel} partnerGif={partnerGif} onSubscribe={() => void toggleSub()} onReport={openReport} /><ReportDialog target={{ type: "channel", id: profile.id, name: profile.display_name || profile.username }} open={reportOpen} onOpenChange={setReportOpen} /></AppShell>;
-
-  const modernChannelStyles = `
-    .cn-modern-channel{position:relative;min-height:calc(100vh - 9rem);margin:0 -1rem;padding:0 1rem 2rem;background-size:cover;background-position:center;background-attachment:fixed;background-color:var(--cn-channel-surface);overflow:hidden}
-    .cn-modern-channel-overlay{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,color-mix(in srgb,var(--cn-channel-primary) 42%,transparent) 0%,color-mix(in srgb,var(--cn-channel-primary) 16%,transparent) 30%,color-mix(in srgb,var(--cn-channel-secondary) 20%,transparent) 100%);opacity:.72}
-    .cn-modern-channel-content{position:relative;z-index:1;padding-top:.75rem}
-    .cn-modern-channel-content>.mx-auto{border-color:color-mix(in srgb,var(--cn-channel-secondary) 40%,transparent);color:var(--cn-channel-text)}
-    .cn-modern-channel-tabs{background:color-mix(in srgb,var(--cn-channel-primary) 18%,var(--cn-channel-surface));border-color:color-mix(in srgb,var(--cn-channel-secondary) 50%,transparent)}
-    .cn-modern-channel-button{background:var(--cn-channel-primary)!important;color:var(--cn-channel-surface)!important;border-color:var(--cn-channel-primary)!important}
-    .cn-modern-channel--channel-1 .cn-modern-channel-overlay{background:linear-gradient(135deg,color-mix(in srgb,var(--cn-channel-primary) 52%,transparent),transparent 54%,color-mix(in srgb,var(--cn-channel-secondary) 34%,transparent))}
-    .cn-modern-channel--channel-2 .cn-modern-channel-overlay{background:linear-gradient(180deg,color-mix(in srgb,var(--cn-channel-primary) 48%,transparent),color-mix(in srgb,var(--cn-channel-secondary) 12%,transparent))}
-    .cn-modern-channel--cosmic-panda .cn-modern-channel-overlay{background:linear-gradient(180deg,color-mix(in srgb,var(--cn-channel-primary) 38%,transparent),transparent 45%,color-mix(in srgb,var(--cn-channel-secondary) 24%,transparent))}
-    .cn-modern-channel--corenetwork .cn-modern-channel-overlay{opacity:.42}
-    @media(max-width:768px){.cn-modern-channel{margin:0 -.5rem;padding:0 .5rem 1rem;background-attachment:scroll}}
-  `;
+  if (theme === "retro2012") return <AppShell><RetroChannel profile={profile} videos={channelVideos} roles={roles} subs={subs ?? []} isSubscribed={isSubscribed} isPartnerChannel={isPartnerChannel} partnerGif={partnerGif} background={background} onSubscribe={() => void toggleSub()} onReport={openReport} /><ReportDialog target={{ type: "channel", id: profile.id, name: profile.display_name || profile.username }} open={reportOpen} onOpenChange={setReportOpen} /></AppShell>;
 
   return (
     <AppShell>
-      <style>{modernChannelStyles}</style>
-      <div
-        className={`cn-modern-channel cn-modern-channel--${style}`}
-        style={background ? { ...channelVars, backgroundImage: `url(${background})` } : channelVars}
-      >
+      <div className={`cn-modern-channel cn-modern-channel--${style}`} style={background ? { ...channelVars, backgroundImage: `url(${background})` } : channelVars}>
         <div className="cn-modern-channel-overlay" aria-hidden="true" />
         <div className="cn-modern-channel-content">
           <div className="mx-auto max-w-6xl rounded-2xl bg-background/90 p-2 shadow-2xl backdrop-blur-[2px] sm:p-4">
-            <div className="aspect-[6/1] w-full overflow-hidden rounded-2xl bg-surface">
-              <SignedImage path={profile.banner_path} alt={`Banner de ${profile.display_name}`} className="h-full w-full object-cover" />
-            </div>
-            <div className="mt-5 flex flex-col items-start gap-5 sm:flex-row sm:items-center">
-              <ChannelAvatar path={profile.avatar_path} name={profile.display_name || profile.username} size={112} />
-              <div className="min-w-0 flex-1">
-                <h1 className="flex items-center gap-2 text-2xl font-bold">{profile.display_name || profile.username}{profile.is_verified && <VerifiedBadge className="h-5 w-5" />}</h1>
-                <p className="text-sm text-muted-foreground">@{profile.username} · {profile.subscriber_count ?? subs?.length ?? 0} suscriptores · {channelVideos.length} videos</p>
-                {profile.description && <p className="mt-1 line-clamp-2 max-w-2xl text-sm text-muted-foreground">{profile.description}</p>}
-                <div className="mt-2 flex gap-2">{roles?.includes("partner") && <Badge className="bg-partner text-background">Partner</Badge>}{roles?.includes("admin") && <Badge variant="secondary">Administrador</Badge>}{roles?.includes("moderator") && <Badge variant="secondary">Moderador</Badge>}</div>
-              </div>
-              <div className="flex gap-2"><Button onClick={() => void toggleSub()} variant={isSubscribed ? "secondary" : "default"} className="rounded-full cn-modern-channel-button">{isSubscribed ? "Suscrito" : "Suscribirse"}</Button><Button onClick={openReport} variant="outline" className="rounded-full"> <Flag className="mr-2 h-4 w-4" />Denunciar</Button></div>
-            </div>
-            <Tabs defaultValue="videos" className="mt-6">
-              <TabsList className="cn-modern-channel-tabs">
-                <TabsTrigger value="videos">Videos</TabsTrigger>
-                <TabsTrigger value="community">Comunidad</TabsTrigger>
-                <TabsTrigger value="about">Información</TabsTrigger>
-              </TabsList>
-              <TabsContent value="videos" className="pt-6">{channelVideos.length > 0 ? <div className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">{channelVideos.map((v) => <VideoCard key={v.id} video={v} />)}</div> : <p className="py-12 text-center text-muted-foreground">Este canal todavía no tiene videos.</p>}</TabsContent>
-              <TabsContent value="community" className="pt-6"><CommunityFeed channelId={profile.id} /></TabsContent>
-              <TabsContent value="about" className="pt-6"><div className="max-w-2xl rounded-xl border p-5 text-sm" style={{ background: profile.channel_surface_color ?? "var(--surface)", color: profile.channel_text_color ?? "inherit", borderColor: profile.channel_secondary_color ?? "currentColor" }}><p className="whitespace-pre-wrap">{profile.description || "Este canal aún no escribió una descripción."}</p><p className="mt-4 opacity-70">En CoreNetwork desde {new Date(profile.created_at).toLocaleDateString("es")}</p></div></TabsContent>
-            </Tabs>
+            <div className="aspect-[6/1] w-full overflow-hidden rounded-2xl bg-surface"><SignedImage path={profile.banner_path} alt={`Banner de ${profile.display_name}`} className="h-full w-full object-cover" /></div>
+            <div className="mt-5 flex flex-col items-start gap-5 sm:flex-row sm:items-center"><ChannelAvatar path={profile.avatar_path} name={profile.display_name || profile.username} size={112} /><div className="min-w-0 flex-1"><h1 className="flex items-center gap-2 text-2xl font-bold">{profile.display_name || profile.username}{profile.is_verified && <VerifiedBadge className="h-5 w-5" />}</h1><p className="text-sm text-muted-foreground">@{profile.username} · {profile.subscriber_count ?? subs?.length ?? 0} suscriptores · {channelVideos.length} videos</p>{profile.description && <p className="mt-1 line-clamp-2 max-w-2xl text-sm text-muted-foreground">{profile.description}</p>}<div className="mt-2 flex gap-2">{roles?.includes("partner") && <Badge className="bg-partner text-background">Partner</Badge>}{roles?.includes("admin") && <Badge variant="secondary">Administrador</Badge>}{roles?.includes("moderator") && <Badge variant="secondary">Moderador</Badge>}</div></div><div className="flex gap-2"><Button onClick={() => void toggleSub()} variant={isSubscribed ? "secondary" : "default"} className="rounded-full cn-modern-channel-button">{isSubscribed ? "Suscrito" : "Suscribirse"}</Button><Button onClick={openReport} variant="outline" className="rounded-full"> <Flag className="mr-2 h-4 w-4" />Denunciar</Button></div></div>
+            <Tabs defaultValue="videos" className="mt-6"><TabsList className="cn-modern-channel-tabs"><TabsTrigger value="videos">Videos</TabsTrigger><TabsTrigger value="community">Comunidad</TabsTrigger><TabsTrigger value="about">Información</TabsTrigger></TabsList><TabsContent value="videos" className="pt-6">{channelVideos.length > 0 ? <div className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">{channelVideos.map((v) => <VideoCard key={v.id} video={v} />)}</div> : <p className="py-12 text-center text-muted-foreground">Este canal todavía no tiene videos.</p>}</TabsContent><TabsContent value="community" className="pt-6"><CommunityFeed channelId={profile.id} /></TabsContent><TabsContent value="about" className="pt-6"><div className="max-w-2xl rounded-xl border p-5 text-sm" style={{ background: profile.channel_surface_color ?? "var(--surface)", color: profile.channel_text_color ?? "inherit", borderColor: profile.channel_secondary_color ?? "currentColor" }}><p className="whitespace-pre-wrap">{profile.description || "Este canal aún no escribió una descripción."}</p><p className="mt-4 opacity-70">En CoreNetwork desde {new Date(profile.created_at).toLocaleDateString("es")}</p></div></TabsContent></Tabs>
           </div>
         </div>
       </div>
