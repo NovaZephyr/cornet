@@ -111,17 +111,15 @@ function SettingsPage() {
     if (!user) return;
     setStyleBusy(true);
     try {
-      const { error } = await supabase
-        .from("profiles")
-        .update({
-          channel_style: channelStyle,
-          channel_primary_color: primaryColor,
-          channel_secondary_color: secondaryColor,
-          channel_surface_color: surfaceColor,
-          channel_text_color: textColor,
-          channel_info_layout: infoLayout,
-        })
-        .eq("id", user.id);
+      const customization = {
+        channel_style: channelStyle,
+        channel_primary_color: primaryColor,
+        channel_secondary_color: secondaryColor,
+        channel_surface_color: surfaceColor,
+        channel_text_color: textColor,
+        channel_info_layout: infoLayout,
+      };
+      const { error } = await supabase.from("profiles").update(customization as never).eq("id", user.id);
       if (error) throw error;
       await refresh();
       toast.success("Personalización del canal guardada");
@@ -175,56 +173,15 @@ function SettingsPage() {
                 <h2 className="font-semibold">Diseño + personalización de la era</h2>
                 <p className="mt-1 text-sm text-muted-foreground">El estilo define la estructura inspirada en la referencia. Los colores y la disposición de la información los eliges tú. No hay una paleta fija de Channel 1.0, 2.0 o Cosmic Panda.</p>
               </div>
-
-              <div className="grid gap-3 sm:grid-cols-2">
-                {CHANNEL_STYLES.map((style) => (
-                  <button key={style.value} type="button" onClick={() => setChannelStyle(style.value)} className={`rounded-xl border p-4 text-left transition ${channelStyle === style.value ? "border-primary bg-primary/10 ring-2 ring-primary/20" : "border-border bg-background hover:bg-surface-hover"}`}>
-                    <p className="font-medium">{style.label}</p>
-                    <p className="mt-1 text-xs text-muted-foreground">{style.description}</p>
-                  </button>
-                ))}
-              </div>
-
-              <div>
-                <div className="mb-3"><h3 className="font-medium">Tus colores</h3><p className="text-xs text-muted-foreground">Estos colores sustituyen la paleta predeterminada de la era elegida.</p></div>
-                <div className="grid gap-3 sm:grid-cols-2">
-                  <ColorField label="Color principal" value={primaryColor} onChange={setPrimaryColor} />
-                  <ColorField label="Color secundario" value={secondaryColor} onChange={setSecondaryColor} />
-                  <ColorField label="Color de paneles" value={surfaceColor} onChange={setSurfaceColor} />
-                  <ColorField label="Color del texto" value={textColor} onChange={setTextColor} />
-                </div>
-              </div>
-
-              <div>
-                <h3 className="mb-2 font-medium">Disposición de la información</h3>
-                <Select value={infoLayout} onValueChange={(value) => setInfoLayout(value as ChannelInfoLayout)}>
-                  <SelectTrigger><SelectValue placeholder="Selecciona una disposición" /></SelectTrigger>
-                  <SelectContent>
-                    {INFO_LAYOUTS.map((layout) => <SelectItem key={layout.value} value={layout.value}>{layout.label}</SelectItem>)}
-                  </SelectContent>
-                </Select>
-                <p className="mt-2 text-xs text-muted-foreground">{INFO_LAYOUTS.find((layout) => layout.value === infoLayout)?.description}</p>
-              </div>
-
-              <div className="rounded-xl border border-border p-4" style={{ background: primaryColor, color: textColor }}>
-                <p className="text-sm font-semibold">Vista previa de tus colores</p>
-                <div className="mt-3 grid grid-cols-3 gap-2">
-                  <div className="h-8 rounded" style={{ background: primaryColor }} />
-                  <div className="h-8 rounded" style={{ background: secondaryColor }} />
-                  <div className="h-8 rounded border" style={{ background: surfaceColor }} />
-                </div>
-              </div>
-
-              <div className="flex items-center justify-between rounded-xl border border-border bg-background p-4">
-                <div><p className="text-sm font-medium">Guardar personalización</p><p className="text-xs text-muted-foreground">Se conserva aunque cambies de tema global.</p></div>
-                <Button type="button" disabled={styleBusy} onClick={() => void saveChannelStyle()}>{styleBusy ? "Guardando…" : "Guardar diseño"}</Button>
-              </div>
+              <div className="grid gap-3 sm:grid-cols-2">{CHANNEL_STYLES.map((style) => <button key={style.value} type="button" onClick={() => setChannelStyle(style.value)} className={`rounded-xl border p-4 text-left transition ${channelStyle === style.value ? "border-primary bg-primary/10 ring-2 ring-primary/20" : "border-border bg-background hover:bg-surface-hover"}`}><p className="font-medium">{style.label}</p><p className="mt-1 text-xs text-muted-foreground">{style.description}</p></button>)}</div>
+              <div><div className="mb-3"><h3 className="font-medium">Tus colores</h3><p className="text-xs text-muted-foreground">Estos colores sustituyen la paleta predeterminada de la era elegida.</p></div><div className="grid gap-3 sm:grid-cols-2"><ColorField label="Color principal" value={primaryColor} onChange={setPrimaryColor} /><ColorField label="Color secundario" value={secondaryColor} onChange={setSecondaryColor} /><ColorField label="Color de paneles" value={surfaceColor} onChange={setSurfaceColor} /><ColorField label="Color del texto" value={textColor} onChange={setTextColor} /></div></div>
+              <div><h3 className="mb-2 font-medium">Disposición de la información</h3><Select value={infoLayout} onValueChange={(value) => setInfoLayout(value as ChannelInfoLayout)}><SelectTrigger><SelectValue placeholder="Selecciona una disposición" /></SelectTrigger><SelectContent>{INFO_LAYOUTS.map((layout) => <SelectItem key={layout.value} value={layout.value}>{layout.label}</SelectItem>)}</SelectContent></Select><p className="mt-2 text-xs text-muted-foreground">{INFO_LAYOUTS.find((layout) => layout.value === infoLayout)?.description}</p></div>
+              <div className="rounded-xl border border-border p-4" style={{ background: primaryColor, color: textColor }}><p className="text-sm font-semibold">Vista previa de tus colores</p><div className="mt-3 grid grid-cols-3 gap-2"><div className="h-8 rounded" style={{ background: primaryColor }} /><div className="h-8 rounded" style={{ background: secondaryColor }} /><div className="h-8 rounded border" style={{ background: surfaceColor }} /></div></div>
+              <div className="flex items-center justify-between rounded-xl border border-border bg-background p-4"><div><p className="text-sm font-medium">Guardar personalización</p><p className="text-xs text-muted-foreground">Se conserva aunque cambies de tema global.</p></div><Button type="button" disabled={styleBusy} onClick={() => void saveChannelStyle()}>{styleBusy ? "Guardando…" : "Guardar diseño"}</Button></div>
             </section>
           </TabsContent>
 
-          <TabsContent value="partner" className="pt-5">
-            <div className="rounded-2xl bg-surface p-6"><div className="flex items-center justify-between gap-2"><Label>Fondo del canal y GIF de perfil</Label><span className="rounded-full bg-primary/15 px-2 py-0.5 text-[11px] font-medium text-primary">Solo Partners</span></div>{canCustomize ? <div className="mt-3 space-y-4"><div><Label className="text-xs text-muted-foreground">Fondo del canal</Label><Input type="file" accept="image/*" className="mt-2" disabled={busy} onChange={(e) => { const f = e.target.files?.[0]; if (f) void uploadTo("background_path", f); }} /></div><div><Label className="text-xs text-muted-foreground">GIF animado del perfil</Label><Input type="file" accept="image/gif" className="mt-2" disabled={busy} onChange={(e) => { const f = e.target.files?.[0]; if (f) void uploadTo("gif_path", f); }} /></div></div> : <p className="mt-2 text-sm text-muted-foreground">Únete al Programa Partner para poner un fondo personalizado y un GIF animado en tu canal.</p>}</div>
-          </TabsContent>
+          <TabsContent value="partner" className="pt-5"><div className="rounded-2xl bg-surface p-6"><div className="flex items-center justify-between gap-2"><Label>Fondo del canal y GIF de perfil</Label><span className="rounded-full bg-primary/15 px-2 py-0.5 text-[11px] font-medium text-primary">Solo Partners</span></div>{canCustomize ? <div className="mt-3 space-y-4"><div><Label className="text-xs text-muted-foreground">Fondo del canal</Label><Input type="file" accept="image/*" className="mt-2" disabled={busy} onChange={(e) => { const f = e.target.files?.[0]; if (f) void uploadTo("background_path", f); }} /></div><div><Label className="text-xs text-muted-foreground">GIF animado del perfil</Label><Input type="file" accept="image/gif" className="mt-2" disabled={busy} onChange={(e) => { const f = e.target.files?.[0]; if (f) void uploadTo("gif_path", f); }} /></div></div> : <p className="mt-2 text-sm text-muted-foreground">Únete al Programa Partner para poner un fondo personalizado y un GIF animado en tu canal.</p>}</div></TabsContent>
         </Tabs>
       </div>
     </AppShell>
