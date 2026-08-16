@@ -14,39 +14,25 @@ export type ProfileLite = {
 export type VideoSort = "recent" | "views" | "oldest" | "subscribers";
 export type VideoCategory = "Autos & Vehicles" | "Comedy" | "Entertainment" | "Film & Animation" | "Gaming" | "Howto & Style" | "Nonprofits & Activism" | "People & Blogs" | "Pets & Animals" | "Science & Technology" | "Sports" | "Travel & Events" | "Education" | "Music";
 
-const BASIC_PROFILE_FIELDS = "id, username, display_name, avatar_path, is_verified";
-const EXTENDED_PROFILE_FIELDS = `${BASIC_PROFILE_FIELDS}, subscriber_count, channel_style`;
-
+// Prefer select(*) for profiles. The project has had schema drift between
+// migrations, and PostgREST can temporarily reject explicitly named newer
+// columns while the wildcard query still works. Keeping the selection broad
+// here prevents harmless UI 400s while retaining the new fields when present.
 export async function fetchProfilesByIds(ids: string[]): Promise<Map<string, ProfileLite>> {
   const unique = [...new Set(ids)].filter(Boolean);
   if (unique.length === 0) return new Map();
-  let { data, error } = await supabase.from("profiles").select(EXTENDED_PROFILE_FIELDS).in("id", unique);
-  if (error) {
-    const fallback = await supabase.from("profiles").select(BASIC_PROFILE_FIELDS).in("id", unique);
-    data = fallback.data;
-    error = fallback.error;
-  }
+  const { data, error } = await supabase.from("profiles").select("*").in("id", unique);
   if (error) throw error;
   return new Map(((data ?? []) as ProfileLite[]).map((p) => [p.id, p]));
 }
 
 export async function searchChannels(search?: string, orderBy: "subscribers" | "recent" = "subscribers") {
   const escaped = search?.trim().replace(/[%_]/g, "\\$&");
-  let { data, error } = await supabase.from("profiles").select(`${EXTENDED_PROFILE_FIELDS}, created_at`).limit(40);
-  if (!error && escaped) {
-    const filtered = await supabase.from("profiles").select(`${EXTENDED_PROFILE_FIELDS}, created_at`).or(`username.ilike.%${escaped}%,display_name.ilike.%${escaped}%`).limit(40);
-    data = filtered.data;
-    error = filtered.error;
-  }
-  if (error) {
-    let fallback = supabase.from("profiles").select(`${BASIC_PROFILE_FIELDS}, created_at`).limit(40);
-    if (escaped) fallback = fallback.or(`username.ilike.%${escaped}%,display_name.ilike.%${escaped}%`);
-    fallback = fallback.order("created_at", { ascending: orderBy === "recent" });
-    const result = await fallback;
-    if (result.error) throw result.error;
-    return (result.data ?? []) as ProfileLite[];
-  }
-  const profiles = (data ?? []) as (ProfileLite & { created_at: string })[];
+  let query = supabase.from("profiles").select("*").limit(40);
+  if (escaped) query = query.or(`username.ilike.%${escaped}%,display_name.ilike.%${escaped}%`);
+  const result = await query;
+  if (result.error) throw result.error;
+  const profiles = (result.data ?? []) as (ProfileLite & { created_at: string })[];
   if (orderBy === "subscribers") profiles.sort((a, b) => Number(b.subscriber_count ?? 0) - Number(a.subscriber_count ?? 0) || b.created_at.localeCompare(a.created_at));
   else profiles.sort((a, b) => a.created_at.localeCompare(b.created_at));
   return profiles;
