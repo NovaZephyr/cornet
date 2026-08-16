@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
-import { lovable } from "@/integrations/lovable/index";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -25,11 +24,11 @@ export const Route = createFileRoute("/auth")({
   component: AuthPage,
 });
 
-// Reemplaza esto con tu Site Key real de Cloudflare Turnstile
-// (Dashboard de Cloudflare → Turnstile → Add Site). También debes
-// pegar la Secret Key correspondiente en Supabase → Authentication →
-// Attack Protection → Enable Captcha protection → Turnstile.
-const TURNSTILE_SITE_KEY = "0x4AAAAAAEQ5ZW7lCUTxm4os"; // TODO: reemplazar
+// Site Key pública de Cloudflare Turnstile (Dashboard de Cloudflare → Turnstile).
+// La validación real ahora la hace Supabase Auth nativamente — actívala en
+// Dashboard de Supabase → Authentication → Attack Protection → Enable Captcha
+// protection → Turnstile, pegando ahí la Secret Key correspondiente.
+const TURNSTILE_SITE_KEY = "0x4AAAAAAEQ5ZW7lCUTxm4os";
 
 declare global {
   interface Window {
@@ -111,17 +110,6 @@ function AuthPage() {
   const { containerRef: signupCaptchaRef, reset: resetSignupCaptcha } =
     useTurnstile(setCaptchaToken);
 
-  // Como Lovable Cloud no expone el CAPTCHA nativo de Supabase Auth,
-  // verificamos el token nosotros mismos contra Cloudflare vía una
-  // Edge Function propia antes de dejar pasar el login/registro.
-  const verifyCaptcha = async (token: string) => {
-    const { data, error } = await supabase.functions.invoke("verify-captcha", {
-      body: { token },
-    });
-    if (error || !data?.success) return false;
-    return true;
-  };
-
   useEffect(() => {
     if (user) void navigate({ to: "/" });
   }, [user, navigate]);
@@ -133,15 +121,12 @@ function AuthPage() {
       return;
     }
     setBusy(true);
-    const captchaOk = await verifyCaptcha(captchaToken);
-    if (!captchaOk) {
-      setBusy(false);
-      resetSigninCaptcha();
-      setCaptchaToken("");
-      toast.error("No pudimos verificar que no eres un robot. Inténtalo de nuevo.");
-      return;
-    }
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    // Supabase valida el captchaToken internamente (Attack Protection → Turnstile)
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+      options: { captchaToken },
+    });
     setBusy(false);
     resetSigninCaptcha();
     setCaptchaToken("");
@@ -164,20 +149,13 @@ function AuthPage() {
       return;
     }
     setBusy(true);
-    const captchaOk = await verifyCaptcha(captchaToken);
-    if (!captchaOk) {
-      setBusy(false);
-      resetSignupCaptcha();
-      setCaptchaToken("");
-      toast.error("No pudimos verificar que no eres un robot. Inténtalo de nuevo.");
-      return;
-    }
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
         emailRedirectTo: window.location.origin,
         data: { username, display_name: username },
+        captchaToken,
       },
     });
     setBusy(false);
@@ -195,15 +173,14 @@ function AuthPage() {
   };
 
   const google = async () => {
-    const result = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: window.location.origin,
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: { redirectTo: window.location.origin },
     });
-    if (result.error) {
+    if (error) {
       toast.error("No se pudo iniciar sesión con Google");
-      return;
     }
-    if (result.redirected) return;
-    void navigate({ to: "/" });
+    // Supabase redirige a Google automáticamente; no hay nada más que hacer aquí.
   };
 
   return (
