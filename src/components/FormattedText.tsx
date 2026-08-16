@@ -30,30 +30,22 @@ export function FormattedText({ text, className }: { text: string; className?: s
     const full = match[0];
     const tag = match[2];
     const index = match.index ?? 0;
-    const prefixLength = full.length - tag.length;
-    const contentStart = index;
-    const tagStart = index + prefixLength;
+    const tagStart = index + full.length - tag.length;
 
-    if (contentStart > last) parts.push(<TwemojiText key={`text-${last}`} children={text.slice(last, tagStart)} />);
-    parts.push(
-      <span key={`tag-${tagStart}`}>
-        <TwemojiText children={text.slice(tagStart, tagStart + tag.length)} />
-      </span>,
-    );
+    if (tagStart > last) parts.push(<TwemojiText key={`text-${last}`} children={text.slice(last, tagStart)} />);
     parts.push(
       <Link
         key={`link-${tagStart}`}
         to="/hashtag/$tag"
         params={{ tag: tag.slice(1) }}
-        className="ml-0.5 font-medium text-primary hover:underline"
+        className="font-medium text-primary hover:underline"
       >
-        <span aria-hidden="true">{tag}</span>
+        <TwemojiText children={tag} />
       </Link>,
     );
     last = tagStart + tag.length;
   }
 
   if (last < text.length) parts.push(<TwemojiText key={`text-${last}`} children={text.slice(last)} />);
-
   return <span className={className}>{parts.length ? parts : <TwemojiText children={text} />}</span>;
 }
