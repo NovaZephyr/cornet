@@ -10,6 +10,7 @@ import type { Session, User } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 
 export type AppRole = "admin" | "moderator" | "partner" | "user";
+export type ChannelStyle = "corenetwork" | "channel-1" | "channel-2" | "cosmic-panda";
 
 export type Profile = {
   id: string;
@@ -24,6 +25,8 @@ export type Profile = {
   warnings_count: number;
   accent_color: string;
   is_verified: boolean;
+  channel_style: ChannelStyle;
+  subscriber_count: number;
   created_at: string;
 };
 
