@@ -12,33 +12,63 @@ import { ReportDialog } from "@/components/ReportDialog";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useAuth, type AppRole, type Profile } from "@/hooks/useAuth";
+import { useAuth, type AppRole, type Profile, type ChannelInfoLayout } from "@/hooks/useAuth";
 import { useSignedUrl } from "@/lib/storage";
 import { fetchVideos } from "@/lib/queries";
 import { useTheme } from "@/hooks/useTheme";
 
 export const Route = createFileRoute("/c/$username")({ head: () => ({ meta: [{ title: "Canal — CoreNetwork" }] }), component: Channel });
 
-type ChannelProfile = Profile & { channel_style?: "corenetwork" | "channel-1" | "channel-2" | "cosmic-panda"; subscriber_count?: number };
+type ChannelProfile = Profile & { channel_style?: "corenetwork" | "channel-1" | "channel-2" | "cosmic-panda"; subscriber_count?: number; channel_primary_color?: string; channel_secondary_color?: string; channel_surface_color?: string; channel_text_color?: string; channel_info_layout?: ChannelInfoLayout };
 
 function RetroChannel({ profile, videos, roles, subs, isSubscribed, isPartnerChannel, partnerGif, onSubscribe, onReport }: { profile: ChannelProfile; videos: Awaited<ReturnType<typeof fetchVideos>>; roles?: AppRole[]; subs: { subscriber_id: string }[]; isSubscribed: boolean; isPartnerChannel: boolean; partnerGif: string | null; onSubscribe: () => void; onReport: () => void }) {
   const style = profile.channel_style ?? "corenetwork";
-  const styleClass = `cn-2012-channel cn-2012-channel--${style}`;
+  const infoLayout = profile.channel_info_layout ?? "left";
+  const styleClass = `cn-2012-channel cn-2012-channel--${style} cn-2012-info--${infoLayout}`;
   const hero = videos[0];
+  const channelVars = {
+    "--cn-channel-primary": profile.channel_primary_color ?? "#1f4fa3",
+    "--cn-channel-secondary": profile.channel_secondary_color ?? "#2aa84a",
+    "--cn-channel-surface": profile.channel_surface_color ?? "#ffffff",
+    "--cn-channel-text": profile.channel_text_color ?? "#222222",
+  } as React.CSSProperties;
+
+  const InfoPanel = infoLayout === "hidden" ? null : (
+    <aside className="cn-2012-about">
+      <h2>Información del canal</h2>
+      <p>{profile.description || "Este canal todavía no tiene descripción."}</p>
+      <div className="mt-3 space-y-1 text-xs opacity-80">
+        <p>Suscriptores: {profile.subscriber_count ?? subs.length}</p>
+        <p>Videos: {videos.length}</p>
+        <p>Estilo: {CHANNEL_STYLE_LABELS[style]}</p>
+      </div>
+    </aside>
+  );
+
   return (
-    <div className={styleClass}>
+    <div className={styleClass} style={channelVars}>
       <div className="cn-2012-cover"><SignedImage path={profile.banner_path} alt={`Banner de ${profile.display_name}`} className="h-full w-full object-cover" /></div>
-      <div className="cn-2012-titlebar"><div className="flex items-center gap-3"><div className="relative"><ChannelAvatar path={profile.avatar_path} name={profile.display_name || profile.username} size={64} />{isPartnerChannel && partnerGif && <img src={partnerGif} alt="" className="absolute -bottom-1 -right-1 h-6 w-6 rounded-full border border-white object-cover" />}</div><div className="min-w-0"><h1 className="truncate text-xl font-bold">{profile.display_name || profile.username}{profile.is_verified && <VerifiedBadge className="ml-1 inline h-4 w-4" />}</h1><p className="text-xs text-muted-foreground">@{profile.username} · {profile.subscriber_count ?? subs.length} suscriptores · {videos.length} videos</p></div></div><div className="flex gap-2"><Button onClick={onSubscribe} variant={isSubscribed ? "secondary" : "default"}>{isSubscribed ? "Suscrito" : "Suscribirse"}</Button><Button onClick={onReport} variant="outline"><Flag className="mr-2 h-4 w-4" />Denunciar</Button></div></div>
+      <div className="cn-2012-titlebar">
+        <div className="flex items-center gap-3">
+          <div className="relative"><ChannelAvatar path={profile.avatar_path} name={profile.display_name || profile.username} size={64} />{isPartnerChannel && partnerGif && <img src={partnerGif} alt="" className="absolute -bottom-1 -right-1 h-6 w-6 rounded-full border object-cover" />}</div>
+          <div className="min-w-0"><h1 className="truncate text-xl font-bold">{profile.display_name || profile.username}{profile.is_verified && <VerifiedBadge className="ml-1 inline h-4 w-4" />}</h1><p className="text-xs opacity-75">@{profile.username} · {profile.subscriber_count ?? subs.length} suscriptores · {videos.length} videos</p></div>
+        </div>
+        <div className="flex gap-2"><Button onClick={onSubscribe} variant={isSubscribed ? "secondary" : "default"} className="cn-2012-retro-button">{isSubscribed ? "Suscrito" : "Suscribirse"}</Button><Button onClick={onReport} variant="outline" className="cn-2012-retro-button"><Flag className="mr-2 h-4 w-4" />Denunciar</Button></div>
+      </div>
       <div className="cn-2012-tabs"><span className="is-active">Videos</span><span>Información</span><span>Comunidad</span><span>Playlists</span></div>
       {style === "channel-2" && hero ? <div className="cn-2012-feature"><VideoCard video={hero} compact /></div> : null}
+      {infoLayout === "top" && InfoPanel}
       <div className="cn-2012-body">
-        {(style === "channel-1" || style === "cosmic-panda") && <aside className="cn-2012-about"><h2>Sobre este canal</h2><p>{profile.description || "Este canal todavía no tiene descripción."}</p><div className="mt-3 space-y-1 text-xs text-muted-foreground"><p>Suscriptores: {profile.subscriber_count ?? subs.length}</p><p>Videos: {videos.length}</p><p>Estilo: {style === "cosmic-panda" ? "Cosmic Panda" : "Channel 1.0"}</p></div></aside>}
-        <section className="min-w-0 flex-1"><div className="cn-2012-section-title"><span>{style === "cosmic-panda" ? "Videos recientes" : style === "channel-2" ? "Videos destacados" : "Videos"}</span><span className="text-[11px] text-muted-foreground">Ver todos</span></div>{videos.length > 0 ? <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">{videos.slice(style === "channel-2" ? 1 : 0).map((video) => <VideoCard key={video.id} video={video} />)}</div> : <p className="py-12 text-center text-sm text-muted-foreground">Este canal todavía no tiene videos.</p>}</section>
+        {infoLayout === "left" && InfoPanel}
+        <section className="cn-2012-video-column"><div className="cn-2012-section-title"><span>{style === "cosmic-panda" ? "Videos recientes" : style === "channel-2" ? "Videos destacados" : "Videos"}</span><span>Ver todos</span></div>{videos.length > 0 ? <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">{videos.slice(style === "channel-2" ? 1 : 0).map((video) => <VideoCard key={video.id} video={video} />)}</div> : <p className="cn-2012-empty">Este canal todavía no tiene videos.</p>}</section>
+        {infoLayout === "right" && InfoPanel}
       </div>
       {(roles?.length ?? 0) > 0 && <div className="cn-2012-badges">{roles?.includes("partner") && <Badge>Partner</Badge>}{roles?.includes("admin") && <Badge variant="secondary">Administrador</Badge>}{roles?.includes("moderator") && <Badge variant="secondary">Moderador</Badge>}</div>}
     </div>
   );
 }
+
+const CHANNEL_STYLE_LABELS: Record<string, string> = { corenetwork: "CoreNetwork", "channel-1": "Channel 1.0", "channel-2": "Channel 2.0", "cosmic-panda": "Cosmic Panda" };
 
 function Channel() {
   const { username } = Route.useParams();
