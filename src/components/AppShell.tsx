@@ -150,6 +150,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         </form>
 
         <div className="ml-auto flex items-center gap-2">
+          <ThemeMenu />
           {user ? (
             <>
               {isAdmin && (
