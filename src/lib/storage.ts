@@ -4,27 +4,31 @@ import { supabase } from "@/integrations/supabase/client";
 const cache = new Map<string, { url: string; expires: number }>();
 const inflight = new Map<string, Promise<string | null>>();
 
-const TTL = 60 * 60; // 1h
+const TTL = 60 * 60;
 
 /** Paths are stored as "bucket/path/to/file". */
 export async function getSignedUrl(fullPath?: string | null): Promise<string | null> {
   if (!fullPath) return null;
-  const hit = cache.get(fullPath);
-  if (hit && hit.expires > Date.now()) return hit.url;
-  const existing = inflight.get(fullPath);
-  if (existing) return existing;
+  if (/^https?:\/\//i.test(fullPath)) return fullPath;
 
   const slash = fullPath.indexOf("/");
   if (slash < 0) return null;
   const bucket = fullPath.slice(0, slash);
   const key = fullPath.slice(slash + 1);
 
-  // Public media never needs a signed URL. Using getPublicUrl also avoids
-  // noisy 400s when old database rows point at deleted media objects.
+  // Channel avatars, banners, backgrounds and thumbnails live in the public
+  // media bucket. Do not call /object/sign for these: old/missing objects
+  // otherwise produce noisy 400 responses even though the rest of the page
+  // is healthy.
   if (bucket === "media") {
-    const { data } = supabase.storage.from(bucket).getPublicUrl(key);
+    const { data } = supabase.storage.from("media").getPublicUrl(key);
     return data.publicUrl || null;
   }
+
+  const hit = cache.get(fullPath);
+  if (hit && hit.expires > Date.now()) return hit.url;
+  const existing = inflight.get(fullPath);
+  if (existing) return existing;
 
   const promise = supabase.storage
     .from(bucket)
@@ -47,6 +51,11 @@ export async function getSignedUrl(fullPath?: string | null): Promise<string | n
 export function useSignedUrl(fullPath?: string | null) {
   const [url, setUrl] = useState<string | null>(() => {
     if (!fullPath) return null;
+    if (/^https?:\/\//i.test(fullPath)) return fullPath;
+    if (fullPath.startsWith("media/")) {
+      const key = fullPath.slice("media/".length);
+      return supabase.storage.from("media").getPublicUrl(key).data.publicUrl || null;
+    }
     const hit = cache.get(fullPath);
     return hit && hit.expires > Date.now() ? hit.url : null;
   });
