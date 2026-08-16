@@ -1,4 +1,4 @@
-project_id = "owgctiiwuxuhudoyepgi"
+project_id = "mvwpxnszcpyayofqgtmv"
 
 [functions.verify-captcha]
 verify_jwt = false
