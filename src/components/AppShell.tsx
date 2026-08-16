@@ -10,6 +10,7 @@ import { THEMES, useTheme, type ThemeId } from "@/hooks/useTheme";
 import { SiteBanner } from "@/components/SiteBanner";
 import { cn } from "@/lib/utils";
 import logoMark from "@/assets/corenetwork-mark.png";
+import "@/retro2012.css";
 
 const THEME_GROUPS = Array.from(new Set(THEMES.map((t) => t.group)));
 type NavItem = { to: string; label: string; icon: typeof Home };
