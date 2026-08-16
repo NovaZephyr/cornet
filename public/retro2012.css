@@ -1,87 +1,14 @@
-[data-theme="retro2012"]{--cn-2012-blue:#3f6f9f;--cn-2012-dark:#2f4050;--cn-2012-border:#c7c7c7;--cn-2012-page:#e9e9e9;--cn-2012-panel:#fff;font-family:Arial,Helvetica,sans-serif}
+[data-theme="retro2012"]{font-family:Arial,Helvetica,sans-serif}
 [data-theme="retro2012"] body{background:#e8e8e8!important;background-image:linear-gradient(#f7f7f7,#e7e7e7 180px,#e9e9e9)!important;color:#222}
 [data-theme="retro2012"] header{background:linear-gradient(#444f5a,#303942)!important;border-bottom:1px solid #20262c!important;box-shadow:0 1px 2px rgb(0 0 0/.25)!important;color:#fff}
-[data-theme="retro2012"] header a{color:#fff}
-[data-theme="retro2012"] header input{background:#fff!important;color:#222!important;border-color:#20262c!important}
-[data-theme="retro2012"] header button{background:linear-gradient(#fafafa,#d9d9d9)!important;color:#333!important;border:1px solid #aaa!important}
-[data-theme="retro2012"] aside{background:linear-gradient(#f7f7f7,#ededed)!important;border-right:1px solid #cfcfcf!important}
-[data-theme="retro2012"] main{padding-top:10px}
-[data-theme="retro2012"] footer{background:linear-gradient(#eee,#ddd)!important;border-top:1px solid #c8c8c8!important;color:#555}
-[data-theme="retro2012"] footer a{color:#4d4d4d}
-[data-theme="retro2012"] .rounded-2xl,[data-theme="retro2012"] .rounded-xl{border-radius:2px!important}
-.cn-2012-explore{display:flex;gap:14px;max-width:1180px;margin:0 auto;padding:8px}
-.cn-2012-explore-side{width:190px;flex:none;position:sticky;top:68px;height:max-content;padding:8px;background:#f4f4f4;border:1px solid var(--cn-2012-border);box-shadow:0 1px 1px rgb(0 0 0/.08)}
-.cn-2012-explore-side h2{font-size:13px;font-weight:700;padding:6px 8px;margin:0 0 4px;border-bottom:1px solid #d5d5d5;color:#444}
-.cn-2012-category-link{display:flex;gap:7px;align-items:center;padding:6px 8px;font-size:12px;color:#444;text-decoration:none;border-radius:2px}
-.cn-2012-category-link:hover,.cn-2012-category-link:first-of-type{background:#ddd;color:#111}
-.cn-2012-explore-heading{padding:10px 12px;margin-bottom:8px;background:#fff;border:1px solid var(--cn-2012-border)}
-.cn-2012-explore-heading h1{font-size:21px;font-weight:700;margin:0}.cn-2012-explore-heading p{font-size:12px;color:#777;margin:3px 0 0}
-.cn-2012-video-section{margin-bottom:18px}
-.cn-2012-section-title{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:6px 8px;margin-bottom:7px;background:linear-gradient(#fdfdfd,#e8e8e8);border:1px solid var(--cn-2012-border);font-size:13px;font-weight:700;color:#333}
-.cn-2012-section-title a,.cn-2012-section-title>span:last-child{font-size:11px;font-weight:400;color:#4a6f93;text-decoration:none}
-.cn-2012-empty{padding:18px 10px;background:#fff;border:1px solid var(--cn-2012-border);font-size:12px;color:#777}
-
-/* Channel 1.0 — referencia 1: era de canales altamente personalizados, colores fuertes y paneles independientes. */
-.cn-2012-channel{max-width:1120px;margin:8px auto;padding:8px;background:#e5e5e5}
-.cn-2012-cover{height:180px;background:#d6d6d6;border:1px solid #bbb;overflow:hidden}
-.cn-2012-titlebar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px 12px;background:linear-gradient(#fff,#e7e7e7);border:1px solid #c4c4c4;border-top:0}
-.cn-2012-titlebar h1{font-size:20px;color:#222}.cn-2012-tabs{display:flex;background:#3f4f5d;border:1px solid #2d3942;border-top:0}.cn-2012-tabs span{padding:8px 16px;color:#e8e8e8;font-size:12px;border-right:1px solid #64717c}.cn-2012-tabs .is-active{background:#fff;color:#333;font-weight:700}
-.cn-2012-body{display:flex;gap:12px;margin-top:10px}.cn-2012-about{width:210px;flex:none;background:#fff;border:1px solid #c7c7c7;padding:11px;font-size:12px;color:#555}.cn-2012-about h2{font-size:13px;color:#333;margin:0 0 8px;padding-bottom:5px;border-bottom:1px solid #ddd}
-.cn-2012-feature{margin-top:10px;background:#fff;border:1px solid #c7c7c7;padding:8px}.cn-2012-badges{margin-top:8px;padding:7px;background:#eee;border:1px solid #ccc}
-.cn-2012-channel--channel-1{background:linear-gradient(135deg,#02115c 0%,#0a4ec1 26%,#07a56b 27%,#00d44a 100%);padding:10px;box-shadow:0 0 0 3px #0816b6 inset}
-.cn-2012-channel--channel-1 .cn-2012-cover{height:205px;background:#050505;border:4px solid #0722ff;box-shadow:0 0 0 3px #07117e inset}
-.cn-2012-channel--channel-1 .cn-2012-titlebar{background:linear-gradient(90deg,#0738e8 0%,#0c56f3 65%,#00c447 65%);border:4px solid #001e91;border-bottom:0;color:#fff}
-.cn-2012-channel--channel-1 .cn-2012-titlebar h1,.cn-2012-channel--channel-1 .cn-2012-titlebar p{color:#fff}
-.cn-2012-channel--channel-1 .cn-2012-tabs{background:#00b83f;border:4px solid #001e91;border-top:0}
-.cn-2012-channel--channel-1 .cn-2012-tabs span{border-right:1px solid #00df55;color:#d7ffdc;font-weight:700}
-.cn-2012-channel--channel-1 .cn-2012-tabs .is-active{background:#ff00d9;color:#fff;box-shadow:inset 0 -2px 0 #6d0061}
-.cn-2012-channel--channel-1 .cn-2012-body{display:grid;grid-template-columns:minmax(0,1fr) 285px;gap:10px}
-.cn-2012-channel--channel-1 .cn-2012-body section{order:1;background:#02125c;padding:8px;border:4px solid #001e91}
-.cn-2012-channel--channel-1 .cn-2012-about{order:2;width:auto;background:#08af45;color:#fff;border:4px solid #001e91}
-.cn-2012-channel--channel-1 .cn-2012-about h2{color:#fff;border-bottom-color:#00df55}
-.cn-2012-channel--channel-1 .cn-2012-section-title{background:#06bf48;color:#fff;border-color:#001e91}
-.cn-2012-channel--channel-1 .cn-2012-section-title a,.cn-2012-channel--channel-1 .cn-2012-section-title>span:last-child{color:#fff}
-
-/* Channel 2.0 — referencia 2: canal oscuro, gris carbón, perfil a la izquierda y contenido central muy compacto. */
-.cn-2012-channel--channel-2{max-width:980px;background:#3c3c3c;color:#e7e7e7;padding:0 8px 12px;box-shadow:0 2px 0 #111}
-.cn-2012-channel--channel-2 .cn-2012-cover{height:90px;background:#151515;border:0;border-bottom:5px solid #222}
-.cn-2012-channel--channel-2 .cn-2012-titlebar{background:#262626;border:0;padding:12px 14px;color:#fff}
-.cn-2012-channel--channel-2 .cn-2012-titlebar h1{color:#fff;font-size:18px}
-.cn-2012-channel--channel-2 .cn-2012-titlebar p{color:#aaa}
-.cn-2012-channel--channel-2 .cn-2012-tabs{background:#151515;border:0}
-.cn-2012-channel--channel-2 .cn-2012-tabs span{padding:7px 15px;color:#c9c9c9;border-color:#3c3c3c}
-.cn-2012-channel--channel-2 .cn-2012-tabs .is-active{background:#3a3a3a;color:#fff}
-.cn-2012-channel--channel-2 .cn-2012-feature{background:#202020;border-color:#111;padding:12px}
-.cn-2012-channel--channel-2 .cn-2012-body{display:grid;grid-template-columns:270px minmax(0,1fr);gap:12px;background:#4a4a4a;padding:10px}
-.cn-2012-channel--channel-2 .cn-2012-about{width:auto;background:#2b2b2b;border-color:#111;color:#c7c7c7}
-.cn-2012-channel--channel-2 .cn-2012-about h2{color:#fff;border-bottom-color:#4d4d4d}
-.cn-2012-channel--channel-2 .cn-2012-section-title{background:#1f1f1f;color:#fff;border-color:#101010}
-.cn-2012-channel--channel-2 .cn-2012-section-title a,.cn-2012-channel--channel-2 .cn-2012-section-title>span:last-child{color:#aaa}
-.cn-2012-channel--channel-2 .cn-2012-badges{background:#2b2b2b;border-color:#111}
-
-/* Cosmic Panda — referencia 3: layout central, header oscuro y marcos laterales propios de una skin de canal. */
-.cn-2012-channel--cosmic-panda{max-width:1120px;background:#101820;padding:0 10px 14px;border:1px solid #29333c;box-shadow:0 0 18px rgb(0 0 0/.22)}
-.cn-2012-channel--cosmic-panda .cn-2012-cover{height:190px;background:radial-gradient(circle at 30% 30%,#364a5d,#192430 60%,#101820);border:0;position:relative}
-.cn-2012-channel--cosmic-panda .cn-2012-cover:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent 0 74%,rgb(0 0 0/.3) 100%),repeating-linear-gradient(135deg,rgb(255 255 255/.03) 0 1px,transparent 1px 9px);pointer-events:none}
-.cn-2012-channel--cosmic-panda .cn-2012-titlebar{background:#202b35;border:0;color:#fff;padding:11px 14px}
-.cn-2012-channel--cosmic-panda .cn-2012-titlebar h1{color:#fff;font-size:21px}
-.cn-2012-channel--cosmic-panda .cn-2012-titlebar p{color:#a9b7c2}
-.cn-2012-channel--cosmic-panda .cn-2012-tabs{background:#111a21;border:0}
-.cn-2012-channel--cosmic-panda .cn-2012-tabs span{border-right:1px solid #32404c;color:#aeb8c2;padding:8px 17px}
-.cn-2012-channel--cosmic-panda .cn-2012-tabs .is-active{background:#293743;color:#fff}
-.cn-2012-channel--cosmic-panda .cn-2012-body{display:grid;grid-template-columns:250px minmax(0,1fr);gap:12px;background:#17212a;padding:12px}
-.cn-2012-channel--cosmic-panda .cn-2012-about{width:auto;background:#0f171d;border-color:#2d3943;color:#aab5bf}
-.cn-2012-channel--cosmic-panda .cn-2012-about h2{color:#fff;border-bottom-color:#33424e}
-.cn-2012-channel--cosmic-panda .cn-2012-section-title{background:linear-gradient(#eef2f5,#d8dee4);color:#26343e;border-color:#aeb7bf}
-.cn-2012-channel--cosmic-panda .cn-2012-section-title a,.cn-2012-channel--cosmic-panda .cn-2012-section-title>span:last-child{color:#496a85}
-.cn-2012-channel--cosmic-panda .cn-2012-badges{background:#111a21;border-color:#2d3943}
-
-/* Retro information / About page */
-.cn-2012-about-page{max-width:960px;margin:8px auto;padding:10px;background:#e5e5e5;border:1px solid #c4c4c4}
-.cn-2012-about-page .cn-2012-about-hero{background:linear-gradient(#4a5966,#2f3b45);color:#fff;border:1px solid #202a32;padding:16px 18px}
-.cn-2012-about-page .cn-2012-about-hero h1{font-size:25px;margin:0}.cn-2012-about-page .cn-2012-about-hero p{font-size:12px;color:#d1d8dd;margin:5px 0 0}
-.cn-2012-about-page .cn-2012-about-grid{display:grid;grid-template-columns:240px minmax(0,1fr);gap:10px;margin-top:10px}
-.cn-2012-about-page .cn-2012-about-nav{background:#f4f4f4;border:1px solid #c8c8c8;padding:8px;height:max-content}.cn-2012-about-page .cn-2012-about-nav a{display:block;padding:6px 8px;color:#455c6f;font-size:12px;text-decoration:none;border-bottom:1px solid #e1e1e1}.cn-2012-about-page .cn-2012-about-nav a:hover{background:#ddd;color:#222}
-.cn-2012-about-page .cn-2012-about-content{display:grid;gap:8px}.cn-2012-about-page .cn-2012-about-card{background:#fff;border:1px solid #c6c6c6;padding:13px}.cn-2012-about-page .cn-2012-about-card h2{font-size:14px;margin:0 0 5px;color:#2d3c47}.cn-2012-about-page .cn-2012-about-card p{font-size:12px;line-height:1.55;color:#5b5b5b;margin:0}
-
-@media (max-width:900px){.cn-2012-explore-side{display:none}.cn-2012-explore{padding:4px}.cn-2012-body{display:block}.cn-2012-about{width:auto;margin-bottom:10px}.cn-2012-cover{height:140px}.cn-2012-titlebar{align-items:flex-start;flex-direction:column}.cn-2012-tabs{overflow-x:auto}.cn-2012-tabs span{white-space:nowrap}.cn-2012-channel--channel-1 .cn-2012-body,.cn-2012-channel--channel-2 .cn-2012-body,.cn-2012-channel--cosmic-panda .cn-2012-body,.cn-2012-about-page .cn-2012-about-grid{display:block}.cn-2012-channel--channel-1 .cn-2012-about,.cn-2012-channel--channel-2 .cn-2012-about,.cn-2012-channel--cosmic-panda .cn-2012-about{margin-top:10px}.cn-2012-channel--channel-1 .cn-2012-cover{height:160px}.cn-2012-channel--channel-2 .cn-2012-cover{height:76px}.cn-2012-channel--cosmic-panda .cn-2012-cover{height:150px}}
+[data-theme="retro2012"] header a{color:#fff}[data-theme="retro2012"] header input{background:#fff!important;color:#222!important;border-color:#20262c!important}[data-theme="retro2012"] header button{background:linear-gradient(#fafafa,#d9d9d9)!important;color:#333!important;border:1px solid #aaa!important}[data-theme="retro2012"] aside{background:linear-gradient(#f7f7f7,#ededed)!important;border-right:1px solid #cfcfcf!important}[data-theme="retro2012"] main{padding-top:10px}[data-theme="retro2012"] footer{background:linear-gradient(#eee,#ddd)!important;border-top:1px solid #c8c8c8!important;color:#555}[data-theme="retro2012"] footer a{color:#4d4d4d}[data-theme="retro2012"] .rounded-2xl,[data-theme="retro2012"] .rounded-xl{border-radius:2px!important}
+.cn-2012-explore{display:flex;gap:14px;max-width:1180px;margin:0 auto;padding:8px}.cn-2012-explore-side{width:190px;flex:none;position:sticky;top:68px;height:max-content;padding:8px;background:#f4f4f4;border:1px solid #c7c7c7}.cn-2012-category-link{display:flex;gap:7px;align-items:center;padding:6px 8px;font-size:12px;color:#444;text-decoration:none;border-radius:2px}.cn-2012-category-link:hover{background:#ddd;color:#111}.cn-2012-explore-heading{padding:10px 12px;margin-bottom:8px;background:#fff;border:1px solid #c7c7c7}.cn-2012-explore-heading h1{font-size:21px;font-weight:700;margin:0}.cn-2012-explore-heading p{font-size:12px;color:#777;margin:3px 0 0}.cn-2012-video-section{margin-bottom:18px}
+.cn-2012-section-title{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:6px 8px;margin-bottom:7px;background:linear-gradient(#fdfdfd,#e8e8e8);border:1px solid var(--cn-channel-primary,#c7c7c7);font-size:13px;font-weight:700;color:var(--cn-channel-text,#333)}.cn-2012-section-title>span:last-child{font-size:11px;font-weight:400;color:var(--cn-channel-primary,#4a6f93)}.cn-2012-empty{padding:18px 10px;background:var(--cn-channel-surface,#fff);border:1px solid var(--cn-channel-primary,#c7c7c7);font-size:12px;color:var(--cn-channel-text,#777)}
+.cn-2012-channel{max-width:1120px;margin:8px auto;padding:8px;background:var(--cn-channel-surface,#e5e5e5);color:var(--cn-channel-text,#222);border:1px solid var(--cn-channel-primary,#bbb)}.cn-2012-cover{height:180px;background:var(--cn-channel-primary,#d6d6d6);border:1px solid var(--cn-channel-primary,#bbb);overflow:hidden}.cn-2012-titlebar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px 12px;background:var(--cn-channel-surface,#fff);color:var(--cn-channel-text,#222);border:1px solid var(--cn-channel-primary,#c4c4c4);border-top:0}.cn-2012-titlebar h1{font-size:20px;color:var(--cn-channel-text,#222)}.cn-2012-tabs{display:flex;background:var(--cn-channel-primary,#3f4f5d);border:1px solid var(--cn-channel-primary,#2d3942);border-top:0}.cn-2012-tabs span{padding:8px 16px;color:var(--cn-channel-surface,#fff);font-size:12px;border-right:1px solid color-mix(in srgb,var(--cn-channel-secondary,#fff) 45%,transparent)}.cn-2012-tabs .is-active{background:var(--cn-channel-surface,#fff);color:var(--cn-channel-text,#333);font-weight:700}.cn-2012-body{display:flex;gap:12px;margin-top:10px}.cn-2012-video-column{min-width:0;flex:1}.cn-2012-about{width:210px;flex:none;background:var(--cn-channel-surface,#fff);border:1px solid var(--cn-channel-primary,#c7c7c7);padding:11px;font-size:12px;color:var(--cn-channel-text,#555)}.cn-2012-about h2{font-size:13px;color:var(--cn-channel-text,#333);margin:0 0 8px;padding-bottom:5px;border-bottom:2px solid var(--cn-channel-secondary,#ddd)}.cn-2012-feature{margin-top:10px;background:var(--cn-channel-surface,#fff);border:1px solid var(--cn-channel-primary,#c7c7c7);padding:8px}.cn-2012-badges{margin-top:8px;padding:7px;background:var(--cn-channel-secondary,#eee);border:1px solid var(--cn-channel-primary,#ccc)}.cn-2012-retro-button{border-color:var(--cn-channel-primary,#aaa)!important;background:var(--cn-channel-primary,#eee)!important;color:var(--cn-channel-surface,#fff)!important}
+.cn-2012-info--top .cn-2012-about{width:auto;margin-top:10px}.cn-2012-info--right .cn-2012-body{flex-direction:row}.cn-2012-info--hidden .cn-2012-body{display:block}
+/* La estructura cambia por era; la paleta siempre viene del usuario. */
+.cn-2012-channel--channel-1{max-width:1120px;padding:10px;border-width:4px}.cn-2012-channel--channel-1 .cn-2012-cover{height:205px;border-width:4px}.cn-2012-channel--channel-1 .cn-2012-titlebar{border-top:4px solid var(--cn-channel-primary,#1f4fa3)}.cn-2012-channel--channel-1 .cn-2012-tabs{border-width:4px}.cn-2012-channel--channel-1 .cn-2012-tabs .is-active{background:var(--cn-channel-secondary,#2aa84a);color:var(--cn-channel-text,#222)}.cn-2012-channel--channel-1 .cn-2012-body{display:grid;grid-template-columns:minmax(0,1fr) 285px;gap:10px}.cn-2012-channel--channel-1 .cn-2012-body section{background:var(--cn-channel-surface,#fff);padding:8px;border:3px solid var(--cn-channel-primary,#1f4fa3)}
+.cn-2012-channel--channel-2{max-width:980px;padding:0 8px 12px;box-shadow:0 2px 0 var(--cn-channel-primary,#111)}.cn-2012-channel--channel-2 .cn-2012-cover{height:90px;border:0;border-bottom:5px solid var(--cn-channel-primary,#222)}.cn-2012-channel--channel-2 .cn-2012-titlebar{border:0}.cn-2012-channel--channel-2 .cn-2012-tabs{border:0;background:var(--cn-channel-primary,#151515)}.cn-2012-channel--channel-2 .cn-2012-feature{border-color:var(--cn-channel-primary,#111);padding:12px}.cn-2012-channel--channel-2 .cn-2012-body{display:grid;grid-template-columns:270px minmax(0,1fr);gap:12px;background:var(--cn-channel-secondary,#4a4a4a);padding:10px}.cn-2012-channel--channel-2 .cn-2012-about{width:auto}.cn-2012-channel--channel-2 .cn-2012-section-title{background:var(--cn-channel-surface,#fff)}
+.cn-2012-channel--cosmic-panda{max-width:1120px;padding:0 10px 14px;box-shadow:0 0 18px rgb(0 0 0/.22)}.cn-2012-channel--cosmic-panda .cn-2012-cover{height:190px;border:0;background:var(--cn-channel-primary,#263847)}.cn-2012-channel--cosmic-panda .cn-2012-titlebar{border:0;box-shadow:inset 0 -3px 0 var(--cn-channel-secondary,#e9edf1)}.cn-2012-channel--cosmic-panda .cn-2012-tabs{border:0;background:var(--cn-channel-primary,#111a21)}.cn-2012-channel--cosmic-panda .cn-2012-body{display:grid;grid-template-columns:250px minmax(0,1fr);gap:12px;background:var(--cn-channel-secondary,#17212a);padding:12px}.cn-2012-channel--cosmic-panda .cn-2012-about{width:auto}.cn-2012-channel--cosmic-panda .cn-2012-section-title{background:var(--cn-channel-surface,#fff)}
+.cn-2012-about-page{max-width:960px;margin:8px auto;padding:10px;background:#e5e5e5;border:1px solid #c4c4c4}.cn-2012-about-page .cn-2012-about-hero{background:linear-gradient(var(--cn-channel-primary,#4a5966),var(--cn-channel-secondary,#2f3b45));color:#fff;border:1px solid var(--cn-channel-primary,#202a32);padding:16px 18px}.cn-2012-about-page .cn-2012-about-hero h1{font-size:25px;margin:0}.cn-2012-about-page .cn-2012-about-hero p{font-size:12px;color:#fff;margin:5px 0 0}.cn-2012-about-page .cn-2012-about-grid{display:grid;grid-template-columns:240px minmax(0,1fr);gap:10px;margin-top:10px}.cn-2012-about-page .cn-2012-about-nav{background:var(--cn-channel-surface,#f4f4f4);border:1px solid var(--cn-channel-primary,#c8c8c8);padding:8px;height:max-content}.cn-2012-about-page .cn-2012-about-nav a{display:block;padding:6px 8px;color:var(--cn-channel-primary,#455c6f);font-size:12px;text-decoration:none;border-bottom:1px solid #e1e1e1}.cn-2012-about-page .cn-2012-about-content{display:grid;gap:8px}.cn-2012-about-page .cn-2012-about-card{background:var(--cn-channel-surface,#fff);border:1px solid var(--cn-channel-primary,#c6c6c6);padding:13px}.cn-2012-about-page .cn-2012-about-card h2{font-size:14px;margin:0 0 5px;color:var(--cn-channel-text,#2d3c47)}.cn-2012-about-page .cn-2012-about-card p{font-size:12px;line-height:1.55;color:var(--cn-channel-text,#5b5b5b);margin:0}
+@media (max-width:900px){.cn-2012-explore-side{display:none}.cn-2012-explore{padding:4px}.cn-2012-body{display:block}.cn-2012-about{width:auto!important;margin-bottom:10px}.cn-2012-cover{height:140px}.cn-2012-titlebar{align-items:flex-start;flex-direction:column}.cn-2012-tabs{overflow-x:auto}.cn-2012-tabs span{white-space:nowrap}.cn-2012-channel--channel-1 .cn-2012-body,.cn-2012-channel--channel-2 .cn-2012-body,.cn-2012-channel--cosmic-panda .cn-2012-body,.cn-2012-about-page .cn-2012-about-grid{display:block}.cn-2012-channel--channel-1 .cn-2012-cover{height:160px}.cn-2012-channel--channel-2 .cn-2012-cover{height:76px}.cn-2012-channel--cosmic-panda .cn-2012-cover{height:150px}}
