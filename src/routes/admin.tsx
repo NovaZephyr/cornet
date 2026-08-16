@@ -1,27 +1,35 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   AlertTriangle,
   Ban,
   BadgeCheck,
+  Megaphone,
   Search,
   ShieldCheck,
   Trash2,
   Video as VideoIcon,
+  Plus,
+  X,
+  Radio,
 } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { AppShell } from "@/components/AppShell";
-import { ChannelAvatar, VerifiedBadge } from "@/components/Media";
+import { ChannelAvatar, VerifiedBadge, SignedImage } from "@/components/Media";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { IconPicker } from "@/components/IconPicker";
 import { useAuth, type AppRole, type Profile } from "@/hooks/useAuth";
 import { timeAgo } from "@/lib/format";
 import { deleteUserAccount as deleteAccount } from "@/lib/admin.functions";
+import { uploadFile } from "@/lib/storage";
 
 export const Route = createFileRoute("/admin")({
   head: () => ({
@@ -29,7 +37,7 @@ export const Route = createFileRoute("/admin")({
       { title: "Panel de administración — CoreNetwork" },
       {
         name: "description",
-        content: "Gestiona usuarios, roles, verificación, videos y solicitudes del programa Partner.",
+        content: "Gestiona usuarios, roles, verificación, videos, anuncios y el banner del sitio.",
       },
       { property: "og:title", content: "Panel de administración — CoreNetwork" },
       { property: "og:description", content: "Herramientas de moderación de CoreNetwork." },
@@ -40,11 +48,6 @@ export const Route = createFileRoute("/admin")({
 
 const ROLES: AppRole[] = ["admin", "moderator", "partner", "user"];
 
-// Estas columnas/tablas son adicionales a lo que ya tenías:
-// - profiles.is_banned (boolean, default false)
-// - profiles.warnings_count (integer, default 0)
-// - tabla user_warnings (id, user_id, reason, issued_by, created_at)
-// Ajusta los nombres si en tu base de datos se llaman distinto.
 type AdminProfile = Profile & {
   roles: AppRole[];
   is_banned?: boolean;
@@ -57,6 +60,351 @@ interface AdminVideo {
   user_id: string;
   views: number | null;
   created_at: string;
+}
+
+type Announcement = {
+  id: string;
+  author_id: string;
+  title: string;
+  body: string | null;
+  image_path: string | null;
+  post_type: "text" | "image" | "poll";
+  created_at: string;
+};
+
+type SiteBannerRow = {
+  message: string;
+  color: string;
+  icon: string | null;
+  dismissible: boolean;
+  is_active: boolean;
+  updated_at: string;
+};
+
+// ============================================================
+// Sección: Anuncios (blog)
+// ============================================================
+function AnnouncementsSection() {
+  const { user } = useAuth();
+  const qc = useQueryClient();
+  const [title, setTitle] = useState("");
+  const [body, setBody] = useState("");
+  const [postType, setPostType] = useState<"text" | "image" | "poll">("text");
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [pollOptions, setPollOptions] = useState<string[]>(["", ""]);
+  const [busy, setBusy] = useState(false);
+
+  const { data: announcements } = useQuery({
+    queryKey: ["admin-announcements"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("announcements")
+        .select("*")
+        .order("created_at", { ascending: false });
+      if (error) throw error;
+      return (data ?? []) as Announcement[];
+    },
+  });
+
+  const resetForm = () => {
+    setTitle("");
+    setBody("");
+    setPostType("text");
+    setImageFile(null);
+    setPollOptions(["", ""]);
+  };
+
+  const publish = async () => {
+    if (!user) return;
+    if (!title.trim()) {
+      toast.error("Ponle un título al anuncio");
+      return;
+    }
+    if (postType === "image" && !imageFile) {
+      toast.error("Selecciona una imagen");
+      return;
+    }
+    const cleanOptions = pollOptions.map((o) => o.trim()).filter(Boolean);
+    if (postType === "poll" && cleanOptions.length < 2) {
+      toast.error("Agrega al menos 2 opciones para la encuesta");
+      return;
+    }
+
+    setBusy(true);
+    try {
+      let image_path: string | null = null;
+      if (postType === "image" && imageFile) {
+        image_path = await uploadFile("media", user.id, imageFile, "announcement-");
+      }
+
+      const { data: created, error } = await supabase
+        .from("announcements")
+        .insert({
+          author_id: user.id,
+          title: title.trim(),
+          body: body.trim() || null,
+          image_path,
+          post_type: postType,
+        })
+        .select()
+        .single();
+      if (error) throw error;
+
+      if (postType === "poll") {
+        const rows = cleanOptions.map((label, i) => ({
+          announcement_id: created.id,
+          label,
+          position: i,
+        }));
+        const { error: optError } = await supabase.from("announcement_poll_options").insert(rows);
+        if (optError) throw optError;
+      }
+
+      toast.success("Anuncio publicado");
+      resetForm();
+      void qc.invalidateQueries({ queryKey: ["admin-announcements"] });
+      void qc.invalidateQueries({ queryKey: ["announcements"] });
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "No se pudo publicar");
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const remove = async (id: string) => {
+    if (!window.confirm("¿Eliminar este anuncio?")) return;
+    const { error } = await supabase.from("announcements").delete().eq("id", id);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+    toast.success("Anuncio eliminado");
+    void qc.invalidateQueries({ queryKey: ["admin-announcements"] });
+    void qc.invalidateQueries({ queryKey: ["announcements"] });
+  };
+
+  return (
+    <div className="space-y-6">
+      <div className="rounded-xl bg-surface p-4">
+        <h3 className="mb-3 font-medium">Nuevo anuncio</h3>
+        <div className="space-y-3">
+          <Input
+            placeholder="Título"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+          <Textarea
+            placeholder="Contenido (opcional)"
+            rows={3}
+            value={body}
+            onChange={(e) => setBody(e.target.value)}
+          />
+
+          <div className="flex gap-2">
+            {(["text", "image", "poll"] as const).map((t) => (
+              <Button
+                key={t}
+                type="button"
+                size="sm"
+                variant={postType === t ? "default" : "outline"}
+                className="rounded-full capitalize"
+                onClick={() => setPostType(t)}
+              >
+                {t === "text" ? "Texto" : t === "image" ? "Imagen" : "Encuesta"}
+              </Button>
+            ))}
+          </div>
+
+          {postType === "image" && (
+            <Input
+              type="file"
+              accept="image/*"
+              onChange={(e) => setImageFile(e.target.files?.[0] ?? null)}
+            />
+          )}
+
+          {postType === "poll" && (
+            <div className="space-y-2">
+              {pollOptions.map((opt, i) => (
+                <div key={i} className="flex items-center gap-2">
+                  <Input
+                    placeholder={`Opción ${i + 1}`}
+                    value={opt}
+                    onChange={(e) => {
+                      const next = [...pollOptions];
+                      next[i] = e.target.value;
+                      setPollOptions(next);
+                    }}
+                  />
+                  {pollOptions.length > 2 && (
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => setPollOptions(pollOptions.filter((_, idx) => idx !== i))}
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
+                  )}
+                </div>
+              ))}
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                className="rounded-full"
+                onClick={() => setPollOptions([...pollOptions, ""])}
+              >
+                <Plus className="mr-1.5 h-3.5 w-3.5" /> Agregar opción
+              </Button>
+            </div>
+          )}
+
+          <Button onClick={() => void publish()} disabled={busy} className="rounded-full">
+            Publicar anuncio
+          </Button>
+        </div>
+      </div>
+
+      <div className="space-y-3">
+        {announcements?.map((a) => (
+          <div key={a.id} className="rounded-xl bg-surface p-4">
+            <div className="flex items-start justify-between gap-3">
+              <div className="min-w-0">
+                <p className="flex items-center gap-2 font-medium">
+                  {a.title}
+                  <Badge variant="secondary" className="text-[10px] capitalize">
+                    {a.post_type === "text" ? "texto" : a.post_type === "image" ? "imagen" : "encuesta"}
+                  </Badge>
+                </p>
+                <p className="text-xs text-muted-foreground">{timeAgo(a.created_at)}</p>
+                {a.body && <p className="mt-1 line-clamp-2 text-sm">{a.body}</p>}
+                {a.post_type === "image" && a.image_path && (
+                  <div className="mt-2 h-24 w-40 overflow-hidden rounded-lg bg-background">
+                    <SignedImage path={a.image_path} alt={a.title} className="h-full w-full object-cover" />
+                  </div>
+                )}
+              </div>
+              <Button size="sm" variant="destructive" className="rounded-full" onClick={() => void remove(a.id)}>
+                <Trash2 className="h-3.5 w-3.5" />
+              </Button>
+            </div>
+          </div>
+        ))}
+        {announcements?.length === 0 && (
+          <p className="py-8 text-center text-muted-foreground">Aún no has publicado anuncios.</p>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ============================================================
+// Sección: Banner del sitio
+// ============================================================
+function BannerSection() {
+  const [banner, setBanner] = useState<SiteBannerRow | null>(null);
+  const [busy, setBusy] = useState(false);
+
+  const { data, refetch } = useQuery({
+    queryKey: ["admin-site-banner"],
+    queryFn: async () => {
+      const { data, error } = await supabase.from("site_banner").select("*").eq("id", true).maybeSingle();
+      if (error) throw error;
+      return data as SiteBannerRow;
+    },
+  });
+
+  useEffect(() => {
+    if (data) setBanner(data);
+  }, [data]);
+
+  const save = async () => {
+    if (!banner) return;
+    setBusy(true);
+    const { error } = await supabase
+      .from("site_banner")
+      .update({
+        message: banner.message,
+        color: banner.color,
+        icon: banner.icon,
+        dismissible: banner.dismissible,
+        is_active: banner.is_active,
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", true);
+    setBusy(false);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+    toast.success("Banner actualizado");
+    void refetch();
+  };
+
+  if (!banner) return <p className="text-muted-foreground">Cargando…</p>;
+
+  return (
+    <div className="max-w-lg space-y-4 rounded-xl bg-surface p-4">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <Radio className="h-4 w-4 text-muted-foreground" />
+          <Label>Banner activo</Label>
+        </div>
+        <Switch
+          checked={banner.is_active}
+          onCheckedChange={(v) => setBanner({ ...banner, is_active: v })}
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label>Texto del aviso</Label>
+        <Textarea
+          rows={2}
+          placeholder="Ej: Estamos experimentando problemas con la subida de videos."
+          value={banner.message}
+          onChange={(e) => setBanner({ ...banner, message: e.target.value })}
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label>Color de fondo</Label>
+        <input
+          type="color"
+          value={banner.color}
+          onChange={(e) => setBanner({ ...banner, color: e.target.value })}
+          className="h-10 w-20 cursor-pointer rounded-md border border-border bg-transparent"
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label>Icono</Label>
+        <IconPicker value={banner.icon} onChange={(icon) => setBanner({ ...banner, icon })} />
+      </div>
+
+      <div className="flex items-center justify-between">
+        <Label>¿Se puede cerrar?</Label>
+        <Switch
+          checked={banner.dismissible}
+          onCheckedChange={(v) => setBanner({ ...banner, dismissible: v })}
+        />
+      </div>
+
+      <Button onClick={() => void save()} disabled={busy} className="w-full rounded-full">
+        Guardar banner
+      </Button>
+
+      {/* Vista previa */}
+      {banner.is_active && banner.message && (
+        <div
+          className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-black"
+          style={{ backgroundColor: banner.color }}
+        >
+          {banner.message}
+        </div>
+      )}
+    </div>
+  );
 }
 
 function AdminPage() {
@@ -243,7 +591,7 @@ function AdminPage() {
         </h1>
 
         <Tabs defaultValue="users">
-          <TabsList>
+          <TabsList className="flex-wrap">
             <TabsTrigger value="users">Usuarios y roles</TabsTrigger>
             <TabsTrigger value="videos">Videos</TabsTrigger>
             <TabsTrigger value="partners">
@@ -253,6 +601,12 @@ function AdminPage() {
                   {applications.filter((a) => a.status === "pending").length}
                 </span>
               )}
+            </TabsTrigger>
+            <TabsTrigger value="announcements">
+              <Megaphone className="mr-1.5 h-3.5 w-3.5" /> Anuncios
+            </TabsTrigger>
+            <TabsTrigger value="banner">
+              <Radio className="mr-1.5 h-3.5 w-3.5" /> Banner del sitio
             </TabsTrigger>
           </TabsList>
 
@@ -447,6 +801,14 @@ function AdminPage() {
                 No hay solicitudes por revisar.
               </p>
             )}
+          </TabsContent>
+
+          <TabsContent value="announcements" className="pt-5">
+            <AnnouncementsSection />
+          </TabsContent>
+
+          <TabsContent value="banner" className="pt-5">
+            <BannerSection />
           </TabsContent>
         </Tabs>
       </div>
