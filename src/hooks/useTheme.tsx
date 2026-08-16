@@ -28,7 +28,8 @@ function apply(theme: ThemeId) {
   const root = document.documentElement;
   root.dataset["theme"] = theme;
   // El variant `dark` de Tailwind sigue funcionando en los temas oscuros.
-  root.classList.toggle("dark", theme !== "light" && theme !== "retro2012");
+  const lightThemes: ThemeId[] = ["light", "retro2012", "grad-candy"];
+  root.classList.toggle("dark", !lightThemes.includes(theme));
 }
 
 type ThemeState = {
