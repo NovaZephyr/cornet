@@ -47,8 +47,9 @@
   --font-sans: "Roboto", ui-sans-serif, system-ui, sans-serif;
 }
 
-/* YouTube-like dark surface system */
-:root {
+/* YouTube-like dark surface system (tema por defecto: oscuro) */
+:root,
+[data-theme="dark"] {
   --radius: 0.75rem;
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
@@ -81,6 +82,117 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(0.28 0 0);
   --sidebar-ring: oklch(0.55 0 0);
+}
+
+/* Tema claro */
+[data-theme="light"] {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.16 0 0);
+  --surface: oklch(0.968 0 0);
+  --surface-hover: oklch(0.93 0 0);
+  --card: oklch(0.985 0 0);
+  --card-foreground: oklch(0.16 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.16 0 0);
+  --primary: oklch(0.577 0.245 27.325);
+  --primary-foreground: oklch(0.99 0 0);
+  --secondary: oklch(0.94 0 0);
+  --secondary-foreground: oklch(0.16 0 0);
+  --muted: oklch(0.955 0 0);
+  --muted-foreground: oklch(0.48 0 0);
+  --accent: oklch(0.93 0 0);
+  --accent-foreground: oklch(0.16 0 0);
+  --border: oklch(0.9 0 0);
+  --input: oklch(0.955 0 0);
+  --ring: oklch(0.72 0 0);
+  --sidebar: oklch(1 0 0);
+  --sidebar-foreground: oklch(0.16 0 0);
+  --sidebar-accent: oklch(0.955 0 0);
+  --sidebar-accent-foreground: oklch(0.16 0 0);
+  --sidebar-border: oklch(0.9 0 0);
+  --sidebar-ring: oklch(0.72 0 0);
+}
+
+/* Tema 2012: nostalgia estilo YouTube antiguo */
+[data-theme="retro2012"] {
+  --radius: 0.25rem;
+  --background: oklch(0.93 0.003 260);
+  --foreground: oklch(0.22 0 0);
+  --surface: oklch(0.995 0 0);
+  --surface-hover: oklch(0.955 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.22 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.22 0 0);
+  --primary: oklch(0.52 0.21 28);
+  --primary-foreground: oklch(0.99 0 0);
+  --secondary: oklch(0.9 0.004 260);
+  --secondary-foreground: oklch(0.25 0 0);
+  --muted: oklch(0.94 0.003 260);
+  --muted-foreground: oklch(0.45 0.01 260);
+  --accent: oklch(0.9 0.004 260);
+  --accent-foreground: oklch(0.22 0 0);
+  --border: oklch(0.84 0.005 260);
+  --input: oklch(1 0 0);
+  --ring: oklch(0.62 0.11 250);
+  --sidebar: oklch(0.93 0.003 260);
+  --sidebar-foreground: oklch(0.22 0 0);
+  --sidebar-accent: oklch(0.9 0.004 260);
+  --sidebar-accent-foreground: oklch(0.22 0 0);
+  --sidebar-border: oklch(0.84 0.005 260);
+  --sidebar-ring: oklch(0.62 0.11 250);
+}
+
+[data-theme="retro2012"] body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+[data-theme="retro2012"] header {
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 1px 2px oklch(0 0 0 / 0.08);
+}
+
+/* Tema degradados */
+[data-theme="gradients"] {
+  --background: oklch(0.16 0.04 285);
+  --foreground: oklch(0.985 0 0);
+  --surface: oklch(0.24 0.06 290 / 0.65);
+  --surface-hover: oklch(0.3 0.08 295 / 0.75);
+  --card: oklch(0.22 0.06 290 / 0.6);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.2 0.05 290);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.65 0.24 12);
+  --primary-foreground: oklch(0.99 0 0);
+  --secondary: oklch(0.3 0.08 295 / 0.7);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.28 0.06 292 / 0.6);
+  --muted-foreground: oklch(0.8 0.03 290);
+  --accent: oklch(0.34 0.1 300 / 0.7);
+  --accent-foreground: oklch(0.985 0 0);
+  --border: oklch(0.45 0.09 300 / 0.35);
+  --input: oklch(0.28 0.07 292 / 0.6);
+  --ring: oklch(0.65 0.18 320);
+  --sidebar: transparent;
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.32 0.08 295 / 0.6);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(0.45 0.09 300 / 0.35);
+  --sidebar-ring: oklch(0.65 0.18 320);
+}
+
+[data-theme="gradients"] body {
+  background-image:
+    radial-gradient(60rem 40rem at 8% -10%, oklch(0.55 0.22 12 / 0.5), transparent 60%),
+    radial-gradient(50rem 35rem at 95% 0%, oklch(0.5 0.2 300 / 0.5), transparent 60%),
+    radial-gradient(55rem 40rem at 50% 110%, oklch(0.5 0.18 240 / 0.45), transparent 60%);
+  background-attachment: fixed;
+}
+
+[data-theme="gradients"] header,
+[data-theme="gradients"] aside {
+  background-color: transparent;
+  backdrop-filter: blur(14px);
 }
 
 @layer base {
