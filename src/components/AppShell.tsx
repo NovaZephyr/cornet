@@ -16,6 +16,7 @@ import {
   Bell,
   Palette,
   Check,
+  Megaphone,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -30,6 +31,7 @@ import {
 import { ChannelAvatar } from "@/components/Media";
 import { useAuth } from "@/hooks/useAuth";
 import { THEMES, useTheme, type ThemeId } from "@/hooks/useTheme";
+import { SiteBanner } from "@/components/SiteBanner";
 import { cn } from "@/lib/utils";
 import logoMark from "@/assets/corenetwork-mark.png";
 
@@ -86,6 +88,7 @@ function Logo() {
 function SiteFooter() {
   const links: { to: string; label: string }[] = [
     { to: "/", label: "Inicio" },
+    { to: "/blog", label: "Anuncios" },
     { to: "/community", label: "Comunidad" },
     { to: "/partner", label: "Partner" },
     { to: "/rules", label: "Guidelines" },
@@ -138,6 +141,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   const items: NavItem[] = [
     { to: "/", label: "Inicio", icon: Home },
     { to: "/explore", label: "Explorar", icon: Compass },
+    { to: "/blog", label: "Anuncios", icon: Megaphone },
     { to: "/community", label: "Comunidad", icon: Users },
     { to: "/partner", label: "Programa Partner", icon: Sparkles },
     { to: "/rules", label: "Guidelines", icon: Sparkles },
@@ -153,6 +157,8 @@ export function AppShell({ children }: { children: ReactNode }) {
 
   return (
     <div className="min-h-screen bg-background">
+      <SiteBanner />
+
       <header className="sticky top-0 z-50 flex h-14 items-center gap-2 bg-background px-2 sm:px-4">
         <Button
           variant="ghost"
