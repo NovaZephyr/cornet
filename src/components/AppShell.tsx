@@ -28,8 +28,33 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ChannelAvatar } from "@/components/Media";
 import { useAuth } from "@/hooks/useAuth";
+import { THEMES, useTheme } from "@/hooks/useTheme";
 import { cn } from "@/lib/utils";
 import logoMark from "@/assets/corenetwork-mark.png";
+
+function ThemeMenu() {
+  const { theme, setTheme } = useTheme();
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost" size="icon" className="rounded-full" aria-label="Cambiar tema">
+          <Palette className="h-5 w-5" />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="w-56">
+        {THEMES.map((t) => (
+          <DropdownMenuItem key={t.id} onClick={() => setTheme(t.id)} className="gap-2">
+            <span className="flex-1">
+              <span className="block text-sm">{t.label}</span>
+              <span className="block text-xs text-muted-foreground">{t.hint}</span>
+            </span>
+            {theme === t.id && <Check className="h-4 w-4 text-primary" />}
+          </DropdownMenuItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
 
 function Logo() {
   return (
