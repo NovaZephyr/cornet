@@ -1,0 +1,30 @@
+[data-theme="retro2012"]{--cn-2012-blue:#3f6f9f;--cn-2012-dark:#2f4050;--cn-2012-border:#c7c7c7;--cn-2012-page:#e9e9e9;--cn-2012-panel:#fff;font-family:Arial,Helvetica,sans-serif}
+[data-theme="retro2012"] body{background:#e8e8e8!important;background-image:linear-gradient(#f7f7f7,#e7e7e7 180px,#e9e9e9)!important;color:#222}
+[data-theme="retro2012"] header{background:linear-gradient(#444f5a,#303942)!important;border-bottom:1px solid #20262c!important;box-shadow:0 1px 2px rgb(0 0 0/.25)!important;color:#fff}
+[data-theme="retro2012"] header a{color:#fff}
+[data-theme="retro2012"] header input{background:#fff!important;color:#222!important;border-color:#20262c!important}
+[data-theme="retro2012"] header button{background:linear-gradient(#fafafa,#d9d9d9)!important;color:#333!important;border:1px solid #aaa!important}
+[data-theme="retro2012"] aside{background:linear-gradient(#f7f7f7,#ededed)!important;border-right:1px solid #cfcfcf!important}
+[data-theme="retro2012"] main{padding-top:10px}
+[data-theme="retro2012"] footer{background:linear-gradient(#eee,#ddd)!important;border-top:1px solid #c8c8c8!important;color:#555}
+[data-theme="retro2012"] footer a{color:#4d4d4d}
+[data-theme="retro2012"] .rounded-2xl,[data-theme="retro2012"] .rounded-xl{border-radius:2px!important}
+.cn-2012-explore{display:flex;gap:14px;max-width:1180px;margin:0 auto;padding:8px}
+.cn-2012-explore-side{width:190px;flex:none;position:sticky;top:68px;height:max-content;padding:8px;background:#f4f4f4;border:1px solid var(--cn-2012-border);box-shadow:0 1px 1px rgb(0 0 0/.08)}
+.cn-2012-explore-side h2{font-size:13px;font-weight:700;padding:6px 8px;margin:0 0 4px;border-bottom:1px solid #d5d5d5;color:#444}
+.cn-2012-category-link{display:flex;gap:7px;align-items:center;padding:6px 8px;font-size:12px;color:#444;text-decoration:none;border-radius:2px}
+.cn-2012-category-link:hover,.cn-2012-category-link:first-of-type{background:#ddd;color:#111}
+.cn-2012-explore-heading{padding:10px 12px;margin-bottom:8px;background:#fff;border:1px solid var(--cn-2012-border)}
+.cn-2012-explore-heading h1{font-size:21px;font-weight:700;margin:0}.cn-2012-explore-heading p{font-size:12px;color:#777;margin:3px 0 0}
+.cn-2012-video-section{margin-bottom:18px}
+.cn-2012-section-title{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:6px 8px;margin-bottom:7px;background:linear-gradient(#fdfdfd,#e8e8e8);border:1px solid var(--cn-2012-border);font-size:13px;font-weight:700;color:#333}
+.cn-2012-section-title a,.cn-2012-section-title>span:last-child{font-size:11px;font-weight:400;color:#4a6f93;text-decoration:none}
+.cn-2012-empty{padding:18px 10px;background:#fff;border:1px solid var(--cn-2012-border);font-size:12px;color:#777}
+.cn-2012-channel{max-width:1120px;margin:8px auto;padding:8px;background:#e5e5e5}
+.cn-2012-cover{height:180px;background:#d6d6d6;border:1px solid #bbb;overflow:hidden}
+.cn-2012-titlebar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px 12px;background:linear-gradient(#fff,#e7e7e7);border:1px solid #c4c4c4;border-top:0}
+.cn-2012-titlebar h1{font-size:20px;color:#222}.cn-2012-tabs{display:flex;background:#3f4f5d;border:1px solid #2d3942;border-top:0}.cn-2012-tabs span{padding:8px 16px;color:#e8e8e8;font-size:12px;border-right:1px solid #64717c}.cn-2012-tabs .is-active{background:#fff;color:#333;font-weight:700}
+.cn-2012-body{display:flex;gap:12px;margin-top:10px}.cn-2012-about{width:210px;flex:none;background:#fff;border:1px solid #c7c7c7;padding:11px;font-size:12px;color:#555}.cn-2012-about h2{font-size:13px;color:#333;margin:0 0 8px;padding-bottom:5px;border-bottom:1px solid #ddd}
+.cn-2012-feature{margin-top:10px;background:#fff;border:1px solid #c7c7c7;padding:8px}.cn-2012-badges{margin-top:8px;padding:7px;background:#eee;border:1px solid #ccc}
+.cn-2012-channel--channel-1 .cn-2012-cover{height:145px}.cn-2012-channel--channel-1 .cn-2012-titlebar{background:#fff}.cn-2012-channel--channel-2 .cn-2012-cover{height:200px}.cn-2012-channel--channel-2 .cn-2012-tabs{background:#586777}.cn-2012-channel--cosmic-panda .cn-2012-cover{height:220px;background:#263847}.cn-2012-channel--cosmic-panda .cn-2012-titlebar{background:linear-gradient(#fff,#e9edf1)}.cn-2012-channel--cosmic-panda .cn-2012-tabs{background:linear-gradient(#485867,#303e4b)}
+@media (max-width:900px){.cn-2012-explore-side{display:none}.cn-2012-explore{padding:4px}.cn-2012-body{display:block}.cn-2012-about{width:auto;margin-bottom:10px}.cn-2012-cover{height:140px}.cn-2012-titlebar{align-items:flex-start;flex-direction:column}.cn-2012-tabs{overflow-x:auto}.cn-2012-tabs span{white-space:nowrap}.cn-2012-channel--cosmic-panda .cn-2012-cover{height:170px}}
