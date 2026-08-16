@@ -23,14 +23,17 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ChannelAvatar } from "@/components/Media";
 import { useAuth } from "@/hooks/useAuth";
-import { THEMES, useTheme } from "@/hooks/useTheme";
+import { THEMES, useTheme, type ThemeId } from "@/hooks/useTheme";
 import { cn } from "@/lib/utils";
 import logoMark from "@/assets/corenetwork-mark.png";
+
+const THEME_GROUPS = Array.from(new Set(THEMES.map((t) => t.group)));
 
 function ThemeMenu() {
   const { theme, setTheme } = useTheme();
@@ -41,15 +44,23 @@ function ThemeMenu() {
           <Palette className="h-5 w-5" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-56">
-        {THEMES.map((t) => (
-          <DropdownMenuItem key={t.id} onClick={() => setTheme(t.id)} className="gap-2">
-            <span className="flex-1">
-              <span className="block text-sm">{t.label}</span>
-              <span className="block text-xs text-muted-foreground">{t.hint}</span>
-            </span>
-            {theme === t.id && <Check className="h-4 w-4 text-primary" />}
-          </DropdownMenuItem>
+      <DropdownMenuContent align="end" className="w-64">
+        {THEME_GROUPS.map((group, i) => (
+          <div key={group}>
+            {i > 0 && <DropdownMenuSeparator />}
+            <DropdownMenuLabel className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
+              {group}
+            </DropdownMenuLabel>
+            {THEMES.filter((t) => t.group === group).map((t) => (
+              <DropdownMenuItem key={t.id} onClick={() => setTheme(t.id as ThemeId)} className="gap-2">
+                <span className="flex-1">
+                  <span className="block text-sm">{t.label}</span>
+                  <span className="block text-xs text-muted-foreground">{t.hint}</span>
+                </span>
+                {theme === t.id && <Check className="h-4 w-4 shrink-0 text-primary" />}
+              </DropdownMenuItem>
+            ))}
+          </div>
         ))}
       </DropdownMenuContent>
     </DropdownMenu>
@@ -68,6 +79,34 @@ function Logo() {
       />
       <span className="text-xl font-bold tracking-tighter">CoreNetwork</span>
     </Link>
+  );
+}
+
+// Footer estilo VidLii — enlaces básicos, año y marca
+function SiteFooter() {
+  const links: { to: string; label: string }[] = [
+    { to: "/", label: "Inicio" },
+    { to: "/community", label: "Comunidad" },
+    { to: "/partner", label: "Partner" },
+    { to: "/rules", label: "Guidelines" },
+    { to: "/settings", label: "Ajustes" },
+  ];
+  return (
+    <footer className="border-t border-border px-6 py-8 pb-24 md:pb-8">
+      <div className="mx-auto flex max-w-5xl flex-col items-center gap-3 text-center">
+        <span className="text-sm font-bold tracking-tighter">CoreNetwork</span>
+        <nav className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs text-muted-foreground">
+          {links.map((l) => (
+            <Link key={l.to} to={l.to} className="transition-colors hover:text-foreground hover:underline">
+              {l.label}
+            </Link>
+          ))}
+        </nav>
+        <p className="text-[11px] text-muted-foreground">
+          © {new Date().getFullYear()} CoreNetwork. Todos los derechos reservados.
+        </p>
+      </div>
+    </footer>
   );
 }
 
@@ -239,8 +278,10 @@ export function AppShell({ children }: { children: ReactNode }) {
           </nav>
         </aside>
 
-        <main className="min-w-0 flex-1 px-4 pb-20 pt-2 md:pb-16">{children}</main>
+        <main className="min-w-0 flex-1 px-4 pt-2">{children}</main>
       </div>
+
+      <SiteFooter />
 
       {/* Bottom bar — solo móvil, estilo YouTube/VidLii */}
       <nav className="fixed inset-x-0 bottom-0 z-50 flex h-14 items-center border-t border-border bg-background md:hidden">
