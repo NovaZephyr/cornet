@@ -1,17 +1,9 @@
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-  type ReactNode,
-} from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 
 export const THEMES = [
   { id: "dark", label: "Oscuro", hint: "El look clásico de CoreNetwork", group: "Básicos" },
   { id: "light", label: "Claro", hint: "Fondo blanco, alto contraste", group: "Básicos" },
-  { id: "retro2012", label: "2012", hint: "Nostalgia estilo YouTube 2012", group: "Básicos" },
+  { id: "retro2012", label: "YouTube 2012 / Cosmic Panda", hint: "Composición retro inspirada en la era Cosmic Panda", group: "Clásicos" },
   { id: "gradients", label: "Aurora", hint: "Violeta, rojo y azul", group: "Degradados" },
   { id: "grad-sunset", label: "Atardecer", hint: "Naranja y magenta", group: "Degradados" },
   { id: "grad-ocean", label: "Océano", hint: "Azul profundo y turquesa", group: "Degradados" },
@@ -20,43 +12,28 @@ export const THEMES = [
 ] as const;
 
 export type ThemeId = (typeof THEMES)[number]["id"];
-
 const STORAGE_KEY = "corenetwork-theme";
 const VALID: ThemeId[] = THEMES.map((t) => t.id);
 
 function apply(theme: ThemeId) {
   const root = document.documentElement;
-  root.dataset["theme"] = theme;
-  // El variant `dark` de Tailwind sigue funcionando en los temas oscuros.
-  const lightThemes: ThemeId[] = ["light", "retro2012", "grad-candy"];
-  root.classList.toggle("dark", !lightThemes.includes(theme));
+  root.dataset.theme = theme;
+  root.classList.toggle("dark", !(["light", "retro2012", "grad-candy"] as ThemeId[]).includes(theme));
 }
 
-type ThemeState = {
-  theme: ThemeId;
-  setTheme: (theme: ThemeId) => void;
-};
-
+type ThemeState = { theme: ThemeId; setTheme: (theme: ThemeId) => void };
 const ThemeContext = createContext<ThemeState | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setThemeState] = useState<ThemeId>("dark");
-
   useEffect(() => {
     const stored = window.localStorage.getItem(STORAGE_KEY) as ThemeId | null;
     const initial = stored && VALID.includes(stored) ? stored : "dark";
     setThemeState(initial);
     apply(initial);
   }, []);
-
-  const setTheme = useCallback((next: ThemeId) => {
-    setThemeState(next);
-    apply(next);
-    window.localStorage.setItem(STORAGE_KEY, next);
-  }, []);
-
+  const setTheme = useCallback((next: ThemeId) => { setThemeState(next); apply(next); window.localStorage.setItem(STORAGE_KEY, next); }, []);
   const value = useMemo(() => ({ theme, setTheme }), [theme, setTheme]);
-
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
 }
 
