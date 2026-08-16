@@ -26,7 +26,8 @@ const videoSeoMiddleware = createMiddleware().server(async ({ request, next }) =
   if (url.pathname !== "/watch") return response;
 
   const code = url.searchParams.get("v");
-  if (!code || !response.headers.get("content-type")?.includes("text/html")) return response;
+  const contentType = response.headers.get("content-type") ?? "";
+  if (!code || !contentType.includes("text/html")) return response;
 
   try {
     const { data: video } = await supabase
@@ -56,10 +57,10 @@ const videoSeoMiddleware = createMiddleware().server(async ({ request, next }) =
     let imageUrl = `${url.origin}/no-thumbnail.svg`;
     if (video.thumbnail_path) {
       const rawPath = String(video.thumbnail_path);
-      if (/^https?:\/\//i.test(rawPath)) {
+      if (rawPath.toLowerCase().startsWith("http://") || rawPath.toLowerCase().startsWith("https://")) {
         imageUrl = rawPath;
       } else {
-        const key = rawPath.startsWith("media/") ? rawPath.slice("media/".length) : rawPath;
+        const key = rawPath.startsWith("media/") ? rawPath.slice(6) : rawPath;
         const publicUrl = supabase.storage.from("media").getPublicUrl(key).data.publicUrl;
         if (publicUrl) imageUrl = publicUrl;
       }
@@ -68,28 +69,12 @@ const videoSeoMiddleware = createMiddleware().server(async ({ request, next }) =
     const escapeAttr = (value: string) =>
       value
         .replace(/&/g, "&amp;")
-        .replace(/\"/g, "&quot;")
+        .replace(/"/g, "&quot;")
         .replace(/</g, "&lt;")
         .replace(/>/g, "&gt;");
 
     let html = await response.text();
-
-    const removeMeta = (attribute: "property" | "name", value: string) => {
-      const pattern = new RegExp(`<meta\\s+[^>]*${attribute}=[\\"']${value}[\\"'][^>]*>\\s*`, "gi");
-      html = html.replace(pattern, "");
-    };
-
-    removeMeta("property", "og:title");
-    removeMeta("property", "og:description");
-    removeMeta("property", "og:site_name");
-    removeMeta("property", "og:type");
-    removeMeta("property", "og:url");
-    removeMeta("property", "og:image");
-    removeMeta("name", "twitter:title");
-    removeMeta("name", "twitter:description");
-    removeMeta("name", "twitter:image");
-    removeMeta("name", "author");
-    html = html.replace(/<title>.*?<\/title>\s*/i, "");
+    html = html.replace(/<title>[^<]*<\/title>/i, "");
 
     const tags = [
       `<title>${escapeAttr(title)}</title>`,
@@ -119,9 +104,6 @@ const videoSeoMiddleware = createMiddleware().server(async ({ request, next }) =
   }
 });
 
-// Start installs this automatically when src/start.ts is absent; defining the
-// file opts out, so re-add it explicitly to keep server functions protected
-// from cross-site requests.
 const csrfMiddleware = createCsrfMiddleware({
   filter: (ctx) => ctx.handlerType === "serverFn",
 });
@@ -129,4 +111,4 @@ const csrfMiddleware = createCsrfMiddleware({
 export const startInstance = createStart(() => ({
   functionMiddleware: [attachSupabaseAuth],
   requestMiddleware: [errorMiddleware, videoSeoMiddleware, csrfMiddleware],
-});
+}));
