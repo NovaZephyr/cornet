@@ -120,7 +120,7 @@ const themeBootstrap = `(function(){try{var t=localStorage.getItem('corenetwork-
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" data-theme="dark" className="dark">
+    <html lang="en" data-theme="dark" className="dark" suppressHydrationWarning>
       <head>
         <HeadContent />
         <script dangerouslySetInnerHTML={{ __html: themeBootstrap }} />
