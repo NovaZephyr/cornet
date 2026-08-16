@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" role="img" aria-labelledby="title desc">
+  <title id="title">Sin miniatura</title>
+  <desc id="desc">Marcador visual para vídeos que no tienen una miniatura personalizada.</desc>
+  <rect width="1200" height="800" fill="#414141"/>
+  <rect x="306" y="223" width="588" height="391" rx="97" fill="#676767" stroke="#1d1d1d" stroke-width="2"/>
+  <circle cx="600" cy="417" r="39" fill="#929292" stroke="#2a2a2a" stroke-width="2"/>
+</svg>
