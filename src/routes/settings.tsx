@@ -51,10 +51,13 @@ function SettingsPage() {
     setBusy(true);
     try {
       const path = await uploadFile("media", user.id, file, `${field}-`);
-      const { error } = await supabase
-        .from("profiles")
-        .update({ [field]: path })
-        .eq("id", user.id);
+      const patch: {
+        avatar_path?: string;
+        banner_path?: string;
+        background_path?: string;
+        gif_path?: string;
+      } = { [field]: path };
+      const { error } = await supabase.from("profiles").update(patch).eq("id", user.id);
       if (error) throw error;
       await refresh();
       toast.success("Imagen actualizada");
