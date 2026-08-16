@@ -107,8 +107,23 @@ function Channel() {
 
   if (theme === "retro2012") return <AppShell><RetroChannel profile={profile} videos={channelVideos} roles={roles} subs={subs ?? []} isSubscribed={isSubscribed} isPartnerChannel={isPartnerChannel} partnerGif={partnerGif} onSubscribe={() => void toggleSub()} onReport={openReport} /><ReportDialog target={{ type: "channel", id: profile.id, name: profile.display_name || profile.username }} open={reportOpen} onOpenChange={setReportOpen} /></AppShell>;
 
+  const modernChannelStyles = `
+    .cn-modern-channel{position:relative;min-height:calc(100vh - 9rem);margin:0 -1rem;padding:0 1rem 2rem;background-size:cover;background-position:center;background-attachment:fixed;background-color:var(--cn-channel-surface);overflow:hidden}
+    .cn-modern-channel-overlay{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,color-mix(in srgb,var(--cn-channel-primary) 42%,transparent) 0%,color-mix(in srgb,var(--cn-channel-primary) 16%,transparent) 30%,color-mix(in srgb,var(--cn-channel-secondary) 20%,transparent) 100%);opacity:.72}
+    .cn-modern-channel-content{position:relative;z-index:1;padding-top:.75rem}
+    .cn-modern-channel-content>.mx-auto{border-color:color-mix(in srgb,var(--cn-channel-secondary) 40%,transparent);color:var(--cn-channel-text)}
+    .cn-modern-channel-tabs{background:color-mix(in srgb,var(--cn-channel-primary) 18%,var(--cn-channel-surface));border-color:color-mix(in srgb,var(--cn-channel-secondary) 50%,transparent)}
+    .cn-modern-channel-button{background:var(--cn-channel-primary)!important;color:var(--cn-channel-surface)!important;border-color:var(--cn-channel-primary)!important}
+    .cn-modern-channel--channel-1 .cn-modern-channel-overlay{background:linear-gradient(135deg,color-mix(in srgb,var(--cn-channel-primary) 52%,transparent),transparent 54%,color-mix(in srgb,var(--cn-channel-secondary) 34%,transparent))}
+    .cn-modern-channel--channel-2 .cn-modern-channel-overlay{background:linear-gradient(180deg,color-mix(in srgb,var(--cn-channel-primary) 48%,transparent),color-mix(in srgb,var(--cn-channel-secondary) 12%,transparent))}
+    .cn-modern-channel--cosmic-panda .cn-modern-channel-overlay{background:linear-gradient(180deg,color-mix(in srgb,var(--cn-channel-primary) 38%,transparent),transparent 45%,color-mix(in srgb,var(--cn-channel-secondary) 24%,transparent))}
+    .cn-modern-channel--corenetwork .cn-modern-channel-overlay{opacity:.42}
+    @media(max-width:768px){.cn-modern-channel{margin:0 -.5rem;padding:0 .5rem 1rem;background-attachment:scroll}}
+  `;
+
   return (
     <AppShell>
+      <style>{modernChannelStyles}</style>
       <div
         className={`cn-modern-channel cn-modern-channel--${style}`}
         style={background ? { ...channelVars, backgroundImage: `url(${background})` } : channelVars}
