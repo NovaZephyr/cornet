@@ -311,6 +311,10 @@ export type Database = {
     }
     Functions: {
       generate_video_code: { Args: never; Returns: string }
+      get_public_badges: {
+        Args: { _user_id: string }
+        Returns: Database["public"]["Enums"]["app_role"][]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -319,6 +323,7 @@ export type Database = {
         Returns: boolean
       }
       increment_views: { Args: { _video_id: string }; Returns: undefined }
+      is_banned: { Args: { _user_id: string }; Returns: boolean }
     }
     Enums: {
       app_role: "admin" | "moderator" | "partner" | "user"

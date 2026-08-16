@@ -13,6 +13,8 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as CommunityRouteImport } from './routes/community'
+import { Route as ExploreRouteImport } from './routes/explore'
+import { Route as NotificationsRouteImport } from './routes/notifications'
 import { Route as PartnerRouteImport } from './routes/partner'
 import { Route as RulesRouteImport } from './routes/rules'
 import { Route as SettingsRouteImport } from './routes/settings'
@@ -38,6 +40,16 @@ const AuthRoute = AuthRouteImport.update({
 const CommunityRoute = CommunityRouteImport.update({
   id: '/community',
   path: '/community',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExploreRoute = ExploreRouteImport.update({
+  id: '/explore',
+  path: '/explore',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NotificationsRoute = NotificationsRouteImport.update({
+  id: '/notifications',
+  path: '/notifications',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PartnerRoute = PartnerRouteImport.update({
@@ -76,6 +88,8 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRoute
   '/auth': typeof AuthRoute
   '/community': typeof CommunityRoute
+  '/explore': typeof ExploreRoute
+  '/notifications': typeof NotificationsRoute
   '/partner': typeof PartnerRoute
   '/rules': typeof RulesRoute
   '/settings': typeof SettingsRoute
@@ -88,6 +102,8 @@ export interface FileRoutesByTo {
   '/admin': typeof AdminRoute
   '/auth': typeof AuthRoute
   '/community': typeof CommunityRoute
+  '/explore': typeof ExploreRoute
+  '/notifications': typeof NotificationsRoute
   '/partner': typeof PartnerRoute
   '/rules': typeof RulesRoute
   '/settings': typeof SettingsRoute
@@ -101,6 +117,8 @@ export interface FileRoutesById {
   '/admin': typeof AdminRoute
   '/auth': typeof AuthRoute
   '/community': typeof CommunityRoute
+  '/explore': typeof ExploreRoute
+  '/notifications': typeof NotificationsRoute
   '/partner': typeof PartnerRoute
   '/rules': typeof RulesRoute
   '/settings': typeof SettingsRoute
@@ -115,6 +133,8 @@ export interface FileRouteTypes {
     | '/admin'
     | '/auth'
     | '/community'
+    | '/explore'
+    | '/notifications'
     | '/partner'
     | '/rules'
     | '/settings'
@@ -127,6 +147,8 @@ export interface FileRouteTypes {
     | '/admin'
     | '/auth'
     | '/community'
+    | '/explore'
+    | '/notifications'
     | '/partner'
     | '/rules'
     | '/settings'
@@ -139,6 +161,8 @@ export interface FileRouteTypes {
     | '/admin'
     | '/auth'
     | '/community'
+    | '/explore'
+    | '/notifications'
     | '/partner'
     | '/rules'
     | '/settings'
@@ -152,6 +176,8 @@ export interface RootRouteChildren {
   AdminRoute: typeof AdminRoute
   AuthRoute: typeof AuthRoute
   CommunityRoute: typeof CommunityRoute
+  ExploreRoute: typeof ExploreRoute
+  NotificationsRoute: typeof NotificationsRoute
   PartnerRoute: typeof PartnerRoute
   RulesRoute: typeof RulesRoute
   SettingsRoute: typeof SettingsRoute
@@ -188,6 +214,20 @@ declare module '@tanstack/react-router' {
       path: '/community'
       fullPath: '/community'
       preLoaderRoute: typeof CommunityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/explore': {
+      id: '/explore'
+      path: '/explore'
+      fullPath: '/explore'
+      preLoaderRoute: typeof ExploreRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/notifications': {
+      id: '/notifications'
+      path: '/notifications'
+      fullPath: '/notifications'
+      preLoaderRoute: typeof NotificationsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/partner': {
@@ -240,6 +280,8 @@ const rootRouteChildren: RootRouteChildren = {
   AdminRoute: AdminRoute,
   AuthRoute: AuthRoute,
   CommunityRoute: CommunityRoute,
+  ExploreRoute: ExploreRoute,
+  NotificationsRoute: NotificationsRoute,
   PartnerRoute: PartnerRoute,
   RulesRoute: RulesRoute,
   SettingsRoute: SettingsRoute,
