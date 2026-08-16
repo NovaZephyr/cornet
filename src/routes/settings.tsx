@@ -10,17 +10,36 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useAuth, type ChannelStyle } from "@/hooks/useAuth";
+import { useAuth, type ChannelInfoLayout, type ChannelStyle } from "@/hooks/useAuth";
 import { uploadFile } from "@/lib/storage";
 
 export const Route = createFileRoute("/settings")({ component: SettingsPage });
 
 const CHANNEL_STYLES: { value: ChannelStyle; label: string; description: string }[] = [
-  { value: "corenetwork", label: "CoreNetwork", description: "Diseño clásico propio de CoreNetwork." },
-  { value: "channel-1", label: "Channel 1.0", description: "Canal clásico, compacto y centrado en pestañas." },
-  { value: "channel-2", label: "Channel 2.0", description: "Diseño clásico más modular con contenido destacado." },
-  { value: "cosmic-panda", label: "Cosmic Panda", description: "La variante retro inspirada en la era 2012." },
+  { value: "corenetwork", label: "CoreNetwork", description: "Diseño propio de CoreNetwork." },
+  { value: "channel-1", label: "Channel 1.0", description: "La composición clásica de la primera referencia." },
+  { value: "channel-2", label: "Channel 2.0", description: "La composición clásica oscura de la segunda referencia." },
+  { value: "cosmic-panda", label: "Cosmic Panda", description: "La composición 2012 de la tercera referencia." },
 ];
+
+const INFO_LAYOUTS: { value: ChannelInfoLayout; label: string; description: string }[] = [
+  { value: "left", label: "Información a la izquierda", description: "La descripción y datos aparecen como columna lateral izquierda." },
+  { value: "right", label: "Información a la derecha", description: "La columna de información queda al lado derecho del contenido." },
+  { value: "top", label: "Información arriba", description: "La información aparece como bloque encima de los vídeos." },
+  { value: "hidden", label: "Ocultar información", description: "Solo se muestra el encabezado y el contenido del canal." },
+];
+
+function ColorField({ label, value, onChange }: { label: string; value: string; onChange: (value: string) => void }) {
+  return (
+    <div className="rounded-xl border border-border bg-background p-3">
+      <Label>{label}</Label>
+      <div className="mt-2 flex items-center gap-3">
+        <input type="color" value={value} onChange={(e) => onChange(e.target.value)} className="h-10 w-14 cursor-pointer rounded-md border border-border bg-transparent" />
+        <Input value={value} onChange={(e) => onChange(e.target.value)} className="font-mono uppercase" maxLength={7} />
+      </div>
+    </div>
+  );
+}
 
 function SettingsPage() {
   const { user, profile, refresh, isPartner, isAdmin } = useAuth();
@@ -30,6 +49,11 @@ function SettingsPage() {
   const [description, setDescription] = useState("");
   const [accent, setAccent] = useState("#ff0033");
   const [channelStyle, setChannelStyle] = useState<ChannelStyle>("corenetwork");
+  const [primaryColor, setPrimaryColor] = useState("#1f4fa3");
+  const [secondaryColor, setSecondaryColor] = useState("#2aa84a");
+  const [surfaceColor, setSurfaceColor] = useState("#ffffff");
+  const [textColor, setTextColor] = useState("#222222");
+  const [infoLayout, setInfoLayout] = useState<ChannelInfoLayout>("left");
   const [busy, setBusy] = useState(false);
   const [styleBusy, setStyleBusy] = useState(false);
 
@@ -40,6 +64,11 @@ function SettingsPage() {
     setDescription(profile.description ?? "");
     setAccent(profile.accent_color ?? "#ff0033");
     setChannelStyle(profile.channel_style ?? "corenetwork");
+    setPrimaryColor(profile.channel_primary_color ?? "#1f4fa3");
+    setSecondaryColor(profile.channel_secondary_color ?? "#2aa84a");
+    setSurfaceColor(profile.channel_surface_color ?? "#ffffff");
+    setTextColor(profile.channel_text_color ?? "#222222");
+    setInfoLayout(profile.channel_info_layout ?? "left");
   }, [profile]);
 
   const uploadTo = async (field: "avatar_path" | "banner_path" | "background_path" | "gif_path", file: File) => {
@@ -84,13 +113,20 @@ function SettingsPage() {
     try {
       const { error } = await supabase
         .from("profiles")
-        .update({ channel_style: channelStyle })
+        .update({
+          channel_style: channelStyle,
+          channel_primary_color: primaryColor,
+          channel_secondary_color: secondaryColor,
+          channel_surface_color: surfaceColor,
+          channel_text_color: textColor,
+          channel_info_layout: infoLayout,
+        })
         .eq("id", user.id);
       if (error) throw error;
       await refresh();
-      toast.success(`Diseño guardado: ${CHANNEL_STYLES.find((item) => item.value === channelStyle)?.label ?? channelStyle}`);
+      toast.success("Personalización del canal guardada");
     } catch (err) {
-      toast.error(err instanceof Error ? `${err.message}. Ejecuta la migración SQL de channel_style en Supabase.` : "No se pudo guardar el diseño del canal");
+      toast.error(err instanceof Error ? err.message : "No se pudo guardar la personalización");
     } finally {
       setStyleBusy(false);
     }
@@ -102,14 +138,14 @@ function SettingsPage() {
 
   return (
     <AppShell>
-      <div className="mx-auto max-w-3xl space-y-6 pb-16">
+      <div className="mx-auto max-w-4xl space-y-6 pb-16">
         <div>
           <h1 className="text-2xl font-bold">Personalizar canal</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Tu identidad, tu canal. El estilo clásico solo afecta a los canales cuando está activo el tema 2012 / Cosmic Panda.</p>
+          <p className="mt-1 text-sm text-muted-foreground">Los diseños de época solo afectan al canal cuando está activo el tema global YouTube 2012 / Cosmic Panda.</p>
         </div>
 
         <Tabs defaultValue="profile">
-          <TabsList>
+          <TabsList className="flex-wrap">
             <TabsTrigger value="profile">Perfil</TabsTrigger>
             <TabsTrigger value="images">Imágenes</TabsTrigger>
             <TabsTrigger value="style">Diseño del canal</TabsTrigger>
@@ -121,7 +157,7 @@ function SettingsPage() {
               <div className="space-y-2"><Label htmlFor="dn">Nombre visible</Label><Input id="dn" value={displayName} onChange={(e) => setDisplayName(e.target.value)} /></div>
               <div className="space-y-2"><Label htmlFor="un">Nombre de usuario</Label><Input id="un" value={username} onChange={(e) => setUsername(e.target.value)} /></div>
               <div className="space-y-2"><Label htmlFor="de">Descripción</Label><Textarea id="de" rows={4} value={description} onChange={(e) => setDescription(e.target.value)} /></div>
-              <div className="space-y-2"><Label htmlFor="ac">Color de acento</Label><input id="ac" type="color" value={accent} onChange={(e) => setAccent(e.target.value)} className="h-10 w-20 cursor-pointer rounded-md border border-border bg-transparent" /></div>
+              <div className="space-y-2"><Label htmlFor="ac">Color de acento general</Label><input id="ac" type="color" value={accent} onChange={(e) => setAccent(e.target.value)} className="h-10 w-20 cursor-pointer rounded-md border border-border bg-transparent" /></div>
               <Button type="submit" disabled={busy}>Guardar cambios</Button>
             </form>
           </TabsContent>
@@ -134,10 +170,10 @@ function SettingsPage() {
           </TabsContent>
 
           <TabsContent value="style" className="pt-5">
-            <section className="space-y-5 rounded-2xl bg-surface p-6">
+            <section className="space-y-6 rounded-2xl bg-surface p-6">
               <div>
-                <h2 className="font-semibold">Diseños clásicos de canal</h2>
-                <p className="mt-1 text-sm text-muted-foreground">Selecciona la identidad visual de tu canal. La variante elegida se aplica exclusivamente dentro del tema global <strong>YouTube 2012 / Cosmic Panda</strong>; el resto de temas mantiene el diseño moderno de CoreNetwork.</p>
+                <h2 className="font-semibold">Diseño + personalización de la era</h2>
+                <p className="mt-1 text-sm text-muted-foreground">El estilo define la estructura inspirada en la referencia. Los colores y la disposición de la información los eliges tú. No hay una paleta fija de Channel 1.0, 2.0 o Cosmic Panda.</p>
               </div>
 
               <div className="grid gap-3 sm:grid-cols-2">
@@ -149,11 +185,38 @@ function SettingsPage() {
                 ))}
               </div>
 
-              <div className="flex items-center justify-between rounded-xl border border-border bg-background p-4">
-                <div>
-                  <p className="text-sm font-medium">Diseño seleccionado</p>
-                  <p className="text-xs text-muted-foreground">{CHANNEL_STYLES.find((item) => item.value === channelStyle)?.label}</p>
+              <div>
+                <div className="mb-3"><h3 className="font-medium">Tus colores</h3><p className="text-xs text-muted-foreground">Estos colores sustituyen la paleta predeterminada de la era elegida.</p></div>
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <ColorField label="Color principal" value={primaryColor} onChange={setPrimaryColor} />
+                  <ColorField label="Color secundario" value={secondaryColor} onChange={setSecondaryColor} />
+                  <ColorField label="Color de paneles" value={surfaceColor} onChange={setSurfaceColor} />
+                  <ColorField label="Color del texto" value={textColor} onChange={setTextColor} />
                 </div>
+              </div>
+
+              <div>
+                <h3 className="mb-2 font-medium">Disposición de la información</h3>
+                <Select value={infoLayout} onValueChange={(value) => setInfoLayout(value as ChannelInfoLayout)}>
+                  <SelectTrigger><SelectValue placeholder="Selecciona una disposición" /></SelectTrigger>
+                  <SelectContent>
+                    {INFO_LAYOUTS.map((layout) => <SelectItem key={layout.value} value={layout.value}>{layout.label}</SelectItem>)}
+                  </SelectContent>
+                </Select>
+                <p className="mt-2 text-xs text-muted-foreground">{INFO_LAYOUTS.find((layout) => layout.value === infoLayout)?.description}</p>
+              </div>
+
+              <div className="rounded-xl border border-border p-4" style={{ background: primaryColor, color: textColor }}>
+                <p className="text-sm font-semibold">Vista previa de tus colores</p>
+                <div className="mt-3 grid grid-cols-3 gap-2">
+                  <div className="h-8 rounded" style={{ background: primaryColor }} />
+                  <div className="h-8 rounded" style={{ background: secondaryColor }} />
+                  <div className="h-8 rounded border" style={{ background: surfaceColor }} />
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between rounded-xl border border-border bg-background p-4">
+                <div><p className="text-sm font-medium">Guardar personalización</p><p className="text-xs text-muted-foreground">Se conserva aunque cambies de tema global.</p></div>
                 <Button type="button" disabled={styleBusy} onClick={() => void saveChannelStyle()}>{styleBusy ? "Guardando…" : "Guardar diseño"}</Button>
               </div>
             </section>
