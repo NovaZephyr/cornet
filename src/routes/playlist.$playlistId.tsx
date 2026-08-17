@@ -35,7 +35,7 @@ function PlaylistPage() {
     queryFn: async () => {
       const { data, error } = await supabase.from("playlist_items").select("id, video_id, position, videos(id, code, user_id, title, thumbnail_path, duration_seconds, views, created_at)").eq("playlist_id", playlistId).order("position").order("created_at");
       if (error) throw error;
-      return ((data ?? []) as Item[]).map((item) => ({ ...item, video: item.video ?? null }));
+      return ((data ?? []) as unknown as (Item & { videos?: Item["video"] })[]).map((item) => ({ ...item, video: item.video ?? item.videos ?? null }));
     },
   });
   const mine = user?.id === playlistQuery.data?.user_id;
