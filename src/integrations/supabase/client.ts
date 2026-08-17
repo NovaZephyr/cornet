@@ -3,7 +3,7 @@ import type { Database } from './types';
 import { apiDb, apiRpc } from '@/lib/api';
 
 const SUPABASE_URL = "https://mvwpxnszcpyayofqgtmv.supabase.co";
-const SUPABASE_PUBLISHABLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im12d3B4bnN6Y3B5YXlvZnFndG12Iiwicm9sZCI6";
+const SUPABASE_PUBLISHABLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im12d3B4bnN6Y3B5YXlvZnFndG12IiwiaWF0IjoxNzg2ODM2NTkwLCJleHAiOjIxMDI0MTI1OTB9.Y0OHmFWR4jl8IRzLIzKlIMNwu8iS4HRveXFjSOpHqyM";
 
 const nativeSupabase = createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
   auth: {
