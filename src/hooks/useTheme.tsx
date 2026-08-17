@@ -4,6 +4,7 @@ export const THEMES = [
   { id: "grad-ocean", label: "Océano", hint: "Azul fresco, turquesa y cristal", group: "Recomendado" },
   { id: "dark", label: "Oscuro", hint: "El look clásico de CoreNetwork", group: "Básicos" },
   { id: "light", label: "Claro", hint: "Fondo blanco, alto contraste", group: "Básicos" },
+  { id: "lavanda-oscuro", label: "Lavanda Oscuro", hint: "Violeta oscuro basado en #4B3B61", group: "Oscuros" },
   { id: "retro2012", label: "YouTube 2012 / Cosmic Panda", hint: "Composición retro inspirada en la era Cosmic Panda", group: "Clásicos" },
   { id: "gradients", label: "Aurora", hint: "Violeta, rojo y azul", group: "Degradados" },
   { id: "grad-sunset", label: "Atardecer", hint: "Naranja y magenta", group: "Degradados" },
@@ -25,7 +26,7 @@ function readInitialTheme(): ThemeId {
 function apply(theme: ThemeId) {
   const root = document.documentElement;
   root.dataset.theme = theme;
-  root.classList.toggle("dark", !(["light", "retro2012", "grad-candy"] as ThemeId[]).includes(theme));
+  root.classList.toggle("dark", !("light" === theme || "retro2012" === theme || "grad-candy" === theme));
 }
 
 type ThemeState = { theme: ThemeId; setTheme: (theme: ThemeId) => void };
