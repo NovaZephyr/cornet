@@ -10,7 +10,8 @@ function TemporaryFileRedirect() {
 
   useEffect(() => {
     if (!token) return;
-    const endpoint = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/b2-temp-download?id=${encodeURIComponent(token)}`;
+    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL ?? "https://mvwpxnszcpyayofqgtmv.supabase.co";
+    const endpoint = `${supabaseUrl}/functions/v1/b2-temp-download?id=${encodeURIComponent(token)}`;
     window.location.replace(endpoint);
   }, [token]);
 
