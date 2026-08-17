@@ -71,12 +71,14 @@ export function AppShell({ children, hideSidebar = false }: { children: ReactNod
         </div>
       </header>
 
-      <div className="cn-2012-shell-body grid w-full grid-cols-[auto_minmax(0,1fr)] items-start gap-0">
+      <div className={cn("cn-2012-shell-body grid w-full items-start gap-0", hideSidebar ? "grid-cols-1" : "grid-cols-[auto_minmax(0,1fr)]")}>
+        {!hideSidebar && (
         <aside className={cn("cn-2012-sidebar hidden md:block", openSidebar ? "is-open" : "is-collapsed")}>
           <nav className="flex flex-col gap-1">
             {items.map((item) => { const Icon = item.icon; const active = pathname === item.to; return <Link key={item.to} to={item.to} title={openSidebar ? undefined : item.label} className={cn("flex items-center rounded-xl px-3 py-2.5 text-sm transition-colors hover:bg-surface", active && "bg-surface font-medium", openSidebar ? "gap-5" : "flex-col gap-1 text-[10px]")}><Icon className="h-5 w-5 shrink-0" /><span className={cn(!openSidebar && "text-center")}>{item.label}</span></Link>; })}
           </nav>
         </aside>
+        )}
         <main className="cn-2012-main min-w-0">{pathname === "/upload" ? <><UploadSafetyBridge />{children}</> : children}</main>
       </div>
       <SiteFooter />
