@@ -3,6 +3,7 @@ import { Image as ImageIcon, Link2, Loader2, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { TwemojiPicker } from "@/components/TwemojiTools";
+import { supabase } from "@/integrations/supabase/client";
 
 type KlipyGif = { id: string; title?: string; url: string; preview?: string; source?: string };
 
@@ -26,23 +27,16 @@ export function getGifUrl(content: string) {
   return isGifMessage(content) ? normalizeGifUrl(content.slice(5)) : null;
 }
 
-const KLIPY_KEY = import.meta.env.VITE_KLIPY_API_KEY as string | undefined;
-
-function extractUrl(item: any) {
-  return item?.media_formats?.gif?.url || item?.media_formats?.mediumgif?.url || item?.media_formats?.tinygif?.url || item?.gif?.url || item?.url || item?.content_url || item?.media?.gif?.url || null;
-}
-function extractPreview(item: any) {
-  return item?.media_formats?.tinygif?.url || item?.media_formats?.nanogif?.url || item?.media_formats?.gifpreview?.url || extractUrl(item);
-}
-
 async function searchKlipy(query: string) {
-  if (!KLIPY_KEY) throw new Error("Falta VITE_KLIPY_API_KEY en la configuración de Cornet.");
-  const params = new URLSearchParams({ q: query || "trending", key: KLIPY_KEY, limit: "24", locale: "es_ES" });
-  const response = await fetch(`https://api.klipy.com/v2/search?${params.toString()}`);
-  if (!response.ok) throw new Error(`KLIPY respondió ${response.status}`);
-  const payload = await response.json();
-  const rows = payload.results || payload.data || payload.gifs || [];
-  return rows.map((item: any, index: number) => { const url = extractUrl(item); return url ? { id: String(item.id ?? index), title: item.title ?? item.content_description ?? "GIF", url, preview: extractPreview(item), source: "KLIPY" } : null; }).filter(Boolean) as KlipyGif[];
+  const { data, error } = await supabase.functions.invoke("klipy-search", {
+    body: { query, limit: 24 },
+  });
+  if (error) throw new Error(error.message || "No se pudieron cargar los GIFs.");
+  if (data?.error) {
+    if (data.error === "KLIPY_API_KEY_NOT_CONFIGURED") throw new Error("La API de KLIPY aún no está configurada en el servidor.");
+    throw new Error(data.error === "KLIPY_REQUEST_FAILED" ? `KLIPY respondió ${data.status ?? "con un error"}.` : "No se pudieron cargar los GIFs.");
+  }
+  return (data?.gifs ?? []) as KlipyGif[];
 }
 
 export function ChatMediaPicker({ onGif }: { onEmoji: (emoji: string) => void; onGif: (url: string) => void }) {
