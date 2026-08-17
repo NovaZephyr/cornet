@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { createFileRoute } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { createFileRoute } from "@tanstack/react-router";
 import { BadgeCheck, Coins, Sparkles, TrendingUp } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
@@ -13,13 +13,10 @@ import { useAuth } from "@/hooks/useAuth";
 export const Route = createFileRoute("/partner")({
   head: () => ({
     meta: [
-      { title: "Be Partner — CoreNetwork" },
-      {
-        name: "description",
-        content: "Join to the good parter program on CoreNetwork.",
-      },
-      { property: "og:title", content: "Be Partner — CoreNetwork" },
-      { property: "og:description", content: "Partner in CoreNetwork." },
+      { title: "Partnership — CoreNetwork" },
+      { name: "description", content: "Conoce los requisitos del programa Partnership de CoreNetwork." },
+      { property: "og:title", content: "Partnership — CoreNetwork" },
+      { property: "og:description", content: "Requisitos y solicitud para el programa Partnership de CoreNetwork." },
     ],
   }),
   component: PartnerPage,
@@ -30,6 +27,29 @@ const BENEFITS = [
   { icon: Coins, title: "Monetización", text: "Reparto de ingresos por vistas de tus videos." },
   { icon: TrendingUp, title: "Más alcance", text: "Prioridad en recomendaciones de la portada." },
   { icon: Sparkles, title: "Personalización", text: "Fondos y colores exclusivos para tu canal." },
+];
+
+const REQUIREMENTS = [
+  {
+    question: "¿Tengo que crear contenido original?",
+    answer: "Sí. El contenido de tu canal debe ser original y creado por ti.",
+  },
+  {
+    question: "¿Puedo tener advertencias en mi cuenta?",
+    answer: "No. Debes haber pasado los últimos 90 días sin recibir ninguna advertencia.",
+  },
+  {
+    question: "¿Cuántas vistas necesito?",
+    answer: "Necesitas alcanzar al menos 700 vistas en tu contenido.",
+  },
+  {
+    question: "¿Cuántos suscriptores necesito?",
+    answer: "Necesitas tener al menos 100 suscriptores.",
+  },
+  {
+    question: "¿Qué pasa si cumplo todos los requisitos?",
+    answer: "Podrás solicitar el Partnership y tu solicitud será revisada por el equipo de CoreNetwork.",
+  },
 ];
 
 function PartnerPage() {
@@ -84,6 +104,23 @@ function PartnerPage() {
           </p>
         </div>
 
+        <section className="mt-6 rounded-2xl bg-surface p-6">
+          <div className="mb-5">
+            <h2 className="text-xl font-bold">Requisitos del Partnership</h2>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Aquí tienes las preguntas más importantes sobre los requisitos para postularte.
+            </p>
+          </div>
+          <div className="space-y-3">
+            {REQUIREMENTS.map((item) => (
+              <details key={item.question} className="rounded-xl border border-border bg-background p-4">
+                <summary className="cursor-pointer select-none font-medium">{item.question}</summary>
+                <p className="mt-2 text-sm text-muted-foreground">{item.answer}</p>
+              </details>
+            ))}
+          </div>
+        </section>
+
         <div className="mt-6 grid gap-4 sm:grid-cols-2">
           {BENEFITS.map((b) => (
             <div key={b.title} className="rounded-xl bg-surface p-5">
@@ -98,15 +135,15 @@ function PartnerPage() {
           {isPartner ? (
             <p className="text-center">
               <BadgeCheck className="mx-auto mb-2 h-8 w-8 text-partner" />
-              You are partner of CoreNetwork, thanks for helping our community!
+              Ya eres Partner de CoreNetwork. ¡Gracias por formar parte de la comunidad!
             </p>
           ) : !user ? (
             <p className="text-center text-muted-foreground">
-              Log in for join to 0+ creators in the creator program!
+              Inicia sesión para postularte al programa de creadores.
             </p>
           ) : application && application.status === "pending" ? (
             <p className="text-center text-muted-foreground">
-              Your request is waiting, sit down and do another thing!
+              Tu solicitud está en revisión. Te avisaremos cuando haya una decisión.
             </p>
           ) : (
             <form onSubmit={apply} className="space-y-4">
