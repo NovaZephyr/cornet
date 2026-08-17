@@ -1,33 +1,10 @@
 import { useEffect, useRef, useState } from "react";
-import {
-  ChevronDown,
-  Expand,
-  Loader2,
-  MessageSquareText,
-  Minimize,
-  Pause,
-  Play,
-  Settings,
-  ShieldAlert,
-  Volume2,
-  VolumeX,
-} from "lucide-react";
+import { ChevronDown, Expand, Loader2, MessageSquareText, Minimize, Pause, Play, RotateCcw, Settings, ShieldAlert, Volume2, VolumeX, Maximize2, Check } from "lucide-react";
 import { formatTimestamp } from "@/lib/captions";
 import { supabase } from "@/integrations/supabase/client";
 
-export type PlayerCaption = {
-  src: string;
-  srclang: string;
-  label: string;
-  default?: boolean;
-};
-
-export type PlayerChapter = {
-  id: string;
-  title: string;
-  startSeconds: number;
-  endSeconds?: number | null;
-};
+export type PlayerCaption = { src: string; srclang: string; label: string; default?: boolean };
+export type PlayerChapter = { id: string; title: string; startSeconds: number; endSeconds?: number | null };
 
 interface VideoPlayerProps {
   src?: string;
@@ -48,7 +25,9 @@ function formatTime(seconds: number): string {
 export function VideoPlayer({ src, poster, autoPlay, className, captions = [], chapters = [] }: VideoPlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const hideTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const hideTimer = useRef<ReturnType<typeof setTimeout> | undefined>();
+  const captionEnabledRef = useRef(false);
+  const captionLanguageRef = useRef("");
 
   const [playing, setPlaying] = useState(false);
   const [muted, setMuted] = useState(false);
@@ -57,6 +36,7 @@ export function VideoPlayer({ src, poster, autoPlay, className, captions = [], c
   const [duration, setDuration] = useState(0);
   const [buffered, setBuffered] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
   const [fullscreen, setFullscreen] = useState(false);
   const [showControls, setShowControls] = useState(true);
   const [rate, setRate] = useState(1);
@@ -71,19 +51,22 @@ export function VideoPlayer({ src, poster, autoPlay, className, captions = [], c
   const applyCaptionMode = (language: string, enabled: boolean) => {
     const video = videoRef.current;
     if (!video) return;
-    const tracks = Array.from(video.textTracks);
-    for (const track of tracks) track.mode = "disabled";
+    for (const track of Array.from(video.textTracks)) track.mode = "disabled";
     if (!enabled) {
+      captionEnabledRef.current = false;
+      captionLanguageRef.current = "";
       setCaptionEnabled(false);
       setCaptionLanguage("");
       return;
     }
-    const target = tracks.find((track) => track.language === language) ?? tracks.find((track) => track.language === captions[0]?.srclang);
-    if (target) {
-      target.mode = "showing";
-      setCaptionEnabled(true);
-      setCaptionLanguage(target.language || language);
-    }
+    const target = Array.from(video.textTracks).find((track) => track.language === language) ?? Array.from(video.textTracks).find((track) => track.language === captions[0]?.srclang);
+    if (!target) return;
+    target.mode = "showing";
+    const nextLanguage = target.language || language;
+    captionEnabledRef.current = true;
+    captionLanguageRef.current = nextLanguage;
+    setCaptionEnabled(true);
+    setCaptionLanguage(nextLanguage);
   };
 
   useEffect(() => {
@@ -93,45 +76,40 @@ export function VideoPlayer({ src, poster, autoPlay, className, captions = [], c
       setAgeLoading(false);
       return;
     }
-    void supabase
-      .from("videos")
-      .select("age_restricted")
-      .eq("code", code)
-      .maybeSingle()
-      .then(({ data }) => {
-        if (!active) return;
-        const restricted = data?.age_restricted === true;
-        setAgeRestricted(restricted);
-        setAgeGate(restricted);
-        setAgeLoading(false);
-      }, () => {
-        if (active) setAgeLoading(false);
-      });
-    return () => {
-      active = false;
-    };
-  }, []);
+    void supabase.from("videos").select("age_restricted").eq("code", code).maybeSingle().then(({ data }) => {
+      if (!active) return;
+      const restricted = data?.age_restricted === true;
+      setAgeRestricted(restricted);
+      setAgeGate(restricted);
+      setAgeLoading(false);
+    }, () => { if (active) setAgeLoading(false); });
+    return () => { active = false; };
+  }, [src]);
 
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
     const onPlay = () => setPlaying(true);
-    const onPause = () => {
-      setPlaying(false);
-      setShowControls(true);
-    };
+    const onPause = () => { setPlaying(false); setShowControls(true); };
     const onTime = () => setCurrent(video.currentTime);
     const onLoaded = () => {
       setDuration(Number.isFinite(video.duration) ? video.duration : 0);
       setLoading(false);
-      if (captions.length && captionLanguage) applyCaptionMode(captionLanguage, captionEnabled);
-      else if (captions.some((caption) => caption.default)) applyCaptionMode(captions.find((caption) => caption.default)?.srclang ?? captions[0].srclang, true);
+      setError(false);
+      if (captions.length && captionLanguageRef.current) applyCaptionMode(captionLanguageRef.current, true);
+      else {
+        const defaultCaption = captions.find((caption) => caption.default);
+        if (defaultCaption) applyCaptionMode(defaultCaption.srclang, true);
+      }
     };
     const onWaiting = () => setLoading(true);
     const onPlaying = () => setLoading(false);
     const onProgress = () => {
       if (video.buffered.length > 0) setBuffered(video.buffered.end(video.buffered.length - 1));
     };
+    const onError = () => { setLoading(false); setError(true); };
+    const onEnded = () => { setPlaying(false); setShowControls(true); setCurrent(video.duration || 0); };
+
     video.addEventListener("play", onPlay);
     video.addEventListener("pause", onPause);
     video.addEventListener("timeupdate", onTime);
@@ -139,6 +117,8 @@ export function VideoPlayer({ src, poster, autoPlay, className, captions = [], c
     video.addEventListener("waiting", onWaiting);
     video.addEventListener("playing", onPlaying);
     video.addEventListener("progress", onProgress);
+    video.addEventListener("error", onError);
+    video.addEventListener("ended", onEnded);
     return () => {
       video.removeEventListener("play", onPlay);
       video.removeEventListener("pause", onPause);
@@ -147,66 +127,41 @@ export function VideoPlayer({ src, poster, autoPlay, className, captions = [], c
       video.removeEventListener("waiting", onWaiting);
       video.removeEventListener("playing", onPlaying);
       video.removeEventListener("progress", onProgress);
+      video.removeEventListener("error", onError);
+      video.removeEventListener("ended", onEnded);
     };
-  }, [src, captions, captionEnabled, captionLanguage]);
+  }, [src, captions]);
 
   useEffect(() => {
-    const onFsChange = () => setFullscreen(!!document.fullscreenElement);
+    const onFsChange = () => setFullscreen(Boolean(document.fullscreenElement));
     document.addEventListener("fullscreenchange", onFsChange);
     return () => document.removeEventListener("fullscreenchange", onFsChange);
   }, []);
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
-      if (!containerRef.current?.contains(document.activeElement) && document.activeElement !== document.body) return;
+      if (!containerRef.current || !document.activeElement || !containerRef.current.contains(document.activeElement)) return;
       const video = videoRef.current;
       if (!video || ageGate) return;
-      switch (event.key.toLowerCase()) {
-        case " ":
-        case "k":
-          event.preventDefault();
-          togglePlay();
-          break;
-        case "c":
-          event.preventDefault();
-          if (captions.length) applyCaptionMode(captionEnabled ? "" : captions[0].srclang, !captionEnabled);
-          break;
-        case "arrowright":
-          seekTo(Math.min(video.currentTime + 5, duration));
-          break;
-        case "arrowleft":
-          seekTo(Math.max(video.currentTime - 5, 0));
-          break;
-        case "arrowup":
-          event.preventDefault();
-          onVolumeChange(Math.min(volume + 0.1, 1));
-          break;
-        case "arrowdown":
-          event.preventDefault();
-          onVolumeChange(Math.max(volume - 0.1, 0));
-          break;
-        case "m":
-          toggleMute();
-          break;
-        case "f":
-          toggleFullscreen();
-          break;
-      }
+      if (event.key === " " || event.key.toLowerCase() === "k") { event.preventDefault(); togglePlay(); }
+      else if (event.key.toLowerCase() === "m") toggleMute();
+      else if (event.key.toLowerCase() === "f") toggleFullscreen();
+      else if (event.key.toLowerCase() === "c" && captions.length) { event.preventDefault(); applyCaptionMode(captionEnabledRef.current ? "" : captions[0].srclang, !captionEnabledRef.current); }
+      else if (event.key === "ArrowRight") seekTo(Math.min(video.currentTime + 5, duration));
+      else if (event.key === "ArrowLeft") seekTo(Math.max(video.currentTime - 5, 0));
+      else if (event.key === "ArrowUp") { event.preventDefault(); onVolumeChange(Math.min(volume + 0.1, 1)); }
+      else if (event.key === "ArrowDown") { event.preventDefault(); onVolumeChange(Math.max(volume - 0.1, 0)); }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [duration, volume, ageGate, captionEnabled, captions]);
+  }, [duration, volume, ageGate, captions]);
 
-  useEffect(() => {
-    return () => {
-      if (hideTimer.current) clearTimeout(hideTimer.current);
-    };
-  }, []);
+  useEffect(() => () => { if (hideTimer.current) clearTimeout(hideTimer.current); }, []);
 
   const togglePlay = () => {
     const video = videoRef.current;
     if (!video || ageGate) return;
-    if (video.paused) void video.play();
+    if (video.paused) void video.play().catch(() => setError(true));
     else video.pause();
   };
 
@@ -228,16 +183,16 @@ export function VideoPlayer({ src, poster, autoPlay, className, captions = [], c
 
   const seekTo = (value: number) => {
     const video = videoRef.current;
-    if (!video || ageGate) return;
-    video.currentTime = Math.max(0, value);
+    if (!video || ageGate || !Number.isFinite(value)) return;
+    video.currentTime = Math.max(0, Math.min(value, duration || value));
     setCurrent(video.currentTime);
   };
 
   const toggleFullscreen = () => {
     const element = containerRef.current;
     if (!element) return;
-    if (!document.fullscreenElement) void element.requestFullscreen();
-    else void document.exitFullscreen();
+    if (!document.fullscreenElement) void element.requestFullscreen().catch(() => undefined);
+    else void document.exitFullscreen().catch(() => undefined);
   };
 
   const setPlaybackRate = (value: number) => {
@@ -254,157 +209,58 @@ export function VideoPlayer({ src, poster, autoPlay, className, captions = [], c
     if (hideTimer.current) clearTimeout(hideTimer.current);
     hideTimer.current = setTimeout(() => {
       if (videoRef.current && !videoRef.current.paused) setShowControls(false);
-    }, 2200);
+    }, 2400);
   };
 
   const continueVideo = () => {
     setAgeGate(false);
-    requestAnimationFrame(() => {
-      if (autoPlay) void videoRef.current?.play();
-    });
+    requestAnimationFrame(() => { if (autoPlay) void videoRef.current?.play().catch(() => undefined); });
+  };
+
+  const retry = () => {
+    const video = videoRef.current;
+    if (!video) return;
+    setError(false);
+    setLoading(true);
+    video.load();
+    if (autoPlay && !ageGate) void video.play().catch(() => undefined);
   };
 
   const activeCaptionLabel = captions.find((caption) => caption.srclang === captionLanguage)?.label ?? "Desactivados";
+  const progressPercent = duration ? Math.min(100, Math.max(0, (current / duration) * 100)) : 0;
+  const bufferedPercent = duration ? Math.min(100, Math.max(0, (buffered / duration) * 100)) : 0;
 
-  return (
-    <div
-      ref={containerRef}
-      className={`group relative aspect-video w-full select-none overflow-hidden rounded-xl bg-black ${className ?? ""}`}
-      onMouseMove={wake}
-      onMouseLeave={() => playing && setShowControls(false)}
-    >
-      <video
-        ref={videoRef}
-        src={src}
-        poster={poster}
-        autoPlay={autoPlay && !ageGate}
-        playsInline
-        onClick={togglePlay}
-        onDoubleClick={toggleFullscreen}
-        className="h-full w-full cursor-pointer bg-black"
-      >
-        {captions.map((caption) => (
-          <track
-            key={`${caption.srclang}-${caption.label}`}
-            kind="subtitles"
-            src={caption.src}
-            srcLang={caption.srclang}
-            label={caption.label}
-          />
-        ))}
-      </video>
+  return <div ref={containerRef} tabIndex={0} role="application" aria-label="Reproductor de video" className={`group/player relative aspect-video w-full select-none overflow-hidden rounded-2xl bg-black shadow-2xl shadow-black/20 ring-1 ring-white/10 outline-none focus-visible:ring-2 focus-visible:ring-primary/60 ${className ?? ""}`} onMouseMove={wake} onMouseLeave={() => playing && setShowControls(false)}>
+    <video ref={videoRef} src={src} poster={poster} autoPlay={autoPlay && !ageGate} playsInline preload="metadata" onClick={togglePlay} onDoubleClick={toggleFullscreen} className="h-full w-full cursor-pointer bg-black object-contain" aria-label="Video" />
 
-      {loading && !ageGate && (
-        <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/10">
-          <Loader2 className="h-9 w-9 animate-spin text-white/80" />
-        </div>
-      )}
+    {loading && !ageGate && !error && <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/10"><div className="rounded-full bg-black/35 p-3 backdrop-blur"><Loader2 className="h-8 w-8 animate-spin text-white" /></div></div>}
 
-      {!playing && !loading && !ageGate && (
-        <button
-          onClick={togglePlay}
-          aria-label="Reproducir"
-          className="absolute inset-0 flex items-center justify-center bg-black/10 transition-opacity"
-        >
-          <span className="flex h-14 w-14 items-center justify-center rounded-full bg-white/95 text-black shadow-xl">
-            <Play className="ml-0.5 h-6 w-6 fill-current" />
-          </span>
-        </button>
-      )}
+    {error && !ageGate && <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/75 p-6 text-center text-white backdrop-blur-sm"><div className="max-w-sm"><div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-white/10"><RotateCcw className="h-5 w-5" /></div><h2 className="mt-4 text-lg font-semibold">No se pudo cargar el video</h2><p className="mt-1 text-sm text-white/65">Comprueba la conexión y vuelve a intentarlo.</p><button type="button" onClick={retry} className="mt-4 rounded-full bg-white px-4 py-2 text-sm font-semibold text-black transition hover:bg-white/90">Reintentar</button></div></div>}
 
-      {!ageLoading && ageRestricted && ageGate && (
-        <div className="absolute inset-0 z-30 flex items-center justify-center bg-black/90 p-6 text-center text-white">
-          <div className="max-w-md">
-            <ShieldAlert className="mx-auto h-12 w-12 text-white/85" />
-            <h2 className="mt-4 text-2xl font-bold">Contenido restringido para mayores de 18</h2>
-            <p className="mt-2 text-sm text-white/75">Este video está marcado como restringido por el creador. Confirma que eres mayor de 18 años para continuar.</p>
-            <button type="button" onClick={continueVideo} className="mt-5 rounded-md bg-white px-5 py-2.5 text-sm font-semibold text-black hover:bg-white/90">
-              Soy mayor de 18 — Ver video
-            </button>
-            <p className="mt-3 text-[11px] text-white/50">Esta advertencia no sustituye una verificación legal de edad.</p>
-          </div>
-        </div>
-      )}
+    {!playing && !loading && !ageGate && !error && <button type="button" onClick={togglePlay} aria-label="Reproducir" className="absolute inset-0 flex items-center justify-center bg-black/10"><span className="flex h-16 w-16 items-center justify-center rounded-full bg-white/95 text-black shadow-2xl transition-transform duration-150 hover:scale-105"><Play className="ml-1 h-7 w-7 fill-current" /></span></button>}
 
-      <div className={`absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/95 via-black/55 to-transparent px-3 pb-2 pt-10 transition-opacity duration-200 ${showControls || !playing ? "opacity-100" : "pointer-events-none opacity-0"} ${ageGate ? "pointer-events-none opacity-0" : ""}`}>
-        <div className="relative mb-2 h-1 cursor-pointer rounded-full bg-white/30 sm:h-1.5">
-          <div className="absolute inset-y-0 left-0 rounded-full bg-white/45" style={{ width: `${duration ? (buffered / duration) * 100 : 0}%` }} />
-          <div className="absolute inset-y-0 left-0 rounded-full bg-red-600" style={{ width: `${duration ? (current / duration) * 100 : 0}%` }} />
-          <input type="range" min={0} max={duration || 0} step={0.1} value={current} onChange={(event) => seekTo(Number(event.target.value))} className="absolute inset-0 h-full w-full cursor-pointer opacity-0" aria-label="Progreso del video" />
-        </div>
+    {!ageLoading && ageRestricted && ageGate && <div className="absolute inset-0 z-30 flex items-center justify-center bg-black/90 p-6 text-center text-white"><div className="max-w-md"><ShieldAlert className="mx-auto h-12 w-12 text-white/80" /><h2 className="mt-4 text-2xl font-bold">Contenido restringido para mayores de 18</h2><p className="mt-2 text-sm text-white/70">Este video está marcado como restringido por el creador. Confirma que eres mayor de 18 años para continuar.</p><button type="button" onClick={continueVideo} className="mt-5 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-black transition hover:bg-white/90">Soy mayor de 18 — Ver video</button><p className="mt-3 text-[11px] text-white/45">Esta advertencia no sustituye una verificación legal de edad.</p></div></div>}
 
-        <div className="flex items-center gap-2 text-white sm:gap-3">
-          <button onClick={togglePlay} aria-label={playing ? "Pausar" : "Reproducir"} className="rounded p-1 hover:bg-white/10">
-            {playing ? <Pause className="h-5 w-5" fill="currentColor" /> : <Play className="h-5 w-5" fill="currentColor" />}
-          </button>
-
-          <div className="group/vol flex items-center gap-1">
-            <button onClick={toggleMute} aria-label={muted ? "Activar sonido" : "Silenciar"} className="rounded p-1 hover:bg-white/10">
-              {muted || volume === 0 ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}
-            </button>
-            <input type="range" min={0} max={1} step={0.05} value={muted ? 0 : volume} onChange={(event) => onVolumeChange(Number(event.target.value))} className="h-1 w-0 cursor-pointer opacity-0 transition-all group-hover/vol:w-16 group-hover/vol:opacity-100" aria-label="Volumen" />
-          </div>
-
-          <span className="text-xs tabular-nums text-white/90">{formatTime(current)} / {formatTime(duration)}</span>
-
-          <div className="ml-auto flex items-center gap-1">
-            {captions.length > 0 && (
-              <button
-                type="button"
-                onClick={() => applyCaptionMode(captionEnabled ? "" : captions[0].srclang, !captionEnabled)}
-                aria-label={captionEnabled ? "Desactivar subtítulos" : "Activar subtítulos"}
-                aria-pressed={captionEnabled}
-                className={`rounded p-1.5 hover:bg-white/10 ${captionEnabled ? "bg-white/15" : ""}`}
-              >
-                <MessageSquareText className="h-5 w-5" />
-              </button>
-            )}
-
-            <div className="relative">
-              <button type="button" onClick={() => { setShowSettings((open) => !open); setSettingsView("main"); }} aria-label="Configuración" className="rounded p-1.5 hover:bg-white/10">
-                <Settings className="h-5 w-5" />
-              </button>
-              {showSettings && (
-                <div className="absolute bottom-10 right-0 w-64 overflow-hidden rounded-lg border border-white/10 bg-zinc-950/95 p-1 text-sm text-white shadow-2xl backdrop-blur">
-                  {settingsView === "main" && (
-                    <>
-                      <button type="button" onClick={() => setSettingsView("speed")} className="flex w-full items-center justify-between rounded px-3 py-2 text-left hover:bg-white/10"><span>Velocidad</span><span className="flex items-center gap-1 text-xs text-white/65">{rate}x <ChevronDown className="h-3 w-3" /></span></button>
-                      {captions.length > 0 && <button type="button" onClick={() => setSettingsView("captions")} className="flex w-full items-center justify-between rounded px-3 py-2 text-left hover:bg-white/10"><span>Subtítulos/CC</span><span className="flex items-center gap-1 text-xs text-white/65">{activeCaptionLabel} <ChevronDown className="h-3 w-3" /></span></button>}
-                    </>
-                  )}
-                  {settingsView === "speed" && (
-                    <>
-                      <button type="button" onClick={() => setSettingsView("main")} className="mb-1 w-full rounded px-3 py-2 text-left text-xs text-white/65 hover:bg-white/10">← Configuración</button>
-                      {SPEEDS.map((speed) => <button key={speed} type="button" onClick={() => setPlaybackRate(speed)} className={`flex w-full items-center justify-between rounded px-3 py-2 text-left hover:bg-white/10 ${speed === rate ? "text-red-400" : ""}`}><span>{speed === 1 ? "Normal" : `${speed}x`}</span>{speed === rate && <span>✓</span>}</button>)}
-                    </>
-                  )}
-                  {settingsView === "captions" && (
-                    <>
-                      <button type="button" onClick={() => setSettingsView("main")} className="mb-1 w-full rounded px-3 py-2 text-left text-xs text-white/65 hover:bg-white/10">← Configuración</button>
-                      <button type="button" onClick={() => applyCaptionMode("", false)} className={`flex w-full items-center justify-between rounded px-3 py-2 text-left hover:bg-white/10 ${!captionEnabled ? "text-red-400" : ""}`}><span>Desactivados</span>{!captionEnabled && <span>✓</span>}</button>
-                      {captions.map((caption) => <button key={`${caption.srclang}-${caption.label}`} type="button" onClick={() => applyCaptionMode(caption.srclang, true)} className={`flex w-full items-center justify-between rounded px-3 py-2 text-left hover:bg-white/10 ${captionEnabled && captionLanguage === caption.srclang ? "text-red-400" : ""}`}><span>{caption.label}</span>{captionEnabled && captionLanguage === caption.srclang && <span>✓</span>}</button>)}
-                    </>
-                  )}
-                </div>
-              )}
-            </div>
-
-            <button onClick={toggleFullscreen} aria-label={fullscreen ? "Salir de pantalla completa" : "Pantalla completa"} className="rounded p-1.5 hover:bg-white/10">
-              {fullscreen ? <Minimize className="h-5 w-5" /> : <Expand className="h-5 w-5" />}
-            </button>
-          </div>
-        </div>
+    <div className={`absolute inset-x-0 bottom-0 bg-gradient-to-t from-black via-black/75 to-transparent px-3 pb-3 pt-14 transition-opacity duration-200 sm:px-4 ${showControls || !playing ? "opacity-100" : "pointer-events-none opacity-0"} ${ageGate ? "pointer-events-none opacity-0" : ""}`}>
+      <div className="relative mb-3 h-1.5 cursor-pointer rounded-full bg-white/25 sm:h-2">
+        <div className="absolute inset-y-0 left-0 rounded-full bg-white/30" style={{ width: `${bufferedPercent}%` }} />
+        <div className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-cyan-400 to-primary" style={{ width: `${progressPercent}%` }} />
+        <input type="range" min={0} max={duration || 0} step={0.1} value={current} onChange={(event) => seekTo(Number(event.target.value))} className="absolute inset-0 h-full w-full cursor-pointer opacity-0" aria-label="Progreso del video" />
       </div>
 
-      {chapters.length > 0 && !ageGate && (
-        <div className="absolute left-3 right-3 top-3 flex gap-1 overflow-x-auto rounded bg-black/55 p-1 text-white backdrop-blur-sm">
-          {chapters.map((chapter) => (
-            <button key={chapter.id} type="button" onClick={() => seekTo(chapter.startSeconds)} className="shrink-0 rounded bg-black/45 px-2 py-1 text-[11px] hover:bg-black/70" title={`${chapter.title} · ${formatTimestamp(chapter.startSeconds)}`}>
-              {chapter.title}
-            </button>
-          ))}
+      <div className="flex items-center gap-1 text-white sm:gap-2">
+        <button type="button" onClick={togglePlay} aria-label={playing ? "Pausar" : "Reproducir"} className="rounded-lg p-2 transition hover:bg-white/10">{playing ? <Pause className="h-5 w-5" fill="currentColor" /> : <Play className="h-5 w-5" fill="currentColor" />}</button>
+        <div className="group/vol flex items-center gap-1"><button type="button" onClick={toggleMute} aria-label={muted ? "Activar sonido" : "Silenciar"} className="rounded-lg p-2 transition hover:bg-white/10">{muted || volume === 0 ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}</button><input type="range" min={0} max={1} step={0.05} value={muted ? 0 : volume} onChange={(event) => onVolumeChange(Number(event.target.value))} className="h-1 w-0 accent-white opacity-0 transition-all group-hover/vol:w-16 group-hover/vol:opacity-100" aria-label="Volumen" /></div>
+        <span className="ml-1 text-xs font-medium tabular-nums text-white/90 sm:text-sm">{formatTime(current)} <span className="text-white/40">/</span> {formatTime(duration)}</span>
+        <div className="ml-auto flex items-center gap-0.5">
+          {captions.length > 0 && <button type="button" onClick={() => applyCaptionMode(captionEnabledRef.current ? "" : captions[0].srclang, !captionEnabledRef.current)} aria-label={captionEnabled ? "Desactivar subtítulos" : "Activar subtítulos"} aria-pressed={captionEnabled} className={`rounded-lg p-2 transition hover:bg-white/10 ${captionEnabled ? "bg-white/15" : ""}`}><MessageSquareText className="h-5 w-5" /></button>}
+          <div className="relative"><button type="button" onClick={() => { setShowSettings((open) => !open); setSettingsView("main"); }} aria-label="Configuración" className="rounded-lg p-2 transition hover:bg-white/10"><Settings className="h-5 w-5" /></button>{showSettings && <div className="absolute bottom-12 right-0 w-64 overflow-hidden rounded-2xl border border-white/10 bg-zinc-950/95 p-1.5 text-sm text-white shadow-2xl backdrop-blur-xl">{settingsView === "main" && <><button type="button" onClick={() => setSettingsView("speed")} className="flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-left hover:bg-white/10"><span>Velocidad</span><span className="flex items-center gap-1 text-xs text-white/60">{rate}x <ChevronDown className="h-3 w-3" /></span></button>{captions.length > 0 && <button type="button" onClick={() => setSettingsView("captions")} className="flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-left hover:bg-white/10"><span>Subtítulos / CC</span><span className="flex items-center gap-1 text-xs text-white/60">{activeCaptionLabel} <ChevronDown className="h-3 w-3" /></span></button>}</>}{settingsView === "speed" && <><button type="button" onClick={() => setSettingsView("main")} className="mb-1 flex w-full items-center gap-2 rounded-xl px-3 py-2 text-left text-xs text-white/55 hover:bg-white/10">← Configuración</button>{SPEEDS.map((speed) => <button key={speed} type="button" onClick={() => setPlaybackRate(speed)} className="flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-left hover:bg-white/10"><span>{speed === 1 ? "Normal" : `${speed}x`}</span>{speed === rate && <Check className="h-4 w-4 text-cyan-300" />}</button>)}</>}{settingsView === "captions" && <><button type="button" onClick={() => setSettingsView("main")} className="mb-1 flex w-full items-center gap-2 rounded-xl px-3 py-2 text-left text-xs text-white/55 hover:bg-white/10">← Configuración</button><button type="button" onClick={() => applyCaptionMode("", false)} className="flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-left hover:bg-white/10"><span>Desactivados</span>{!captionEnabled && <Check className="h-4 w-4 text-cyan-300" />}</button>{captions.map((caption) => <button key={`${caption.srclang}-${caption.label}`} type="button" onClick={() => applyCaptionMode(caption.srclang, true)} className="flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-left hover:bg-white/10"><span>{caption.label}</span>{captionEnabled && captionLanguage === caption.srclang && <Check className="h-4 w-4 text-cyan-300" />}</button>)}</>}</div>}</div>
+          <button type="button" onClick={toggleFullscreen} aria-label={fullscreen ? "Salir de pantalla completa" : "Pantalla completa"} className="rounded-lg p-2 transition hover:bg-white/10">{fullscreen ? <Minimize className="h-5 w-5" /> : <Expand className="h-5 w-5" />}</button>
+          <button type="button" onClick={() => setShowControls(true)} aria-label="Modo enfoque" className="hidden rounded-lg p-2 transition hover:bg-white/10 lg:inline-flex"><Maximize2 className="h-5 w-5" /></button>
         </div>
-      )}
+      </div>
     </div>
-  );
+
+    {chapters.length > 0 && !ageGate && <div className="absolute left-3 right-3 top-3 flex gap-1.5 overflow-x-auto rounded-xl border border-white/10 bg-black/35 p-1.5 text-white shadow-lg backdrop-blur-md scrollbar-none">{chapters.map((chapter) => <button key={chapter.id} type="button" onClick={() => seekTo(chapter.startSeconds)} className="shrink-0 rounded-lg bg-white/8 px-3 py-1.5 text-[11px] font-medium transition hover:bg-white/15" title={`${chapter.title} · ${formatTimestamp(chapter.startSeconds)}`}>{chapter.title}</button>)}</div>}
+  </div>;
 }
