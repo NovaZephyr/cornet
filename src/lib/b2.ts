@@ -1,6 +1,7 @@
 import { supabase } from "@/integrations/supabase/client";
 
 const FUNCTION_NAME = "b2-file-host";
+const UPLOAD_PROXY = "b2-upload-proxy";
 
 type B2Response<T = Record<string, unknown>> = T & { error?: string };
 
@@ -21,16 +22,33 @@ export async function createB2UploadUrl(key: string, contentType: string) {
 }
 
 export async function uploadToB2(key: string, file: File) {
-  const signed = await createB2UploadUrl(key, file.type || "application/octet-stream");
-  const response = await fetch(signed.url, {
-    method: "PUT",
+  const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+  if (sessionError) throw sessionError;
+  const accessToken = sessionData.session?.access_token;
+  if (!accessToken) throw new Error("Authentication required");
+
+  const supabaseUrl = import.meta.env.VITE_SUPABASE_URL ?? supabase.supabaseUrl;
+  if (!supabaseUrl) throw new Error("Supabase URL is not configured");
+
+  const response = await fetch(`${supabaseUrl}/functions/v1/${UPLOAD_PROXY}`, {
+    method: "POST",
     headers: {
+      Authorization: `Bearer ${accessToken}`,
       "Content-Type": file.type || "application/octet-stream",
+      "x-file-key": key,
     },
     body: file,
   });
-  if (!response.ok) {
-    throw new Error(`B2 upload failed (${response.status})`);
+
+  let payload: B2Response | null = null;
+  try {
+    payload = (await response.json()) as B2Response;
+  } catch {
+    payload = null;
+  }
+
+  if (!response.ok || payload?.error) {
+    throw new Error(payload?.error ?? `B2 upload failed (${response.status})`);
   }
 }
 
