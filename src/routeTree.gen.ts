@@ -16,10 +16,12 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as BlogRouteImport } from './routes/blog'
 import { Route as CommunityRouteImport } from './routes/community'
 import { Route as ExploreRouteImport } from './routes/explore'
+import { Route as HistoryRouteImport } from './routes/history'
 import { Route as NotificationsRouteImport } from './routes/notifications'
 import { Route as PartnerRouteImport } from './routes/partner'
 import { Route as PlaylistsRouteImport } from './routes/playlists'
 import { Route as RulesRouteImport } from './routes/rules'
+import { Route as SeriesRouteImport } from './routes/series'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as UploadRouteImport } from './routes/upload'
 import { Route as WatchRouteImport } from './routes/watch'
@@ -38,10 +40,12 @@ const AuthRoute = AuthRouteImport.update({ id: '/auth', path: '/auth', getParent
 const BlogRoute = BlogRouteImport.update({ id: '/blog', path: '/blog', getParentRoute: () => rootRouteImport } as any)
 const CommunityRoute = CommunityRouteImport.update({ id: '/community', path: '/community', getParentRoute: () => rootRouteImport } as any)
 const ExploreRoute = ExploreRouteImport.update({ id: '/explore', path: '/explore', getParentRoute: () => rootRouteImport } as any)
+const HistoryRoute = HistoryRouteImport.update({ id: '/history', path: '/history', getParentRoute: () => rootRouteImport } as any)
 const NotificationsRoute = NotificationsRouteImport.update({ id: '/notifications', path: '/notifications', getParentRoute: () => rootRouteImport } as any)
 const PartnerRoute = PartnerRouteImport.update({ id: '/partner', path: '/partner', getParentRoute: () => rootRouteImport } as any)
 const PlaylistsRoute = PlaylistsRouteImport.update({ id: '/playlists', path: '/playlists', getParentRoute: () => rootRouteImport } as any)
 const RulesRoute = RulesRouteImport.update({ id: '/rules', path: '/rules', getParentRoute: () => rootRouteImport } as any)
+const SeriesRoute = SeriesRouteImport.update({ id: '/series', path: '/series', getParentRoute: () => rootRouteImport } as any)
 const SettingsRoute = SettingsRouteImport.update({ id: '/settings', path: '/settings', getParentRoute: () => rootRouteImport } as any)
 const UploadRoute = UploadRouteImport.update({ id: '/upload', path: '/upload', getParentRoute: () => rootRouteImport } as any)
 const WatchRoute = WatchRouteImport.update({ id: '/watch', path: '/watch', getParentRoute: () => rootRouteImport } as any)
@@ -61,10 +65,12 @@ export interface FileRoutesByFullPath {
   '/blog': typeof BlogRoute
   '/community': typeof CommunityRoute
   '/explore': typeof ExploreRoute
+  '/history': typeof HistoryRoute
   '/notifications': typeof NotificationsRoute
   '/partner': typeof PartnerRoute
   '/playlists': typeof PlaylistsRoute
   '/rules': typeof RulesRoute
+  '/series': typeof SeriesRoute
   '/settings': typeof SettingsRoute
   '/upload': typeof UploadRoute
   '/watch': typeof WatchRoute
@@ -86,10 +92,12 @@ export interface FileRoutesById {
   '/blog': typeof BlogRoute
   '/community': typeof CommunityRoute
   '/explore': typeof ExploreRoute
+  '/history': typeof HistoryRoute
   '/notifications': typeof NotificationsRoute
   '/partner': typeof PartnerRoute
   '/playlists': typeof PlaylistsRoute
   '/rules': typeof RulesRoute
+  '/series': typeof SeriesRoute
   '/settings': typeof SettingsRoute
   '/upload': typeof UploadRoute
   '/watch': typeof WatchRoute
@@ -117,10 +125,12 @@ export interface RootRouteChildren {
   BlogRoute: typeof BlogRoute
   CommunityRoute: typeof CommunityRoute
   ExploreRoute: typeof ExploreRoute
+  HistoryRoute: typeof HistoryRoute
   NotificationsRoute: typeof NotificationsRoute
   PartnerRoute: typeof PartnerRoute
   PlaylistsRoute: typeof PlaylistsRoute
   RulesRoute: typeof RulesRoute
+  SeriesRoute: typeof SeriesRoute
   SettingsRoute: typeof SettingsRoute
   UploadRoute: typeof UploadRoute
   WatchRoute: typeof WatchRoute
@@ -141,10 +151,12 @@ declare module '@tanstack/react-router' {
     '/blog': { id: '/blog'; path: '/blog'; fullPath: '/blog'; preLoaderRoute: typeof BlogRouteImport; parentRoute: typeof rootRouteImport }
     '/community': { id: '/community'; path: '/community'; fullPath: '/community'; preLoaderRoute: typeof CommunityRouteImport; parentRoute: typeof rootRouteImport }
     '/explore': { id: '/explore'; path: '/explore'; fullPath: '/explore'; preLoaderRoute: typeof ExploreRouteImport; parentRoute: typeof rootRouteImport }
+    '/history': { id: '/history'; path: '/history'; fullPath: '/history'; preLoaderRoute: typeof HistoryRouteImport; parentRoute: typeof rootRouteImport }
     '/notifications': { id: '/notifications'; path: '/notifications'; fullPath: '/notifications'; preLoaderRoute: typeof NotificationsRouteImport; parentRoute: typeof rootRouteImport }
     '/partner': { id: '/partner'; path: '/partner'; fullPath: '/partner'; preLoaderRoute: typeof PartnerRouteImport; parentRoute: typeof rootRouteImport }
     '/playlists': { id: '/playlists'; path: '/playlists'; fullPath: '/playlists'; preLoaderRoute: typeof PlaylistsRouteImport; parentRoute: typeof rootRouteImport }
     '/rules': { id: '/rules'; path: '/rules'; fullPath: '/rules'; preLoaderRoute: typeof RulesRouteImport; parentRoute: typeof rootRouteImport }
+    '/series': { id: '/series'; path: '/series'; fullPath: '/series'; preLoaderRoute: typeof SeriesRouteImport; parentRoute: typeof rootRouteImport }
     '/settings': { id: '/settings'; path: '/settings'; fullPath: '/settings'; preLoaderRoute: typeof SettingsRouteImport; parentRoute: typeof rootRouteImport }
     '/upload': { id: '/upload'; path: '/upload'; fullPath: '/upload'; preLoaderRoute: typeof UploadRouteImport; parentRoute: typeof rootRouteImport }
     '/watch': { id: '/watch'; path: '/watch'; fullPath: '/watch'; preLoaderRoute: typeof WatchRouteImport; parentRoute: typeof rootRouteImport }
