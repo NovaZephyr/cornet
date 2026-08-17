@@ -129,10 +129,13 @@ export type Database = {
           created_at: string
           description: string
           display_name: string
+          gif_path: string | null
           id: string
+          is_banned: boolean
           is_verified: boolean
           updated_at: string
           username: string
+          warnings_count: number
         }
         Insert: {
           accent_color?: string
@@ -142,10 +145,13 @@ export type Database = {
           created_at?: string
           description?: string
           display_name?: string
+          gif_path?: string | null
           id: string
+          is_banned?: boolean
           is_verified?: boolean
           updated_at?: string
           username: string
+          warnings_count?: number
         }
         Update: {
           accent_color?: string
@@ -155,10 +161,13 @@ export type Database = {
           created_at?: string
           description?: string
           display_name?: string
+          gif_path?: string | null
           id?: string
+          is_banned?: boolean
           is_verified?: boolean
           updated_at?: string
           username?: string
+          warnings_count?: number
         }
         Relationships: []
       }
@@ -201,6 +210,30 @@ export type Database = {
         }
         Relationships: []
       }
+      user_warnings: {
+        Row: {
+          created_at: string
+          id: string
+          issued_by: string | null
+          reason: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          issued_by?: string | null
+          reason: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          issued_by?: string | null
+          reason?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       video_likes: {
         Row: {
           created_at: string
@@ -232,6 +265,7 @@ export type Database = {
       }
       videos: {
         Row: {
+          code: string
           created_at: string
           description: string
           duration_seconds: number
@@ -244,6 +278,7 @@ export type Database = {
           visibility: string
         }
         Insert: {
+          code?: string
           created_at?: string
           description?: string
           duration_seconds?: number
@@ -256,6 +291,7 @@ export type Database = {
           visibility?: string
         }
         Update: {
+          code?: string
           created_at?: string
           description?: string
           duration_seconds?: number
@@ -274,6 +310,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      generate_video_code: { Args: never; Returns: string }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
