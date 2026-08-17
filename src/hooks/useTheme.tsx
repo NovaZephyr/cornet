@@ -14,75 +14,23 @@ export const THEMES = [
   { id: "grad-neon", label: "Neón", hint: "Verde y cian eléctrico", group: "Degradados" },
   { id: "grad-candy", label: "Candy", hint: "Rosa suave y lavanda", group: "Degradados" },
 ] as const;
-
 export type PresetThemeId = (typeof THEMES)[number]["id"];
 export type ThemeId = PresetThemeId | "custom";
-
-export type CustomTheme = {
-  background: string; foreground: string; surface: string; surfaceHover: string; card: string;
-  primary: string; secondary: string; accent: string; border: string; sidebar: string;
-  gradientEnabled: boolean; gradientFrom: string; gradientTo: string; gradientAngle: number;
-};
-
-export const DEFAULT_CUSTOM_THEME: CustomTheme = {
-  background: "#10131a", foreground: "#f5f7fb", surface: "#181d27", surfaceHover: "#222938", card: "#151a23",
-  primary: "#5b8cff", secondary: "#2c3850", accent: "#7aa2ff", border: "#30394b", sidebar: "#0c0f15",
-  gradientEnabled: false, gradientFrom: "#5b8cff", gradientTo: "#9b6cff", gradientAngle: 135,
-};
-
+export type CustomTheme = { background: string; foreground: string; surface: string; surfaceHover: string; card: string; primary: string; secondary: string; accent: string; border: string; sidebar: string; gradientEnabled: boolean; gradientFrom: string; gradientTo: string; gradientAngle: number };
+export const DEFAULT_CUSTOM_THEME: CustomTheme = { background: "#10131a", foreground: "#f5f7fb", surface: "#181d27", surfaceHover: "#222938", card: "#151a23", primary: "#5b8cff", secondary: "#2c3850", accent: "#7aa2ff", border: "#30394b", sidebar: "#0c0f15", gradientEnabled: false, gradientFrom: "#5b8cff", gradientTo: "#9b6cff", gradientAngle: 135 };
 const STORAGE_KEY = "corenetwork-theme-v3";
 const CUSTOM_STORAGE_KEY = "corenetwork-custom-theme-v1";
 const DEFAULT_THEME: ThemeId = "grad-ocean";
 const VALID: ThemeId[] = [...THEMES.map((t) => t.id), "custom"];
-
-function readInitialTheme(): ThemeId {
-  if (typeof window === "undefined") return DEFAULT_THEME;
-  const stored = window.localStorage.getItem(STORAGE_KEY) as ThemeId | null;
-  return stored && VALID.includes(stored) ? stored : DEFAULT_THEME;
-}
-
-function readCustomTheme(): CustomTheme {
-  if (typeof window === "undefined") return DEFAULT_CUSTOM_THEME;
-  try { return { ...DEFAULT_CUSTOM_THEME, ...(JSON.parse(window.localStorage.getItem(CUSTOM_STORAGE_KEY) || "null") || {}) }; }
-  catch { return DEFAULT_CUSTOM_THEME; }
-}
-
+function readInitialTheme(): ThemeId { if (typeof window === "undefined") return DEFAULT_THEME; const stored = (window.localStorage.getItem(STORAGE_KEY) || window.localStorage.getItem("corenetwork-theme-v2") || window.localStorage.getItem("corenetwork-theme")) as ThemeId | null; return stored && VALID.includes(stored) ? stored : DEFAULT_THEME; }
+function readCustomTheme(): CustomTheme { if (typeof window === "undefined") return DEFAULT_CUSTOM_THEME; try { return { ...DEFAULT_CUSTOM_THEME, ...(JSON.parse(window.localStorage.getItem(CUSTOM_STORAGE_KEY) || "null") || {}) }; } catch { return DEFAULT_CUSTOM_THEME; } }
 function apply(theme: ThemeId, customTheme: CustomTheme) {
-  const root = document.documentElement;
-  root.dataset.theme = theme;
-  root.classList.toggle("dark", !(theme === "light" || theme === "retro2012" || theme === "grad-candy"));
-  if (theme !== "custom") {
-    ["--background","--foreground","--surface","--surface-hover","--card","--card-foreground","--popover","--popover-foreground","--primary","--primary-foreground","--secondary","--secondary-foreground","--muted","--muted-foreground","--accent","--accent-foreground","--border","--input","--ring","--sidebar","--sidebar-foreground","--sidebar-primary","--sidebar-primary-foreground","--sidebar-accent","--sidebar-accent-foreground","--sidebar-border","--sidebar-ring","--verified","--partner","--cn-custom-gradient"].forEach((name) => root.style.removeProperty(name));
-    return;
-  }
-  const vars: Record<string, string> = {
-    "--background": customTheme.background, "--foreground": customTheme.foreground, "--surface": customTheme.surface,
-    "--surface-hover": customTheme.surfaceHover, "--card": customTheme.card, "--card-foreground": customTheme.foreground,
-    "--popover": customTheme.surface, "--popover-foreground": customTheme.foreground, "--primary": customTheme.primary,
-    "--primary-foreground": "#fff", "--secondary": customTheme.secondary, "--secondary-foreground": customTheme.foreground,
-    "--muted": customTheme.secondary, "--muted-foreground": `color-mix(in srgb, ${customTheme.foreground} 65%, transparent)`,
-    "--accent": customTheme.accent, "--accent-foreground": "#fff", "--border": customTheme.border, "--input": customTheme.surface,
-    "--ring": customTheme.accent, "--sidebar": customTheme.sidebar, "--sidebar-foreground": customTheme.foreground,
-    "--sidebar-primary": customTheme.primary, "--sidebar-primary-foreground": "#fff", "--sidebar-accent": customTheme.surfaceHover,
-    "--sidebar-accent-foreground": customTheme.foreground, "--sidebar-border": customTheme.border, "--sidebar-ring": customTheme.accent,
-  };
-  Object.entries(vars).forEach(([name, value]) => root.style.setProperty(name, value));
-  root.style.setProperty("--verified", customTheme.accent);
-  root.style.setProperty("--partner", customTheme.primary);
-  root.style.setProperty("--cn-custom-gradient", customTheme.gradientEnabled ? `linear-gradient(${customTheme.gradientAngle}deg, ${customTheme.gradientFrom}, ${customTheme.gradientTo})` : customTheme.background);
+  const root = document.documentElement; root.dataset.theme = theme; root.classList.toggle("dark", !(theme === "light" || theme === "retro2012" || theme === "grad-candy"));
+  if (theme !== "custom") { ["--background","--foreground","--surface","--surface-hover","--card","--card-foreground","--popover","--popover-foreground","--primary","--primary-foreground","--secondary","--secondary-foreground","--muted","--muted-foreground","--accent","--accent-foreground","--border","--input","--ring","--sidebar","--sidebar-foreground","--sidebar-primary","--sidebar-primary-foreground","--sidebar-accent","--sidebar-accent-foreground","--sidebar-border","--sidebar-ring","--verified","--partner","--cn-custom-gradient"].forEach((name) => root.style.removeProperty(name)); return; }
+  const vars: Record<string, string> = { "--background":customTheme.background,"--foreground":customTheme.foreground,"--surface":customTheme.surface,"--surface-hover":customTheme.surfaceHover,"--card":customTheme.card,"--card-foreground":customTheme.foreground,"--popover":customTheme.surface,"--popover-foreground":customTheme.foreground,"--primary":customTheme.primary,"--primary-foreground":"#fff","--secondary":customTheme.secondary,"--secondary-foreground":customTheme.foreground,"--muted":customTheme.secondary,"--muted-foreground":`color-mix(in srgb, ${customTheme.foreground} 65%, transparent)`,"--accent":customTheme.accent,"--accent-foreground":"#fff","--border":customTheme.border,"--input":customTheme.surface,"--ring":customTheme.accent,"--sidebar":customTheme.sidebar,"--sidebar-foreground":customTheme.foreground,"--sidebar-primary":customTheme.primary,"--sidebar-primary-foreground":"#fff","--sidebar-accent":customTheme.surfaceHover,"--sidebar-accent-foreground":customTheme.foreground,"--sidebar-border":customTheme.border,"--sidebar-ring":customTheme.accent };
+  Object.entries(vars).forEach(([name, value]) => root.style.setProperty(name, value)); root.style.setProperty("--verified", customTheme.accent); root.style.setProperty("--partner", customTheme.primary); root.style.setProperty("--cn-custom-gradient", customTheme.gradientEnabled ? `linear-gradient(${customTheme.gradientAngle}deg, ${customTheme.gradientFrom}, ${customTheme.gradientTo})` : customTheme.background);
 }
-
 type ThemeState = { theme: ThemeId; customTheme: CustomTheme; setTheme: (theme: ThemeId) => void; setCustomTheme: (theme: CustomTheme) => void };
 const ThemeContext = createContext<ThemeState | undefined>(undefined);
-
-export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setThemeState] = useState<ThemeId>(readInitialTheme);
-  const [customTheme, setCustomThemeState] = useState<CustomTheme>(readCustomTheme);
-  useEffect(() => { apply(theme, customTheme); window.localStorage.setItem(STORAGE_KEY, theme); window.localStorage.setItem(CUSTOM_STORAGE_KEY, JSON.stringify(customTheme)); }, [theme, customTheme]);
-  const setTheme = useCallback((next: ThemeId) => { if (VALID.includes(next)) setThemeState(next); }, []);
-  const setCustomTheme = useCallback((next: CustomTheme) => { setCustomThemeState(next); setThemeState("custom"); }, []);
-  const value = useMemo(() => ({ theme, customTheme, setTheme, setCustomTheme }), [theme, customTheme, setTheme, setCustomTheme]);
-  return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
-}
-
+export function ThemeProvider({ children }: { children: ReactNode }) { const [theme, setThemeState] = useState<ThemeId>(readInitialTheme); const [customTheme, setCustomThemeState] = useState<CustomTheme>(readCustomTheme); useEffect(() => { apply(theme, customTheme); window.localStorage.setItem(STORAGE_KEY, theme); window.localStorage.setItem(CUSTOM_STORAGE_KEY, JSON.stringify(customTheme)); }, [theme, customTheme]); const setTheme = useCallback((next: ThemeId) => { if (VALID.includes(next)) setThemeState(next); }, []); const setCustomTheme = useCallback((next: CustomTheme) => { setCustomThemeState(next); setThemeState("custom"); }, []); const value = useMemo(() => ({ theme, customTheme, setTheme, setCustomTheme }), [theme, customTheme, setTheme, setCustomTheme]); return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>; }
 export function useTheme() { const ctx = useContext(ThemeContext); if (!ctx) throw new Error("useTheme must be used within ThemeProvider"); return ctx; }
