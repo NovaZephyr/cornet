@@ -13,6 +13,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/hooks/useAuth";
 import { uploadFile, useSignedUrl } from "@/lib/storage";
+import { uploadToCloudinary } from "@/lib/cloudinary";
 import { generateVideoCode } from "@/lib/videoCode";
 import { formatTimestamp, normalizeCaptionText, type ChapterDraft, validateChapterDrafts } from "@/lib/captions";
 import { extractHashtags, syncVideoHashtags } from "@/lib/hashtags";
@@ -53,10 +54,12 @@ function Dashboard({ userId }: { userId: string }) {
 
   const removeVideo = async (video: VideoRow) => {
     if (!window.confirm(`¿Eliminar “${video.title}”? Esta acción no se puede deshacer.`)) return;
-    const paths = [video.video_path, video.thumbnail_path].filter(Boolean).map((full) => {
-      const slash = full!.indexOf("/");
-      return { bucket: full!.slice(0, slash), key: full!.slice(slash + 1) };
-    });
+    const paths = [video.video_path, video.thumbnail_path]
+      .filter((full): full is string => Boolean(full) && !/^https?:\/\//i.test(full))
+      .map((full) => {
+        const slash = full.indexOf("/");
+        return { bucket: full.slice(0, slash), key: full.slice(slash + 1) };
+      });
     const { error } = await supabase.from("videos").delete().eq("id", video.id).eq("user_id", userId);
     if (error) return void toast.error(error.message);
     for (const path of paths) await supabase.storage.from(path.bucket).remove([path.key]);
@@ -127,8 +130,8 @@ function Editor({ userId, code }: { userId: string; code?: string }) {
     try {
       let videoPath = existingVideoPath;
       let thumbPath = existingThumbPath;
-      if (video) videoPath = await uploadFile("videos", userId, video);
-      if (thumb) thumbPath = await uploadFile("media", userId, thumb, "thumb-");
+      if (video) videoPath = await uploadToCloudinary(video, userId, "video");
+      if (thumb) thumbPath = await uploadToCloudinary(thumb, userId, "image");
       let videoId: string;
       let finalCode = code ?? generateVideoCode();
       if (isEdit && existingQuery.data) {
@@ -162,10 +165,10 @@ function Editor({ userId, code }: { userId: string; code?: string }) {
         const { error } = await supabase.from("video_chapters").insert(sorted.map((chapter, index) => ({ video_id: videoId, user_id: userId, title: chapter.title.trim(), start_seconds: Math.round(chapter.startSeconds), end_seconds: chapter.endSeconds == null ? null : Math.round(chapter.endSeconds), sort_order: index })));
         if (error) throw error;
       }
-      if (isEdit && existingVideoPath && videoPath && existingVideoPath !== videoPath) {
+      if (isEdit && existingVideoPath && videoPath && existingVideoPath !== videoPath && !/^https?:\/\//i.test(existingVideoPath)) {
         const slash = existingVideoPath.indexOf("/"); if (slash > -1) void supabase.storage.from(existingVideoPath.slice(0, slash)).remove([existingVideoPath.slice(slash + 1)]);
       }
-      if (isEdit && existingThumbPath && thumbPath && existingThumbPath !== thumbPath) {
+      if (isEdit && existingThumbPath && thumbPath && existingThumbPath !== thumbPath && !/^https?:\/\//i.test(existingThumbPath)) {
         const slash = existingThumbPath.indexOf("/"); if (slash > -1) void supabase.storage.from(existingThumbPath.slice(0, slash)).remove([existingThumbPath.slice(slash + 1)]);
       }
       void qc.invalidateQueries({ queryKey: ["my-videos", userId] });
