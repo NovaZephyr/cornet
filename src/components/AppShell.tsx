@@ -16,6 +16,7 @@ import { UploadSafetyBridge } from "@/components/UploadSafetyBridge";
 import { TwemojiPicker } from "@/components/TwemojiTools";
 import "@/retro2012.css";
 import "@/retro2012-adaptation.css";
+import "@/normal-sidebar.css";
 
 const THEME_GROUPS = Array.from(new Set(THEMES.map((t) => t.group)));
 type NavItem = { to: string; label: string; icon: typeof Home };
