@@ -9,8 +9,8 @@
 [data-theme="retro2012"] .cn-2012-topnav-link:hover { background:linear-gradient(#fff,#e5e8ea); border-color:#b9c0c6; box-shadow:inset 0 1px #fff; color:#1f4f79 !important; }
 [data-theme="retro2012"] .cn-2012-topbar [aria-label="Cambiar tema"] { display:inline-flex !important; align-items:center; justify-content:center; width:32px; height:32px; padding:0; color:#222 !important; border:1px solid #b7b7b7 !important; border-radius:2px !important; background:linear-gradient(#fff,#e8e8e8) !important; box-shadow:inset 0 1px #fff,0 1px 1px rgb(0 0 0 / .08); }
 [data-theme="retro2012"] .cn-2012-topbar [aria-label="Cambiar tema"]:hover { background:linear-gradient(#fff,#dfe4e8) !important; }
-[data-theme="retro2012"] .cn-2012-shell-body { width:min(1180px,calc(100% - 24px)); margin:0 auto; display:grid; grid-template-columns:190px minmax(0,1fr); gap:12px; align-items:start; }
-[data-theme="retro2012"] .cn-2012-sidebar { position:sticky; top:66px; align-self:start; width:190px; max-height:calc(100vh - 82px); margin-top:12px; padding:0 !important; overflow:hidden auto; box-sizing:border-box; background:#f4f4f4; border:1px solid #c8c8c8; box-shadow:0 1px 2px rgb(0 0 0 / .12); transition:width .15s ease; z-index:20; }
+[data-theme="retro2012"] .cn-2012-shell-body { width:100%; max-width:none; margin:0; display:grid; grid-template-columns:190px minmax(0,1fr); gap:0; align-items:start; }
+[data-theme="retro2012"] .cn-2012-sidebar { position:sticky; top:54px; align-self:start; width:190px; min-height:calc(100vh - 54px); max-height:none; margin:0; padding:0 !important; overflow:hidden auto; box-sizing:border-box; background:#f4f4f4; border:0; border-right:1px solid #c8c8c8; box-shadow:1px 0 2px rgb(0 0 0 / .12); transition:width .15s ease; z-index:20; }
 [data-theme="retro2012"] .cn-2012-sidebar.is-open { width:190px; }
 [data-theme="retro2012"] .cn-2012-sidebar.is-collapsed { width:70px; }
 [data-theme="retro2012"] .cn-2012-sidebar nav { padding:7px; gap:1px; }
@@ -19,7 +19,7 @@
 [data-theme="retro2012"] .cn-2012-sidebar nav a:hover { background:linear-gradient(#fff,#ececec) !important; border-color:#ccc; }
 [data-theme="retro2012"] .cn-2012-sidebar nav a.bg-surface { background:linear-gradient(#ddd,#cfcfcf) !important; border-color:#bbb; color:#222; box-shadow:inset 0 1px #fff; }
 [data-theme="retro2012"] .cn-2012-sidebar nav svg { width:16px; height:16px; }
-[data-theme="retro2012"] .cn-2012-main { min-width:0; padding:12px 0 24px !important; }
+[data-theme="retro2012"] .cn-2012-main { min-width:0; width:100%; padding:18px 24px 32px !important; box-sizing:border-box; }
 [data-theme="retro2012"] .cn-2012-main,[data-theme="retro2012"] .cn-2012-main p,[data-theme="retro2012"] .cn-2012-main span,[data-theme="retro2012"] .cn-2012-main label,[data-theme="retro2012"] .cn-2012-main strong,[data-theme="retro2012"] .cn-2012-main small,[data-theme="retro2012"] .cn-2012-main h1,[data-theme="retro2012"] .cn-2012-main h2,[data-theme="retro2012"] .cn-2012-main h3,[data-theme="retro2012"] .cn-explore-content,[data-theme="retro2012"] .cn-explore-content p,[data-theme="retro2012"] .cn-explore-content span,[data-theme="retro2012"] .cn-explore-content h1,[data-theme="retro2012"] .cn-explore-content h2,[data-theme="retro2012"] .cn-explore-sidebar,[data-theme="retro2012"] .cn-explore-sidebar a,[data-theme="retro2012"] .cn-explore-sidebar h2,[data-theme="retro2012"] .cn-explore-sidebar span { color:#222 !important; }
 [data-theme="retro2012"] .cn-2012-main a:not([class*="text-primary"]) { color:#167ac6; }
 [data-theme="retro2012"] .cn-2012-footer { border-top:1px solid #c3c3c3 !important; background:linear-gradient(#f0f0f0,#dedede); color:#666; }
@@ -30,4 +30,4 @@
 [data-theme="retro2012"] .cn-2012-recommendations { background:#f1f1f1; border:1px solid #d0d0d0; padding:8px; }
 [data-theme="retro2012"] .cn-2012-recommendations h2 { margin:0 0 8px; padding-bottom:6px; border-bottom:1px solid #d3d3d3; font-size:13px; color:#555; }
 @media (min-width:1100px) { [data-theme="retro2012"] .cn-2012-three-column { display:grid; grid-template-columns:170px minmax(0,1fr) 250px; gap:12px; align-items:start; } }
-@media (max-width:900px) { [data-theme="retro2012"] .cn-2012-shell-body { display:block; width:calc(100% - 12px); } [data-theme="retro2012"] .cn-2012-sidebar { display:none; } [data-theme="retro2012"] .cn-2012-main { padding-top:8px !important; } [data-theme="retro2012"] .cn-2012-topbar form { max-width:none; } }
+@media (max-width:900px) { [data-theme="retro2012"] .cn-2012-shell-body { display:block; width:100%; } [data-theme="retro2012"] .cn-2012-sidebar { display:none; } [data-theme="retro2012"] .cn-2012-main { padding:12px 12px 24px !important; } [data-theme="retro2012"] .cn-2012-topbar form { max-width:none; } }
