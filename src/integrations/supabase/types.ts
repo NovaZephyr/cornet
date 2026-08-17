@@ -853,6 +853,15 @@ export type Database = {
         Returns: string
       }
       generate_video_code: { Args: never; Returns: string }
+      get_my_poll_vote: { Args: { _announcement_id: string }; Returns: string }
+      get_poll_results: {
+        Args: { _announcement_id: string }
+        Returns: {
+          label: string
+          option_id: string
+          votes: number
+        }[]
+      }
       get_public_badges: {
         Args: { _user_id: string }
         Returns: Database["public"]["Enums"]["app_role"][]
