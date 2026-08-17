@@ -139,11 +139,17 @@ create or replace function public.cleanup_expired_community_temp_files()
 returns integer
 language plpgsql
 security definer
-set search_path = public
+set search_path = public, storage
 as $$
 declare
   removed integer;
 begin
+  delete from storage.objects o
+  using public.community_temp_files f
+  where o.bucket_id = 'community-temp'
+    and o.name = f.storage_path
+    and f.expires_at <= now();
+
   delete from public.community_temp_files
   where expires_at <= now();
   get diagnostics removed = row_count;
