@@ -45,7 +45,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "author", content: "Cornet" }, { property: "og:title", content: "Cornet — comparte lo que te importa" }, { property: "og:description", content: "Una plataforma sencilla para ver videos, conversar y compartir." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [
-      { rel: "stylesheet", href: appCss }, { rel: "stylesheet", href: "/retro2012.css" }, { rel: "stylesheet", href: "/explore.css" }, { rel: "stylesheet", href: "/messenger-theme.css" },
+      { rel: "stylesheet", href: appCss }, { rel: "stylesheet", href: "/retro2012.css" }, { rel: "stylesheet", href: "/explore.css" }, { rel: "stylesheet", href: "/messenger-theme.css" }, { rel: "stylesheet", href: "/user-themes.css" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" }, { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" }, { rel: "icon", href: "/favicon.png", type: "image/png" },
     ],
@@ -56,6 +56,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   errorComponent: ErrorComponent,
 });
 
-const themeBootstrap = `(function(){try{var t=localStorage.getItem('corenetwork-theme');var v=['dark','light','retro2012','gradients','grad-sunset','grad-ocean','grad-neon','grad-candy'];if(!t||v.indexOf(t)<0)t='dark';var r=document.documentElement;r.dataset.theme=t;if(t!=='light'&&t!=='retro2012'&&t!=='grad-candy')r.classList.add('dark');}catch(e){}})();`;
+const themeBootstrap = `(function(){try{var t=localStorage.getItem('corenetwork-theme-v3');var v=['dark','light','retro2012','gradients','grad-sunset','grad-ocean','grad-neon','grad-candy','lavanda-oscuro','forest','midnight','rose','custom'];if(!t||v.indexOf(t)<0)t='grad-ocean';var r=document.documentElement;r.dataset.theme=t;if(t!=='light'&&t!=='retro2012'&&t!=='grad-candy')r.classList.add('dark');}catch(e){}})();`;
 function RootShell({ children }: { children: ReactNode }) { return <html lang="es" data-theme="dark" className="dark" suppressHydrationWarning><head><HeadContent /><script dangerouslySetInnerHTML={{ __html: themeBootstrap }} /></head><body>{children}<Scripts /></body></html>; }
 function RootComponent() { const { queryClient } = Route.useRouteContext(); return <QueryClientProvider client={queryClient}><ThemeProvider><AuthProvider><MaintenanceAwareContent /><Toaster position="bottom-center" /></AuthProvider></ThemeProvider></QueryClientProvider>; }
