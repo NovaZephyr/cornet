@@ -78,6 +78,36 @@ export type Database = {
           },
         ]
       }
+      community_post_hashtags: {
+        Row: {
+          hashtag_id: string
+          post_id: string
+        }
+        Insert: {
+          hashtag_id: string
+          post_id: string
+        }
+        Update: {
+          hashtag_id?: string
+          post_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "community_post_hashtags_hashtag_id_fkey"
+            columns: ["hashtag_id"]
+            isOneToOne: false
+            referencedRelation: "hashtags"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "community_post_hashtags_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "community_posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       community_posts: {
         Row: {
           content: string
@@ -158,6 +188,27 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      hashtags: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          normalized_name: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          normalized_name: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          normalized_name?: string
+        }
+        Relationships: []
       }
       partner_applications: {
         Row: {
@@ -284,7 +335,12 @@ export type Database = {
           avatar_path: string | null
           background_path: string | null
           banner_path: string | null
+          channel_info_layout: string
+          channel_primary_color: string
+          channel_secondary_color: string
           channel_style: string
+          channel_surface_color: string
+          channel_text_color: string
           created_at: string
           description: string
           display_name: string
@@ -292,6 +348,7 @@ export type Database = {
           id: string
           is_banned: boolean
           is_verified: boolean
+          preferred_language: string
           subscriber_count: number
           updated_at: string
           username: string
@@ -302,7 +359,12 @@ export type Database = {
           avatar_path?: string | null
           background_path?: string | null
           banner_path?: string | null
+          channel_info_layout?: string
+          channel_primary_color?: string
+          channel_secondary_color?: string
           channel_style?: string
+          channel_surface_color?: string
+          channel_text_color?: string
           created_at?: string
           description?: string
           display_name?: string
@@ -310,6 +372,7 @@ export type Database = {
           id: string
           is_banned?: boolean
           is_verified?: boolean
+          preferred_language?: string
           subscriber_count?: number
           updated_at?: string
           username: string
@@ -320,7 +383,12 @@ export type Database = {
           avatar_path?: string | null
           background_path?: string | null
           banner_path?: string | null
+          channel_info_layout?: string
+          channel_primary_color?: string
+          channel_secondary_color?: string
           channel_style?: string
+          channel_surface_color?: string
+          channel_text_color?: string
           created_at?: string
           description?: string
           display_name?: string
@@ -328,6 +396,7 @@ export type Database = {
           id?: string
           is_banned?: boolean
           is_verified?: boolean
+          preferred_language?: string
           subscriber_count?: number
           updated_at?: string
           username?: string
@@ -480,6 +549,36 @@ export type Database = {
           },
         ]
       }
+      video_hashtags: {
+        Row: {
+          hashtag_id: string
+          video_id: string
+        }
+        Insert: {
+          hashtag_id: string
+          video_id: string
+        }
+        Update: {
+          hashtag_id?: string
+          video_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "video_hashtags_hashtag_id_fkey"
+            columns: ["hashtag_id"]
+            isOneToOne: false
+            referencedRelation: "hashtags"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "video_hashtags_video_id_fkey"
+            columns: ["video_id"]
+            isOneToOne: false
+            referencedRelation: "videos"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       video_likes: {
         Row: {
           created_at: string
@@ -511,6 +610,7 @@ export type Database = {
       }
       videos: {
         Row: {
+          age_restricted: boolean
           category: string
           code: string
           created_at: string
@@ -525,6 +625,7 @@ export type Database = {
           visibility: string
         }
         Insert: {
+          age_restricted?: boolean
           category?: string
           code?: string
           created_at?: string
@@ -539,6 +640,7 @@ export type Database = {
           visibility?: string
         }
         Update: {
+          age_restricted?: boolean
           category?: string
           code?: string
           created_at?: string
