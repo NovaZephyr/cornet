@@ -480,6 +480,7 @@ export type Database = {
       profiles: {
         Row: {
           accent_color: string
+          account_status: string
           avatar_path: string | null
           background_path: string | null
           banner_path: string | null
@@ -504,6 +505,7 @@ export type Database = {
         }
         Insert: {
           accent_color?: string
+          account_status?: string
           avatar_path?: string | null
           background_path?: string | null
           banner_path?: string | null
@@ -528,6 +530,7 @@ export type Database = {
         }
         Update: {
           accent_color?: string
+          account_status?: string
           avatar_path?: string | null
           background_path?: string | null
           banner_path?: string | null
@@ -875,6 +878,7 @@ export type Database = {
       }
       increment_views: { Args: { _video_id: string }; Returns: number }
       is_banned: { Args: { _user_id: string }; Returns: boolean }
+      request_account_deletion: { Args: never; Returns: boolean }
       search_channels: {
         Args: { result_limit?: number; search_text: string }
         Returns: {
