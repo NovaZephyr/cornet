@@ -1,0 +1,14 @@
+# CoreNetwork Live media server
+# Deploy this with MediaMTX on a public server. Put TLS in front of RTMP/RTMPS in production.
+logLevel: info
+rtmp: true
+rtmpAddress: :1935
+hls: true
+hlsAddress: :8888
+hlsAllowOrigin: '*'
+record: true
+recordPath: /recordings/%path/%Y-%m-%d_%H-%M-%S-%f
+recordFormat: fmp4
+paths:
+  all_others:
+    source: publisher
