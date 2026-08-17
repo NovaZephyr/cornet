@@ -1,14 +1,6 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-import {
-  S3Client,
-  HeadBucketCommand,
-  PutBucketCorsCommand,
-  PutObjectCommand,
-  DeleteObjectCommand,
-  GetObjectCommand,
-  HeadObjectCommand,
-} from "npm:@aws-sdk/client-s3@3.862.0";
+import { S3Client, HeadBucketCommand, PutObjectCommand, DeleteObjectCommand, GetObjectCommand, HeadObjectCommand } from "npm:@aws-sdk/client-s3@3.862.0";
 import { getSignedUrl } from "npm:@aws-sdk/s3-request-presigner@3.862.0";
 
 const endpoint = Deno.env.get("B2_ENDPOINT");
@@ -45,40 +37,6 @@ function client() {
   });
 }
 
-let corsSetupPromise: Promise<void> | null = null;
-
-async function ensureB2Cors(s3: S3Client) {
-  if (corsSetupPromise) return corsSetupPromise;
-  corsSetupPromise = s3
-    .send(
-      new PutBucketCorsCommand({
-        Bucket: bucket!,
-        CORSConfiguration: {
-          CORSRules: [
-            {
-              ID: "CoreNetworkBrowserStorage",
-              AllowedOrigins: [
-                "https://corenetwork.lovable.app",
-                "http://localhost:5173",
-                "http://localhost:4173",
-              ],
-              AllowedMethods: ["GET", "PUT", "POST", "DELETE", "HEAD"],
-              AllowedHeaders: ["*"],
-              ExposeHeaders: ["ETag", "x-amz-request-id", "x-amz-id-2"],
-              MaxAgeSeconds: 3600,
-            },
-          ],
-        },
-      }),
-    )
-    .then(() => undefined)
-    .catch((error) => {
-      corsSetupPromise = null;
-      throw error;
-    });
-  return corsSetupPromise;
-}
-
 async function currentUser(req: Request) {
   if (!supabaseUrl || !anonKey) throw new Error("Supabase auth is not configured");
   const authorization = req.headers.get("Authorization");
@@ -110,7 +68,6 @@ function cleanFilename(value: unknown) {
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
   if (req.method !== "POST") return json({ error: "Method not allowed" }, 405);
-
   try {
     const body = await req.json();
     const action = body?.action;
@@ -123,13 +80,12 @@ Deno.serve(async (req) => {
       return json({ ok: true, bucket });
     }
 
+    const key = validKey(body?.key, user.id);
+
     if (action === "upload-url") {
-      await ensureB2Cors(s3);
-      const key = validKey(body?.key, user.id);
-      const contentType =
-        typeof body?.contentType === "string" && body.contentType.length <= 255
-          ? body.contentType
-          : "application/octet-stream";
+      const contentType = typeof body?.contentType === "string" && body.contentType.length <= 255
+        ? body.contentType
+        : "application/octet-stream";
       const expiresIn = Math.min(Math.max(Number(body?.expiresIn ?? 900), 60), 3600);
       const url = await getSignedUrl(
         s3,
@@ -138,8 +94,6 @@ Deno.serve(async (req) => {
       );
       return json({ url, key, expiresIn });
     }
-
-    const key = validKey(body?.key, user.id);
 
     if (action === "download-url") {
       const expiresIn = Math.min(Math.max(Number(body?.expiresIn ?? 900), 60), 3600);
