@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useCallback, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { SignedImage, ChannelAvatar, VerifiedBadge } from "@/components/Media";
 import { formatDuration, formatViews, timeAgo } from "@/lib/format";
@@ -38,15 +38,16 @@ function FeaturedPlayer({ video, posterPath }: { video: VideoWithChannel; poster
 export function VideoCard({ video, compact = false }: { video: VideoWithChannel; compact?: boolean }) {
   const channel = video.profiles;
   const name = channel?.display_name || channel?.username || "Canal";
-  const rootRef = useRef<HTMLDivElement>(null);
+  const [isFeaturedContext, setIsFeaturedContext] = useState(false);
   const { theme } = useTheme();
-  const retro2012 = theme === "retro2012";
-  const isFeaturedContext = !!rootRef.current?.closest(".cn-2012-feature-main, .cn-2012-feature--channel-2, .cn-2012-feature--cosmic");
-  const showFeaturedPlayer = compact && retro2012 && isFeaturedContext;
-  const posterUrl = showFeaturedPlayer ? undefined : undefined;
+  const setRoot = useCallback((node: HTMLDivElement | null) => {
+    if (!node) return;
+    setIsFeaturedContext(Boolean(node.closest(".cn-2012-feature-main, .cn-2012-feature--channel-2, .cn-2012-feature--cosmic")));
+  }, []);
+  const showFeaturedPlayer = compact && theme === "retro2012" && isFeaturedContext;
 
   return (
-    <div ref={rootRef} className={compact ? "flex gap-2" : "flex flex-col gap-3"}>
+    <div ref={setRoot} className={compact ? "flex gap-2" : "flex flex-col gap-3"}>
       {showFeaturedPlayer ? (
         <div className="relative aspect-video w-full min-w-0 shrink-0 overflow-hidden rounded-lg bg-black">
           <FeaturedPlayer video={video} posterPath={video.thumbnail_path} />
