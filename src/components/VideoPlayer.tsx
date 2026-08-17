@@ -18,7 +18,7 @@ export function VideoPlayer({ src, poster, autoPlay, className, captions = [], c
     let active = true;
     const code = typeof window !== "undefined" ? new URLSearchParams(window.location.search).get("v") : null;
     if (!code) { setAgeLoading(false); return; }
-    void supabase.from("videos").select("age_restricted").eq("code", code).maybeSingle().then(({ data }) => { if (!active) return; const restricted = data?.age_restricted === true; setAgeRestricted(restricted); setAgeGate(restricted); setAgeLoading(false); }).catch(() => { if (active) setAgeLoading(false); });
+    void supabase.from("videos").select("age_restricted").eq("code", code).maybeSingle().then(({ data }) => { if (!active) return; const restricted = data?.age_restricted === true; setAgeRestricted(restricted); setAgeGate(restricted); setAgeLoading(false); }, () => { if (active) setAgeLoading(false); });
     return () => { active = false; };
   }, []);
 

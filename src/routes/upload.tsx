@@ -90,7 +90,7 @@ function Editor({ userId, code }: { userId: string; code?: string }) {
     queryKey: ["edit-video", code, userId],
     enabled: isEdit,
     queryFn: async () => {
-      const { data, error } = await supabase.from("videos").select("id, code, title, description, video_path, thumbnail_path, duration_seconds, views, visibility, category").eq("code", code).eq("user_id", userId).maybeSingle();
+      const { data, error } = await supabase.from("videos").select("id, code, title, description, video_path, thumbnail_path, duration_seconds, views, visibility, category").eq("code", code!).eq("user_id", userId).maybeSingle();
       if (error) throw error;
       return data as (VideoRow & { id: string }) | null;
     },
@@ -133,12 +133,12 @@ function Editor({ userId, code }: { userId: string; code?: string }) {
       let finalCode = code ?? generateVideoCode();
       if (isEdit && existingQuery.data) {
         videoId = existingQuery.data.id;
-        const { error } = await supabase.from("videos").update({ title: title.trim(), description: description.trim(), visibility, category, video_path: videoPath, thumbnail_path: thumbPath, duration_seconds: duration }).eq("id", videoId).eq("user_id", userId);
+        const { error } = await supabase.from("videos").update({ title: title.trim(), description: description.trim(), visibility, category, video_path: videoPath ?? undefined, thumbnail_path: thumbPath ?? undefined, duration_seconds: duration }).eq("id", videoId).eq("user_id", userId);
         if (error) throw error;
       } else {
         let inserted: { id: string; code: string } | null = null;
         for (let attempt = 0; attempt < 3 && !inserted; attempt += 1) {
-          const { data, error } = await supabase.from("videos").insert({ user_id: userId, code: finalCode, title: title.trim(), description: description.trim(), visibility, category, video_path: videoPath, thumbnail_path: thumbPath, duration_seconds: duration }).select("id, code").single();
+          const { data, error } = await supabase.from("videos").insert({ user_id: userId, code: finalCode, title: title.trim(), description: description.trim(), visibility, category, video_path: videoPath ?? "", thumbnail_path: thumbPath ?? null, duration_seconds: duration }).select("id, code").single();
           if (!error) inserted = data;
           else if ((error as { code?: string }).code === "23505") finalCode = generateVideoCode();
           else throw error;

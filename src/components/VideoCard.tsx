@@ -8,6 +8,8 @@ export type VideoWithChannel = {
   id: string;
   code: string;
   title: string;
+  description?: string | null;
+  category?: string;
   thumbnail_path: string | null;
   video_path?: string | null;
   duration_seconds: number;
@@ -19,6 +21,7 @@ export type VideoWithChannel = {
     display_name: string;
     avatar_path: string | null;
     is_verified: boolean;
+    subscriber_count?: number;
   } | null;
 };
 
