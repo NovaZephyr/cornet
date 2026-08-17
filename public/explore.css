@@ -1,39 +1,51 @@
 /* CoreNetwork Explore — shared layout for every theme */
 .cn-explore-page{display:flex;gap:18px;max-width:1480px;margin:0 auto;padding:12px 0 36px;color:var(--foreground)}
 .cn-explore-sidebar{position:sticky;top:72px;align-self:flex-start;width:220px;flex:0 0 220px;padding:10px;background:color-mix(in srgb,var(--surface) 92%,transparent);border:1px solid var(--border);border-radius:12px}
-.cn-explore-sidebar h2{margin:0 0 8px;padding:6px 8px;font-size:16px;font-weight:700}
+.cn-explore-sidebar h2{margin:0;font-size:16px;font-weight:700}
+.cn-explore-sidebar-brand{display:flex;align-items:center;gap:10px;padding:8px 8px 12px;border-bottom:1px solid var(--border)}
+.cn-explore-kicker{display:block;margin-bottom:2px;font-size:9px;font-weight:800;letter-spacing:.16em;color:var(--muted-foreground)}
+.cn-explore-sidebar-title{padding:8px;color:var(--muted-foreground);font-size:9px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+.cn-explore-sidebar-rule{height:1px;margin:8px 4px 2px;background:var(--border)}
 .cn-explore-nav{display:flex;flex-direction:column;gap:2px}
 .cn-explore-nav a{display:flex;align-items:center;gap:9px;padding:9px 10px;border-radius:8px;color:var(--foreground);font-size:13px;text-decoration:none}
 .cn-explore-nav a:hover{background:var(--surface-hover)}
 .cn-explore-nav a.is-active{background:var(--accent);font-weight:700}
+.cn-explore-nav a svg{flex:0 0 auto}
 .cn-explore-content{min-width:0;flex:1}
 .cn-explore-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:12px}
+.cn-explore-heading-eyebrow{display:flex;align-items:center;gap:6px;margin-bottom:4px;color:var(--muted-foreground);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
 .cn-explore-heading h1{margin:0;font-size:clamp(22px,3vw,30px);font-weight:800;letter-spacing:-.02em}
 .cn-explore-heading p{margin:4px 0 0;color:var(--muted-foreground);font-size:13px}
 .cn-explore-tabs{display:flex;gap:8px;overflow-x:auto;padding:4px 0 12px;scrollbar-width:none}
 .cn-explore-tabs::-webkit-scrollbar{display:none}
-.cn-explore-tabs button{white-space:nowrap;border:1px solid var(--border);background:var(--surface);color:var(--foreground);padding:7px 12px;border-radius:999px;font-size:12px;cursor:pointer}
+.cn-explore-tabs button{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;border:1px solid var(--border);background:var(--surface);color:var(--foreground);padding:7px 12px;border-radius:999px;font-size:12px;cursor:pointer}
 .cn-explore-tabs button:hover{background:var(--surface-hover)}
 .cn-explore-tabs button.is-active{background:var(--foreground);color:var(--background);border-color:var(--foreground)}
 .cn-explore-section{margin:0 0 28px}
 .cn-explore-section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
+.cn-explore-section-title{display:flex;align-items:center;gap:8px}
 .cn-explore-section-head h2{margin:0;font-size:17px;font-weight:750}
 .cn-explore-section-head a{font-size:12px;color:var(--muted-foreground);text-decoration:none}
 .cn-explore-section-head a:hover{text-decoration:underline;color:var(--foreground)}
 .cn-explore-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px 14px}
 .cn-explore-empty{padding:26px;border:1px dashed var(--border);border-radius:10px;color:var(--muted-foreground);text-align:center;font-size:13px;background:color-mix(in srgb,var(--surface) 65%,transparent)}
 
-/* Light/dark/gradient themes get a polished modern surface while reusing theme tokens. */
 [data-theme="light"] .cn-explore-sidebar{box-shadow:0 2px 10px rgb(0 0 0 / .05)}
 [data-theme="dark"] .cn-explore-sidebar{box-shadow:0 8px 30px rgb(0 0 0 / .18)}
 [data-theme="gradients"] .cn-explore-sidebar,[data-theme^="grad-"] .cn-explore-sidebar{backdrop-filter:blur(14px);background:color-mix(in srgb,var(--surface) 70%,transparent)}
 [data-theme="gradients"] .cn-explore-tabs button,[data-theme^="grad-"] .cn-explore-tabs button{backdrop-filter:blur(10px)}
+
+/* Cosmic Panda keeps the old-school structure, but uses clean SVG icons instead of emojis. */
 [data-theme="retro2012"] .cn-explore-page{max-width:1180px;gap:10px;padding:8px 0 28px;font-family:Arial,Helvetica,sans-serif}
 [data-theme="retro2012"] .cn-explore-sidebar{top:68px;width:188px;flex-basis:188px;border-radius:2px;background:linear-gradient(#f8f8f8,#e8e8e8);box-shadow:inset 0 1px #fff;border-color:#c9c9c9}
-[data-theme="retro2012"] .cn-explore-sidebar h2{font-size:14px;border-bottom:1px solid #ccc;padding-bottom:8px}
+[data-theme="retro2012"] .cn-explore-sidebar-brand{padding:6px 8px 8px;border-bottom-color:#c9c9c9}
+[data-theme="retro2012"] .cn-explore-kicker{color:#777}
+[data-theme="retro2012"] .cn-explore-sidebar-rule{background:#ccc}
+[data-theme="retro2012"] .cn-explore-sidebar h2{font-size:14px}
 [data-theme="retro2012"] .cn-explore-nav a{border-radius:2px;font-size:12px;padding:7px 8px}
 [data-theme="retro2012"] .cn-explore-nav a:hover{background:#ddd}
 [data-theme="retro2012"] .cn-explore-nav a.is-active{background:#ccc;color:#222}
+[data-theme="retro2012"] .cn-explore-heading-eyebrow{color:#666}
 [data-theme="retro2012"] .cn-explore-heading h1{font-size:24px}
 [data-theme="retro2012"] .cn-explore-tabs{border-bottom:1px solid #c8c8c8;padding-bottom:8px}
 [data-theme="retro2012"] .cn-explore-tabs button{border-radius:2px;background:linear-gradient(#fff,#e5e5e5);border-color:#c3c3c3;color:#333;padding:6px 10px}
