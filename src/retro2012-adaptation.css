@@ -2,209 +2,33 @@
    Inspired by the compact gray, content-first YouTube 2012 layout.
    Only active in the global retro2012 theme. */
 
-[data-theme="retro2012"] .cn-2012-app {
-  min-height: 100vh;
-  background: #e5e5e5;
-  color: #333;
-  font-family: Arial, Helvetica, sans-serif;
-}
+[data-theme="retro2012"] .cn-2012-app { min-height: 100vh; background: #e5e5e5; color: #333; font-family: Arial, Helvetica, sans-serif; }
+[data-theme="retro2012"] .cn-2012-topbar { position: sticky; top: 0; z-index: 100; height: 54px; border-bottom: 1px solid #bdbdbd; background: linear-gradient(#fff 0%, #f5f6f7 48%, #dfe2e5 100%) !important; box-shadow: inset 0 1px #fff, 0 1px 3px rgb(0 0 0 / .25); color: #333 !important; }
+[data-theme="retro2012"] .cn-2012-topbar form input { height: 30px; border: 1px solid #8e979f; border-radius: 2px 0 0 2px; background: #fff; color: #222; box-shadow: inset 0 1px 2px rgb(0 0 0 / .2); }
+[data-theme="retro2012"] .cn-2012-topbar form button { height: 30px; border-radius: 0 2px 2px 0; border: 1px solid #8e979f; background: linear-gradient(#fff,#e0e4e7); color: #333; text-shadow: 0 1px #fff; }
+[data-theme="retro2012"] .cn-2012-topbar a, [data-theme="retro2012"] .cn-2012-topbar button { color: #333 !important; }
+[data-theme="retro2012"] .cn-2012-topbar img { border-radius: 0 !important; }
+[data-theme="retro2012"] .cn-2012-topnav-link { display: inline-flex; align-items: center; gap: 5px; min-height: 30px; padding: 0 8px; border: 1px solid transparent; border-radius: 2px; color: #4a5056 !important; font-size: 12px; font-weight: 700; text-decoration: none; white-space: nowrap; }
+[data-theme="retro2012"] .cn-2012-topnav-link:hover { background: linear-gradient(#fff,#e5e8ea); border-color: #b9c0c6; box-shadow: inset 0 1px #fff; color: #1f4f79 !important; }
 
-[data-theme="retro2012"] .cn-2012-topbar {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  height: 54px;
-  border-bottom: 1px solid #bdbdbd;
-  background: linear-gradient(#444 0%, #303030 48%, #202020 100%);
-  box-shadow: 0 1px 3px rgb(0 0 0 / .35);
-  color: #fff;
-}
-
-[data-theme="retro2012"] .cn-2012-topbar form input {
-  height: 30px;
-  border: 1px solid #111;
-  border-radius: 2px 0 0 2px;
-  background: #fff;
-  color: #222;
-  box-shadow: inset 0 1px 2px rgb(0 0 0 / .2);
-}
-
-[data-theme="retro2012"] .cn-2012-topbar form button {
-  height: 30px;
-  border-radius: 0 2px 2px 0;
-  border: 1px solid #111;
-  background: linear-gradient(#777,#4d4d4d);
-  color: #fff;
-  text-shadow: 0 -1px #222;
-}
-
-[data-theme="retro2012"] .cn-2012-topbar a,
-[data-theme="retro2012"] .cn-2012-topbar button {
-  color: #fff;
-}
-
-[data-theme="retro2012"] .cn-2012-topbar img {
-  border-radius: 0 !important;
-}
-
-[data-theme="retro2012"] .cn-2012-shell-body {
-  width: min(1180px, calc(100% - 24px));
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: 190px minmax(0, 1fr);
-  gap: 12px;
-  align-items: start;
-}
-
-[data-theme="retro2012"] .cn-2012-sidebar {
-  position: sticky;
-  top: 66px;
-  align-self: start;
-  width: 190px;
-  max-height: calc(100vh - 82px);
-  margin-top: 12px;
-  padding: 0 !important;
-  overflow: hidden auto;
-  box-sizing: border-box;
-  background: #f4f4f4;
-  border: 1px solid #c8c8c8;
-  box-shadow: 0 1px 2px rgb(0 0 0 / .12);
-  transition: width .15s ease;
-  z-index: 20;
-}
-
+[data-theme="retro2012"] .cn-2012-shell-body { width: min(1180px, calc(100% - 24px)); margin: 0 auto; display: grid; grid-template-columns: 190px minmax(0,1fr); gap: 12px; align-items: start; }
+[data-theme="retro2012"] .cn-2012-sidebar { position: sticky; top: 66px; align-self: start; width: 190px; max-height: calc(100vh - 82px); margin-top: 12px; padding: 0 !important; overflow: hidden auto; box-sizing: border-box; background: #f4f4f4; border: 1px solid #c8c8c8; box-shadow: 0 1px 2px rgb(0 0 0 / .12); transition: width .15s ease; z-index: 20; }
 [data-theme="retro2012"] .cn-2012-sidebar.is-open { width: 190px; }
 [data-theme="retro2012"] .cn-2012-sidebar.is-collapsed { width: 70px; }
+[data-theme="retro2012"] .cn-2012-sidebar nav { padding: 7px; gap: 1px; }
+[data-theme="retro2012"] .cn-2012-sidebar nav a { min-height: 31px; padding: 7px 9px !important; gap: 8px !important; border-radius: 2px !important; color: #444; font-size: 12px; border: 1px solid transparent; box-sizing: border-box; }
+[data-theme="retro2012"] .cn-2012-sidebar.is-collapsed nav a { justify-content: center; width: 54px; margin-inline: auto; padding-inline: 4px !important; }
+[data-theme="retro2012"] .cn-2012-sidebar nav a:hover { background: linear-gradient(#fff,#ececec) !important; border-color: #ccc; }
+[data-theme="retro2012"] .cn-2012-sidebar nav a.bg-surface { background: linear-gradient(#ddd,#cfcfcf) !important; border-color: #bbb; color: #222; box-shadow: inset 0 1px #fff; }
+[data-theme="retro2012"] .cn-2012-sidebar nav svg { width: 16px; height: 16px; }
+[data-theme="retro2012"] .cn-2012-main { min-width: 0; padding: 12px 0 24px !important; }
+[data-theme="retro2012"] .cn-2012-footer { border-top: 1px solid #c3c3c3 !important; background: linear-gradient(#f0f0f0,#dedede); color: #666; }
+[data-theme="retro2012"] .cn-2012-mobile-bar { background: linear-gradient(#444,#292929) !important; border-color: #111 !important; }
+[data-theme="retro2012"] .cn-2012-mobile-bar a { color: #ddd !important; }
+[data-theme="retro2012"] .cn-2012-mobile-bar a.text-foreground { color: #fff !important; }
+[data-theme="retro2012"] .cn-2012-watch-page, [data-theme="retro2012"] .cn-2012-explore-page { background: #fff; border: 1px solid #c8c8c8; box-shadow: 0 1px 2px rgb(0 0 0 / .1); padding: 12px; }
+[data-theme="retro2012"] .cn-2012-recommendations { background: #f1f1f1; border: 1px solid #d0d0d0; padding: 8px; }
+[data-theme="retro2012"] .cn-2012-recommendations h2 { margin: 0 0 8px; padding-bottom: 6px; border-bottom: 1px solid #d3d3d3; font-size: 13px; color: #555; }
 
-[data-theme="retro2012"] .cn-2012-sidebar nav {
-  padding: 7px;
-  gap: 1px;
-}
-
-[data-theme="retro2012"] .cn-2012-sidebar nav a {
-  min-height: 31px;
-  padding: 7px 9px !important;
-  gap: 8px !important;
-  border-radius: 2px !important;
-  color: #444;
-  font-size: 12px;
-  border: 1px solid transparent;
-  box-sizing: border-box;
-}
-
-[data-theme="retro2012"] .cn-2012-sidebar.is-collapsed nav a {
-  justify-content: center;
-  width: 54px;
-  margin-inline: auto;
-  padding-inline: 4px !important;
-}
-
-[data-theme="retro2012"] .cn-2012-sidebar nav a:hover {
-  background: linear-gradient(#fff,#ececec) !important;
-  border-color: #ccc;
-}
-
-[data-theme="retro2012"] .cn-2012-sidebar nav a.bg-surface {
-  background: linear-gradient(#ddd,#cfcfcf) !important;
-  border-color: #bbb;
-  color: #222;
-  box-shadow: inset 0 1px #fff;
-}
-
-[data-theme="retro2012"] .cn-2012-sidebar nav svg {
-  width: 16px;
-  height: 16px;
-}
-
-[data-theme="retro2012"] .cn-2012-main {
-  min-width: 0;
-  padding: 12px 0 24px !important;
-}
-
-[data-theme="retro2012"] .cn-2012-page-surface {
-  background: #f7f7f7;
-  border: 1px solid #c8c8c8;
-  box-shadow: 0 1px 2px rgb(0 0 0 / .10);
-}
-
-[data-theme="retro2012"] .cn-2012-main h1,
-[data-theme="retro2012"] .cn-2012-main h2,
-[data-theme="retro2012"] .cn-2012-main h3 {
-  color: #222;
-}
-
-[data-theme="retro2012"] .cn-2012-main a:not([class*="text-primary"]) {
-  color: #167ac6;
-}
-
-[data-theme="retro2012"] .cn-2012-main .bg-surface,
-[data-theme="retro2012"] .cn-2012-main [class*="bg-surface"] {
-  border-radius: 2px !important;
-}
-
-[data-theme="retro2012"] .cn-2012-footer {
-  border-top: 1px solid #c3c3c3 !important;
-  background: linear-gradient(#f0f0f0,#dedede);
-  color: #666;
-}
-
-[data-theme="retro2012"] .cn-2012-mobile-bar {
-  background: linear-gradient(#444,#292929) !important;
-  border-color: #111 !important;
-}
-
-[data-theme="retro2012"] .cn-2012-mobile-bar a {
-  color: #ddd !important;
-}
-
-[data-theme="retro2012"] .cn-2012-mobile-bar a.text-foreground {
-  color: #fff !important;
-}
-
-/* Watch/explore/content pages: use a classic central content + recommendation rail. */
-[data-theme="retro2012"] .cn-2012-watch-page,
-[data-theme="retro2012"] .cn-2012-explore-page {
-  background: #fff;
-  border: 1px solid #c8c8c8;
-  box-shadow: 0 1px 2px rgb(0 0 0 / .1);
-  padding: 12px;
-}
-
-[data-theme="retro2012"] .cn-2012-recommendations {
-  background: #f1f1f1;
-  border: 1px solid #d0d0d0;
-  padding: 8px;
-}
-
-[data-theme="retro2012"] .cn-2012-recommendations h2 {
-  margin: 0 0 8px;
-  padding-bottom: 6px;
-  border-bottom: 1px solid #d3d3d3;
-  font-size: 13px;
-  color: #555;
-}
-
-@media (min-width: 1100px) {
-  [data-theme="retro2012"] .cn-2012-three-column {
-    display: grid;
-    grid-template-columns: 170px minmax(0, 1fr) 250px;
-    gap: 12px;
-    align-items: start;
-  }
-}
-
-@media (max-width: 900px) {
-  [data-theme="retro2012"] .cn-2012-shell-body {
-    display: block;
-    width: calc(100% - 12px);
-  }
-  [data-theme="retro2012"] .cn-2012-sidebar {
-    display: none;
-  }
-  [data-theme="retro2012"] .cn-2012-main {
-    padding-top: 8px !important;
-  }
-  [data-theme="retro2012"] .cn-2012-topbar form {
-    max-width: none;
-  }
-}
+@media (min-width: 1100px) { [data-theme="retro2012"] .cn-2012-three-column { display: grid; grid-template-columns: 170px minmax(0,1fr) 250px; gap: 12px; align-items: start; } }
+@media (max-width: 900px) { [data-theme="retro2012"] .cn-2012-shell-body { display: block; width: calc(100% - 12px); } [data-theme="retro2012"] .cn-2012-sidebar { display: none; } [data-theme="retro2012"] .cn-2012-main { padding-top: 8px !important; } [data-theme="retro2012"] .cn-2012-topbar form { max-width: none; } }
