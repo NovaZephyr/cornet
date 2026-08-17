@@ -27,6 +27,51 @@ function apply(theme: ThemeId) {
   const root = document.documentElement;
   root.dataset.theme = theme;
   root.classList.toggle("dark", !("light" === theme || "retro2012" === theme || "grad-candy" === theme));
+
+  if (theme === "lavanda-oscuro") {
+    const colors: Record<string, string> = {
+      "--background": "#241d30",
+      "--foreground": "#f7f3fb",
+      "--surface": "#302642",
+      "--surface-hover": "#3a2e4b",
+      "--card": "#2b2238",
+      "--card-foreground": "#f7f3fb",
+      "--popover": "#2d243b",
+      "--popover-foreground": "#f7f3fb",
+      "--primary": "#4B3B61",
+      "--primary-foreground": "#ffffff",
+      "--secondary": "#3a2e4b",
+      "--secondary-foreground": "#f7f3fb",
+      "--muted": "#352a46",
+      "--muted-foreground": "#c7bdd2",
+      "--accent": "#5b4974",
+      "--accent-foreground": "#ffffff",
+      "--border": "#514364",
+      "--input": "#332940",
+      "--ring": "#80669f",
+      "--sidebar": "#211a2c",
+      "--sidebar-foreground": "#f7f3fb",
+      "--sidebar-primary": "#4B3B61",
+      "--sidebar-primary-foreground": "#ffffff",
+      "--sidebar-accent": "#302642",
+      "--sidebar-accent-foreground": "#f7f3fb",
+      "--sidebar-border": "#514364",
+      "--sidebar-ring": "#80669f",
+    };
+    Object.entries(colors).forEach(([name, value]) => root.style.setProperty(name, value));
+    root.style.setProperty("--verified", "#8eb8ff");
+    root.style.setProperty("--partner", "#e2c56b");
+  } else {
+    const lavandaVariables = [
+      "--background", "--foreground", "--surface", "--surface-hover", "--card", "--card-foreground",
+      "--popover", "--popover-foreground", "--primary", "--primary-foreground", "--secondary",
+      "--secondary-foreground", "--muted", "--muted-foreground", "--accent", "--accent-foreground",
+      "--border", "--input", "--ring", "--sidebar", "--sidebar-foreground", "--sidebar-primary",
+      "--sidebar-primary-foreground", "--sidebar-accent", "--sidebar-accent-foreground", "--sidebar-border",
+      "--sidebar-ring", "--verified", "--partner",
+    ];
+    lavandaVariables.forEach((name) => root.style.removeProperty(name));
+  }
 }
 
 type ThemeState = { theme: ThemeId; setTheme: (theme: ThemeId) => void };
