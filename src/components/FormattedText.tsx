@@ -33,7 +33,7 @@ export function FormattedText({ text, className }: { text: string; className?: s
     if (token.startsWith("#")) {
       parts.push(<Link key={`hashtag-${tokenStart}`} to="/hashtag/$tag" params={{ tag: token.slice(1) }} className="font-medium text-primary hover:underline"><TwemojiText children={token} /></Link>);
     } else {
-      parts.push(<Link key={`mention-${tokenStart}`} to="/c/$username" params={{ username: token.slice(1) }} className="font-medium text-primary hover:underline"><TwemojiText children={token} /></Link>);
+      parts.push(<Link key={`mention-${tokenStart}`} to="/c/$username" params={{ username: token.slice(1).toLowerCase() }} className="font-medium text-primary hover:underline"><TwemojiText children={token} /></Link>);
     }
     last = tokenStart + token.length;
   }
