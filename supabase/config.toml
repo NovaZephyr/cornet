@@ -1,1 +1,4 @@
 project_id = "mvwpxnszcpyayofqgtmv"
+
+[functions.b2-temp-download]
+verify_jwt = false
