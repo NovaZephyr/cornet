@@ -4,6 +4,35 @@ const MAX_BYTES = 100 * 1024 * 1024;
 
 export type CloudinaryResourceType = "image" | "video";
 
+const VIDEO_EXTENSIONS = new Set([
+  ".mp4", ".m4v", ".mov", ".webm", ".mkv", ".avi", ".wmv", ".flv", ".mpeg", ".mpg", ".3gp", ".ts", ".m2ts",
+]);
+const VIDEO_MIME_PREFIXES = ["video/"];
+
+function hasVideoExtension(file: File) {
+  const name = file.name.toLowerCase().split("?")[0];
+  const dot = name.lastIndexOf(".");
+  return dot >= 0 && VIDEO_EXTENSIONS.has(name.slice(dot));
+}
+
+function assertValidMediaFile(file: File, resourceType: CloudinaryResourceType) {
+  if (!(file instanceof File)) throw new Error("Selecciona un archivo válido.");
+  if (file.size <= 0) throw new Error("El archivo está vacío.");
+  if (file.size > MAX_BYTES) throw new Error("El archivo supera el límite de 100 MB.");
+
+  if (resourceType === "video") {
+    const mimeOk = VIDEO_MIME_PREFIXES.some((prefix) => file.type.toLowerCase().startsWith(prefix));
+    const extensionOk = hasVideoExtension(file);
+    if (!mimeOk || !extensionOk) {
+      throw new Error("Solo se admiten archivos de vídeo. Usa MP4, WebM, MOV, MKV, AVI u otro formato de vídeo compatible.");
+    }
+  }
+
+  if (resourceType === "image" && !file.type.toLowerCase().startsWith("image/")) {
+    throw new Error("Selecciona una imagen válida.");
+  }
+}
+
 /** Return a browser-friendly MP4/H.264/AAC delivery URL for a Cloudinary video. */
 export function toPlayableCloudinaryVideoUrl(url: string): string {
   try {
@@ -31,9 +60,7 @@ export async function uploadToCloudinary(
   userId: string,
   resourceType: CloudinaryResourceType,
 ): Promise<string> {
-  if (file.size > MAX_BYTES) throw new Error("El archivo supera el límite de 100 MB.");
-  if (resourceType === "video" && !file.type.startsWith("video/")) throw new Error("Selecciona un archivo de vídeo válido.");
-  if (resourceType === "image" && !file.type.startsWith("image/")) throw new Error("Selecciona una imagen válida.");
+  assertValidMediaFile(file, resourceType);
 
   const body = new FormData();
   body.append("file", file);
@@ -44,5 +71,6 @@ export async function uploadToCloudinary(
   const payload = (await response.json()) as { secure_url?: string; error?: { message?: string } };
   if (!response.ok || !payload.secure_url) throw new Error(payload.error?.message ?? "Cloudinary rechazó la subida.");
 
+  // Cloudinary sirve la salida convertida como MP4/H.264/AAC para que el player tenga un formato estable.
   return resourceType === "video" ? toPlayableCloudinaryVideoUrl(payload.secure_url) : payload.secure_url;
 }
