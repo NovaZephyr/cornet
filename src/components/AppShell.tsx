@@ -13,7 +13,7 @@ import logoMark from "@/assets/corenetwork-mark.png";
 import { LANGUAGES, getLanguage, installTranslationObserver, setLanguage, type LanguageId } from "@/lib/i18n";
 import { supabase } from "@/integrations/supabase/client";
 import { UploadSafetyBridge } from "@/components/UploadSafetyBridge";
-import { TwemojiPicker, useTwemojiDomRenderer } from "@/components/TwemojiTools";
+import { TwemojiPicker } from "@/components/TwemojiTools";
 import "@/retro2012.css";
 import "@/retro2012-adaptation.css";
 
@@ -36,7 +36,6 @@ export function AppShell({ children, hideSidebar = false }: { children: ReactNod
   const [query, setQuery] = useState("");
   const [openSidebar, setOpenSidebar] = useState(true);
   const pathname = useRouterState({ select: (s) => s.location.pathname });
-  useTwemojiDomRenderer();
   useEffect(() => installTranslationObserver(), []);
   useEffect(() => { const preferred = (profile as { preferred_language?: LanguageId } | null)?.preferred_language; if (preferred && getLanguage() !== preferred) setLanguage(preferred); }, [profile]);
 
