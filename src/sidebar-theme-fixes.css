@@ -1,0 +1,72 @@
+/* Sidebar separation: keep the original sidebar and Cosmic Panda independent. */
+
+/* Original/default themes: sidebar remains part of the page flow. */
+[data-theme]:not([data-theme="retro2012"]) .cn-2012-shell-body > .cn-2012-sidebar:not(.cn-2012-sidebar--cosmic) {
+  position: relative !important;
+  top: auto !important;
+  align-self: start !important;
+  width: 236px;
+  min-width: 0;
+  height: auto !important;
+  max-height: none !important;
+  margin: 0;
+  padding: 18px 12px;
+  overflow: visible !important;
+  box-sizing: border-box;
+  background: color-mix(in oklab, var(--color-background) 50%, transparent) !important;
+  border-color: color-mix(in oklab, var(--color-border) 55%, transparent) !important;
+  box-shadow: none;
+}
+
+[data-theme]:not([data-theme="retro2012"]) .cn-2012-shell-body > .cn-2012-sidebar:not(.cn-2012-sidebar--cosmic).is-collapsed {
+  width: 76px;
+}
+
+[data-theme]:not([data-theme="retro2012"]) .cn-2012-sidebar:not(.cn-2012-sidebar--cosmic) > nav a:hover {
+  transform: translateX(2px);
+}
+
+/* Cosmic Panda: restore the dark, gradient sidebar and keep it isolated. */
+[data-theme="retro2012"] .cn-2012-shell-body > .cn-2012-sidebar--cosmic {
+  position: sticky !important;
+  top: 54px !important;
+  align-self: start !important;
+  width: 238px;
+  min-height: calc(100vh - 54px);
+  height: calc(100vh - 54px);
+  max-height: calc(100vh - 54px);
+  margin: 0;
+  padding: 0 !important;
+  overflow: hidden auto !important;
+  box-sizing: border-box;
+  color: #eef2f5;
+  background:
+    radial-gradient(240px 180px at 50% -30px, rgb(78 99 119 / 45%), transparent 72%),
+    linear-gradient(180deg, #29343f 0%, #1c242d 25%, #12181f 58%, #080c10 100%) !important;
+  border: 0 !important;
+  border-right: 1px solid #05070a !important;
+  box-shadow: inset -1px 0 rgb(125 145 163 / 26%), 2px 0 8px rgb(0 0 0 / 20%);
+}
+
+[data-theme="retro2012"] .cn-2012-shell-body > .cn-2012-sidebar--cosmic.is-collapsed {
+  width: 74px;
+}
+
+[data-theme="retro2012"] .cn-2012-shell-body > .cn-2012-sidebar--cosmic .cn-2012-sidebar-inner {
+  min-height: calc(100vh - 54px);
+  padding: 12px 10px 18px;
+  background: linear-gradient(90deg, rgb(0 0 0 / 14%), transparent 22%, transparent 78%, rgb(255 255 255 / 3%));
+}
+
+@media (max-width: 900px) {
+  [data-theme="retro2012"] .cn-2012-shell-body > .cn-2012-sidebar--cosmic {
+    width: 220px;
+    height: calc(100vh - 54px);
+  }
+}
+
+@media (max-width: 767px) {
+  [data-theme="retro2012"] .cn-2012-shell-body > .cn-2012-sidebar--cosmic {
+    display: none;
+  }
+}
