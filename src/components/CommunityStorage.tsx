@@ -21,7 +21,7 @@ import {
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
-import { uploadToB2, createB2DownloadUrl, deleteFromB2 } from "@/lib/b2";
+import { uploadToB2, createB2DownloadUrl, deleteFromB2, uploadToSupabasePublic, deleteFromSupabasePublic } from "@/lib/b2";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -40,7 +40,17 @@ const TEMP_DURATIONS = [
   { value: 7 * 24 * 60 * 60, label: "7 días" },
 ];
 
-type StoredFile = { id: string; user_id: string; original_name: string; storage_path: string; mime_type: string | null; size_bytes: number; created_at: string };
+type StoredFile = {
+  id: string;
+  user_id: string;
+  original_name: string;
+  storage_path: string;
+  storage_provider?: "backblaze" | "supabase" | string | null;
+  public_url?: string | null;
+  mime_type: string | null;
+  size_bytes: number;
+  created_at: string;
+};
 type TempFile = StoredFile & { expires_at: string };
 
 function formatBytes(bytes: number) {
@@ -93,8 +103,9 @@ function temporaryUrl(id: string) {
   return `${window.location.origin}/t/${id}`;
 }
 
-async function signedB2Link(file: StoredFile | TempFile, temporary?: boolean) {
+async function fileLink(file: StoredFile | TempFile, temporary?: boolean) {
   if (temporary) return temporaryUrl(file.id);
+  if (file.storage_provider === "supabase" && file.public_url) return file.public_url;
   const result = await createB2DownloadUrl(file.storage_path, safeName(file.original_name), 3600);
   return result.url;
 }
@@ -130,7 +141,7 @@ function FileRow({ file, temporary, onDelete }: { file: StoredFile | TempFile; t
   const openLink = async () => {
     setLoadingLink(true);
     try {
-      const url = await signedB2Link(file, temporary);
+      const url = await fileLink(file, temporary);
       setLink(url);
       return url;
     } finally {
@@ -146,6 +157,7 @@ function FileRow({ file, temporary, onDelete }: { file: StoredFile | TempFile; t
         <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
           <span>{formatBytes(file.size_bytes)}</span><span>·</span><span>{new Date(file.created_at).toLocaleDateString()}</span>
           {temporary && <Badge variant={expired ? "destructive" : "secondary"} className="gap-1 text-[10px]"><Clock3 className="h-3 w-3" />{expired ? "Expirado" : relativeExpiry((file as TempFile).expires_at)}</Badge>}
+          {!temporary && file.storage_provider === "supabase" && <Badge variant="secondary" className="text-[10px]">Supabase público</Badge>}
         </div>
         {link && <p className="mt-1 truncate text-[11px] text-primary" title={link}>{link}</p>}
       </div>
@@ -177,7 +189,7 @@ export function CommunityStorage() {
     queryKey: ["community-files", user?.id],
     enabled: !!user,
     queryFn: async () => {
-      const { data, error } = await db.from("community_files").select("id,user_id,original_name,storage_path,mime_type,size_bytes,created_at").eq("user_id", user!.id).order("created_at", { ascending: false });
+      const { data, error } = await db.from("community_files").select("id,user_id,original_name,storage_path,storage_provider,public_url,mime_type,size_bytes,created_at").eq("user_id", user!.id).order("created_at", { ascending: false });
       if (error) throw error;
       return (data ?? []) as StoredFile[];
     },
@@ -199,16 +211,23 @@ export function CommunityStorage() {
     if (!user) return toast.error("Inicia sesión para subir archivos.");
     setFileBusy(true);
     const storedName = safeName(file.name);
-    const key = `files/${user.id}/${crypto.randomUUID()}-${storedName}`;
     try {
-      await uploadToB2(key, file);
-      const { error: dbError } = await db.from("community_files").insert({ user_id: user.id, original_name: storedName, storage_path: key, mime_type: file.type || null, size_bytes: file.size });
+      const { path, publicUrl } = await uploadToSupabasePublic(user.id, file);
+      const { error: dbError } = await db.from("community_files").insert({
+        user_id: user.id,
+        original_name: storedName,
+        storage_path: path,
+        storage_provider: "supabase",
+        public_url: publicUrl,
+        mime_type: file.type || null,
+        size_bytes: file.size,
+      });
       if (dbError) {
-        await deleteFromB2(key).catch(() => undefined);
+        await deleteFromSupabasePublic(path).catch(() => undefined);
         throw dbError;
       }
       await qc.invalidateQueries({ queryKey: ["community-files", user.id] });
-      toast.success("Archivo subido correctamente a Backblaze B2");
+      toast.success("Archivo público guardado en Supabase Storage");
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "No se pudo subir el archivo");
     } finally {
@@ -233,7 +252,7 @@ export function CommunityStorage() {
       const url = temporaryUrl(created.id);
       setLastTempUrl(url);
       await qc.invalidateQueries({ queryKey: ["community-temp-files", user.id] });
-      toast.success("Enlace temporal de CoreNetwork creado");
+      toast.success("Enlace temporal de Cornet creado");
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "No se pudo crear el enlace temporal");
     } finally {
@@ -241,9 +260,13 @@ export function CommunityStorage() {
     }
   };
 
-  const deleteFile = async (file: StoredFile, temporary = false) => {
+  const deleteFile = async (file: StoredFile | TempFile, temporary = false) => {
     try {
-      await deleteFromB2(file.storage_path);
+      if (temporary || file.storage_provider !== "supabase") {
+        await deleteFromB2(file.storage_path);
+      } else {
+        await deleteFromSupabasePublic(file.storage_path);
+      }
       const table = temporary ? "community_temp_files" : "community_files";
       const { error } = await db.from(table).delete().eq("id", file.id).eq("user_id", user!.id);
       if (error) throw error;
@@ -260,12 +283,12 @@ export function CommunityStorage() {
 
   return (
     <section className="mx-auto w-full max-w-5xl">
-      <div className="mb-6 overflow-hidden rounded-3xl border border-border/70 bg-gradient-to-br from-primary/10 via-surface to-background p-6 shadow-sm sm:p-8"><div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between"><div><Badge variant="secondary" className="mb-3 gap-1"><ShieldCheck className="h-3.5 w-3.5" /> CoreNetwork Storage</Badge><h2 className="text-2xl font-bold tracking-tight sm:text-3xl">Comparte archivos sin complicarte.</h2><p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">Los archivos generales viven en Backblaze B2; las imágenes y vídeos pueden mantenerse en su almacenamiento multimedia independiente.</p></div><div className="grid grid-cols-2 gap-2 text-center text-xs text-muted-foreground"><div className="rounded-2xl border border-border/70 bg-background/60 px-4 py-3"><p className="text-lg font-semibold text-foreground">{filesQuery.data?.length ?? 0}</p><span>archivos</span></div><div className="rounded-2xl border border-border/70 bg-background/60 px-4 py-3"><p className="text-lg font-semibold text-foreground">{activeTemps.length}</p><span>temporales</span></div></div></div></div>
+      <div className="mb-6 overflow-hidden rounded-3xl border border-border/70 bg-gradient-to-br from-primary/10 via-surface to-background p-6 shadow-sm sm:p-8"><div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between"><div><Badge variant="secondary" className="mb-3 gap-1"><ShieldCheck className="h-3.5 w-3.5" /> Cornet Storage</Badge><h2 className="text-2xl font-bold tracking-tight sm:text-3xl">Comparte archivos sin complicarte.</h2><p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">Los archivos públicos de Comunidad se sirven desde Supabase Storage; los temporales siguen protegidos en Backblaze B2.</p></div><div className="grid grid-cols-2 gap-2 text-center text-xs text-muted-foreground"><div className="rounded-2xl border border-border/70 bg-background/60 px-4 py-3"><p className="text-lg font-semibold text-foreground">{filesQuery.data?.length ?? 0}</p><span>archivos</span></div><div className="rounded-2xl border border-border/70 bg-background/60 px-4 py-3"><p className="text-lg font-semibold text-foreground">{activeTemps.length}</p><span>temporales</span></div></div></div></div>
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList className="mb-5 grid h-auto w-full grid-cols-3 rounded-2xl bg-muted/70 p-1"><TabsTrigger value="files" className="gap-2 rounded-xl py-2.5"><FolderOpen className="h-4 w-4" />Archivos</TabsTrigger><TabsTrigger value="temp" className="gap-2 rounded-xl py-2.5"><Clock3 className="h-4 w-4" />Temporales</TabsTrigger><TabsTrigger value="mine" className="gap-2 rounded-xl py-2.5"><HardDrive className="h-4 w-4" />Mi espacio</TabsTrigger></TabsList>
-        <TabsContent value="files" className="space-y-5"><Card className="border-border/70 bg-surface/60"><CardHeader><CardTitle className="flex items-center gap-2"><FileUp className="h-5 w-5 text-primary" />Subir un archivo</CardTitle></CardHeader><CardContent><UploadZone busy={fileBusy} maxSize={MAX_FILE_SIZE} onFile={(file) => void uploadPermanent(file)} title="Suelta tu archivo aquí" subtitle="Se guarda en Backblaze B2 y se accede mediante enlaces firmados." /></CardContent></Card><div className="space-y-3"><div className="flex items-center justify-between"><h3 className="font-semibold">Mis archivos</h3><span className="text-xs text-muted-foreground">50 MB por archivo</span></div>{filesQuery.isLoading ? <div className="rounded-xl border border-border p-6 text-center text-sm text-muted-foreground">Cargando archivos…</div> : filesQuery.data?.length ? filesQuery.data.map((file) => <FileRow key={file.id} file={file} onDelete={() => void deleteFile(file)} />) : <div className="rounded-2xl border border-dashed border-border p-10 text-center"><HardDrive className="mx-auto mb-3 h-8 w-8 text-muted-foreground" /><p className="font-medium">Todavía no tienes archivos</p><p className="mt-1 text-sm text-muted-foreground">Sube el primero desde el área superior.</p></div>}</div></TabsContent>
-        <TabsContent value="temp" className="space-y-5"><Card className="border-border/70 bg-surface/60"><CardHeader><CardTitle className="flex items-center gap-2"><Clock3 className="h-5 w-5 text-primary" />Temp Hoster</CardTitle></CardHeader><CardContent className="space-y-5"><div className="grid gap-2 sm:grid-cols-5">{TEMP_DURATIONS.map((duration) => <button key={duration.value} type="button" onClick={() => setTempDuration(duration.value)} className={`rounded-xl border px-3 py-2 text-sm transition ${tempDuration === duration.value ? "border-primary bg-primary/10 text-primary" : "border-border hover:bg-surface-hover"}`}>{duration.label}</button>)}</div><UploadZone busy={tempBusy} maxSize={MAX_TEMP_SIZE} onFile={(file) => void uploadTemporary(file)} title="Crea un enlace temporal" subtitle="El archivo se guarda en B2 y el enlace público siempre pasa por CoreNetwork." />{lastTempUrl && <div className="rounded-2xl border border-primary/30 bg-primary/5 p-4"><div className="flex items-start gap-3"><Check className="mt-0.5 h-5 w-5 shrink-0 text-primary" /><div className="min-w-0 flex-1"><p className="font-medium">Tu enlace está listo</p><p className="mt-1 break-all text-sm text-muted-foreground">{lastTempUrl}</p><p className="mt-1 text-xs text-muted-foreground">El enlace `/t/...` seguirá funcionando hasta la expiración del archivo. La descarga de B2 se firma de nuevo en cada visita.</p></div><Button size="sm" onClick={() => void copyText(lastTempUrl)}><Copy className="mr-2 h-4 w-4" />Copiar</Button></div></div>}<div className="flex gap-3 rounded-xl bg-muted/50 p-3 text-xs text-muted-foreground"><ShieldCheck className="h-4 w-4 shrink-0" /><p>Los archivos de B2 permanecen privados. CoreNetwork genera el acceso sin exponer credenciales de Backblaze.</p></div></CardContent></Card><div className="space-y-3"><div className="flex items-center justify-between"><h3 className="font-semibold">Temporales activos</h3><span className="text-xs text-muted-foreground">100 MB por archivo</span></div>{tempQuery.isLoading ? <div className="rounded-xl border border-border p-6 text-center text-sm text-muted-foreground">Cargando temporales…</div> : activeTemps.length ? activeTemps.map((file) => <FileRow key={file.id} file={file} temporary onDelete={() => void deleteFile(file, true)} />) : <div className="rounded-2xl border border-dashed border-border p-10 text-center"><Clock3 className="mx-auto mb-3 h-8 w-8 text-muted-foreground" /><p className="font-medium">No hay enlaces temporales activos</p><p className="mt-1 text-sm text-muted-foreground">Crea uno arriba y podrás copiarlo al instante.</p></div>}</div></TabsContent>
-        <TabsContent value="mine" className="space-y-5"><Card className="border-border/70 bg-surface/60"><CardHeader><CardTitle>Tu espacio en CoreNetwork</CardTitle></CardHeader><CardContent className="grid gap-4 sm:grid-cols-3"><div className="rounded-2xl bg-background p-4"><p className="text-xs text-muted-foreground">Archivos permanentes</p><p className="mt-1 text-2xl font-bold">{filesQuery.data?.length ?? 0}</p></div><div className="rounded-2xl bg-background p-4"><p className="text-xs text-muted-foreground">Temporales activos</p><p className="mt-1 text-2xl font-bold">{activeTemps.length}</p></div><div className="rounded-2xl bg-background p-4"><p className="text-xs text-muted-foreground">Espacio usado</p><p className="mt-1 text-2xl font-bold">{formatBytes((filesQuery.data ?? []).reduce((sum, file) => sum + file.size_bytes, 0))}</p></div></CardContent></Card><div className="rounded-2xl border border-border bg-muted/30 p-4 text-sm text-muted-foreground"><p className="font-medium text-foreground">Buenas prácticas</p><ul className="mt-2 list-disc space-y-1 pl-5"><li>No subas información privada o sensible a enlaces públicos.</li><li>Los enlaces temporales son adecuados para compartir algo durante un tiempo limitado.</li><li>Los archivos bloqueados por seguridad no se pueden alojar.</li></ul></div></TabsContent>
+        <TabsContent value="files" className="space-y-5"><Card className="border-border/70 bg-surface/60"><CardHeader><CardTitle className="flex items-center gap-2"><FileUp className="h-5 w-5 text-primary" />Subir un archivo</CardTitle></CardHeader><CardContent><UploadZone busy={fileBusy} maxSize={MAX_FILE_SIZE} onFile={(file) => void uploadPermanent(file)} title="Suelta tu archivo aquí" subtitle="Se guarda en Supabase Storage y obtiene un enlace público directo." /></CardContent></Card><div className="space-y-3"><div className="flex items-center justify-between"><h3 className="font-semibold">Mis archivos</h3><span className="text-xs text-muted-foreground">50 MB por archivo</span></div>{filesQuery.isLoading ? <div className="rounded-xl border border-border p-6 text-center text-sm text-muted-foreground">Cargando archivos…</div> : filesQuery.data?.length ? filesQuery.data.map((file) => <FileRow key={file.id} file={file} onDelete={() => void deleteFile(file)} />) : <div className="rounded-2xl border border-dashed border-border p-10 text-center"><HardDrive className="mx-auto mb-3 h-8 w-8 text-muted-foreground" /><p className="font-medium">Todavía no tienes archivos</p><p className="mt-1 text-sm text-muted-foreground">Sube el primero desde el área superior.</p></div>}</div></TabsContent>
+        <TabsContent value="temp" className="space-y-5"><Card className="border-border/70 bg-surface/60"><CardHeader><CardTitle className="flex items-center gap-2"><Clock3 className="h-5 w-5 text-primary" />Temp Hoster</CardTitle></CardHeader><CardContent className="space-y-5"><div className="grid gap-2 sm:grid-cols-5">{TEMP_DURATIONS.map((duration) => <button key={duration.value} type="button" onClick={() => setTempDuration(duration.value)} className={`rounded-xl border px-3 py-2 text-sm transition ${tempDuration === duration.value ? "border-primary bg-primary/10 text-primary" : "border-border hover:bg-surface-hover"}`}>{duration.label}</button>)}</div><UploadZone busy={tempBusy} maxSize={MAX_TEMP_SIZE} onFile={(file) => void uploadTemporary(file)} title="Crea un enlace temporal" subtitle="El archivo se guarda en B2 y el enlace temporal pasa por Cornet." />{lastTempUrl && <div className="rounded-2xl border border-primary/30 bg-primary/5 p-4"><div className="flex items-start gap-3"><Check className="mt-0.5 h-5 w-5 shrink-0 text-primary" /><div className="min-w-0 flex-1"><p className="font-medium">Tu enlace está listo</p><p className="mt-1 break-all text-sm text-muted-foreground">{lastTempUrl}</p><p className="mt-1 text-xs text-muted-foreground">El enlace `/t/...` seguirá funcionando hasta la expiración del archivo.</p></div><Button size="sm" onClick={() => void copyText(lastTempUrl)}><Copy className="mr-2 h-4 w-4" />Copiar</Button></div></div>}<div className="flex gap-3 rounded-xl bg-muted/50 p-3 text-xs text-muted-foreground"><ShieldCheck className="h-4 w-4 shrink-0" /><p>Los archivos temporales de B2 permanecen privados y se sirven mediante Cornet.</p></div></CardContent></Card><div className="space-y-3"><div className="flex items-center justify-between"><h3 className="font-semibold">Temporales activos</h3><span className="text-xs text-muted-foreground">100 MB por archivo</span></div>{tempQuery.isLoading ? <div className="rounded-xl border border-border p-6 text-center text-sm text-muted-foreground">Cargando temporales…</div> : activeTemps.length ? activeTemps.map((file) => <FileRow key={file.id} file={file} temporary onDelete={() => void deleteFile(file, true)} />) : <div className="rounded-2xl border border-dashed border-border p-10 text-center"><Clock3 className="mx-auto mb-3 h-8 w-8 text-muted-foreground" /><p className="font-medium">No hay enlaces temporales activos</p><p className="mt-1 text-sm text-muted-foreground">Crea uno arriba y podrás copiarlo al instante.</p></div>}</div></TabsContent>
+        <TabsContent value="mine" className="space-y-5"><Card className="border-border/70 bg-surface/60"><CardHeader><CardTitle>Tu espacio en Cornet</CardTitle></CardHeader><CardContent className="grid gap-4 sm:grid-cols-3"><div className="rounded-2xl bg-background p-4"><p className="text-xs text-muted-foreground">Archivos permanentes</p><p className="mt-1 text-2xl font-bold">{filesQuery.data?.length ?? 0}</p></div><div className="rounded-2xl bg-background p-4"><p className="text-xs text-muted-foreground">Temporales activos</p><p className="mt-1 text-2xl font-bold">{activeTemps.length}</p></div><div className="rounded-2xl bg-background p-4"><p className="text-xs text-muted-foreground">Espacio usado</p><p className="mt-1 text-2xl font-bold">{formatBytes((filesQuery.data ?? []).reduce((sum, file) => sum + file.size_bytes, 0))}</p></div></CardContent></Card><div className="rounded-2xl border border-border bg-muted/30 p-4 text-sm text-muted-foreground"><p className="font-medium text-foreground">Buenas prácticas</p><ul className="mt-2 list-disc space-y-1 pl-5"><li>No subas información privada a enlaces públicos.</li><li>Los enlaces temporales son adecuados para compartir algo durante un tiempo limitado.</li><li>Los archivos bloqueados por seguridad no se pueden alojar.</li></ul></div></TabsContent>
       </Tabs>
     </section>
   );
