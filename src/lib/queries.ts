@@ -14,33 +14,31 @@ export type ProfileLite = {
 export type VideoSort = "recent" | "views" | "oldest" | "subscribers";
 export type VideoCategory = "Autos & Vehicles" | "Comedy" | "Entertainment" | "Film & Animation" | "Gaming" | "Howto & Style" | "Nonprofits & Activism" | "People & Blogs" | "Pets & Animals" | "Science & Technology" | "Sports" | "Travel & Events" | "Education" | "Music";
 
-// Prefer select(*) for profiles. The project has had schema drift between
-// migrations, and PostgREST can temporarily reject explicitly named newer
-// columns while the wildcard query still works. Keeping the selection broad
-// here prevents harmless UI 400s while retaining the new fields when present.
+const PROFILE_FIELDS = "id,username,display_name,avatar_path,is_verified,subscriber_count,channel_style";
+
 export async function fetchProfilesByIds(ids: string[]): Promise<Map<string, ProfileLite>> {
   const unique = [...new Set(ids)].filter(Boolean);
   if (unique.length === 0) return new Map();
-  const { data, error } = await supabase.from("profiles").select("*").in("id", unique);
+  const { data, error } = await supabase.from("profiles").select(PROFILE_FIELDS).in("id", unique);
   if (error) throw error;
   return new Map(((data ?? []) as ProfileLite[]).map((p) => [p.id, p]));
 }
 
 export async function searchChannels(search?: string, orderBy: "subscribers" | "recent" = "subscribers") {
   const escaped = search?.trim().replace(/[%_]/g, "\\$&");
-  let query = supabase.from("profiles").select("*").limit(40);
+  let query = supabase.from("profiles").select(`${PROFILE_FIELDS},created_at`).limit(24);
   if (escaped) query = query.or(`username.ilike.%${escaped}%,display_name.ilike.%${escaped}%`);
   const result = await query;
   if (result.error) throw result.error;
   const profiles = (result.data ?? []) as (ProfileLite & { created_at: string })[];
   if (orderBy === "subscribers") profiles.sort((a, b) => Number(b.subscriber_count ?? 0) - Number(a.subscriber_count ?? 0) || b.created_at.localeCompare(a.created_at));
-  else profiles.sort((a, b) => a.created_at.localeCompare(b.created_at));
+  else profiles.sort((a, b) => b.created_at.localeCompare(a.created_at));
   return profiles;
 }
 
 export async function fetchVideos(options?: { search?: string; userId?: string; orderBy?: VideoSort; category?: string; limit?: number }) {
   const orderBy = options?.orderBy ?? "recent";
-  const limit = options?.limit ?? 60;
+  const limit = Math.min(Math.max(options?.limit ?? 24, 1), 48);
   let q = supabase.from("videos").select("id, code, user_id, title, thumbnail_path, duration_seconds, views, created_at, category").limit(limit);
   if (options?.search) q = q.ilike("title", `%${options.search}%`);
   if (options?.userId) q = q.eq("user_id", options.userId);
