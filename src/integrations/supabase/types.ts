@@ -422,6 +422,7 @@ export type Database = {
       }
       videos: {
         Row: {
+          category: string
           code: string
           created_at: string
           description: string
@@ -435,6 +436,7 @@ export type Database = {
           visibility: string
         }
         Insert: {
+          category?: string
           code?: string
           created_at?: string
           description?: string
@@ -448,6 +450,7 @@ export type Database = {
           visibility?: string
         }
         Update: {
+          category?: string
           code?: string
           created_at?: string
           description?: string
