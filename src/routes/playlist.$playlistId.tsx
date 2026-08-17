@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { ArrowDown, ArrowUp, Globe, Lock, Trash2 } from "lucide-react";
+import { ArrowDown, ArrowUp, Clapperboard, Globe, Lock, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { AppShell } from "@/components/AppShell";
@@ -13,7 +13,7 @@ import { fetchVideos } from "@/lib/queries";
 
 export const Route = createFileRoute("/playlist/$playlistId")({ component: PlaylistPage });
 
-type Playlist = { id: string; user_id: string; title: string; description: string; visibility: "public" | "private" };
+type Playlist = { id: string; user_id: string; title: string; description: string; visibility: "public" | "private"; kind: "playlist" | "series" };
 type Item = { id: string; video_id: string; position: number; video: { id: string; code: string; user_id: string; title: string; thumbnail_path: string | null; duration_seconds: number; views: number; created_at: string } | null };
 
 function PlaylistPage() {
@@ -24,7 +24,7 @@ function PlaylistPage() {
   const playlistQuery = useQuery({
     queryKey: ["playlist", playlistId],
     queryFn: async () => {
-      const { data, error } = await supabase.from("playlists").select("id, user_id, title, description, visibility").eq("id", playlistId).maybeSingle();
+      const { data, error } = await supabase.from("playlists").select("id, user_id, title, description, visibility, kind").eq("id", playlistId).maybeSingle();
       if (error) throw error;
       return (data as Playlist | null);
     },
@@ -46,11 +46,14 @@ function PlaylistPage() {
   });
   const availableVideos = useMemo(() => ownerVideos.data?.filter((video) => !itemsQuery.data?.some((item) => item.video_id === video.id)) ?? [], [ownerVideos.data, itemsQuery.data]);
 
-  if (playlistQuery.isLoading) return <AppShell><p className="py-24 text-center text-muted-foreground">Cargando playlist…</p></AppShell>;
-  if (!playlistQuery.data) return <AppShell><p className="py-24 text-center text-muted-foreground">La playlist no existe o es privada.</p></AppShell>;
+  if (playlistQuery.isLoading) return <AppShell><p className="py-24 text-center text-muted-foreground">Cargando…</p></AppShell>;
+  if (!playlistQuery.data) return <AppShell><p className="py-24 text-center text-muted-foreground">La lista no existe o es privada.</p></AppShell>;
 
   const playlist = playlistQuery.data;
+  const isSeries = playlist.kind === "series";
   const items = itemsQuery.data ?? [];
+  const noun = isSeries ? "episodio" : "video";
+  const nounPlural = isSeries ? "episodios" : "videos";
 
   const addVideo = async () => {
     if (!mine || !selectedVideo) return;
@@ -88,13 +91,58 @@ function PlaylistPage() {
       <div className="mx-auto max-w-6xl space-y-6 pb-14">
         <header className="rounded-2xl border border-border bg-surface p-6">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-            <div><div className="flex items-center gap-2"><h1 className="text-2xl font-bold">{playlist.title}</h1>{playlist.visibility === "public" ? <Globe className="h-5 w-5 text-muted-foreground" /> : <Lock className="h-5 w-5 text-muted-foreground" />}</div><p className="mt-2 max-w-2xl text-sm text-muted-foreground">{playlist.description || "Sin descripción."}</p><p className="mt-2 text-xs text-muted-foreground">{items.length} videos · {playlist.visibility === "public" ? "Pública" : "Privada"}</p></div>
+            <div>
+              <div className="flex items-center gap-2">
+                {isSeries && <Clapperboard className="h-5 w-5 text-primary" />}
+                <h1 className="text-2xl font-bold">{playlist.title}</h1>
+                {playlist.visibility === "public" ? <Globe className="h-5 w-5 text-muted-foreground" /> : <Lock className="h-5 w-5 text-muted-foreground" />}
+              </div>
+              <p className="mt-2 max-w-2xl text-sm text-muted-foreground">{playlist.description || "Sin descripción."}</p>
+              <p className="mt-2 text-xs text-muted-foreground">
+                {items.length} {nounPlural} · {playlist.visibility === "public" ? "Pública" : "Privada"} · {isSeries ? "Serie" : "Lista de reproducción"}
+              </p>
+            </div>
             {mine && <Button asChild variant="secondary"><Link to="/playlists">Administrar listas</Link></Button>}
           </div>
-          {mine && <div className="mt-5 flex flex-col gap-2 sm:flex-row"><Select value={selectedVideo} onValueChange={setSelectedVideo}><SelectTrigger className="sm:w-96"><SelectValue placeholder="Añadir uno de tus videos…" /></SelectTrigger><SelectContent>{availableVideos.map((video) => <SelectItem key={video.id} value={video.id}>{video.title}</SelectItem>)}</SelectContent></Select><Button onClick={() => void addVideo()} disabled={!selectedVideo}>Añadir</Button></div>}
+          {mine && (
+            <div className="mt-5 flex flex-col gap-2 sm:flex-row">
+              <Select value={selectedVideo} onValueChange={setSelectedVideo}>
+                <SelectTrigger className="sm:w-96"><SelectValue placeholder={`Añadir un ${noun}…`} /></SelectTrigger>
+                <SelectContent>{availableVideos.map((video) => <SelectItem key={video.id} value={video.id}>{video.title}</SelectItem>)}</SelectContent>
+              </Select>
+              <Button onClick={() => void addVideo()} disabled={!selectedVideo}>Añadir</Button>
+            </div>
+          )}
         </header>
 
-        {items.length ? <div className="space-y-3">{items.map((item, index) => item.video ? <div key={item.id} className="flex flex-col gap-3 rounded-xl border border-border bg-card p-3 sm:flex-row sm:items-center"><div className="w-full min-w-0 sm:max-w-64"><VideoCard video={{ ...item.video, profiles: null } as never} compact /></div><div className="flex-1"><Link to="/watch" search={{ v: item.video.code }} className="font-medium hover:underline">{item.video.title}</Link><p className="text-xs text-muted-foreground">#{index + 1} · {item.video.views} vistas</p></div>{mine && <div className="flex items-center gap-1"><Button variant="ghost" size="icon" disabled={index === 0} onClick={() => void moveItem(index, -1)}><ArrowUp className="h-4 w-4" /></Button><Button variant="ghost" size="icon" disabled={index === items.length - 1} onClick={() => void moveItem(index, 1)}><ArrowDown className="h-4 w-4" /></Button><Button variant="ghost" size="icon" onClick={() => void removeItem(item.id)}><Trash2 className="h-4 w-4" /></Button></div>}</div> : null)}</div> : <div className="rounded-xl border border-dashed border-border py-20 text-center text-sm text-muted-foreground">Esta playlist todavía no tiene videos.</div>}
+        {items.length ? (
+          <div className="space-y-3">
+            {items.map((item, index) =>
+              item.video ? (
+                <div key={item.id} className="flex flex-col gap-3 rounded-xl border border-border bg-card p-3 sm:flex-row sm:items-center">
+                  <div className="w-full min-w-0 sm:max-w-64"><VideoCard video={{ ...item.video, profiles: null } as never} compact /></div>
+                  <div className="flex-1">
+                    <Link to="/watch" search={{ v: item.video.code }} className="font-medium hover:underline">{item.video.title}</Link>
+                    <p className="text-xs text-muted-foreground">
+                      {isSeries ? `Episodio ${index + 1}` : `#${index + 1}`} · {item.video.views} vistas
+                    </p>
+                  </div>
+                  {mine && (
+                    <div className="flex items-center gap-1">
+                      <Button variant="ghost" size="icon" disabled={index === 0} onClick={() => void moveItem(index, -1)}><ArrowUp className="h-4 w-4" /></Button>
+                      <Button variant="ghost" size="icon" disabled={index === items.length - 1} onClick={() => void moveItem(index, 1)}><ArrowDown className="h-4 w-4" /></Button>
+                      <Button variant="ghost" size="icon" onClick={() => void removeItem(item.id)}><Trash2 className="h-4 w-4" /></Button>
+                    </div>
+                  )}
+                </div>
+              ) : null,
+            )}
+          </div>
+        ) : (
+          <div className="rounded-xl border border-dashed border-border py-20 text-center text-sm text-muted-foreground">
+            Esta {isSeries ? "serie" : "lista"} todavía no tiene {nounPlural}.
+          </div>
+        )}
       </div>
     </AppShell>
   );
