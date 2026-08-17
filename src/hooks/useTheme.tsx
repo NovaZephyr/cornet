@@ -1,5 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 
+// Theme catalog — keep new themes here so they are available in every selector.
 export const THEMES = [
   { id: "grad-ocean", label: "Océano", hint: "Azul fresco, turquesa y cristal", group: "Recomendado" },
   { id: "dark", label: "Oscuro", hint: "El look clásico de CoreNetwork", group: "Básicos" },
@@ -13,7 +14,8 @@ export const THEMES = [
 ] as const;
 
 export type ThemeId = (typeof THEMES)[number]["id"];
-const STORAGE_KEY = "corenetwork-theme";
+// Bump the storage key when adding themes so an older cached theme selection cannot hide new options.
+const STORAGE_KEY = "corenetwork-theme-v2";
 const VALID: ThemeId[] = THEMES.map((t) => t.id);
 const DEFAULT_THEME: ThemeId = "grad-ocean";
 
