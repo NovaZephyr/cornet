@@ -2,6 +2,7 @@ import { supabase } from "@/integrations/supabase/client";
 
 const FUNCTION_NAME = "b2-file-host";
 const UPLOAD_PROXY = "b2-upload-proxy";
+const PUBLIC_BUCKET = "community-public";
 
 type B2Response<T = Record<string, unknown>> = T & { error?: string };
 
@@ -51,6 +52,26 @@ export async function uploadToB2(key: string, file: File) {
   if (!response.ok || payload?.error) {
     throw new Error(payload?.error ?? `B2 upload failed (${response.status})`);
   }
+}
+
+export async function uploadToSupabasePublic(userId: string, file: File) {
+  const safeName = file.name.replace(/[\\/\0]/g, "-").trim().slice(0, 255) || "archivo";
+  const path = `${userId}/${crypto.randomUUID()}-${safeName}`;
+  const { error } = await supabase.storage.from(PUBLIC_BUCKET).upload(path, file, {
+    contentType: file.type || "application/octet-stream",
+    upsert: false,
+  });
+  if (error) throw error;
+
+  const { data } = supabase.storage.from(PUBLIC_BUCKET).getPublicUrl(path);
+  if (!data.publicUrl) throw new Error("No se pudo generar la URL pública de Supabase Storage");
+
+  return { path, publicUrl: data.publicUrl };
+}
+
+export async function deleteFromSupabasePublic(path: string) {
+  const { error } = await supabase.storage.from(PUBLIC_BUCKET).remove([path]);
+  if (error) throw error;
 }
 
 export async function createB2DownloadUrl(key: string, filename?: string, expiresIn = 3600) {
