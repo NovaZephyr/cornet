@@ -2,10 +2,7 @@ import { createClient } from "@supabase/supabase-js";
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL as string;
 const PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as string;
-
-const authClient = createClient(SUPABASE_URL, PUBLISHABLE_KEY, {
-  auth: { storage: typeof window !== "undefined" ? localStorage : undefined, persistSession: true, autoRefreshToken: true },
-});
+const authClient = createClient(SUPABASE_URL, PUBLISHABLE_KEY, { auth: { storage: typeof window !== "undefined" ? localStorage : undefined, persistSession: true, autoRefreshToken: true } });
 
 export type ApiEnvelope<T> = { data: T; error?: { message: string; code?: string } | null; count?: number | null };
 
@@ -30,12 +27,11 @@ export type ApiFilter = { column: string; operator?: string; value?: unknown };
 export type ApiOrder = { column: string; ascending?: boolean };
 
 type QueryState = {
-  table: string; op: "select" | "insert" | "update" | "delete"; select: string;
-  filters: ApiFilter[]; or?: string; order: ApiOrder[]; limit?: number; range?: { from: number; to: number };
-  singleMode?: "single" | "maybeSingle"; values?: unknown;
+  table: string; op: "select" | "insert" | "update" | "delete" | "upsert"; select: string; filters: ApiFilter[]; or?: string;
+  order: ApiOrder[]; limit?: number; range?: { from: number; to: number }; singleMode?: "single" | "maybeSingle"; values?: unknown;
 };
 
-export class ApiQueryBuilder<T = unknown> implements PromiseLike<{ data: T | null; error: Error | null; count?: number | null }> {
+export class ApiQueryBuilder<T = unknown> implements PromiseLike<{ data: T | null; error: Error | null }> {
   private state: QueryState;
   constructor(table: string) { this.state = { table, op: "select", select: "*", filters: [], order: [] }; }
   select(columns = "*", _options?: unknown) { this.state.select = columns; return this; }
@@ -49,6 +45,12 @@ export class ApiQueryBuilder<T = unknown> implements PromiseLike<{ data: T | nul
   like(column: string, value: unknown) { this.state.filters.push({ column, operator: "like", value }); return this; }
   in(column: string, values: unknown[]) { this.state.filters.push({ column, operator: "in", value: values }); return this; }
   is(column: string, value: unknown) { this.state.filters.push({ column, operator: "is", value }); return this; }
+  contains(column: string, value: unknown) { this.state.filters.push({ column, operator: "contains", value }); return this; }
+  containedBy(column: string, value: unknown) { this.state.filters.push({ column, operator: "containedBy", value }); return this; }
+  overlaps(column: string, value: unknown) { this.state.filters.push({ column, operator: "overlaps", value }); return this; }
+  not(column: string, operator: string, value: unknown) { this.state.filters.push({ column, operator: `not.${operator}`, value }); return this; }
+  filter(column: string, operator: string, value: unknown) { this.state.filters.push({ column, operator, value }); return this; }
+  match(values: Record<string, unknown>) { Object.entries(values).forEach(([column, value]) => this.eq(column, value)); return this; }
   or(value: string) { this.state.or = value; return this; }
   order(column: string, options?: { ascending?: boolean }) { this.state.order.push({ column, ascending: options?.ascending !== false }); return this; }
   limit(value: number) { this.state.limit = value; return this; }
@@ -56,6 +58,7 @@ export class ApiQueryBuilder<T = unknown> implements PromiseLike<{ data: T | nul
   single() { this.state.singleMode = "single"; return this; }
   maybeSingle() { this.state.singleMode = "maybeSingle"; return this; }
   insert(values: unknown) { this.state.op = "insert"; this.state.values = values; return this; }
+  upsert(values: unknown) { this.state.op = "upsert"; this.state.values = values; return this; }
   update(values: unknown) { this.state.op = "update"; this.state.values = values; return this; }
   delete() { this.state.op = "delete"; return this; }
   then<TResult1 = { data: T | null; error: Error | null }, TResult2 = never>(onfulfilled?: ((value: { data: T | null; error: Error | null; count?: number | null }) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
