@@ -1,59 +1,59 @@
-[data-theme="retro2012"] .cn-2012-channel{position:relative;width:100%;min-height:520px;background-color:var(--cn-channel-surface,#fff);background-repeat:no-repeat;background-size:cover;background-position:center top;background-attachment:fixed;border:0;padding:14px;box-sizing:border-box}
-[data-theme="retro2012"] .cn-2012-channel:before{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,rgba(255,255,255,.08),rgba(0,0,0,.10));pointer-events:none;z-index:0}
-[data-theme="retro2012"] .cn-2012-channel-inner{position:relative;z-index:1;max-width:1120px;margin:0 auto}
-[data-theme="retro2012"] .cn-2012-channel--channel-1{background-color:var(--cn-channel-secondary,#2aa84a);padding:20px}
-[data-theme="retro2012"] .cn-2012-channel--channel-1:before{background:linear-gradient(135deg,color-mix(in srgb,var(--cn-channel-primary,#1f4fa3) 70%,transparent),transparent 42%,color-mix(in srgb,var(--cn-channel-secondary,#2aa84a) 72%,transparent))}
-[data-theme="retro2012"] .cn-2012-channel--channel-1 .cn-2012-channel-inner{max-width:1180px}
-[data-theme="retro2012"] .cn-2012-channel--channel-1 .cn-2012-cover{height:230px;border:5px solid var(--cn-channel-primary,#1f4fa3);box-shadow:0 0 0 2px var(--cn-channel-secondary,#2aa84a)}
-[data-theme="retro2012"] .cn-2012-channel--channel-1 .cn-2012-titlebar{min-height:72px;border:4px solid var(--cn-channel-primary,#1f4fa3);border-top:0;background:linear-gradient(90deg,var(--cn-channel-primary,#1f4fa3) 0 58%,var(--cn-channel-secondary,#2aa84a) 58%);color:var(--cn-channel-surface,#fff)}
-[data-theme="retro2012"] .cn-2012-channel--channel-1 .cn-2012-titlebar h1{color:var(--cn-channel-surface,#fff)}
-[data-theme="retro2012"] .cn-2012-channel--channel-1 .cn-2012-tabs{border:4px solid var(--cn-channel-primary,#1f4fa3);border-top:0;background:var(--cn-channel-secondary,#2aa84a)}
-[data-theme="retro2012"] .cn-2012-channel--channel-1 .cn-2012-tabs .is-active{background:var(--cn-channel-surface,#fff);color:var(--cn-channel-primary,#1f4fa3)}
-[data-theme="retro2012"] .cn-2012-channel--channel-1 .cn-2012-feature{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(240px,.75fr);gap:10px;margin-top:10px;background:transparent;border:0;padding:0}
-[data-theme="retro2012"] .cn-2012-channel--channel-1 .cn-2012-feature-main{min-width:0;background:var(--cn-channel-surface,#fff);border:4px solid var(--cn-channel-primary,#1f4fa3);padding:6px}
-[data-theme="retro2012"] .cn-2012-channel--channel-1 .cn-2012-feature-side{display:grid;gap:7px;background:var(--cn-channel-secondary,#2aa84a);border:4px solid var(--cn-channel-primary,#1f4fa3);padding:7px;align-content:start}
-[data-theme="retro2012"] .cn-2012-channel--channel-1 .cn-2012-body{display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:10px;margin-top:10px}
-[data-theme="retro2012"] .cn-2012-channel--channel-1 .cn-2012-video-column{background:var(--cn-channel-surface,#fff);border:4px solid var(--cn-channel-primary,#1f4fa3);padding:8px}
-[data-theme="retro2012"] .cn-2012-channel--channel-1 .cn-2012-about{background:var(--cn-channel-secondary,#2aa84a);border:4px solid var(--cn-channel-primary,#1f4fa3);color:var(--cn-channel-surface,#fff)}
-[data-theme="retro2012"] .cn-2012-channel--channel-1 .cn-2012-about h2{color:var(--cn-channel-surface,#fff)}
+:is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-channel{position:relative;width:100%;min-height:520px;background-color:var(--cn-channel-surface,#fff);background-repeat:no-repeat;background-size:cover;background-position:center top;background-attachment:fixed;border:0;padding:14px;box-sizing:border-box}
+:is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-channel:before{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,rgba(255,255,255,.08),rgba(0,0,0,.10));pointer-events:none;z-index:0}
+:is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-channel-inner{position:relative;z-index:1;max-width:1120px;margin:0 auto}
+:is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-channel--channel-1{background-color:var(--cn-channel-secondary,#2aa84a);padding:20px}
+:is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-channel--channel-1:before{background:linear-gradient(135deg,color-mix(in srgb,var(--cn-channel-primary,#1f4fa3) 70%,transparent),transparent 42%,color-mix(in srgb,var(--cn-channel-secondary,#2aa84a) 72%,transparent))}
+:is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-channel--channel-1 .cn-2012-channel-inner{max-width:1180px}
+:is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-channel--channel-1 .cn-2012-cover{height:230px;border:5px solid var(--cn-channel-primary,#1f4fa3);box-shadow:0 0 0 2px var(--cn-channel-secondary,#2aa84a)}
+:is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-channel--channel-1 .cn-2012-titlebar{min-height:72px;border:4px solid var(--cn-channel-primary,#1f4fa3);border-top:0;background:linear-gradient(90deg,var(--cn-channel-primary,#1f4fa3) 0 58%,var(--cn-channel-secondary,#2aa84a) 58%);color:var(--cn-channel-surface,#fff)}
+:is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-channel--channel-1 .cn-2012-titlebar h1{color:var(--cn-channel-surface,#fff)}
+:is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-channel--channel-1 .cn-2012-tabs{border:4px solid var(--cn-channel-primary,#1f4fa3);border-top:0;background:var(--cn-channel-secondary,#2aa84a)}
+:is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-channel--channel-1 .cn-2012-tabs .is-active{background:var(--cn-channel-surface,#fff);color:var(--cn-channel-primary,#1f4fa3)}
+:is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-channel--channel-1 .cn-2012-feature{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(240px,.75fr);gap:10px;margin-top:10px;background:transparent;border:0;padding:0}
+:is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-channel--channel-1 .cn-2012-feature-main{min-width:0;background:var(--cn-channel-surface,#fff);border:4px solid var(--cn-channel-primary,#1f4fa3);padding:6px}
+:is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-channel--channel-1 .cn-2012-feature-side{display:grid;gap:7px;background:var(--cn-channel-secondary,#2aa84a);border:4px solid var(--cn-channel-primary,#1f4fa3);padding:7px;align-content:start}
+:is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-channel--channel-1 .cn-2012-body{display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:10px;margin-top:10px}
+:is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-channel--channel-1 .cn-2012-video-column{background:var(--cn-channel-surface,#fff);border:4px solid var(--cn-channel-primary,#1f4fa3);padding:8px}
+:is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-channel--channel-1 .cn-2012-about{background:var(--cn-channel-secondary,#2aa84a);border:4px solid var(--cn-channel-primary,#1f4fa3);color:var(--cn-channel-surface,#fff)}
+:is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-channel--channel-1 .cn-2012-about h2{color:var(--cn-channel-surface,#fff)}
 
-[data-theme="retro2012"] .cn-2012-channel--channel-2{background-color:var(--cn-channel-primary,#303030);padding:18px}
-[data-theme="retro2012"] .cn-2012-channel--channel-2:before{background:linear-gradient(to bottom,transparent 0 55%,color-mix(in srgb,var(--cn-channel-secondary,#555) 38%,transparent))}
-[data-theme="retro2012"] .cn-2012-channel--channel-2 .cn-2012-channel-inner{max-width:1000px}
-[data-theme="retro2012"] .cn-2012-channel--channel-2 .cn-2012-cover{height:150px;border:0;background:var(--cn-channel-primary,#252525)}
-[data-theme="retro2012"] .cn-2012-channel--channel-2 .cn-2012-titlebar{background:color-mix(in srgb,var(--cn-channel-primary,#303030) 90%,black);border:0;color:var(--cn-channel-surface,#fff);padding:14px 16px}
-[data-theme="retro2012"] .cn-2012-channel--channel-2 .cn-2012-titlebar h1{color:var(--cn-channel-surface,#fff)}
-[data-theme="retro2012"] .cn-2012-channel--channel-2 .cn-2012-tabs{background:var(--cn-channel-secondary,#555);border:0}
-[data-theme="retro2012"] .cn-2012-channel--channel-2 .cn-2012-tabs span{padding:8px 18px}
-[data-theme="retro2012"] .cn-2012-channel--channel-2 .cn-2012-tabs .is-active{background:var(--cn-channel-surface,#fff);color:var(--cn-channel-text,#222)}
-[data-theme="retro2012"] .cn-2012-channel--channel-2 .cn-2012-feature{background:color-mix(in srgb,var(--cn-channel-primary,#303030) 70%,black);border:1px solid var(--cn-channel-secondary,#555);padding:10px}
-[data-theme="retro2012"] .cn-2012-channel--channel-2 .cn-2012-body{display:grid;grid-template-columns:250px minmax(0,1fr);gap:10px;background:transparent;padding:0;margin-top:10px}
-[data-theme="retro2012"] .cn-2012-channel--channel-2 .cn-2012-about{background:color-mix(in srgb,var(--cn-channel-primary,#303030) 88%,black);border:1px solid var(--cn-channel-secondary,#555);color:var(--cn-channel-surface,#fff)}
-[data-theme="retro2012"] .cn-2012-channel--channel-2 .cn-2012-video-column{background:var(--cn-channel-surface,#fff);border:1px solid var(--cn-channel-secondary,#555);padding:10px;color:var(--cn-channel-text,#222)}
-[data-theme="retro2012"] .cn-2012-channel--channel-2 .cn-2012-section-title{background:var(--cn-channel-surface,#fff)}
+:is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-channel--channel-2{background-color:var(--cn-channel-primary,#303030);padding:18px}
+:is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-channel--channel-2:before{background:linear-gradient(to bottom,transparent 0 55%,color-mix(in srgb,var(--cn-channel-secondary,#555) 38%,transparent))}
+:is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-channel--channel-2 .cn-2012-channel-inner{max-width:1000px}
+:is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-channel--channel-2 .cn-2012-cover{height:150px;border:0;background:var(--cn-channel-primary,#252525)}
+:is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-channel--channel-2 .cn-2012-titlebar{background:color-mix(in srgb,var(--cn-channel-primary,#303030) 90%,black);border:0;color:var(--cn-channel-surface,#fff);padding:14px 16px}
+:is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-channel--channel-2 .cn-2012-titlebar h1{color:var(--cn-channel-surface,#fff)}
+:is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-channel--channel-2 .cn-2012-tabs{background:var(--cn-channel-secondary,#555);border:0}
+:is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-channel--channel-2 .cn-2012-tabs span{padding:8px 18px}
+:is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-channel--channel-2 .cn-2012-tabs .is-active{background:var(--cn-channel-surface,#fff);color:var(--cn-channel-text,#222)}
+:is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-channel--channel-2 .cn-2012-feature{background:color-mix(in srgb,var(--cn-channel-primary,#303030) 70%,black);border:1px solid var(--cn-channel-secondary,#555);padding:10px}
+:is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-channel--channel-2 .cn-2012-body{display:grid;grid-template-columns:250px minmax(0,1fr);gap:10px;background:transparent;padding:0;margin-top:10px}
+:is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-channel--channel-2 .cn-2012-about{background:color-mix(in srgb,var(--cn-channel-primary,#303030) 88%,black);border:1px solid var(--cn-channel-secondary,#555);color:var(--cn-channel-surface,#fff)}
+:is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-channel--channel-2 .cn-2012-video-column{background:var(--cn-channel-surface,#fff);border:1px solid var(--cn-channel-secondary,#555);padding:10px;color:var(--cn-channel-text,#222)}
+:is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-channel--channel-2 .cn-2012-section-title{background:var(--cn-channel-surface,#fff)}
 
-[data-theme="retro2012"] .cn-2012-channel--cosmic-panda{background-color:var(--cn-channel-primary,#1c2833);padding:16px}
-[data-theme="retro2012"] .cn-2012-channel--cosmic-panda:before{background:radial-gradient(circle at 20% 0%,color-mix(in srgb,var(--cn-channel-secondary,#6a7f91) 38%,transparent),transparent 38%),linear-gradient(180deg,transparent 0 55%,rgba(0,0,0,.24))}
-[data-theme="retro2012"] .cn-2012-channel--cosmic-panda .cn-2012-channel-inner{max-width:1140px;background:color-mix(in srgb,var(--cn-channel-primary,#1c2833) 80%,transparent);padding:12px}
-[data-theme="retro2012"] .cn-2012-channel--cosmic-panda .cn-2012-cover{height:205px;border:1px solid var(--cn-channel-secondary,#506170)}
-[data-theme="retro2012"] .cn-2012-channel--cosmic-panda .cn-2012-titlebar{background:var(--cn-channel-surface,#fff);border:1px solid var(--cn-channel-secondary,#aeb7bf);color:var(--cn-channel-text,#26343e);padding:12px 14px}
-[data-theme="retro2012"] .cn-2012-channel--cosmic-panda .cn-2012-titlebar h1{color:var(--cn-channel-text,#26343e)}
-[data-theme="retro2012"] .cn-2012-channel--cosmic-panda .cn-2012-tabs{background:var(--cn-channel-primary,#283746);border:1px solid var(--cn-channel-secondary,#4c5d6c)}
-[data-theme="retro2012"] .cn-2012-channel--cosmic-panda .cn-2012-tabs .is-active{background:var(--cn-channel-surface,#fff);color:var(--cn-channel-text,#26343e)}
-[data-theme="retro2012"] .cn-2012-channel--cosmic-panda .cn-2012-feature{background:var(--cn-channel-surface,#fff);border:1px solid var(--cn-channel-secondary,#aeb7bf);padding:10px;margin-top:10px}
-[data-theme="retro2012"] .cn-2012-cosmic-feature-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--cn-channel-primary,#405567);padding-bottom:6px;margin-bottom:8px;border-bottom:1px solid var(--cn-channel-secondary,#c9d1d7)}
-[data-theme="retro2012"] .cn-2012-channel--cosmic-panda .cn-2012-body{display:grid;grid-template-columns:230px minmax(0,1fr);gap:10px;margin-top:10px;background:transparent}
-[data-theme="retro2012"] .cn-2012-channel--cosmic-panda .cn-2012-about{background:var(--cn-channel-surface,#fff);border:1px solid var(--cn-channel-secondary,#c6c6c6)}
-[data-theme="retro2012"] .cn-2012-channel--cosmic-panda .cn-2012-video-column{background:var(--cn-channel-surface,#fff);border:1px solid var(--cn-channel-secondary,#c6c6c6);padding:8px}
+:is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-channel--cosmic-panda{background-color:var(--cn-channel-primary,#1c2833);padding:16px}
+:is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-channel--cosmic-panda:before{background:radial-gradient(circle at 20% 0%,color-mix(in srgb,var(--cn-channel-secondary,#6a7f91) 38%,transparent),transparent 38%),linear-gradient(180deg,transparent 0 55%,rgba(0,0,0,.24))}
+:is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-channel--cosmic-panda .cn-2012-channel-inner{max-width:1140px;background:color-mix(in srgb,var(--cn-channel-primary,#1c2833) 80%,transparent);padding:12px}
+:is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-channel--cosmic-panda .cn-2012-cover{height:205px;border:1px solid var(--cn-channel-secondary,#506170)}
+:is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-channel--cosmic-panda .cn-2012-titlebar{background:var(--cn-channel-surface,#fff);border:1px solid var(--cn-channel-secondary,#aeb7bf);color:var(--cn-channel-text,#26343e);padding:12px 14px}
+:is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-channel--cosmic-panda .cn-2012-titlebar h1{color:var(--cn-channel-text,#26343e)}
+:is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-channel--cosmic-panda .cn-2012-tabs{background:var(--cn-channel-primary,#283746);border:1px solid var(--cn-channel-secondary,#4c5d6c)}
+:is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-channel--cosmic-panda .cn-2012-tabs .is-active{background:var(--cn-channel-surface,#fff);color:var(--cn-channel-text,#26343e)}
+:is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-channel--cosmic-panda .cn-2012-feature{background:var(--cn-channel-surface,#fff);border:1px solid var(--cn-channel-secondary,#aeb7bf);padding:10px;margin-top:10px}
+:is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-cosmic-feature-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--cn-channel-primary,#405567);padding-bottom:6px;margin-bottom:8px;border-bottom:1px solid var(--cn-channel-secondary,#c9d1d7)}
+:is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-channel--cosmic-panda .cn-2012-body{display:grid;grid-template-columns:230px minmax(0,1fr);gap:10px;margin-top:10px;background:transparent}
+:is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-channel--cosmic-panda .cn-2012-about{background:var(--cn-channel-surface,#fff);border:1px solid var(--cn-channel-secondary,#c6c6c6)}
+:is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-channel--cosmic-panda .cn-2012-video-column{background:var(--cn-channel-surface,#fff);border:1px solid var(--cn-channel-secondary,#c6c6c6);padding:8px}
 
 /* The era is structural; the user's colors only skin it. */
-[data-theme="retro2012"] .cn-2012-channel .cn-2012-retro-button{font-weight:700;border-radius:2px!important;box-shadow:inset 0 1px rgba(255,255,255,.35)}
-[data-theme="retro2012"] .cn-2012-channel .cn-2012-feature .aspect-video{min-height:190px}
+:is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-channel .cn-2012-retro-button{font-weight:700;border-radius:2px!important;box-shadow:inset 0 1px rgba(255,255,255,.35)}
+:is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-channel .cn-2012-feature .aspect-video{min-height:190px}
 
 @media (max-width:900px){
-  [data-theme="retro2012"] .cn-2012-channel{padding:8px;background-attachment:scroll}
-  [data-theme="retro2012"] .cn-2012-channel-inner{width:100%}
-  [data-theme="retro2012"] .cn-2012-channel--channel-1 .cn-2012-feature{grid-template-columns:1fr}
-  [data-theme="retro2012"] .cn-2012-channel--channel-1 .cn-2012-body,[data-theme="retro2012"] .cn-2012-channel--channel-2 .cn-2012-body,[data-theme="retro2012"] .cn-2012-channel--cosmic-panda .cn-2012-body{display:block}
-  [data-theme="retro2012"] .cn-2012-channel--channel-1 .cn-2012-about,[data-theme="retro2012"] .cn-2012-channel--channel-2 .cn-2012-about,[data-theme="retro2012"] .cn-2012-channel--cosmic-panda .cn-2012-about{margin-top:10px}
+  :is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-channel{padding:8px;background-attachment:scroll}
+  :is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-channel-inner{width:100%}
+  :is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-channel--channel-1 .cn-2012-feature{grid-template-columns:1fr}
+  :is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-channel--channel-1 .cn-2012-body,:is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-channel--channel-2 .cn-2012-body,:is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-channel--cosmic-panda .cn-2012-body{display:block}
+  :is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-channel--channel-1 .cn-2012-about,:is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-channel--channel-2 .cn-2012-about,:is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-channel--cosmic-panda .cn-2012-about{margin-top:10px}
 }
