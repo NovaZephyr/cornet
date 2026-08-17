@@ -1,8 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import { Link } from "@tanstack/react-router";
 import { SignedImage, ChannelAvatar, VerifiedBadge } from "@/components/Media";
 import { formatDuration, formatViews, timeAgo } from "@/lib/format";
 import { useSignedUrl } from "@/lib/storage";
+import { useTheme } from "@/hooks/useTheme";
 
 export type VideoWithChannel = {
   id: string;
@@ -27,33 +28,28 @@ export type VideoWithChannel = {
 
 const NO_THUMBNAIL = "/no-thumbnail.svg";
 
+function FeaturedPlayer({ video, posterPath }: { video: VideoWithChannel; posterPath: string | null }) {
+  const videoUrl = useSignedUrl(video.video_path);
+  const posterUrl = useSignedUrl(posterPath);
+  if (!videoUrl) return <img src={NO_THUMBNAIL} alt="Sin miniatura" className="h-full w-full object-cover" />;
+  return <video className="block h-full w-full object-contain" controls playsInline preload="metadata" poster={posterUrl ?? undefined} src={videoUrl} />;
+}
+
 export function VideoCard({ video, compact = false }: { video: VideoWithChannel; compact?: boolean }) {
   const channel = video.profiles;
   const name = channel?.display_name || channel?.username || "Canal";
   const rootRef = useRef<HTMLDivElement>(null);
-  const [retro2012, setRetro2012] = useState(false);
-  const [isFeaturedContext, setIsFeaturedContext] = useState(false);
-  const videoUrl = useSignedUrl(video.video_path);
-  const posterUrl = useSignedUrl(video.thumbnail_path);
-
-  useEffect(() => {
-    const update = () => {
-      setRetro2012(document.documentElement.dataset.theme === "retro2012");
-      setIsFeaturedContext(!!rootRef.current?.closest(".cn-2012-feature-main, .cn-2012-feature--channel-2, .cn-2012-feature--cosmic"));
-    };
-    update();
-    const observer = new MutationObserver(update);
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
-    return () => observer.disconnect();
-  }, []);
-
-  const showFeaturedPlayer = compact && retro2012 && isFeaturedContext && !!videoUrl;
+  const { theme } = useTheme();
+  const retro2012 = theme === "retro2012";
+  const isFeaturedContext = !!rootRef.current?.closest(".cn-2012-feature-main, .cn-2012-feature--channel-2, .cn-2012-feature--cosmic");
+  const showFeaturedPlayer = compact && retro2012 && isFeaturedContext;
+  const posterUrl = showFeaturedPlayer ? undefined : undefined;
 
   return (
     <div ref={rootRef} className={compact ? "flex gap-2" : "flex flex-col gap-3"}>
       {showFeaturedPlayer ? (
         <div className="relative aspect-video w-full min-w-0 shrink-0 overflow-hidden rounded-lg bg-black">
-          <video className="block h-full w-full object-contain" controls playsInline preload="metadata" poster={posterUrl ?? undefined} src={videoUrl} />
+          <FeaturedPlayer video={video} posterPath={video.thumbnail_path} />
           <span className="pointer-events-none absolute bottom-1 right-1 rounded bg-black/80 px-1 py-0.5 text-[11px] font-medium text-white">
             {formatDuration(video.duration_seconds)}
           </span>
