@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { ChannelAvatar } from "@/components/Media";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth, type Profile } from "@/hooks/useAuth";
 import { THEMES, useTheme, type ThemeId } from "@/hooks/useTheme";
 import { SiteBanner } from "@/components/SiteBanner";
 import { cn } from "@/lib/utils";
@@ -39,7 +39,7 @@ function SiteFooter() { const links: { to: "/about" | "/blog" | "/rules" | "/par
 
 function bottomBarItems(user: unknown): NavItem[] { const items: NavItem[] = [{ to: "/", label: "Inicio", icon: Home }, { to: "/explore", label: "Explorar", icon: Compass }, { to: "/community", label: "Comunidad", icon: Users }]; if (user) items.push({ to: "/messages", label: "Mensajes", icon: MessageCircle }, { to: "/upload", label: "Subir", icon: Upload }); else items.push({ to: "/auth", label: "Tú", icon: UserIcon }); return items; }
 
-function RetroSidebar({ user, profile, isRecommendedChannelsPage, openSidebar }: { user: { id: string } | null; profile: any; isRecommendedChannelsPage: boolean; openSidebar: boolean }) {
+function RetroSidebar({ user, profile, isRecommendedChannelsPage, openSidebar }: { user: { id: string } | null; profile: Profile | null; isRecommendedChannelsPage: boolean; openSidebar: boolean }) {
   const subscriptionsQuery = useQuery({
     queryKey: ["retro-sidebar-subscriptions", user?.id],
     enabled: !!user && openSidebar,
@@ -59,11 +59,6 @@ function RetroSidebar({ user, profile, isRecommendedChannelsPage, openSidebar }:
 
   const accountName = profile?.display_name || profile?.username || "Tu canal";
   const username = profile?.username || "";
-  const accountItems = [
-    { label: "Mi canal", icon: UserIcon, to: "/c/$username" as const },
-    { label: "Videos", icon: Video, to: "/c/$username" as const },
-    { label: "Lista de reproducciones", icon: ListVideo, to: "/playlists" as const },
-  ];
 
   return <aside className={cn("cn-2012-sidebar cn-2012-sidebar--cosmic hidden shrink-0 md:block", openSidebar ? "is-open" : "is-collapsed")}>
     <div className="cn-2012-sidebar-inner">
@@ -72,15 +67,14 @@ function RetroSidebar({ user, profile, isRecommendedChannelsPage, openSidebar }:
       {user && openSidebar && <>
         <div className="cn-2012-sidebar-account">
           <ChannelAvatar path={profile?.avatar_path} name={accountName} size={44} />
-          <div className="min-w-0">
-            <p className="truncate text-sm font-bold">{accountName}</p>
-            <p className="truncate text-[11px] text-white/60">@{username}</p>
-          </div>
+          <div className="min-w-0"><p className="truncate text-sm font-bold">{accountName}</p><p className="truncate text-[11px] text-white/60">@{username}</p></div>
         </div>
         <nav className="cn-2012-sidebar-account-nav" aria-label="Tu canal">
-          {accountItems.map((item) => { const Icon = item.icon; return <Link key={item.label} to={item.to} params={item.label === "Mi canal" || item.label === "Videos" ? { username } : undefined} className="cn-2012-sidebar-link"><Icon className="h-4 w-4" /><span>{item.label}</span></Link>; })}
-          <Link to="/watch" className="cn-2012-sidebar-link"><Clock3 className="h-4 w-4" /><span>Ver después</span></Link>
+          <Link to="/c/$username" params={{ username }} className="cn-2012-sidebar-link"><UserIcon className="h-4 w-4" /><span>Mi canal</span></Link>
+          <Link to="/c/$username" params={{ username }} className="cn-2012-sidebar-link"><Video className="h-4 w-4" /><span>Videos</span></Link>
+          <Link to="/playlists" className="cn-2012-sidebar-link"><ListVideo className="h-4 w-4" /><span>Lista de reproducciones</span></Link>
           <button type="button" className="cn-2012-sidebar-link cn-2012-sidebar-link--disabled" disabled title="Historial estará disponible aquí"><History className="h-4 w-4" /><span>Historial</span></button>
+          <Link to="/watch" className="cn-2012-sidebar-link"><Clock3 className="h-4 w-4" /><span>Ver después</span></Link>
         </nav>
 
         <div className="cn-2012-sidebar-divider" />
@@ -92,15 +86,7 @@ function RetroSidebar({ user, profile, isRecommendedChannelsPage, openSidebar }:
 
       {!user && openSidebar && <div className="cn-2012-sidebar-guest"><p>Explora CoreNetwork</p><span>Inicia sesión para ver tu canal y tus suscripciones.</span></div>}
 
-      {!openSidebar && <nav className="cn-2012-sidebar-collapsed-nav" aria-label="Navegación rápida">
-        {user && <>
-          <Link to="/c/$username" params={{ username }} className="cn-2012-sidebar-icon" title="Mi canal"><ChannelAvatar path={profile?.avatar_path} name={accountName} size={34} /></Link>
-          <Link to="/playlists" className="cn-2012-sidebar-icon" title="Lista de reproducciones"><ListVideo className="h-5 w-5" /></Link>
-          <Link to="/watch" className="cn-2012-sidebar-icon" title="Ver después"><Clock3 className="h-5 w-5" /></Link>
-        </>}
-        <Link to="/" className="cn-2012-sidebar-icon" title="Inicio"><Home className="h-5 w-5" /></Link>
-        <Link to="/explore" className="cn-2012-sidebar-icon" title="Explorar"><Compass className="h-5 w-5" /></Link>
-      </nav>}
+      {!openSidebar && <nav className="cn-2012-sidebar-collapsed-nav" aria-label="Navegación rápida">{user && <><Link to="/c/$username" params={{ username }} className="cn-2012-sidebar-icon" title="Mi canal"><ChannelAvatar path={profile?.avatar_path} name={accountName} size={34} /></Link><Link to="/playlists" className="cn-2012-sidebar-icon" title="Lista de reproducciones"><ListVideo className="h-5 w-5" /></Link><Link to="/watch" className="cn-2012-sidebar-icon" title="Ver después"><Clock3 className="h-5 w-5" /></Link></>}<Link to="/" className="cn-2012-sidebar-icon" title="Inicio"><Home className="h-5 w-5" /></Link><Link to="/explore" className="cn-2012-sidebar-icon" title="Explorar"><Compass className="h-5 w-5" /></Link></nav>}
     </div>
   </aside>;
 }
