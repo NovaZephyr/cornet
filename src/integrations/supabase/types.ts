@@ -14,6 +14,104 @@ export type Database = {
   }
   public: {
     Tables: {
+      announcement_poll_options: {
+        Row: {
+          announcement_id: string
+          id: string
+          label: string
+          position: number
+        }
+        Insert: {
+          announcement_id: string
+          id?: string
+          label: string
+          position?: number
+        }
+        Update: {
+          announcement_id?: string
+          id?: string
+          label?: string
+          position?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "announcement_poll_options_announcement_id_fkey"
+            columns: ["announcement_id"]
+            isOneToOne: false
+            referencedRelation: "announcements"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      announcement_poll_votes: {
+        Row: {
+          announcement_id: string
+          created_at: string
+          id: string
+          option_id: string
+          user_id: string
+        }
+        Insert: {
+          announcement_id: string
+          created_at?: string
+          id?: string
+          option_id: string
+          user_id: string
+        }
+        Update: {
+          announcement_id?: string
+          created_at?: string
+          id?: string
+          option_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "announcement_poll_votes_announcement_id_fkey"
+            columns: ["announcement_id"]
+            isOneToOne: false
+            referencedRelation: "announcements"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "announcement_poll_votes_option_id_fkey"
+            columns: ["option_id"]
+            isOneToOne: false
+            referencedRelation: "announcement_poll_options"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      announcements: {
+        Row: {
+          author_id: string
+          body: string | null
+          created_at: string
+          id: string
+          image_path: string | null
+          post_type: string
+          title: string
+        }
+        Insert: {
+          author_id: string
+          body?: string | null
+          created_at?: string
+          id?: string
+          image_path?: string | null
+          post_type?: string
+          title: string
+        }
+        Update: {
+          author_id?: string
+          body?: string | null
+          created_at?: string
+          id?: string
+          image_path?: string | null
+          post_type?: string
+          title?: string
+        }
+        Relationships: []
+      }
       comments: {
         Row: {
           content: string
@@ -210,6 +308,56 @@ export type Database = {
         }
         Relationships: []
       }
+      notifications: {
+        Row: {
+          actor_id: string | null
+          body: string
+          created_at: string
+          id: string
+          link: string | null
+          metadata: Json
+          read_at: string | null
+          title: string
+          type: string
+          user_id: string
+          video_id: string | null
+        }
+        Insert: {
+          actor_id?: string | null
+          body?: string
+          created_at?: string
+          id?: string
+          link?: string | null
+          metadata?: Json
+          read_at?: string | null
+          title: string
+          type: string
+          user_id: string
+          video_id?: string | null
+        }
+        Update: {
+          actor_id?: string | null
+          body?: string
+          created_at?: string
+          id?: string
+          link?: string | null
+          metadata?: Json
+          read_at?: string | null
+          title?: string
+          type?: string
+          user_id?: string
+          video_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notifications_video_id_fkey"
+            columns: ["video_id"]
+            isOneToOne: false
+            referencedRelation: "videos"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       partner_applications: {
         Row: {
           created_at: string
@@ -401,6 +549,36 @@ export type Database = {
           updated_at?: string
           username?: string
           warnings_count?: number
+        }
+        Relationships: []
+      }
+      site_banner: {
+        Row: {
+          color: string
+          dismissible: boolean
+          icon: string | null
+          id: boolean
+          is_active: boolean
+          message: string
+          updated_at: string
+        }
+        Insert: {
+          color?: string
+          dismissible?: boolean
+          icon?: string | null
+          id?: boolean
+          is_active?: boolean
+          message?: string
+          updated_at?: string
+        }
+        Update: {
+          color?: string
+          dismissible?: boolean
+          icon?: string | null
+          id?: boolean
+          is_active?: boolean
+          message?: string
+          updated_at?: string
         }
         Relationships: []
       }
@@ -661,6 +839,19 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      create_notification: {
+        Args: {
+          _actor_id?: string
+          _body?: string
+          _link?: string
+          _metadata?: Json
+          _title: string
+          _type: string
+          _user_id: string
+          _video_id?: string
+        }
+        Returns: string
+      }
       generate_video_code: { Args: never; Returns: string }
       get_public_badges: {
         Args: { _user_id: string }
