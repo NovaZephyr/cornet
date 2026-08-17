@@ -1,0 +1,34 @@
+import { useState } from "react";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { Radio, Copy, Check, Square, Play } from "lucide-react";
+import { toast } from "sonner";
+import { AppShell } from "@/components/AppShell";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
+
+export const Route = createFileRoute("/live")({ component: LiveStudio });
+const RTMP_URL = import.meta.env.VITE_LIVE_RTMP_URL || "rtmps://live.corenetwork.example/live";
+const HLS_URL = import.meta.env.VITE_LIVE_HLS_URL || "https://live.corenetwork.example/hls";
+
+type LiveRow = { id:string; title:string; description:string; visibility:string; stream_key:string; status:string; playback_path:string|null; viewer_count:number; started_at:string|null; ended_at:string|null; created_at:string };
+
+function LiveStudio() {
+  const { user } = useAuth();
+  const [title,setTitle]=useState(""); const [description,setDescription]=useState(""); const [visibility,setVisibility]=useState("public"); const [created,setCreated]=useState<LiveRow|null>(null); const [copied,setCopied]=useState("");
+  const mine = useQuery({ queryKey:["my-live",user?.id], enabled:!!user, queryFn:async()=>{const {data,error}=await supabase.from("live_streams").select("*").eq("user_id",user!.id).order("created_at",{ascending:false}).limit(10); if(error)throw error; return (data??[]) as LiveRow[];} });
+  const create = useMutation({mutationFn:async()=>{const {data,error}=await supabase.rpc("create_live_stream",{_title:title,_description:description,_visibility:visibility,_thumbnail_path:null}); if(error)throw error; return data as LiveRow;},onSuccess:(row)=>{setCreated(row);setTitle("");setDescription("");void mine.refetch();},onError:(e)=>toast.error(e.message)});
+  const start = async()=>{if(!created)return;const {data,error}=await supabase.rpc("start_live_stream",{_id:created.id});if(error)return toast.error(error.message);setCreated(data as LiveRow);void mine.refetch();};
+  const end = async()=>{if(!created)return;const {data,error}=await supabase.rpc("end_live_stream",{_id:created.id});if(error)return toast.error(error.message);setCreated(data as LiveRow);void mine.refetch();};
+  const copy=(value:string,key:string)=>{void navigator.clipboard.writeText(value);setCopied(key);setTimeout(()=>setCopied(""),1200);};
+  if(!user)return <AppShell><div className="mx-auto max-w-2xl py-20 text-center"><Radio className="mx-auto mb-4 h-10 w-10"/><h1 className="text-2xl font-bold">CoreNetwork Live</h1><p className="mt-2 text-muted-foreground">Inicia sesión para crear una transmisión.</p></div></AppShell>;
+  return <AppShell><div className="mx-auto max-w-5xl space-y-8"><div><h1 className="text-3xl font-bold">CoreNetwork Live</h1><p className="mt-1 text-muted-foreground">Transmite desde OBS y convierte automáticamente el directo en un video al terminar.</p></div>
+    {!created ? <section className="rounded-2xl border border-border bg-card p-6 space-y-5"><h2 className="text-xl font-semibold">Crear transmisión</h2><div><Label>Título</Label><Input className="mt-2" value={title} onChange={e=>setTitle(e.target.value)} placeholder="Mi directo" maxLength={200}/></div><div><Label>Descripción</Label><Textarea className="mt-2" value={description} onChange={e=>setDescription(e.target.value)} placeholder="¿De qué trata el directo?" maxLength={5000}/></div><div><Label>Visibilidad</Label><Select value={visibility} onValueChange={setVisibility}><SelectTrigger className="mt-2 w-full"><SelectValue/></SelectTrigger><SelectContent><SelectItem value="public">Público</SelectItem><SelectItem value="unlisted">No listado</SelectItem><SelectItem value="private">Privado</SelectItem></SelectContent></Select></div><Button disabled={!title.trim()||create.isPending} onClick={()=>create.mutate()}><Radio className="mr-2 h-4 w-4"/>{create.isPending?"Creando…":"Crear transmisión"}</Button></section> : <section className="rounded-2xl border border-border bg-card p-6 space-y-5"><div className="flex flex-wrap items-center justify-between gap-3"><div><p className="text-sm text-muted-foreground">Estado</p><h2 className="text-xl font-semibold">{created.status==='live'?"🔴 EN VIVO":created.status==='ended'?"Transmisión finalizada":"Preparada para OBS"}</h2></div>{created.status==='created'?<Button onClick={()=>void start()}><Play className="mr-2 h-4 w-4"/>Marcar como en vivo</Button>:created.status==='live'?<Button variant="destructive" onClick={()=>void end()}><Square className="mr-2 h-4 w-4"/>Finalizar transmisión</Button>:null}</div><div className="grid gap-4 md:grid-cols-2"><div className="rounded-xl border border-border p-4"><p className="text-xs text-muted-foreground">Servidor OBS (RTMPS)</p><code className="mt-2 block break-all text-sm">{RTMP_URL}</code><Button variant="ghost" size="sm" className="mt-2" onClick={()=>copy(RTMP_URL,"url")}>{copied==='url'?<Check className="mr-2 h-4 w-4"/>:<Copy className="mr-2 h-4 w-4"/>}Copiar</Button></div><div className="rounded-xl border border-border p-4"><p className="text-xs text-muted-foreground">Clave de transmisión</p><code className="mt-2 block break-all text-sm">{created.stream_key}</code><Button variant="ghost" size="sm" className="mt-2" onClick={()=>copy(created.stream_key,"key")}>{copied==='key'?<Check className="mr-2 h-4 w-4"/>:<Copy className="mr-2 h-4 w-4"/>}Copiar clave</Button></div></div><p className="text-sm text-muted-foreground">En OBS: Ajustes → Emisión → Servicio personalizado. Pega el servidor y la clave. La URL HLS para el reproductor será <code>{HLS_URL}/{'{stream-key}'}.m3u8</code>.</p>{created.status==='ended'&&<p className="rounded-xl bg-muted p-4 text-sm">La grabación VOD requiere que el servidor de medios esté configurado para grabar el stream. La sesión queda registrada en CoreNetwork para enlazarla con el video final.</p>}</section>}
+    <section><h2 className="mb-3 text-lg font-semibold">Mis transmisiones</h2><div className="space-y-2">{mine.data?.map(row=><div key={row.id} className="flex items-center justify-between gap-4 rounded-xl border border-border p-4"><div className="min-w-0"><p className="truncate font-medium">{row.title}</p><p className="text-xs text-muted-foreground">{row.status} · {row.viewer_count} espectadores</p></div>{row.status==='live'&&<Link to="/live/$id" params={{id:row.id}}><Button variant="secondary">Ver directo</Button></Link>}</div>)}</div></section>
+  </div></AppShell>;
+}
