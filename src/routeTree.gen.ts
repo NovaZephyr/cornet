@@ -23,6 +23,7 @@ import { Route as RulesRouteImport } from './routes/rules'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as UploadRouteImport } from './routes/upload'
 import { Route as WatchRouteImport } from './routes/watch'
+import { Route as MessagesRouteImport } from './routes/messages'
 import { Route as AdminReportsRouteImport } from './routes/admin.reports'
 import { Route as CUsernameRouteImport } from './routes/c.$username'
 import { Route as HashtagTagRouteImport } from './routes/hashtag/$tag'
@@ -44,6 +45,7 @@ const RulesRoute = RulesRouteImport.update({ id: '/rules', path: '/rules', getPa
 const SettingsRoute = SettingsRouteImport.update({ id: '/settings', path: '/settings', getParentRoute: () => rootRouteImport } as any)
 const UploadRoute = UploadRouteImport.update({ id: '/upload', path: '/upload', getParentRoute: () => rootRouteImport } as any)
 const WatchRoute = WatchRouteImport.update({ id: '/watch', path: '/watch', getParentRoute: () => rootRouteImport } as any)
+const MessagesRoute = MessagesRouteImport.update({ id: '/messages', path: '/messages', getParentRoute: () => rootRouteImport } as any)
 const AdminReportsRoute = AdminReportsRouteImport.update({ id: '/reports', path: '/reports', getParentRoute: () => AdminRoute } as any)
 const CUsernameRoute = CUsernameRouteImport.update({ id: '/c/$username', path: '/c/$username', getParentRoute: () => rootRouteImport } as any)
 const HashtagTagRoute = HashtagTagRouteImport.update({ id: '/hashtag/$tag', path: '/hashtag/$tag', getParentRoute: () => rootRouteImport } as any)
@@ -66,6 +68,7 @@ export interface FileRoutesByFullPath {
   '/settings': typeof SettingsRoute
   '/upload': typeof UploadRoute
   '/watch': typeof WatchRoute
+  '/messages': typeof MessagesRoute
   '/admin/reports': typeof AdminReportsRoute
   '/c/$username': typeof CUsernameRoute
   '/hashtag/$tag': typeof HashtagTagRoute
@@ -90,6 +93,7 @@ export interface FileRoutesById {
   '/settings': typeof SettingsRoute
   '/upload': typeof UploadRoute
   '/watch': typeof WatchRoute
+  '/messages': typeof MessagesRoute
   '/admin/reports': typeof AdminReportsRoute
   '/c/$username': typeof CUsernameRoute
   '/hashtag/$tag': typeof HashtagTagRoute
@@ -120,6 +124,7 @@ export interface RootRouteChildren {
   SettingsRoute: typeof SettingsRoute
   UploadRoute: typeof UploadRoute
   WatchRoute: typeof WatchRoute
+  MessagesRoute: typeof MessagesRoute
   CUsernameRoute: typeof CUsernameRoute
   HashtagTagRoute: typeof HashtagTagRoute
   PlaylistPlaylistIdRoute: typeof PlaylistPlaylistIdRoute
@@ -143,6 +148,7 @@ declare module '@tanstack/react-router' {
     '/settings': { id: '/settings'; path: '/settings'; fullPath: '/settings'; preLoaderRoute: typeof SettingsRouteImport; parentRoute: typeof rootRouteImport }
     '/upload': { id: '/upload'; path: '/upload'; fullPath: '/upload'; preLoaderRoute: typeof UploadRouteImport; parentRoute: typeof rootRouteImport }
     '/watch': { id: '/watch'; path: '/watch'; fullPath: '/watch'; preLoaderRoute: typeof WatchRouteImport; parentRoute: typeof rootRouteImport }
+    '/messages': { id: '/messages'; path: '/messages'; fullPath: '/messages'; preLoaderRoute: typeof MessagesRouteImport; parentRoute: typeof rootRouteImport }
     '/admin/reports': { id: '/admin/reports'; path: '/reports'; fullPath: '/admin/reports'; preLoaderRoute: typeof AdminReportsRouteImport; parentRoute: typeof AdminRoute }
     '/c/$username': { id: '/c/$username'; path: '/c/$username'; fullPath: '/c/$username'; preLoaderRoute: typeof CUsernameRouteImport; parentRoute: typeof rootRouteImport }
     '/hashtag/$tag': { id: '/hashtag/$tag'; path: '/hashtag/$tag'; fullPath: '/hashtag/$tag'; preLoaderRoute: typeof HashtagTagRouteImport; parentRoute: typeof rootRouteImport }
@@ -157,36 +163,3 @@ interface AdminRouteChildren {
 }
 const AdminRouteChildren: AdminRouteChildren = { AdminReportsRoute: AdminReportsRoute }
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
-
-const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  AboutRoute: AboutRoute,
-  AdminRoute: AdminRouteWithChildren,
-  AuthRoute: AuthRoute,
-  BlogRoute: BlogRoute,
-  CommunityRoute: CommunityRoute,
-  ExploreRoute: ExploreRoute,
-  NotificationsRoute: NotificationsRoute,
-  PartnerRoute: PartnerRoute,
-  PlaylistsRoute: PlaylistsRoute,
-  RulesRoute: RulesRoute,
-  SettingsRoute: SettingsRoute,
-  UploadRoute: UploadRoute,
-  WatchRoute: WatchRoute,
-  CUsernameRoute: CUsernameRoute,
-  HashtagTagRoute: HashtagTagRoute,
-  PlaylistPlaylistIdRoute: PlaylistPlaylistIdRoute,
-  TTokenRoute: TTokenRoute,
-  AdminMaintenanceRoute: AdminMaintenanceRoute,
-}
-export const routeTree = rootRouteImport._addFileChildren(rootRouteChildren)._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
