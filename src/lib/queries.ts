@@ -56,7 +56,7 @@ export async function fetchVideos(options?: { search?: string; userId?: string; 
     if (orderBy === "views") fallback = fallback.order("views", { ascending: false });
     else if (orderBy !== "subscribers") fallback = fallback.order("created_at", { ascending: orderBy === "oldest" });
     const result = await fallback;
-    data = result.data;
+    data = (result.data ?? null) as typeof data;
     error = result.error;
   }
   if (error) throw error;
