@@ -94,6 +94,75 @@ export type Database = {
         }
         Relationships: []
       }
+      playlist_items: {
+        Row: {
+          created_at: string
+          id: string
+          playlist_id: string
+          position: number
+          video_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          playlist_id: string
+          position?: number
+          video_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          playlist_id?: string
+          position?: number
+          video_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "playlist_items_playlist_id_fkey"
+            columns: ["playlist_id"]
+            isOneToOne: false
+            referencedRelation: "playlists"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "playlist_items_video_id_fkey"
+            columns: ["video_id"]
+            isOneToOne: false
+            referencedRelation: "videos"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      playlists: {
+        Row: {
+          created_at: string
+          description: string
+          id: string
+          title: string
+          updated_at: string
+          user_id: string
+          visibility: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string
+          id?: string
+          title: string
+          updated_at?: string
+          user_id: string
+          visibility?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          id?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+          visibility?: string
+        }
+        Relationships: []
+      }
       post_likes: {
         Row: {
           created_at: string
@@ -126,6 +195,7 @@ export type Database = {
           avatar_path: string | null
           background_path: string | null
           banner_path: string | null
+          channel_style: string
           created_at: string
           description: string
           display_name: string
@@ -133,6 +203,7 @@ export type Database = {
           id: string
           is_banned: boolean
           is_verified: boolean
+          subscriber_count: number
           updated_at: string
           username: string
           warnings_count: number
@@ -142,6 +213,7 @@ export type Database = {
           avatar_path?: string | null
           background_path?: string | null
           banner_path?: string | null
+          channel_style?: string
           created_at?: string
           description?: string
           display_name?: string
@@ -149,6 +221,7 @@ export type Database = {
           id: string
           is_banned?: boolean
           is_verified?: boolean
+          subscriber_count?: number
           updated_at?: string
           username: string
           warnings_count?: number
@@ -158,6 +231,7 @@ export type Database = {
           avatar_path?: string | null
           background_path?: string | null
           banner_path?: string | null
+          channel_style?: string
           created_at?: string
           description?: string
           display_name?: string
@@ -165,6 +239,7 @@ export type Database = {
           id?: string
           is_banned?: boolean
           is_verified?: boolean
+          subscriber_count?: number
           updated_at?: string
           username?: string
           warnings_count?: number
@@ -233,6 +308,88 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      video_captions: {
+        Row: {
+          caption_path: string
+          created_at: string
+          id: string
+          is_default: boolean
+          label: string
+          language_code: string
+          user_id: string
+          video_id: string
+        }
+        Insert: {
+          caption_path: string
+          created_at?: string
+          id?: string
+          is_default?: boolean
+          label: string
+          language_code: string
+          user_id: string
+          video_id: string
+        }
+        Update: {
+          caption_path?: string
+          created_at?: string
+          id?: string
+          is_default?: boolean
+          label?: string
+          language_code?: string
+          user_id?: string
+          video_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "video_captions_video_id_fkey"
+            columns: ["video_id"]
+            isOneToOne: false
+            referencedRelation: "videos"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      video_chapters: {
+        Row: {
+          created_at: string
+          end_seconds: number | null
+          id: string
+          sort_order: number
+          start_seconds: number
+          title: string
+          user_id: string
+          video_id: string
+        }
+        Insert: {
+          created_at?: string
+          end_seconds?: number | null
+          id?: string
+          sort_order?: number
+          start_seconds: number
+          title: string
+          user_id: string
+          video_id: string
+        }
+        Update: {
+          created_at?: string
+          end_seconds?: number | null
+          id?: string
+          sort_order?: number
+          start_seconds?: number
+          title?: string
+          user_id?: string
+          video_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "video_chapters_video_id_fkey"
+            columns: ["video_id"]
+            isOneToOne: false
+            referencedRelation: "videos"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       video_likes: {
         Row: {
@@ -322,8 +479,19 @@ export type Database = {
         }
         Returns: boolean
       }
-      increment_views: { Args: { _video_id: string }; Returns: undefined }
+      increment_views: { Args: { _video_id: string }; Returns: number }
       is_banned: { Args: { _user_id: string }; Returns: boolean }
+      search_channels: {
+        Args: { result_limit?: number; search_text: string }
+        Returns: {
+          avatar_path: string
+          display_name: string
+          id: string
+          is_verified: boolean
+          subscriber_count: number
+          username: string
+        }[]
+      }
     }
     Enums: {
       app_role: "admin" | "moderator" | "partner" | "user"
