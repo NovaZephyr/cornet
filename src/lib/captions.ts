@@ -72,12 +72,14 @@ export function validateChapterDrafts(chapters: ChapterDraft[]): string | null {
   const sorted = [...chapters].sort((a, b) => a.startSeconds - b.startSeconds);
   for (let i = 0; i < sorted.length; i += 1) {
     const chapter = sorted[i];
+    if (!chapter) continue;
     if (!chapter.title.trim()) return 'Todos los capítulos necesitan un título.';
     if (!Number.isFinite(chapter.startSeconds) || chapter.startSeconds < 0) return 'Hay un inicio de capítulo inválido.';
     if (chapter.endSeconds != null && (!Number.isFinite(chapter.endSeconds) || chapter.endSeconds <= chapter.startSeconds)) {
       return `El final de "${chapter.title}" debe ser posterior al inicio.`;
     }
-    if (i > 0 && chapter.startSeconds <= sorted[i - 1].startSeconds) return 'Los capítulos no pueden compartir el mismo inicio.';
+    const prev = sorted[i - 1];
+    if (prev && chapter.startSeconds <= prev.startSeconds) return 'Los capítulos no pueden compartir el mismo inicio.';
   }
   return null;
 }
