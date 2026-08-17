@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { Check, ChevronLeft, Circle, MessageCircle, MoreVertical, Plus, Search, Send, UserMinus, UserPlus, Users, X } from "lucide-react";
+import { Check, ChevronLeft, Circle, MessageCircle, Plus, Search, Send, UserMinus, UserPlus, Users, X } from "lucide-react";
 import { toast } from "sonner";
 import { ChannelAvatar } from "@/components/Media";
 import { Button } from "@/components/ui/button";
@@ -15,321 +15,176 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { cn } from "@/lib/utils";
 
-type Profile = {
-  id: string;
-  username: string;
-  display_name: string;
-  description?: string | null;
-  avatar_path?: string | null;
-  is_verified?: boolean;
-};
-
-type FriendRequest = {
-  id: string;
-  requester_id: string;
-  recipient_id: string;
-  status: string;
-  created_at: string;
-};
-
-type Conversation = {
-  id: string;
-  kind: "dm" | "group";
-  name: string | null;
-  owner_id: string | null;
-  updated_at: string;
-  last_message_at: string | null;
-};
-
-type Member = {
-  conversation_id: string;
-  user_id: string;
-  last_read_at: string | null;
-  nickname: string | null;
-};
-
-type ChatMessage = {
-  id: string;
-  conversation_id: string;
-  sender_id: string;
-  content: string;
-  created_at: string;
-  edited_at: string | null;
-  deleted_at: string | null;
-};
-
+type Profile = { id: string; username: string; display_name: string; avatar_path?: string | null; is_verified?: boolean };
+type RequestRow = { id: string; requester_id: string; recipient_id: string; status: string; created_at: string };
+type Conversation = { id: string; kind: "dm" | "group"; name: string | null; owner_id: string | null; updated_at: string; last_message_at: string | null; members: Profile[] };
+type ChatMessage = { id: string; conversation_id: string; sender_id: string; content: string; created_at: string; deleted_at: string | null };
 const db = supabase as any;
-
-function profileLabel(profile?: Profile | null) {
-  return profile?.display_name?.trim() || profile?.username || "Usuario";
-}
-
-function formatTime(date: string) {
-  const d = new Date(date);
-  return d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-}
+const label = (p?: Profile | null) => p?.display_name?.trim() || p?.username || "Usuario";
+const time = (v: string) => new Date(v).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 
 async function getProfiles(ids: string[]) {
-  if (!ids.length) return [] as Profile[];
-  const { data, error } = await db.from("profiles").select("id,username,display_name,description,avatar_path,is_verified").in("id", ids);
+  const unique = [...new Set(ids.filter(Boolean))];
+  if (!unique.length) return [] as Profile[];
+  const { data, error } = await db.from("profiles").select("id,username,display_name,avatar_path,is_verified").in("id", unique);
   if (error) throw error;
   return (data ?? []) as Profile[];
 }
 
-function EmptyState({ title, text }: { title: string; text: string }) {
-  return <div className="flex h-full min-h-[360px] flex-col items-center justify-center px-6 text-center text-muted-foreground"><MessageCircle className="mb-4 h-12 w-12 opacity-30" /><h2 className="text-lg font-semibold text-foreground">{title}</h2><p className="mt-1 max-w-md text-sm">{text}</p></div>;
-}
-
 function UserRow({ profile, action }: { profile: Profile; action?: ReactNode }) {
-  return <div className="flex items-center gap-3 rounded-2xl border border-border/70 bg-background/60 p-3"><ChannelAvatar path={profile.avatar_path} name={profileLabel(profile)} size={42} /><div className="min-w-0 flex-1"><div className="flex items-center gap-1"><p className="truncate font-medium">{profileLabel(profile)}</p>{profile.is_verified && <Badge className="h-5 px-1.5 text-[10px]">✓</Badge>}</div><p className="truncate text-xs text-muted-foreground">@{profile.username}</p></div>{action}</div>;
+  return <div className="flex items-center gap-3 rounded-2xl border border-border/70 bg-background/60 p-3"><ChannelAvatar path={profile.avatar_path} name={label(profile)} size={42} /><div className="min-w-0 flex-1"><div className="flex items-center gap-1"><p className="truncate font-medium">{label(profile)}</p>{profile.is_verified && <Badge className="h-5 px-1.5 text-[10px]">✓</Badge>}</div><p className="truncate text-xs text-muted-foreground">@{profile.username}</p></div>{action}</div>;
 }
 
-export function MessagesPage() {
+function EmptyState({ title, text }: { title: string; text: string }) {
+  return <div className="flex min-h-[360px] flex-col items-center justify-center px-6 text-center"><MessageCircle className="mb-4 h-12 w-12 text-muted-foreground/30" /><h2 className="text-lg font-semibold">{title}</h2><p className="mt-1 max-w-md text-sm text-muted-foreground">{text}</p></div>;
+}
+
+function MessengerContent() {
   const { user } = useAuth();
   const qc = useQueryClient();
-  const [activeSection, setActiveSection] = useState<"messages" | "friends">("messages");
+  const [section, setSection] = useState<"messages" | "friends">("messages");
   const [selectedConversation, setSelectedConversation] = useState<string | null>(null);
-  const [search, setSearch] = useState("");
-  const [messageText, setMessageText] = useState("");
-  const [friendSearch, setFriendSearch] = useState("");
+  const [conversationSearch, setConversationSearch] = useState("");
+  const [peopleSearch, setPeopleSearch] = useState("");
+  const [friendFilter, setFriendFilter] = useState("");
+  const [message, setMessage] = useState("");
   const [groupOpen, setGroupOpen] = useState(false);
   const [groupName, setGroupName] = useState("");
-  const [selectedGroupFriends, setSelectedGroupFriends] = useState<string[]>([]);
+  const [groupFriends, setGroupFriends] = useState<string[]>([]);
   const [onlineIds, setOnlineIds] = useState<Set<string>>(new Set());
 
-  const friendsQuery = useQuery({
-    queryKey: ["cornet-friends", user?.id], enabled: !!user,
-    queryFn: async () => {
-      const { data, error } = await db.from("friendships").select("id,user_a,user_b,created_at").or(`user_a.eq.${user!.id},user_b.eq.${user!.id}`).order("created_at", { ascending: false });
-      if (error) throw error;
-      const ids = (data ?? []).map((row: any) => row.user_a === user!.id ? row.user_b : row.user_a);
-      return getProfiles(ids);
-    },
-  });
+  const friends = useQuery({ queryKey: ["cornet-friends", user?.id], enabled: !!user, queryFn: async () => {
+    const { data, error } = await db.from("friendships").select("user_a,user_b").or(`user_a.eq.${user!.id},user_b.eq.${user!.id}`);
+    if (error) throw error;
+    return getProfiles((data ?? []).map((r: any) => r.user_a === user!.id ? r.user_b : r.user_a));
+  }});
 
-  const incomingRequestsQuery = useQuery({
-    queryKey: ["cornet-friend-requests-in", user?.id], enabled: !!user,
-    queryFn: async () => {
-      const { data, error } = await db.from("friend_requests").select("id,requester_id,recipient_id,status,created_at").eq("recipient_id", user!.id).eq("status", "pending").order("created_at", { ascending: false });
-      if (error) throw error;
-      const requests = (data ?? []) as FriendRequest[];
-      const profiles = await getProfiles(requests.map((r) => r.requester_id));
-      const byId = new Map(profiles.map((p) => [p.id, p]));
-      return requests.map((request) => ({ ...request, profile: byId.get(request.requester_id) })).filter((r) => r.profile) as (FriendRequest & { profile: Profile })[];
-    },
-  });
+  const incoming = useQuery({ queryKey: ["cornet-requests-in", user?.id], enabled: !!user, queryFn: async () => {
+    const { data, error } = await db.from("friend_requests").select("id,requester_id,recipient_id,status,created_at").eq("recipient_id", user!.id).eq("status", "pending").order("created_at", { ascending: false });
+    if (error) throw error;
+    const rows = (data ?? []) as RequestRow[];
+    const profiles = await getProfiles(rows.map((r) => r.requester_id));
+    const map = new Map(profiles.map((p) => [p.id, p]));
+    return rows.map((r) => ({ ...r, profile: map.get(r.requester_id) })).filter((r) => r.profile) as Array<RequestRow & { profile: Profile }>;
+  }});
 
-  const outgoingRequestsQuery = useQuery({
-    queryKey: ["cornet-friend-requests-out", user?.id], enabled: !!user,
-    queryFn: async () => {
-      const { data, error } = await db.from("friend_requests").select("id,requester_id,recipient_id,status,created_at").eq("requester_id", user!.id).eq("status", "pending").order("created_at", { ascending: false });
-      if (error) throw error;
-      const requests = (data ?? []) as FriendRequest[];
-      const profiles = await getProfiles(requests.map((r) => r.recipient_id));
-      const byId = new Map(profiles.map((p) => [p.id, p]));
-      return requests.map((request) => ({ ...request, profile: byId.get(request.recipient_id) })).filter((r) => r.profile) as (FriendRequest & { profile: Profile })[];
-    },
-  });
+  const outgoing = useQuery({ queryKey: ["cornet-requests-out", user?.id], enabled: !!user, queryFn: async () => {
+    const { data, error } = await db.from("friend_requests").select("id,requester_id,recipient_id,status,created_at").eq("requester_id", user!.id).eq("status", "pending").order("created_at", { ascending: false });
+    if (error) throw error;
+    const rows = (data ?? []) as RequestRow[];
+    const profiles = await getProfiles(rows.map((r) => r.recipient_id));
+    const map = new Map(profiles.map((p) => [p.id, p]));
+    return rows.map((r) => ({ ...r, profile: map.get(r.recipient_id) })).filter((r) => r.profile) as Array<RequestRow & { profile: Profile }>;
+  }});
 
-  const conversationsQuery = useQuery({
-    queryKey: ["cornet-conversations", user?.id], enabled: !!user,
-    queryFn: async () => {
-      const { data: membershipRows, error: membershipError } = await db.from("message_conversation_members").select("conversation_id,user_id,last_read_at,nickname").eq("user_id", user!.id);
-      if (membershipError) throw membershipError;
-      const ids = ((membershipRows ?? []) as Member[]).map((m) => m.conversation_id);
-      if (!ids.length) return [] as Array<Conversation & { members: Profile[] }>;
-      const [{ data: conversations, error: conversationError }, { data: allMembers, error: membersError }] = await Promise.all([
-        db.from("message_conversations").select("id,kind,name,owner_id,updated_at,last_message_at").in("id", ids).order("updated_at", { ascending: false }),
-        db.from("message_conversation_members").select("conversation_id,user_id,last_read_at,nickname").in("conversation_id", ids),
-      ]);
-      if (conversationError) throw conversationError;
-      if (membersError) throw membersError;
-      const memberList = (allMembers ?? []) as Member[];
-      const profileList = await getProfiles([...new Set(memberList.map((m) => m.user_id))]);
-      const profileMap = new Map(profileList.map((p) => [p.id, p]));
-      return ((conversations ?? []) as Conversation[]).map((conversation) => ({
-        ...conversation,
-        members: memberList.filter((m) => m.conversation_id === conversation.id).map((m) => profileMap.get(m.user_id)).filter(Boolean) as Profile[],
-      }));
-    },
-  });
+  const conversations = useQuery({ queryKey: ["cornet-conversations", user?.id], enabled: !!user, queryFn: async () => {
+    const { data: memberships, error: membershipError } = await db.from("message_conversation_members").select("conversation_id,user_id").eq("user_id", user!.id);
+    if (membershipError) throw membershipError;
+    const ids = (memberships ?? []).map((m: any) => m.conversation_id);
+    if (!ids.length) return [] as Conversation[];
+    const [{ data: convs, error: convError }, { data: memberRows, error: memberError }] = await Promise.all([
+      db.from("message_conversations").select("id,kind,name,owner_id,updated_at,last_message_at").in("id", ids).order("updated_at", { ascending: false }),
+      db.from("message_conversation_members").select("conversation_id,user_id").in("conversation_id", ids),
+    ]);
+    if (convError) throw convError;
+    if (memberError) throw memberError;
+    const profileList = await getProfiles((memberRows ?? []).map((m: any) => m.user_id));
+    const map = new Map(profileList.map((p) => [p.id, p]));
+    return ((convs ?? []) as any[]).map((c) => ({ ...c, members: (memberRows ?? []).filter((m: any) => m.conversation_id === c.id).map((m: any) => map.get(m.user_id)).filter(Boolean) as Profile[] }));
+  }});
 
-  const selectedChat = conversationsQuery.data?.find((conversation) => conversation.id === selectedConversation) ?? null;
-  const selectedMemberProfiles = selectedChat?.members.filter((profile) => profile.id !== user?.id) ?? [];
+  const selected = conversations.data?.find((c) => c.id === selectedConversation) ?? null;
+  const otherMembers = selected?.members.filter((p) => p.id !== user?.id) ?? [];
+  const chatTitle = selected?.kind === "group" ? (selected.name || "Grupo") : label(otherMembers[0]);
 
-  const messagesQuery = useQuery({
-    queryKey: ["cornet-messages", selectedConversation], enabled: !!selectedConversation && !!user,
-    queryFn: async () => {
-      const { data, error } = await db.from("messages").select("id,conversation_id,sender_id,content,created_at,edited_at,deleted_at").eq("conversation_id", selectedConversation).order("created_at", { ascending: true }).limit(200);
-      if (error) throw error;
-      return (data ?? []) as ChatMessage[];
-    },
-  });
+  const messages = useQuery({ queryKey: ["cornet-messages", selectedConversation], enabled: !!selectedConversation && !!user, queryFn: async () => {
+    const { data, error } = await db.from("messages").select("id,conversation_id,sender_id,content,created_at,deleted_at").eq("conversation_id", selectedConversation).order("created_at", { ascending: true }).limit(300);
+    if (error) throw error;
+    return (data ?? []) as ChatMessage[];
+  }});
 
-  const usersSearchQuery = useQuery({
-    queryKey: ["cornet-user-search", search], enabled: search.trim().length >= 2 && !!user,
-    queryFn: async () => {
-      const term = search.trim().toLowerCase();
-      const { data, error } = await db.from("profiles").select("id,username,display_name,description,avatar_path,is_verified").or(`username.ilike.%${term}%,display_name.ilike.%${term}%`).neq("id", user!.id).limit(20);
-      if (error) throw error;
-      return (data ?? []) as Profile[];
-    },
-  });
-
-  const filteredFriends = useMemo(() => {
-    const term = friendSearch.trim().toLowerCase();
-    if (!term) return friendsQuery.data ?? [];
-    return (friendsQuery.data ?? []).filter((friend) => friend.username.includes(term) || profileLabel(friend).toLowerCase().includes(term));
-  }, [friendSearch, friendsQuery.data]);
-
-  const currentConversationTitle = selectedChat?.kind === "group" ? selectedChat.name || "Grupo" : profileLabel(selectedMemberProfiles[0]) || "Mensaje directo";
+  const people = useQuery({ queryKey: ["cornet-people-search", peopleSearch], enabled: peopleSearch.trim().length >= 2 && !!user, queryFn: async () => {
+    const term = peopleSearch.trim().replace(/^@+/, "");
+    const [byUsername, byName] = await Promise.all([
+      db.from("profiles").select("id,username,display_name,avatar_path,is_verified").ilike("username", `%${term}%`).neq("id", user!.id).limit(20),
+      db.from("profiles").select("id,username,display_name,avatar_path,is_verified").ilike("display_name", `%${term}%`).neq("id", user!.id).limit(20),
+    ]);
+    if (byUsername.error) throw byUsername.error;
+    if (byName.error) throw byName.error;
+    const map = new Map<string, Profile>();
+    [...(byUsername.data ?? []), ...(byName.data ?? [])].forEach((p: Profile) => map.set(p.id, p));
+    return [...map.values()].slice(0, 30);
+  }});
 
   useEffect(() => {
     if (!user) return;
-    const presence = supabase.channel("cornet-presence", { config: { presence: { key: user.id } } });
-    presence.on("presence", { event: "sync" }, () => {
-      const state = presence.presenceState() as Record<string, Array<{ user_id?: string }>>;
-      const ids = new Set<string>();
-      Object.values(state).forEach((entries) => entries.forEach((entry) => { if (entry.user_id) ids.add(entry.user_id); }));
-      setOnlineIds(ids);
-    }).on("presence", { event: "join" }, ({ key }) => setOnlineIds((prev) => new Set([...prev, key]))).on("presence", { event: "leave" }, ({ key }) => setOnlineIds((prev) => { const next = new Set(prev); next.delete(key); return next; })).subscribe(async (status) => {
-      if (status === "SUBSCRIBED") await presence.track({ user_id: user.id, online_at: new Date().toISOString() });
-    });
-    return () => { void supabase.removeChannel(presence); };
+    const channel = supabase.channel(`cornet-presence-${user.id}`, { config: { presence: { key: user.id } } });
+    channel.on("presence", { event: "sync" }, () => { const state = channel.presenceState() as Record<string, Array<{ user_id?: string }>>; const ids = new Set<string>(); Object.values(state).forEach((rows) => rows.forEach((r) => r.user_id && ids.add(r.user_id))); setOnlineIds(ids); })
+      .on("presence", { event: "join" }, ({ key }) => setOnlineIds((s) => new Set([...s, key])))
+      .on("presence", { event: "leave" }, ({ key }) => setOnlineIds((s) => { const n = new Set(s); n.delete(key); return n; }))
+      .subscribe(async (status) => { if (status === "SUBSCRIBED") await channel.track({ user_id: user.id }); });
+    return () => { void supabase.removeChannel(channel); };
   }, [user]);
 
   useEffect(() => {
-    if (!user) return;
-    const requestChannel = supabase.channel(`cornet-friend-requests:${user.id}`)
-      .on("postgres_changes", { event: "*", schema: "public", table: "friend_requests", filter: `recipient_id=eq.${user.id}` }, () => void qc.invalidateQueries({ queryKey: ["cornet-friend-requests-in", user.id] }))
-      .on("postgres_changes", { event: "*", schema: "public", table: "friend_requests", filter: `requester_id=eq.${user.id}` }, () => void qc.invalidateQueries({ queryKey: ["cornet-friend-requests-out", user.id] }))
-      .subscribe();
-    return () => { void supabase.removeChannel(requestChannel); };
-  }, [qc, user]);
-
-  useEffect(() => {
     if (!selectedConversation || !user) return;
-    const channel = supabase.channel(`cornet-messages:${selectedConversation}`)
+    const channel = supabase.channel(`cornet-message-stream-${selectedConversation}`)
       .on("postgres_changes", { event: "INSERT", schema: "public", table: "messages", filter: `conversation_id=eq.${selectedConversation}` }, (payload) => {
-        qc.setQueryData<ChatMessage[]>(["cornet-messages", selectedConversation], (current) => [...(current ?? []), payload.new as ChatMessage]);
-        void db.from("message_conversation_members").update({ last_read_at: new Date().toISOString() }).eq("conversation_id", selectedConversation).eq("user_id", user.id);
-        void qc.invalidateQueries({ queryKey: ["cornet-conversations", user.id] });
-      })
-      .subscribe();
-    void db.from("message_conversation_members").update({ last_read_at: new Date().toISOString() }).eq("conversation_id", selectedConversation).eq("user_id", user.id);
+        qc.setQueryData<ChatMessage[]>(["cornet-messages", selectedConversation], (current) => { const next = [...(current ?? [])]; if (!next.some((m) => m.id === (payload.new as any).id)) next.push(payload.new as ChatMessage); return next; });
+      }).subscribe();
     return () => { void supabase.removeChannel(channel); };
   }, [qc, selectedConversation, user]);
 
-  if (!user) return <Card className="mx-auto max-w-5xl"><EmptyState title="Inicia sesión para usar Cornet Messenger" text="Agrega amigos, abre conversaciones y habla con otras personas de Cornet en tiempo real." /></Card>;
+  const filteredFriends = useMemo(() => { const t = friendFilter.trim().toLowerCase(); return (friends.data ?? []).filter((p) => !t || p.username.includes(t) || label(p).toLowerCase().includes(t)); }, [friendFilter, friends.data]);
+  const refresh = async () => { await Promise.all([qc.invalidateQueries({ queryKey: ["cornet-friends", user?.id] }), qc.invalidateQueries({ queryKey: ["cornet-requests-in", user?.id] }), qc.invalidateQueries({ queryKey: ["cornet-requests-out", user?.id] }), qc.invalidateQueries({ queryKey: ["cornet-conversations", user?.id] })]); };
 
-  const sendFriendRequest = async (profile: Profile) => {
-    const { data: reverse } = await db.from("friend_requests").select("id").eq("requester_id", profile.id).eq("recipient_id", user.id).eq("status", "pending").maybeSingle();
+  const sendRequest = async (profile: Profile) => {
+    const { data: existingFriend } = await db.from("friendships").select("user_a,user_b").or(`and(user_a.eq.${user!.id},user_b.eq.${profile.id}),and(user_a.eq.${profile.id},user_b.eq.${user!.id})`).maybeSingle();
+    if (existingFriend) return toast.info("Ya son amigos.");
+    const { data: reverse } = await db.from("friend_requests").select("id").eq("requester_id", profile.id).eq("recipient_id", user!.id).eq("status", "pending").maybeSingle();
     if (reverse) {
-      const [userA, userB] = [user.id, profile.id].sort();
-      const { error: friendshipError } = await db.from("friendships").insert({ user_a: userA, user_b: userB });
-      if (friendshipError && !String(friendshipError.message).toLowerCase().includes("duplicate")) throw friendshipError;
-      await db.from("friend_requests").update({ status: "accepted", responded_at: new Date().toISOString() }).eq("id", reverse.id);
-      toast.success(`Ahora tú y @${profile.username} son amigos`);
+      const [a, b] = [user!.id, profile.id].sort();
+      const { error: friendError } = await db.from("friendships").insert({ user_a: a, user_b: b });
+      if (friendError && !String(friendError.message).toLowerCase().includes("duplicate")) throw friendError;
+      const { error } = await db.from("friend_requests").update({ status: "accepted", responded_at: new Date().toISOString() }).eq("id", reverse.id);
+      if (error) throw error;
+      toast.success(`Ahora son amigos con @${profile.username}`);
     } else {
-      const { data: existing } = await db.from("friendships").select("id").or(`and(user_a.eq.${user.id},user_b.eq.${profile.id}),and(user_a.eq.${profile.id},user_b.eq.${user.id})`).maybeSingle();
-      if (existing) return toast.info("Ya son amigos.");
-      const { data: oldRequest } = await db.from("friend_requests").select("id,status").eq("requester_id", user.id).eq("recipient_id", profile.id).order("created_at", { ascending: false }).limit(1).maybeSingle();
-      if (oldRequest?.status === "pending") return toast.info("La solicitud ya está pendiente.");
-      const { error } = await db.from("friend_requests").insert({ requester_id: user.id, recipient_id: profile.id });
+      const { data: pending } = await db.from("friend_requests").select("id").eq("requester_id", user!.id).eq("recipient_id", profile.id).eq("status", "pending").maybeSingle();
+      if (pending) return toast.info("La solicitud ya está pendiente.");
+      const { error } = await db.from("friend_requests").insert({ requester_id: user!.id, recipient_id: profile.id });
       if (error) throw error;
       toast.success(`Solicitud enviada a @${profile.username}`);
     }
-    await qc.invalidateQueries({ queryKey: ["cornet-friend-requests-in", user.id] });
-    await qc.invalidateQueries({ queryKey: ["cornet-friend-requests-out", user.id] });
-    await qc.invalidateQueries({ queryKey: ["cornet-friends", user.id] });
+    await refresh();
   };
 
-  const respondFriendRequest = async (request: FriendRequest, accept: boolean) => {
-    if (accept) {
-      const [userA, userB] = [user.id, request.requester_id].sort();
-      const { error: friendshipError } = await db.from("friendships").insert({ user_a: userA, user_b: userB });
-      if (friendshipError && !String(friendshipError.message).toLowerCase().includes("duplicate")) throw friendshipError;
-    }
-    const { error } = await db.from("friend_requests").update({ status: accept ? "accepted" : "declined", responded_at: new Date().toISOString() }).eq("id", request.id).eq("recipient_id", user.id);
-    if (error) throw error;
-    toast.success(accept ? "Solicitud aceptada" : "Solicitud rechazada");
-    await qc.invalidateQueries({ queryKey: ["cornet-friend-requests-in", user.id] });
-    await qc.invalidateQueries({ queryKey: ["cornet-friends", user.id] });
+  const respond = async (request: RequestRow, accept: boolean) => {
+    if (accept) { const [a, b] = [user!.id, request.requester_id].sort(); const { error } = await db.from("friendships").insert({ user_a: a, user_b: b }); if (error && !String(error.message).toLowerCase().includes("duplicate")) throw error; }
+    const { error } = await db.from("friend_requests").update({ status: accept ? "accepted" : "declined", responded_at: new Date().toISOString() }).eq("id", request.id); if (error) throw error; await refresh();
   };
 
-  const removeFriend = async (friendId: string) => {
-    const [userA, userB] = [user.id, friendId].sort();
-    const { error } = await db.from("friendships").delete().eq("user_a", userA).eq("user_b", userB);
-    if (error) throw error;
-    toast.success("Amigo eliminado");
-    await qc.invalidateQueries({ queryKey: ["cornet-friends", user.id] });
-  };
+  const removeFriend = async (id: string) => { const [a, b] = [user!.id, id].sort(); const { error } = await db.from("friendships").delete().eq("user_a", a).eq("user_b", b); if (error) throw error; await refresh(); };
+  const openDm = async (friend: Profile) => { try { const { data, error } = await db.rpc("create_cornet_dm", { p_other_user: friend.id }); if (error) throw error; setSelectedConversation(data as string); setSection("messages"); await qc.invalidateQueries({ queryKey: ["cornet-conversations", user!.id] }); } catch (e) { toast.error(e instanceof Error ? e.message : "No se pudo abrir el mensaje directo"); } };
+  const createGroup = async () => { try { const { data, error } = await db.rpc("create_cornet_group", { p_name: groupName.trim(), p_member_ids: groupFriends }); if (error) throw error; setSelectedConversation(data as string); setGroupOpen(false); setGroupName(""); setGroupFriends([]); setSection("messages"); await qc.invalidateQueries({ queryKey: ["cornet-conversations", user!.id] }); toast.success("Grupo creado"); } catch (e) { toast.error(e instanceof Error ? e.message : "No se pudo crear el grupo"); } };
+  const sendMessage = async () => { const text = message.trim(); if (!selectedConversation || !text) return; try { const { error } = await db.from("messages").insert({ conversation_id: selectedConversation, sender_id: user!.id, content: text }); if (error) throw error; setMessage(""); } catch (e) { toast.error(e instanceof Error ? e.message : "No se pudo enviar el mensaje"); } };
 
-  const openDm = async (friend: Profile) => {
-    const { data: myMemberships, error: myError } = await db.from("message_conversation_members").select("conversation_id").eq("user_id", user.id);
-    if (myError) throw myError;
-    const ids = (myMemberships ?? []).map((m: any) => m.conversation_id);
-    if (ids.length) {
-      const { data: common, error: commonError } = await db.from("message_conversation_members").select("conversation_id").in("conversation_id", ids).eq("user_id", friend.id);
-      if (commonError) throw commonError;
-      if (common?.length) {
-        const { data: dmCandidates } = await db.from("message_conversations").select("id,kind").in("id", common.map((m: any) => m.conversation_id)).eq("kind", "dm");
-        if (dmCandidates?.[0]) {
-          setSelectedConversation(dmCandidates[0].id);
-          setActiveSection("messages");
-          return;
-        }
-      }
-    }
-    const { data: conversation, error: conversationError } = await db.from("message_conversations").insert({ kind: "dm", owner_id: null }).select("id").single();
-    if (conversationError) throw conversationError;
-    const { error: membersError } = await db.from("message_conversation_members").insert([{ conversation_id: conversation.id, user_id: user.id }, { conversation_id: conversation.id, user_id: friend.id }]);
-    if (membersError) throw membersError;
-    setSelectedConversation(conversation.id);
-    setActiveSection("messages");
-    await qc.invalidateQueries({ queryKey: ["cornet-conversations", user.id] });
-  };
+  if (!user) return <Card className="mx-auto max-w-5xl"><EmptyState title="Inicia sesión para usar Messenger" text="Necesitas una cuenta de Cornet para enviar mensajes y gestionar amigos." /></Card>;
 
-  const createGroup = async () => {
-    const name = groupName.trim();
-    if (!name) return toast.error("Ponle un nombre al grupo.");
-    if (!selectedGroupFriends.length) return toast.error("Selecciona al menos un amigo.");
-    const { data: conversation, error } = await db.from("message_conversations").insert({ kind: "group", name, owner_id: user.id }).select("id").single();
-    if (error) throw error;
-    const rows = [user.id, ...selectedGroupFriends].map((id) => ({ conversation_id: conversation.id, user_id: id }));
-    const { error: membersError } = await db.from("message_conversation_members").insert(rows);
-    if (membersError) throw membersError;
-    setSelectedConversation(conversation.id);
-    setGroupName("");
-    setSelectedGroupFriends([]);
-    setGroupOpen(false);
-    setActiveSection("messages");
-    await qc.invalidateQueries({ queryKey: ["cornet-conversations", user.id] });
-    toast.success("Grupo creado");
-  };
-
-  const sendMessage = async () => {
-    const content = messageText.trim();
-    if (!selectedConversation || !content) return;
-    const { error } = await db.from("messages").insert({ conversation_id: selectedConversation, sender_id: user.id, content });
-    if (error) throw error;
-    setMessageText("");
-  };
-
-  const otherPeople = selectedChat?.kind === "group" ? selectedMemberProfiles : selectedMemberProfiles.slice(0, 1);
-
-  return <div className="mx-auto w-full max-w-7xl px-3 py-4 sm:px-5 lg:px-6">
-    <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between"><div><div className="flex items-center gap-2"><MessageCircle className="h-6 w-6 text-primary" /><h1 className="text-2xl font-bold">Cornet Messenger</h1><Badge variant="secondary">Realtime</Badge></div><p className="mt-1 text-sm text-muted-foreground">Mensajería estilo OldCord, con amigos al estilo de las redes clásicas.</p></div><div className="flex gap-2"><Button variant={activeSection === "messages" ? "default" : "outline"} onClick={() => setActiveSection("messages")}><MessageCircle className="mr-2 h-4 w-4" />Mensajes</Button><Button variant={activeSection === "friends" ? "default" : "outline"} onClick={() => setActiveSection("friends")}><Users className="mr-2 h-4 w-4" />Amigos{incomingRequestsQuery.data?.length ? <Badge className="ml-2 h-5 min-w-5 justify-center px-1.5 text-[10px]">{incomingRequestsQuery.data.length}</Badge> : null}</Button></div></div>
-    {activeSection === "friends" ? <div className="grid gap-4 lg:grid-cols-[1.6fr_1fr]">
-      <Card className="border-border/70 bg-background/75 p-4"><div className="mb-4 flex items-center justify-between gap-3"><div><h2 className="font-semibold">Mis amigos</h2><p className="text-xs text-muted-foreground">Conexiones directas, como en VidLii.</p></div><div className="relative w-64 max-w-full"><Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" /><Input value={friendSearch} onChange={(event) => setFriendSearch(event.target.value)} placeholder="Filtrar amigos…" className="pl-9" /></div></div><div className="grid gap-2 sm:grid-cols-2">{filteredFriends.map((friend) => <UserRow key={friend.id} profile={friend} action={<div className="flex gap-1"><Button size="icon" variant="ghost" title="Mensaje" onClick={() => void openDm(friend)}><MessageCircle className="h-4 w-4" /></Button><Button size="icon" variant="ghost" title="Eliminar amigo" onClick={() => void removeFriend(friend.id)}><UserMinus className="h-4 w-4" /></Button></div>} />)}{!friendsQuery.isLoading && !filteredFriends.length && <div className="col-span-full py-12 text-center text-sm text-muted-foreground">Todavía no tienes amigos agregados.</div>}</div></Card>
-      <div className="space-y-4"><Card className="border-border/70 bg-background/75 p-4"><h2 className="mb-3 font-semibold">Solicitudes recibidas</h2><div className="space-y-2">{incomingRequestsQuery.data?.map((request) => <UserRow key={request.id} profile={request.profile} action={<div className="flex gap-1"><Button size="icon" title="Aceptar" onClick={() => void respondFriendRequest(request, true)}><Check className="h-4 w-4" /></Button><Button size="icon" variant="ghost" title="Rechazar" onClick={() => void respondFriendRequest(request, false)}><X className="h-4 w-4" /></Button></div>} />)}{!incomingRequestsQuery.data?.length && <p className="py-8 text-center text-sm text-muted-foreground">Sin solicitudes nuevas.</p>}</div></Card><Card className="border-border/70 bg-background/75 p-4"><h2 className="mb-3 font-semibold">Solicitudes enviadas</h2><div className="space-y-2">{outgoingRequestsQuery.data?.map((request) => <UserRow key={request.id} profile={request.profile} action={<Badge variant="secondary">Pendiente</Badge>} />)}{!outgoingRequestsQuery.data?.length && <p className="py-8 text-center text-sm text-muted-foreground">No tienes solicitudes pendientes.</p>}</div></Card></div>
-      <Card className="border-border/70 bg-background/75 p-4 lg:col-span-2"><div className="mb-3 flex items-center gap-2"><UserPlus className="h-5 w-5 text-primary" /><div><h2 className="font-semibold">Encontrar personas</h2><p className="text-xs text-muted-foreground">Busca por nombre visible o @usuario.</p></div></div><div className="relative mb-4 max-w-xl"><Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" /><Input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Busca @usuario…" className="pl-9" /></div><div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">{usersSearchQuery.data?.map((profile) => <UserRow key={profile.id} profile={profile} action={<Button size="sm" onClick={() => void sendFriendRequest(profile)}><UserPlus className="mr-2 h-4 w-4" />Añadir</Button>} />)}{search.length >= 2 && !usersSearchQuery.isLoading && !usersSearchQuery.data?.length && <p className="col-span-full py-8 text-center text-sm text-muted-foreground">No encontramos usuarios.</p>}</div></Card>
-    </div> : <div className="grid min-h-[72vh] overflow-hidden rounded-3xl border border-border/70 bg-[#171922] text-white shadow-2xl lg:grid-cols-[280px_minmax(0,1fr)]">
-      <aside className="border-b border-white/5 bg-[#101116] lg:border-b-0 lg:border-r"><div className="border-b border-white/5 p-3"><div className="relative"><Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/35" /><Input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Buscar conversaciones o personas" className="border-0 bg-white/5 pl-9 text-white placeholder:text-white/35 focus-visible:ring-1 focus-visible:ring-white/10" /></div></div><div className="flex items-center justify-between px-4 py-3 text-[11px] font-semibold uppercase tracking-wider text-white/40"><span>Mensajes directos</span><Button variant="ghost" size="icon" className="h-7 w-7 text-white/60 hover:bg-white/5 hover:text-white" onClick={() => setActiveSection("friends")}><UserPlus className="h-4 w-4" /></Button></div><div className="space-y-1 px-2 pb-3">{conversationsQuery.data?.map((conversation) => { const people = conversation.members.filter((p) => p.id !== user.id); const title = conversation.kind === "group" ? conversation.name || "Grupo" : profileLabel(people[0]); const active = selectedConversation === conversation.id; return <button key={conversation.id} type="button" onClick={() => setSelectedConversation(conversation.id)} className={cn("flex w-full items-center gap-3 rounded-xl px-2.5 py-2 text-left transition", active ? "bg-white/10" : "hover:bg-white/5")}><div className="relative">{conversation.kind === "group" ? <div className="flex h-10 w-10 items-center justify-center rounded-full bg-indigo-500/20"><Users className="h-5 w-5 text-indigo-300" /></div> : <ChannelAvatar path={people[0]?.avatar_path} name={profileLabel(people[0])} size={40} />}{conversation.kind === "dm" && people[0] && <Circle className={cn("absolute bottom-0 right-0 h-3 w-3 fill-current stroke-[3]", onlineIds.has(people[0].id) ? "text-emerald-400" : "text-zinc-600")} />}</div><div className="min-w-0 flex-1"><p className="truncate text-sm font-medium text-white/90">{title}</p><p className="truncate text-xs text-white/35">{conversation.kind === "group" ? `${Math.max(0, conversation.members.length)} miembros` : (onlineIds.has(people[0]?.id ?? "") ? "En línea" : "Sin conexión")}</p></div></button>; })}</div><div className="border-t border-white/5 p-3"><Dialog open={groupOpen} onOpenChange={setGroupOpen}><DialogTrigger asChild><Button className="w-full bg-indigo-600 hover:bg-indigo-500"><Plus className="mr-2 h-4 w-4" />Nuevo grupo</Button></DialogTrigger><DialogContent className="max-w-lg"><DialogHeader><DialogTitle>Crear grupo</DialogTitle></DialogHeader><div className="space-y-4"><Input value={groupName} onChange={(e) => setGroupName(e.target.value)} placeholder="Nombre del grupo" /><div className="max-h-72 space-y-2 overflow-y-auto">{(friendsQuery.data ?? []).map((friend) => <label key={friend.id} className="flex cursor-pointer items-center gap-3 rounded-xl border border-border p-3"><Checkbox checked={selectedGroupFriends.includes(friend.id)} onCheckedChange={(checked) => setSelectedGroupFriends((current) => checked ? [...current, friend.id] : current.filter((id) => id !== friend.id))} /><ChannelAvatar path={friend.avatar_path} name={profileLabel(friend)} size={34} /><span className="min-w-0 flex-1"><span className="block truncate text-sm font-medium">{profileLabel(friend)}</span><span className="block text-xs text-muted-foreground">@{friend.username}</span></span></label>)}{!friendsQuery.data?.length && <p className="py-8 text-center text-sm text-muted-foreground">Agrega amigos primero para crear un grupo.</p>}</div><Button onClick={() => void createGroup()} disabled={!groupName.trim() || !selectedGroupFriends.length}><Users className="mr-2 h-4 w-4" />Crear grupo</Button></div></DialogContent></Dialog></div></aside>
-      <section className="flex min-h-0 flex-col bg-[#1e1f2a]">{!selectedConversation ? <EmptyState title="Tus mensajes están aquí" text="Elige una conversación de la izquierda o ve a Amigos para comenzar una nueva." /> : <><header className="flex items-center gap-3 border-b border-white/5 bg-[#20212d] px-4 py-3"><Button variant="ghost" size="icon" className="lg:hidden text-white/70" onClick={() => setSelectedConversation(null)}><ChevronLeft className="h-5 w-5" /></Button><div className="relative">{selectedChat?.kind === "group" ? <div className="flex h-10 w-10 items-center justify-center rounded-full bg-indigo-500/20"><Users className="h-5 w-5 text-indigo-300" /></div> : <ChannelAvatar path={otherPeople[0]?.avatar_path} name={currentConversationTitle} size={40} />}{selectedChat?.kind === "dm" && <Circle className={cn("absolute bottom-0 right-0 h-3 w-3 fill-current stroke-[3]", onlineIds.has(otherPeople[0]?.id ?? "") ? "text-emerald-400" : "text-zinc-600")} />}</div><div className="min-w-0 flex-1"><h2 className="truncate font-semibold text-white">{currentConversationTitle}</h2><p className="truncate text-xs text-white/40">{selectedChat?.kind === "group" ? `${selectedChat.members.length} miembros` : onlineIds.has(otherPeople[0]?.id ?? "") ? "En línea" : "Fuera de línea"}</p></div><Button variant="ghost" size="icon" className="text-white/50 hover:bg-white/5 hover:text-white"><MoreVertical className="h-5 w-5" /></Button></header><div className="min-h-0 flex-1 space-y-4 overflow-y-auto px-4 py-5 sm:px-6">{messagesQuery.data?.length ? messagesQuery.data.map((message, index) => { const sender = selectedChat?.members.find((p) => p.id === message.sender_id); const previous = messagesQuery.data?.[index - 1]; const grouped = previous?.sender_id === message.sender_id && new Date(message.created_at).getTime() - new Date(previous.created_at).getTime() < 5 * 60 * 1000; return <div key={message.id} className={cn("group flex gap-3", grouped && "mt-[-10px]")}><div className="w-10 shrink-0 pt-0.5">{!grouped && <ChannelAvatar path={sender?.avatar_path} name={profileLabel(sender)} size={36} />}</div><div className="min-w-0 flex-1"><div className="flex items-baseline gap-2">{!grouped && <span className="font-semibold text-white">{profileLabel(sender)}</span>}{!grouped && <span className="text-[10px] text-white/30">{formatTime(message.created_at)}</span>}{grouped && <span className="invisible text-[10px] text-white/30 group-hover:visible">{formatTime(message.created_at)}</span>}</div><p className="whitespace-pre-wrap break-words text-sm leading-6 text-white/85">{message.deleted_at ? <span className="italic text-white/30">Mensaje eliminado</span> : message.content}</p></div></div>; }) : <div className="flex h-full min-h-[300px] flex-col items-center justify-center text-center"><MessageCircle className="mb-4 h-12 w-12 text-white/15" /><p className="font-semibold text-white">Este es el principio de tu conversación.</p><p className="mt-1 max-w-md text-sm text-white/35">Escribe algo para empezar a hablar.</p></div>}</div><div className="border-t border-white/5 bg-[#20212d] p-3 sm:p-4"><form className="flex items-end gap-2" onSubmit={(e) => { e.preventDefault(); void sendMessage(); }}><Textarea value={messageText} onChange={(e) => setMessageText(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); void sendMessage(); } }} placeholder={`Enviar mensaje a ${currentConversationTitle}`} className="min-h-11 resize-none border-white/10 bg-white/5 text-white placeholder:text-white/30 focus-visible:ring-1 focus-visible:ring-indigo-500" rows={1} /><Button type="submit" disabled={!messageText.trim()} className="h-11 bg-indigo-600 hover:bg-indigo-500"><Send className="h-4 w-4" /></Button></form><p className="mt-1 px-1 text-[10px] text-white/25">Enter para enviar · Shift+Enter para salto de línea</p></div></>}</section>
-    </div>}
+  if (section === "friends") return <div className="mx-auto w-full max-w-7xl px-3 py-4 sm:px-5 lg:px-6">
+    <div className="mb-4 flex flex-wrap items-center justify-between gap-3"><div><h1 className="text-2xl font-bold">Amigos</h1><p className="text-sm text-muted-foreground">Busca personas y gestiona tus conexiones.</p></div><Button onClick={() => setSection("messages")}><MessageCircle className="mr-2 h-4 w-4" />Mensajes</Button></div>
+    <div className="grid gap-4 lg:grid-cols-[1.5fr_1fr]">
+      <Card className="border-border/70 p-4"><div className="mb-4 flex items-center gap-2"><Search className="h-4 w-4 text-muted-foreground" /><Input value={peopleSearch} onChange={(e) => setPeopleSearch(e.target.value)} placeholder="Buscar por @usuario o nombre" /></div><div className="grid gap-2 sm:grid-cols-2">{peopleSearch.trim().length >= 2 && people.data?.map((p) => <UserRow key={p.id} profile={p} action={<Button size="sm" onClick={() => void sendRequest(p)}><UserPlus className="mr-2 h-4 w-4" />Añadir</Button>} />)}{peopleSearch.trim().length >= 2 && !people.isLoading && !people.data?.length && <p className="col-span-full py-8 text-center text-sm text-muted-foreground">No encontramos personas.</p>}</div></Card>
+      <div className="space-y-4"><Card className="border-border/70 p-4"><h2 className="mb-3 font-semibold">Solicitudes recibidas</h2><div className="space-y-2">{incoming.data?.map((r: any) => <UserRow key={r.id} profile={r.profile} action={<div className="flex gap-1"><Button size="icon" onClick={() => void respond(r, true)}><Check className="h-4 w-4" /></Button><Button size="icon" variant="ghost" onClick={() => void respond(r, false)}><X className="h-4 w-4" /></Button></div>} />)}{!incoming.data?.length && <p className="py-6 text-center text-sm text-muted-foreground">Sin solicitudes.</p>}</div></Card><Card className="border-border/70 p-4"><h2 className="mb-3 font-semibold">Solicitudes enviadas</h2><div className="space-y-2">{outgoing.data?.map((r: any) => <UserRow key={r.id} profile={r.profile} action={<Badge variant="secondary">Pendiente</Badge>} />)}{!outgoing.data?.length && <p className="py-6 text-center text-sm text-muted-foreground">Sin solicitudes pendientes.</p>}</div></Card></div>
+    </div>
+    <Card className="mt-4 border-border/70 p-4"><div className="mb-4 flex flex-wrap items-center justify-between gap-2"><div><h2 className="font-semibold">Mis amigos</h2><p className="text-xs text-muted-foreground">Amigos en línea: {onlineIds.size - (onlineIds.has(user.id) ? 1 : 0)}</p></div><Input value={friendFilter} onChange={(e) => setFriendFilter(e.target.value)} placeholder="Filtrar amigos" className="max-w-xs" /></div><div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">{filteredFriends.map((p) => <UserRow key={p.id} profile={p} action={<div className="flex gap-1"><Button size="icon" variant="ghost" onClick={() => void openDm(p)} title="Mensaje"><MessageCircle className="h-4 w-4" /></Button><Button size="icon" variant="ghost" onClick={() => void removeFriend(p.id)} title="Eliminar"><UserMinus className="h-4 w-4" /></Button></div>} />)}{!filteredFriends.length && <p className="col-span-full py-8 text-center text-sm text-muted-foreground">Todavía no tienes amigos.</p>}</div></Card>
   </div>;
+
+  return <div className="mx-auto w-full max-w-7xl px-3 py-4 sm:px-5 lg:px-6"><div className="mb-4 flex flex-wrap items-center justify-between gap-3"><div><h1 className="flex items-center gap-2 text-2xl font-bold"><MessageCircle className="h-6 w-6 text-primary" />Cornet Messenger<Badge variant="secondary">Realtime</Badge></h1><p className="text-sm text-muted-foreground">Mensajes privados, grupos y amigos.</p></div><div className="flex gap-2"><Button variant="outline" onClick={() => setSection("friends")}><Users className="mr-2 h-4 w-4" />Amigos{incoming.data?.length ? <Badge className="ml-2">{incoming.data.length}</Badge> : null}</Button><Dialog open={groupOpen} onOpenChange={setGroupOpen}><DialogTrigger asChild><Button><Plus className="mr-2 h-4 w-4" />Nuevo grupo</Button></DialogTrigger><DialogContent><DialogHeader><DialogTitle>Crear grupo</DialogTitle></DialogHeader><div className="space-y-4"><Input value={groupName} onChange={(e) => setGroupName(e.target.value)} placeholder="Nombre del grupo" /><div className="max-h-64 space-y-2 overflow-auto">{(friends.data ?? []).map((p) => <label key={p.id} className="flex items-center gap-3 rounded-xl border border-border p-3"><Checkbox checked={groupFriends.includes(p.id)} onCheckedChange={(v) => setGroupFriends((ids) => v ? [...ids, p.id] : ids.filter((id) => id !== p.id))} /><ChannelAvatar path={p.avatar_path} name={label(p)} size={34} /><span className="min-w-0 flex-1"><span className="block truncate text-sm font-medium">{label(p)}</span><span className="block text-xs text-muted-foreground">@{p.username}</span></span></label>)}{!friends.data?.length && <p className="py-6 text-center text-sm text-muted-foreground">Agrega amigos antes de crear un grupo.</p>}</div><Button onClick={() => void createGroup()} disabled={!groupName.trim() || !groupFriends.length}>Crear grupo</Button></div></DialogContent></Dialog></div></div>
+  <div className="grid min-h-[70vh] overflow-hidden rounded-3xl border border-white/5 bg-[#171922] text-white shadow-2xl lg:grid-cols-[300px_minmax(0,1fr)]">
+    <aside className="border-b border-white/5 bg-[#101116] lg:border-b-0 lg:border-r"><div className="border-b border-white/5 p-3"><div className="relative"><Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/30" /><Input value={conversationSearch} onChange={(e) => setConversationSearch(e.target.value)} placeholder="Buscar conversaciones" className="border-0 bg-white/5 pl-9 text-white placeholder:text-white/30" /></div></div><div className="space-y-1 p-2">{(conversations.data ?? []).filter((c) => !conversationSearch.trim() || (c.name ?? c.members.filter((p) => p.id !== user.id).map(label).join(" ")).toLowerCase().includes(conversationSearch.trim().toLowerCase())).map((c) => { const other = c.members.filter((p) => p.id !== user.id); const title = c.kind === "group" ? (c.name || "Grupo") : label(other[0]); return <button key={c.id} type="button" onClick={() => setSelectedConversation(c.id)} className={cn("flex w-full items-center gap-3 rounded-xl px-3 py-2 text-left", selectedConversation === c.id ? "bg-white/10" : "hover:bg-white/5")}><div className="relative">{c.kind === "group" ? <div className="flex h-10 w-10 items-center justify-center rounded-full bg-indigo-500/20"><Users className="h-5 w-5 text-indigo-300" /></div> : <ChannelAvatar path={other[0]?.avatar_path} name={label(other[0])} size={40} />}{c.kind === "dm" && other[0] && <Circle className={cn("absolute bottom-0 right-0 h-3 w-3 fill-current stroke-[3]", onlineIds.has(other[0].id) ? "text-emerald-400" : "text-zinc-600")} />}</div><div className="min-w-0 flex-1"><p className="truncate text-sm font-medium">{title}</p><p className="text-xs text-white/35">{c.kind === "group" ? `${c.members.length} miembros` : (onlineIds.has(other[0]?.id ?? "") ? "En línea" : "Sin conexión")}</p></div></button>; })}{!(conversations.data?.length) && <p className="py-12 text-center text-sm text-white/30">No tienes conversaciones todavía.</p>}</div></aside>
+    <section className="flex min-h-0 flex-col bg-[#1e1f2a]">{!selected ? <EmptyState title="Tus mensajes están aquí" text="Ve a Amigos para iniciar un DM o crea un grupo." /> : <><header className="flex items-center gap-3 border-b border-white/5 bg-[#20212d] px-4 py-3"><Button variant="ghost" size="icon" className="lg:hidden text-white/70" onClick={() => setSelectedConversation(null)}><ChevronLeft className="h-5 w-5" /></Button>{selected.kind === "group" ? <div className="flex h-10 w-10 items-center justify-center rounded-full bg-indigo-500/20"><Users className="h-5 w-5 text-indigo-300" /></div> : <ChannelAvatar path={otherMembers[0]?.avatar_path} name={chatTitle} size={40} />}<div className="min-w-0 flex-1"><h2 className="truncate font-semibold">{chatTitle}</h2><p className="text-xs text-white/40">{selected.kind === "group" ? `${selected.members.length} miembros` : onlineIds.has(otherMembers[0]?.id ?? "") ? "En línea" : "Fuera de línea"}</p></div></header><div className="min-h-0 flex-1 space-y-4 overflow-y-auto px-4 py-5">{messages.data?.length ? messages.data.map((m) => { const sender = selected.members.find((p) => p.id === m.sender_id); return <div key={m.id} className="flex gap-3"><ChannelAvatar path={sender?.avatar_path} name={label(sender)} size={36} /><div className="min-w-0 flex-1"><div className="flex items-baseline gap-2"><span className="font-semibold">{label(sender)}</span><span className="text-[10px] text-white/30">{time(m.created_at)}</span></div><p className="whitespace-pre-wrap break-words text-sm leading-6 text-white/85">{m.deleted_at ? <span className="italic text-white/30">Mensaje eliminado</span> : m.content}</p></div></div>; }) : <div className="flex h-full min-h-[300px] items-center justify-center text-center text-white/35">Sé el primero en enviar un mensaje.</div>}</div><form className="border-t border-white/5 bg-[#20212d] p-3" onSubmit={(e) => { e.preventDefault(); void sendMessage(); }}><div className="flex items-end gap-2"><Textarea value={message} onChange={(e) => setMessage(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); void sendMessage(); } }} placeholder={`Escribe a ${chatTitle}`} className="min-h-11 resize-none border-white/10 bg-white/5 text-white placeholder:text-white/30" /><Button type="submit" disabled={!message.trim()} className="h-11 bg-indigo-600 hover:bg-indigo-500"><Send className="h-4 w-4" /></Button></div></form></>}</section>
+  </div></div>;
 }
 
-export const Route = createFileRoute("/messages")({ component: MessagesPage });
-export default MessagesPage;
+export const Route = createFileRoute("/messages")({ component: MessengerContent });
