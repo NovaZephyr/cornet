@@ -41,11 +41,11 @@ export function normalizeCaptionText(raw: string, fileName: string): string {
     const lines = block.split(/\r?\n/).map((line) => line.trimEnd());
     const timeIndex = lines.findIndex((line) => /\d\d?:\d\d?:?\d\d[,.]\d{3}\s+-->/.test(line));
     if (timeIndex < 0) continue;
-    const timeLine = lines[timeIndex].replace(/,/g, '.');
+    const timeLine = (lines[timeIndex] ?? '').replace(/,/g, '.');
     const match = timeLine.match(/(\d{1,2}:\d{2}:\d{2}\.\d{3}|\d{1,2}:\d{2}\.\d{3})\s+-->\s+(\d{1,2}:\d{2}:\d{2}\.\d{3}|\d{1,2}:\d{2}\.\d{3})/);
     if (!match) continue;
-    const start = parseTimestamp(match[1]);
-    const end = parseTimestamp(match[2]);
+    const start = parseTimestamp(match[1] ?? '');
+    const end = parseTimestamp(match[2] ?? '');
     const text = lines.slice(timeIndex + 1).join('\n').trim();
     if (!text) continue;
     cues.push({ start, end, text });
