@@ -1,0 +1,34 @@
+/* Additional user-selectable themes. The existing CoreNetwork / Cosmic Panda styles remain untouched. */
+[data-theme="forest"] {
+  --background:#101812; --foreground:#edf7ef; --surface:#18231b; --surface-hover:#213024; --card:#141e17; --card-foreground:#edf7ef;
+  --popover:#17221a; --popover-foreground:#edf7ef; --primary:#43b96b; --primary-foreground:#07110a; --secondary:#26392b; --secondary-foreground:#edf7ef;
+  --muted:#203126; --muted-foreground:#a9c3ae; --accent:#2f8d50; --accent-foreground:#fff; --border:#304738; --input:#1b291f; --ring:#55cf7a;
+  --sidebar:#0b120d; --sidebar-foreground:#edf7ef; --sidebar-primary:#43b96b; --sidebar-primary-foreground:#07110a; --sidebar-accent:#18271c; --sidebar-accent-foreground:#edf7ef; --sidebar-border:#263b2d; --sidebar-ring:#55cf7a;
+}
+[data-theme="forest"] body { background-image:radial-gradient(700px 420px at 10% 0%,rgb(67 185 107 / .12),transparent 65%); background-attachment:fixed; }
+
+[data-theme="midnight"] {
+  --background:#0b1220; --foreground:#eef4ff; --surface:#121c2e; --surface-hover:#1b2940; --card:#10192a; --card-foreground:#eef4ff;
+  --popover:#111b2c; --popover-foreground:#eef4ff; --primary:#6ea8ff; --primary-foreground:#07101e; --secondary:#20304a; --secondary-foreground:#eef4ff;
+  --muted:#1a2940; --muted-foreground:#9eb1ca; --accent:#385d91; --accent-foreground:#fff; --border:#2a3d5b; --input:#15233a; --ring:#82b5ff;
+  --sidebar:#070d18; --sidebar-foreground:#eef4ff; --sidebar-primary:#6ea8ff; --sidebar-primary-foreground:#07101e; --sidebar-accent:#14223a; --sidebar-accent-foreground:#eef4ff; --sidebar-border:#213550; --sidebar-ring:#82b5ff;
+}
+[data-theme="midnight"] body { background-image:radial-gradient(850px 460px at 85% -10%,rgb(70 130 230 / .15),transparent 65%); background-attachment:fixed; }
+
+[data-theme="rose"] {
+  --background:#1b1117; --foreground:#fff1f7; --surface:#281821; --surface-hover:#35202b; --card:#21151d; --card-foreground:#fff1f7;
+  --popover:#26171f; --popover-foreground:#fff1f7; --primary:#f06b9a; --primary-foreground:#260b16; --secondary:#442335; --secondary-foreground:#fff1f7;
+  --muted:#38202d; --muted-foreground:#d0a7b8; --accent:#a9476e; --accent-foreground:#fff; --border:#563043; --input:#2d1b25; --ring:#ff83ad;
+  --sidebar:#120a0f; --sidebar-foreground:#fff1f7; --sidebar-primary:#f06b9a; --sidebar-primary-foreground:#260b16; --sidebar-accent:#2a1721; --sidebar-accent-foreground:#fff1f7; --sidebar-border:#472535; --sidebar-ring:#ff83ad;
+}
+[data-theme="rose"] body { background-image:radial-gradient(760px 420px at 15% 0%,rgb(240 107 154 / .13),transparent 65%); background-attachment:fixed; }
+
+[data-theme="custom"] body {
+  background: var(--cn-custom-gradient) !important;
+  background-attachment: fixed;
+  background-size: cover;
+}
+[data-theme="custom"] .cn-2012-app { background: transparent; }
+[data-theme="custom"] .cn-2012-topbar,
+[data-theme="custom"] .cn-2012-sidebar,
+[data-theme="custom"] footer { backdrop-filter: blur(14px); }
