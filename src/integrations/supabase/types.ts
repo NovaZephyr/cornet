@@ -49,6 +49,7 @@ export type Database = {
           created_at: string
           id: string
           option_id: string
+          updated_at: string
           user_id: string
         }
         Insert: {
@@ -56,6 +57,7 @@ export type Database = {
           created_at?: string
           id?: string
           option_id: string
+          updated_at?: string
           user_id: string
         }
         Update: {
@@ -63,6 +65,7 @@ export type Database = {
           created_at?: string
           id?: string
           option_id?: string
+          updated_at?: string
           user_id?: string
         }
         Relationships: [
@@ -91,6 +94,7 @@ export type Database = {
           image_path: string | null
           post_type: string
           title: string
+          updated_at: string
         }
         Insert: {
           author_id: string
@@ -100,6 +104,7 @@ export type Database = {
           image_path?: string | null
           post_type?: string
           title: string
+          updated_at?: string
         }
         Update: {
           author_id?: string
@@ -109,6 +114,7 @@ export type Database = {
           image_path?: string | null
           post_type?: string
           title?: string
+          updated_at?: string
         }
         Relationships: []
       }
@@ -564,6 +570,7 @@ export type Database = {
           is_active: boolean
           message: string
           updated_at: string
+          updated_by: string | null
         }
         Insert: {
           color?: string
@@ -573,6 +580,7 @@ export type Database = {
           is_active?: boolean
           message?: string
           updated_at?: string
+          updated_by?: string | null
         }
         Update: {
           color?: string
@@ -582,6 +590,7 @@ export type Database = {
           is_active?: boolean
           message?: string
           updated_at?: string
+          updated_by?: string | null
         }
         Relationships: []
       }
@@ -876,20 +885,9 @@ export type Database = {
         }
         Returns: boolean
       }
-      increment_views: { Args: { _video_id: string }; Returns: number }
+      increment_views: { Args: { _video_id: string }; Returns: undefined }
       is_banned: { Args: { _user_id: string }; Returns: boolean }
       request_account_deletion: { Args: never; Returns: boolean }
-      search_channels: {
-        Args: { result_limit?: number; search_text: string }
-        Returns: {
-          avatar_path: string
-          display_name: string
-          id: string
-          is_verified: boolean
-          subscriber_count: number
-          username: string
-        }[]
-      }
       submit_content_report: {
         Args: {
           _channel_id?: string
@@ -900,6 +898,15 @@ export type Database = {
         }
         Returns: string
       }
+      vote_on_announcement_poll:
+        | {
+            Args: { _announcement_id: string; _option: string }
+            Returns: string
+          }
+        | {
+            Args: { _announcement_id: string; _option_id: string }
+            Returns: string
+          }
     }
     Enums: {
       app_role: "admin" | "moderator" | "partner" | "user"
