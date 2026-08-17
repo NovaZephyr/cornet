@@ -1,6 +1,6 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
-import { Home, Users, Upload, Search, Menu, Shield, Sparkles, Settings, LogOut, User as UserIcon, Video, Compass, Bell, Palette, Check, Megaphone, ListVideo, Info, Languages } from "lucide-react";
+import { Home, Users, Upload, Search, Menu, Shield, Sparkles, Settings, LogOut, User as UserIcon, Video, Compass, Bell, Palette, Check, Megaphone, ListVideo, Info, Languages, Wrench } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
@@ -47,7 +47,7 @@ export function AppShell({ children, hideSidebar = false }: { children: ReactNod
 
   const items: NavItem[] = [{ to: "/", label: "Inicio", icon: Home }, { to: "/explore", label: "Explorar", icon: Compass }, { to: "/blog", label: "Anuncios", icon: Megaphone }, { to: "/community", label: "Comunidad", icon: Users }, { to: "/about", label: "Información", icon: Info }, { to: "/partner", label: "Programa Partner", icon: Sparkles }, { to: "/rules", label: "Guidelines", icon: Sparkles }];
   if (user) items.push({ to: "/upload", label: "Subir video", icon: Upload }, { to: "/playlists", label: "Mis playlists", icon: ListVideo });
-  if (isAdmin) items.push({ to: "/admin", label: "Administración", icon: Shield });
+  if (isAdmin) items.push({ to: "/admin", label: "Administración", icon: Shield }, { to: "/admin-maintenance", label: "Mantenimiento", icon: Wrench });
 
   return (
     <div className="cn-2012-app min-h-screen bg-background">
@@ -66,7 +66,7 @@ export function AppShell({ children, hideSidebar = false }: { children: ReactNod
             <Button asChild variant="ghost" size="icon" className="hidden rounded-full sm:inline-flex"><Link to="/upload" aria-label="Subir video"><Video className="h-5 w-5" /></Link></Button>
             <Button asChild variant="ghost" size="icon" className="rounded-full"><Link to="/notifications" aria-label="Notificaciones"><Bell className="h-5 w-5" /></Link></Button>
             <Button asChild variant="ghost" size="icon" className="rounded-full"><Link to="/settings" aria-label="Ajustes"><Settings className="h-5 w-5" /></Link></Button>
-            <DropdownMenu><DropdownMenuTrigger className="rounded-full outline-none"><ChannelAvatar path={profile?.avatar_path} name={profile?.display_name || profile?.username || "U"} size={32} /></DropdownMenuTrigger><DropdownMenuContent align="end" className="w-56"><DropdownMenuItem asChild><Link to="/c/$username" params={{ username: profile?.username ?? "" }}><UserIcon className="mr-2 h-4 w-4" />Mi canal</Link></DropdownMenuItem><DropdownMenuItem asChild><Link to="/playlists"><ListVideo className="mr-2 h-4 w-4" />Mis playlists</Link></DropdownMenuItem>{isAdmin && <DropdownMenuItem asChild><Link to="/admin"><Shield className="mr-2 h-4 w-4" />Administración</Link></DropdownMenuItem>}<DropdownMenuSeparator /><DropdownMenuItem onClick={() => void signOut()}><LogOut className="mr-2 h-4 w-4" />Cerrar sesión</DropdownMenuItem></DropdownMenuContent></DropdownMenu>
+            <DropdownMenu><DropdownMenuTrigger className="rounded-full outline-none"><ChannelAvatar path={profile?.avatar_path} name={profile?.display_name || profile?.username || "U"} size={32} /></DropdownMenuTrigger><DropdownMenuContent align="end" className="w-56"><DropdownMenuItem asChild><Link to="/c/$username" params={{ username: profile?.username ?? "" }}><UserIcon className="mr-2 h-4 w-4" />Mi canal</Link></DropdownMenuItem><DropdownMenuItem asChild><Link to="/playlists"><ListVideo className="mr-2 h-4 w-4" />Mis playlists</Link></DropdownMenuItem>{isAdmin && <><DropdownMenuItem asChild><Link to="/admin"><Shield className="mr-2 h-4 w-4" />Administración</Link></DropdownMenuItem><DropdownMenuItem asChild><Link to="/admin-maintenance"><Wrench className="mr-2 h-4 w-4" />Mantenimiento</Link></DropdownMenuItem></>}<DropdownMenuSeparator /><DropdownMenuItem onClick={() => void signOut()}><LogOut className="mr-2 h-4 w-4" />Cerrar sesión</DropdownMenuItem></DropdownMenuContent></DropdownMenu>
           </> : <Button asChild variant="outline" className="rounded-full"><Link to="/auth">Iniciar sesión</Link></Button>}
         </div>
       </header>
@@ -82,7 +82,7 @@ export function AppShell({ children, hideSidebar = false }: { children: ReactNod
         <main className="cn-2012-main min-w-0">{pathname === "/upload" ? <><UploadSafetyBridge />{children}</> : children}</main>
       </div>
       <SiteFooter />
-      <nav className="cn-2012-mobile-bar fixed inset-x-0 bottom-0 z-50 flex h-14 items-center border-t border-border bg-background md:hidden">{bottomBarItems(user).map((item) => { const Icon = item.icon; return <Link key={item.to} to={item.to} className={cn("flex flex-1 flex-col items-center justify-center gap-0.5 text-[10px] text-muted-foreground", pathname === item.to && "text-foreground")}><Icon className="h-5 w-5" /><span>{item.label}</span></Link>; })}</nav>
+      <nav className="cn-2012-mobile-bar fixed inset-x-0 bottom-0 z-50 flex h-14 items-center border-t border-border bg-background md:hidden">{bottomBarItems(user).map((item) => { const Icon = item.icon; return <Link key={item.to} to={item.to} className={cn("flex flex-1 flex-col items-center justify-center gap-0.5 text-[10px] text-muted-foreground", pathname === item.to && "text-foreground")}><Icon className="h-5 w-5" /><span>{item.label}</span></Link>})}</nav>
     </div>
   );
 }
