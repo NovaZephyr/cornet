@@ -46,6 +46,38 @@ export type Database = {
           },
         ]
       }
+      community_post_comments: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          post_id: string
+          user_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          post_id: string
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          post_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "community_post_comments_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "community_posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       community_posts: {
         Row: {
           content: string
@@ -69,6 +101,63 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      content_reports: {
+        Row: {
+          channel_id: string | null
+          created_at: string
+          details: string
+          id: string
+          reason: string
+          reporter_id: string
+          reviewed_at: string | null
+          reviewed_by: string | null
+          status: string
+          target_type: string
+          video_id: string | null
+        }
+        Insert: {
+          channel_id?: string | null
+          created_at?: string
+          details?: string
+          id?: string
+          reason: string
+          reporter_id: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+          target_type: string
+          video_id?: string | null
+        }
+        Update: {
+          channel_id?: string | null
+          created_at?: string
+          details?: string
+          id?: string
+          reason?: string
+          reporter_id?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+          target_type?: string
+          video_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "content_reports_channel_id_fkey"
+            columns: ["channel_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "content_reports_video_id_fkey"
+            columns: ["video_id"]
+            isOneToOne: false
+            referencedRelation: "videos"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       partner_applications: {
         Row: {
@@ -494,6 +583,16 @@ export type Database = {
           subscriber_count: number
           username: string
         }[]
+      }
+      submit_content_report: {
+        Args: {
+          _channel_id?: string
+          _details?: string
+          _reason?: string
+          _target_type: string
+          _video_id?: string
+        }
+        Returns: string
       }
     }
     Enums: {
