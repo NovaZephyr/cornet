@@ -1,32 +1,6 @@
-/* Sidebar separation: keep the original sidebar and Cosmic Panda independent. */
+/* Theme separation. Cosmic Panda owns this file; modern themes use modern-themes.css. */
 
-/* Original/default themes: sidebar remains part of the page flow. */
-[data-theme]:not([data-theme="retro2012"]) .cn-2012-shell-body > .cn-2012-sidebar:not(.cn-2012-sidebar--cosmic) {
-  position: relative !important;
-  top: auto !important;
-  align-self: start !important;
-  width: 236px;
-  min-width: 0;
-  height: auto !important;
-  max-height: none !important;
-  margin: 0;
-  padding: 18px 12px;
-  overflow: visible !important;
-  box-sizing: border-box;
-  background: color-mix(in oklab, var(--color-background) 50%, transparent) !important;
-  border-color: color-mix(in oklab, var(--color-border) 55%, transparent) !important;
-  box-shadow: none;
-}
-
-[data-theme]:not([data-theme="retro2012"]) .cn-2012-shell-body > .cn-2012-sidebar:not(.cn-2012-sidebar--cosmic).is-collapsed {
-  width: 76px;
-}
-
-[data-theme]:not([data-theme="retro2012"]) .cn-2012-sidebar:not(.cn-2012-sidebar--cosmic) > nav a:hover {
-  transform: translateX(2px);
-}
-
-/* Cosmic Panda: restore the dark, gradient sidebar and keep it isolated. */
+/* Cosmic Panda: dark gradient sidebar, intentionally isolated from all other themes. */
 [data-theme="retro2012"] .cn-2012-shell-body > .cn-2012-sidebar--cosmic {
   position: sticky !important;
   top: 54px !important;
