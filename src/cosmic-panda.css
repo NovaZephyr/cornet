@@ -37,3 +37,47 @@
 :is([data-theme="retro2012"],.cn-retro-scope) .cn-cosmic-channel .cn-cosmic-columns img{border-radius:0}
 @media (max-width:1000px){:is([data-theme="retro2012"],.cn-retro-scope) .cn-cosmic-columns{grid-template-columns:180px minmax(0,1fr)}}
 @media (max-width:780px){:is([data-theme="retro2012"],.cn-retro-scope) .cn-cosmic-channel{padding:6px}.cn-cosmic-columns{display:block!important}.cn-cosmic-left,.cn-cosmic-right{margin-top:8px}.cn-cosmic-cover{height:140px!important}.cn-cosmic-title-strip{align-items:flex-start;flex-direction:column}.cn-cosmic-tabs span{padding:7px 10px;font-size:10px}}
+
+/* ===== Channel background handling (Channel 1.0 / 2.0 / Cosmic Panda) ===== */
+.cn-retro-scope{display:block;width:100%}
+.cn-retro-scope .cn-2012-channel,
+.cn-retro-scope .cn-cosmic-channel{
+  background-attachment:fixed;
+  background-repeat:no-repeat;
+  background-position:center top;
+  background-size:cover;
+  min-height:calc(100vh - 54px);
+}
+/* the uploaded background must stay visible around the content column */
+.cn-retro-scope .cn-2012-channel::after{display:none}
+.cn-retro-scope .cn-2012-channel::before{opacity:.35}
+.cn-retro-scope .cn-2012-channel-inner{width:min(1180px,100%)}
+
+/* Cosmic Panda polish: dark chrome bar + translucent light content, per 2012 YouTube */
+:is([data-theme="retro2012"],.cn-retro-scope) .cn-cosmic-channel-inner{
+  background:rgba(246,248,249,.93);
+  border:1px solid rgba(0,0,0,.35);
+  box-shadow:0 2px 14px rgba(0,0,0,.45);
+}
+:is([data-theme="retro2012"],.cn-retro-scope) .cn-cosmic-topbar{
+  background:linear-gradient(#3d464e,#242c33);
+  border-color:#161c21;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+  font-weight:700;
+}
+:is([data-theme="retro2012"],.cn-retro-scope) .cn-cosmic-title-strip h1{font-size:20px;letter-spacing:-.01em}
+:is([data-theme="retro2012"],.cn-retro-scope) .cn-cosmic-tabs{background:linear-gradient(#eef1f3,#d5dbdf)}
+:is([data-theme="retro2012"],.cn-retro-scope) .cn-cosmic-tabs .is-active{border-bottom:2px solid var(--cn-channel-primary,#167ac6)}
+:is([data-theme="retro2012"],.cn-retro-scope) .cn-cosmic-panel h2,
+:is([data-theme="retro2012"],.cn-retro-scope) .cn-cosmic-panel-title{color:var(--cn-channel-primary,#34434c)}
+:is([data-theme="retro2012"],.cn-retro-scope) .cn-cosmic-featured .cn-cosmic-player{box-shadow:0 0 0 1px rgba(0,0,0,.5),0 4px 12px rgba(0,0,0,.35)}
+
+/* Channel 1.0 — saturated full-bleed skin like the classic custom channels */
+:is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-channel--channel-1 .cn-2012-titlebar h1{text-shadow:0 1px 0 rgba(0,0,0,.35)}
+:is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-channel--channel-1 .cn-2012-video-column,
+:is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-channel--channel-1 .cn-2012-about{box-shadow:0 2px 10px rgba(0,0,0,.35)}
+
+/* Channel 2.0 — dark, minimal, centered column */
+:is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-channel--channel-2 .cn-2012-channel-inner{background:rgba(0,0,0,.35);padding:12px}
+:is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-channel--channel-2 .cn-2012-section-title{color:var(--cn-channel-text,#222)}
