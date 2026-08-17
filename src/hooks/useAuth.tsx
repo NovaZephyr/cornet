@@ -26,6 +26,7 @@ export type Profile = {
   warnings_count: number;
   accent_color: string;
   is_verified: boolean;
+  is_music_channel: boolean;
   channel_style: ChannelStyle;
   channel_primary_color: string;
   channel_secondary_color: string;
