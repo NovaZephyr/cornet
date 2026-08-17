@@ -1,6 +1,7 @@
 import { useEffect, useState, type ReactNode } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
-import { Home, Users, Upload, Search, Menu, Shield, Sparkles, Settings, LogOut, User as UserIcon, Video, Compass, Bell, Palette, Check, Megaphone, ListVideo, Info, Wrench, MessageCircle, X } from "lucide-react";
+import { Home, Users, Upload, Search, Menu, Shield, Sparkles, Settings, LogOut, User as UserIcon, Video, Compass, Bell, Palette, Check, Megaphone, ListVideo, Info, Wrench, MessageCircle, X, History, Clock3, PlusCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
@@ -18,6 +19,7 @@ import "@/retro2012-adaptation.css";
 
 const THEME_GROUPS = Array.from(new Set(THEMES.map((t) => t.group)));
 type NavItem = { to: string; label: string; icon: typeof Home };
+type RetroSubscription = { id: string; username: string; display_name: string | null; avatar_path: string | null };
 
 function ThemeMenu() {
   const { theme, setTheme } = useTheme();
@@ -37,15 +39,85 @@ function SiteFooter() { const links: { to: "/about" | "/blog" | "/rules" | "/par
 
 function bottomBarItems(user: unknown): NavItem[] { const items: NavItem[] = [{ to: "/", label: "Inicio", icon: Home }, { to: "/explore", label: "Explorar", icon: Compass }, { to: "/community", label: "Comunidad", icon: Users }]; if (user) items.push({ to: "/messages", label: "Mensajes", icon: MessageCircle }, { to: "/upload", label: "Subir", icon: Upload }); else items.push({ to: "/auth", label: "Tú", icon: UserIcon }); return items; }
 
+function RetroSidebar({ user, profile, isRecommendedChannelsPage, openSidebar }: { user: { id: string } | null; profile: any; isRecommendedChannelsPage: boolean; openSidebar: boolean }) {
+  const subscriptionsQuery = useQuery({
+    queryKey: ["retro-sidebar-subscriptions", user?.id],
+    enabled: !!user && openSidebar,
+    staleTime: 60_000,
+    gcTime: 5 * 60_000,
+    queryFn: async () => {
+      const { data, error } = await supabase.from("subscriptions").select("channel_id").eq("subscriber_id", user!.id).limit(50);
+      if (error) throw error;
+      const ids = [...new Set((data ?? []).map((row) => row.channel_id).filter(Boolean))];
+      if (!ids.length) return [] as RetroSubscription[];
+      const { data: profiles, error: profileError } = await supabase.from("profiles").select("id,username,display_name,avatar_path").in("id", ids);
+      if (profileError) throw profileError;
+      const byId = new Map((profiles ?? []).map((item) => [item.id, item] as const));
+      return ids.map((id) => byId.get(id)).filter(Boolean) as RetroSubscription[];
+    },
+  });
+
+  const accountName = profile?.display_name || profile?.username || "Tu canal";
+  const username = profile?.username || "";
+  const accountItems = [
+    { label: "Mi canal", icon: UserIcon, to: "/c/$username" as const },
+    { label: "Videos", icon: Video, to: "/c/$username" as const },
+    { label: "Lista de reproducciones", icon: ListVideo, to: "/playlists" as const },
+  ];
+
+  return <aside className={cn("cn-2012-sidebar cn-2012-sidebar--cosmic hidden shrink-0 md:block", openSidebar ? "is-open" : "is-collapsed")}>
+    <div className="cn-2012-sidebar-inner">
+      {isRecommendedChannelsPage && <Link to="/explore" search={{ view: "channels" }} className="cn-2012-sidebar-add"><PlusCircle className="h-4 w-4" /><span>Agregar suscriptores</span></Link>}
+
+      {user && openSidebar && <>
+        <div className="cn-2012-sidebar-account">
+          <ChannelAvatar path={profile?.avatar_path} name={accountName} size={44} />
+          <div className="min-w-0">
+            <p className="truncate text-sm font-bold">{accountName}</p>
+            <p className="truncate text-[11px] text-white/60">@{username}</p>
+          </div>
+        </div>
+        <nav className="cn-2012-sidebar-account-nav" aria-label="Tu canal">
+          {accountItems.map((item) => { const Icon = item.icon; return <Link key={item.label} to={item.to} params={item.label === "Mi canal" || item.label === "Videos" ? { username } : undefined} className="cn-2012-sidebar-link"><Icon className="h-4 w-4" /><span>{item.label}</span></Link>; })}
+          <Link to="/watch" className="cn-2012-sidebar-link"><Clock3 className="h-4 w-4" /><span>Ver después</span></Link>
+          <button type="button" className="cn-2012-sidebar-link cn-2012-sidebar-link--disabled" disabled title="Historial estará disponible aquí"><History className="h-4 w-4" /><span>Historial</span></button>
+        </nav>
+
+        <div className="cn-2012-sidebar-divider" />
+        <div className="cn-2012-sidebar-section-title">Suscripciones</div>
+        <nav className="cn-2012-sidebar-subscriptions" aria-label="Suscripciones">
+          {subscriptionsQuery.isLoading ? <span className="cn-2012-sidebar-muted">Cargando…</span> : subscriptionsQuery.data && subscriptionsQuery.data.length > 0 ? subscriptionsQuery.data.map((subscription) => <Link key={subscription.id} to="/c/$username" params={{ username: subscription.username }} className="cn-2012-sidebar-subscription"><ChannelAvatar path={subscription.avatar_path} name={subscription.display_name || subscription.username} size={28} /><span className="truncate">{subscription.display_name || subscription.username}</span></Link>) : <span className="cn-2012-sidebar-muted">No tienes suscripciones todavía.</span>}
+        </nav>
+      </>}
+
+      {!user && openSidebar && <div className="cn-2012-sidebar-guest"><p>Explora CoreNetwork</p><span>Inicia sesión para ver tu canal y tus suscripciones.</span></div>}
+
+      {!openSidebar && <nav className="cn-2012-sidebar-collapsed-nav" aria-label="Navegación rápida">
+        {user && <>
+          <Link to="/c/$username" params={{ username }} className="cn-2012-sidebar-icon" title="Mi canal"><ChannelAvatar path={profile?.avatar_path} name={accountName} size={34} /></Link>
+          <Link to="/playlists" className="cn-2012-sidebar-icon" title="Lista de reproducciones"><ListVideo className="h-5 w-5" /></Link>
+          <Link to="/watch" className="cn-2012-sidebar-icon" title="Ver después"><Clock3 className="h-5 w-5" /></Link>
+        </>}
+        <Link to="/" className="cn-2012-sidebar-icon" title="Inicio"><Home className="h-5 w-5" /></Link>
+        <Link to="/explore" className="cn-2012-sidebar-icon" title="Explorar"><Compass className="h-5 w-5" /></Link>
+      </nav>}
+    </div>
+  </aside>;
+}
+
 export function AppShell({ children, hideSidebar = false }: { children: ReactNode; hideSidebar?: boolean }) {
   const { user, profile, isAdmin, signOut } = useAuth();
+  const { theme } = useTheme();
   const navigate = useNavigate();
   const [query, setQuery] = useState("");
   const [openSidebar, setOpenSidebar] = useState(true);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const routeSearch = useRouterState({ select: (s) => s.location.search as Record<string, unknown> });
   useEffect(() => { setMobileNavOpen(false); }, [pathname]);
 
+  const isCosmic = theme === "retro2012";
+  const isRecommendedChannelsPage = isCosmic && pathname === "/explore" && routeSearch.view === "channels";
   const items: NavItem[] = [{ to: "/", label: "Inicio", icon: Home }, { to: "/explore", label: "Explorar", icon: Compass }, { to: "/blog", label: "Anuncios", icon: Megaphone }, { to: "/community", label: "Comunidad", icon: Users }, ...(user ? [{ to: "/messages", label: "Mensajes", icon: MessageCircle } as NavItem] : []), { to: "/about", label: "Información", icon: Info }, { to: "/partner", label: "Programa Partner", icon: Sparkles }, { to: "/rules", label: "Guidelines", icon: Sparkles }];
   if (user) items.push({ to: "/upload", label: "Subir video", icon: Upload }, { to: "/playlists", label: "Mis playlists", icon: ListVideo });
   if (isAdmin) items.push({ to: "/admin", label: "Administración", icon: Shield }, { to: "/admin-maintenance", label: "Mantenimiento", icon: Wrench });
@@ -64,8 +136,8 @@ export function AppShell({ children, hideSidebar = false }: { children: ReactNod
       </div>
     </header>
 
-    <div className={cn("cn-2012-shell-body grid w-full items-start gap-0", hideSidebar ? "grid-cols-1" : "grid-cols-[auto_minmax(0,1fr)]")}>
-      {!hideSidebar && <aside className={cn("cn-2012-sidebar hidden w-[236px] md:block", openSidebar ? "is-open" : "is-collapsed w-[76px]")}><nav className="flex flex-col gap-1">{items.map((item) => { const Icon = item.icon; const active = pathname === item.to; return <Link key={item.to} to={item.to} title={openSidebar ? undefined : item.label} className={cn("flex items-center rounded-xl px-3 py-2.5 text-sm transition-colors hover:bg-surface/80", active && "bg-surface/80 font-semibold text-foreground", openSidebar ? "gap-3" : "flex-col gap-1 text-[10px]")}><Icon className="h-5 w-5 shrink-0" /><span className={cn(!openSidebar && "text-center")}>{item.label}</span></Link>; })}</nav></aside>}
+    <div className={cn("cn-2012-shell-body grid w-full items-start gap-0", hideSidebar ? "grid-cols-1" : "grid-cols-[auto_minmax(0,1fr)]", isCosmic && !hideSidebar && "cn-2012-shell-body--cosmic")}>
+      {!hideSidebar && (isCosmic ? <RetroSidebar user={user} profile={profile} isRecommendedChannelsPage={isRecommendedChannelsPage} openSidebar={openSidebar} /> : <aside className={cn("cn-2012-sidebar hidden w-[236px] md:block", openSidebar ? "is-open" : "is-collapsed w-[76px]")}><nav className="flex flex-col gap-1">{items.map((item) => { const Icon = item.icon; const active = pathname === item.to; return <Link key={item.to} to={item.to} title={openSidebar ? undefined : item.label} className={cn("flex items-center rounded-xl px-3 py-2.5 text-sm transition-colors hover:bg-surface/80", active && "bg-surface/80 font-semibold text-foreground", openSidebar ? "gap-3" : "flex-col gap-1 text-[10px]")}><Icon className="h-5 w-5 shrink-0" /><span className={cn(!openSidebar && "text-center")}>{item.label}</span></Link>; })}</nav></aside>)}
       {mobileNavOpen && !hideSidebar && <div className="fixed inset-0 z-40 md:hidden"><button aria-label="Cerrar menú" className="absolute inset-0 bg-black/45 backdrop-blur-sm" onClick={() => setMobileNavOpen(false)} /><aside className="relative h-full w-[82vw] max-w-[320px] overflow-y-auto border-r border-border/60 bg-background/96 p-4 shadow-2xl backdrop-blur-xl"><div className="mb-5 flex items-center justify-between"><span className="text-sm font-semibold">Navegación</span><Button variant="ghost" size="icon" className="rounded-full" onClick={() => setMobileNavOpen(false)} aria-label="Cerrar"><X className="h-5 w-5" /></Button></div><nav className="flex flex-col gap-1">{items.map((item) => { const Icon = item.icon; return <Link key={item.to} to={item.to} className="flex items-center gap-3 rounded-xl px-3 py-3 text-sm hover:bg-surface"><Icon className="h-5 w-5" />{item.label}</Link>; })}</nav></aside></div>}
       <main className="cn-2012-main min-w-0">{pathname === "/upload" ? <><UploadSafetyBridge />{children}</> : children}</main>
     </div>
