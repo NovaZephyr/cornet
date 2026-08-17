@@ -1,25 +1,24 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { toPlayableCloudinaryVideoUrl } from "@/lib/cloudinary";
 
 const cache = new Map<string, { url: string; expires: number }>();
 const inflight = new Map<string, Promise<string | null>>();
 
 const TTL = 60 * 60;
 
-/** Paths are stored as "bucket/path/to/file". */
+/** Paths are stored as "bucket/path/to/file", or as external HTTPS URLs. */
 export async function getSignedUrl(fullPath?: string | null): Promise<string | null> {
   if (!fullPath) return null;
-  if (/^https?:\/\//i.test(fullPath)) return fullPath;
+  if (/^https?:\/\//i.test(fullPath)) {
+    return /\/video\/upload\//i.test(fullPath) ? toPlayableCloudinaryVideoUrl(fullPath) : fullPath;
+  }
 
   const slash = fullPath.indexOf("/");
   if (slash < 0) return null;
   const bucket = fullPath.slice(0, slash);
   const key = fullPath.slice(slash + 1);
 
-  // Channel avatars, banners, backgrounds and thumbnails live in the public
-  // media bucket. Do not call /object/sign for these: old/missing objects
-  // otherwise produce noisy 400 responses even though the rest of the page
-  // is healthy.
   if (bucket === "media") {
     const { data } = supabase.storage.from("media").getPublicUrl(key);
     return data.publicUrl || null;
@@ -51,7 +50,7 @@ export async function getSignedUrl(fullPath?: string | null): Promise<string | n
 export function useSignedUrl(fullPath?: string | null) {
   const [url, setUrl] = useState<string | null>(() => {
     if (!fullPath) return null;
-    if (/^https?:\/\//i.test(fullPath)) return fullPath;
+    if (/^https?:\/\//i.test(fullPath)) return /\/video\/upload\//i.test(fullPath) ? toPlayableCloudinaryVideoUrl(fullPath) : fullPath;
     if (fullPath.startsWith("media/")) {
       const key = fullPath.slice("media/".length);
       return supabase.storage.from("media").getPublicUrl(key).data.publicUrl || null;
