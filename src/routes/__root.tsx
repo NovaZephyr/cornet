@@ -20,35 +20,17 @@ function MaintenanceAwareContent() {
   const isAuthRoute = location.pathname === "/auth";
   const [settingsLoading, setSettingsLoading] = useState(false);
   const [maintenance, setMaintenance] = useState<{ enabled: boolean; message: string } | null>(null);
-
   useEffect(() => {
     if (isAuthRoute) return;
-    let cancelled = false;
-    setSettingsLoading(true);
-    void supabase
-      .from("site_settings")
-      .select("maintenance_mode, maintenance_message")
-      .eq("id", true)
-      .maybeSingle()
-      .then(({ data, error }) => {
-        if (cancelled) return;
-        if (error) {
-          console.error("[CoreNetwork] maintenance settings failed", error);
-          setMaintenance({ enabled: false, message: "" });
-        } else {
-          setMaintenance({ enabled: Boolean(data?.maintenance_mode), message: data?.maintenance_message ?? "" });
-        }
-        setSettingsLoading(false);
-      })
-      .catch((error) => {
-        if (cancelled) return;
-        console.error("[CoreNetwork] maintenance settings failed", error);
-        setMaintenance({ enabled: false, message: "" });
-        setSettingsLoading(false);
-      });
+    let cancelled = false; setSettingsLoading(true);
+    void supabase.from("site_settings").select("maintenance_mode, maintenance_message").eq("id", true).maybeSingle().then(({ data, error }) => {
+      if (cancelled) return;
+      if (error) { console.error("[Cornet] maintenance settings failed", error); setMaintenance({ enabled: false, message: "" }); }
+      else setMaintenance({ enabled: Boolean(data?.maintenance_mode), message: data?.maintenance_message ?? "" });
+      setSettingsLoading(false);
+    }).catch((error) => { if (cancelled) return; console.error("[Cornet] maintenance settings failed", error); setMaintenance({ enabled: false, message: "" }); setSettingsLoading(false); });
     return () => { cancelled = true; };
   }, [isAuthRoute]);
-
   if (isAuthRoute) return <Outlet />;
   if (loading || settingsLoading || maintenance === null) return <AuthLoadingScreen />;
   if (maintenance.enabled && !isAdmin) return <MaintenanceScreen message={maintenance.message} />;
@@ -63,7 +45,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "author", content: "Cornet" }, { property: "og:title", content: "Cornet — comparte lo que te importa" }, { property: "og:description", content: "Una plataforma sencilla para ver videos, conversar y compartir." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [
-      { rel: "stylesheet", href: appCss }, { rel: "stylesheet", href: "/retro2012.css" }, { rel: "stylesheet", href: "/explore.css" },
+      { rel: "stylesheet", href: appCss }, { rel: "stylesheet", href: "/retro2012.css" }, { rel: "stylesheet", href: "/explore.css" }, { rel: "stylesheet", href: "/messenger-theme.css" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" }, { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" }, { rel: "icon", href: "/favicon.png", type: "image/png" },
     ],
