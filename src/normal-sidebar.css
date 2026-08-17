@@ -1,0 +1,24 @@
+/* Desktop normal-theme sidebar stability. Cosmic Panda is excluded intentionally. */
+@media (min-width: 768px) {
+  .cn-2012-app:not([data-theme="retro2012"]) .cn-2012-shell-body > .cn-2012-sidebar:not(.cn-2012-sidebar--cosmic) {
+    position: sticky !important;
+    top: 64px !important;
+    align-self: start !important;
+    height: calc(100dvh - 64px) !important;
+    max-height: calc(100dvh - 64px) !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    overscroll-behavior: contain;
+    scrollbar-gutter: stable;
+    z-index: 20;
+  }
+}
+
+@media (max-width: 767px) {
+  .cn-2012-app:not([data-theme="retro2012"]) .cn-2012-shell-body > .cn-2012-sidebar:not(.cn-2012-sidebar--cosmic) {
+    position: static !important;
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+}
