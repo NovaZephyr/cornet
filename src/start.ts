@@ -20,14 +20,15 @@ const errorMiddleware = createMiddleware().server(async ({ next }) => {
 });
 
 const videoSeoMiddleware = createMiddleware().server(async ({ request, next }) => {
-  const response = await next();
+  const result = await next();
+  const response = result as unknown as Response;
   const url = new URL(request.url);
 
-  if (url.pathname !== "/watch") return response;
+  if (url.pathname !== "/watch") return result;
 
   const code = url.searchParams.get("v");
   const contentType = response.headers.get("content-type") ?? "";
-  if (!code || !contentType.includes("text/html")) return response;
+  if (!code || !contentType.includes("text/html")) return result;
 
   try {
     const { data: video } = await supabase
@@ -37,7 +38,7 @@ const videoSeoMiddleware = createMiddleware().server(async ({ request, next }) =
       .eq("visibility", "public")
       .maybeSingle();
 
-    if (!video) return response;
+    if (!video) return result;
 
     const { data: profile } = await supabase
       .from("profiles")
@@ -97,10 +98,10 @@ const videoSeoMiddleware = createMiddleware().server(async ({ request, next }) =
       status: response.status,
       statusText: response.statusText,
       headers: response.headers,
-    });
+    }) as unknown as typeof result;
   } catch (error) {
     console.error("[video-seo] failed to enrich watch metadata", error);
-    return response;
+    return result;
   }
 });
 
