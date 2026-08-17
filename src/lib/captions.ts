@@ -14,8 +14,8 @@ export function parseTimestamp(value: string): number {
   const normalized = value.trim().replace(',', '.');
   const parts = normalized.split(':').map(Number);
   if (parts.some((part) => !Number.isFinite(part))) return NaN;
-  if (parts.length === 3) return parts[0] * 3600 + parts[1] * 60 + parts[2];
-  if (parts.length === 2) return parts[0] * 60 + parts[1];
+  if (parts.length === 3) return (parts[0] ?? 0) * 3600 + (parts[1] ?? 0) * 60 + (parts[2] ?? 0);
+  if (parts.length === 2) return (parts[0] ?? 0) * 60 + (parts[1] ?? 0);
   return Number(normalized);
 }
 
