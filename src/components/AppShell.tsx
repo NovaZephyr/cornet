@@ -36,7 +36,7 @@ function SiteFooter() { const links: { to: "/about" | "/blog" | "/rules" | "/par
 
 function bottomBarItems(user: unknown): NavItem[] { const items: NavItem[] = [{ to: "/", label: "Inicio", icon: Home }, { to: "/explore", label: "Explorar", icon: Compass }, { to: "/about", label: "Info", icon: Info }]; if (user) items.push({ to: "/upload", label: "Subir", icon: Upload }, { to: "/playlists", label: "Listas", icon: ListVideo }); else items.push({ to: "/auth", label: "Tú", icon: UserIcon }); return items; }
 
-export function AppShell({ children }: { children: ReactNode }) {
+export function AppShell({ children, hideSidebar = false }: { children: ReactNode; hideSidebar?: boolean }) {
   const { user, profile, isAdmin, signOut } = useAuth();
   const navigate = useNavigate();
   const [query, setQuery] = useState("");
