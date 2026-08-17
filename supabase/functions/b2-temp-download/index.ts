@@ -27,8 +27,13 @@ Deno.serve(async (req) => {
     if (error) throw error;
     if (!file) return json({ error: "Archivo temporal no encontrado" }, 404);
     if (new Date(file.expires_at).getTime() <= Date.now()) {
-      try { await client().send(new DeleteObjectCommand({ Bucket: bucket!, Key: file.storage_path })); } catch (cleanupError) { console.error("Expired B2 cleanup failed", cleanupError); }
-      await admin.from("community_temp_files").delete().eq("id", id);
+      try {
+        await client().send(new DeleteObjectCommand({ Bucket: bucket!, Key: file.storage_path }));
+        const { error: deleteError } = await admin.from("community_temp_files").delete().eq("id", id);
+        if (deleteError) console.error("Expired metadata cleanup failed", deleteError);
+      } catch (cleanupError) {
+        console.error("Expired B2 cleanup failed", cleanupError);
+      }
       return json({ error: "Este archivo temporal ha expirado" }, 410);
     }
     await admin.from("community_temp_files").update({ downloads: Number(file.downloads ?? 0) + 1 }).eq("id", id);
