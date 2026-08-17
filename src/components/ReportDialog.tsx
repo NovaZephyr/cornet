@@ -27,8 +27,8 @@ export function ReportDialog({ target, open, onOpenChange }: { target: ReportTar
     setBusy(true);
     const { error } = await supabase.rpc("submit_content_report", {
       _target_type: target.type,
-      _video_id: target.type === "video" ? target.id : null,
-      _channel_id: target.type === "channel" ? target.id : null,
+      _video_id: target.type === "video" ? target.id : undefined,
+      _channel_id: target.type === "channel" ? target.id : undefined,
       _reason: reason,
       _details: details.trim(),
     });
