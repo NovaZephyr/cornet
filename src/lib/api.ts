@@ -3,9 +3,14 @@ import { createClient } from "@supabase/supabase-js";
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL as string;
 const PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as string;
 
-async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
-  const supabase = createClient(SUPABASE_URL, PUBLISHABLE_KEY);
-  const { data: { session } } = await supabase.auth.getSession();
+const authClient = createClient(SUPABASE_URL, PUBLISHABLE_KEY, {
+  auth: { storage: typeof window !== "undefined" ? localStorage : undefined, persistSession: true, autoRefreshToken: true },
+});
+
+export type ApiEnvelope<T> = { data: T; error?: { message: string; code?: string } | null; count?: number | null };
+
+export async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
+  const { data: { session } } = await authClient.auth.getSession();
   const headers = new Headers(init.headers);
   headers.set("apikey", PUBLISHABLE_KEY);
   headers.set("Content-Type", "application/json");
@@ -20,3 +25,48 @@ export const apiGet = <T = unknown>(path: string) => request<T>(path);
 export const apiPost = <T = unknown>(path: string, body?: unknown) => request<T>(path, { method: "POST", body: JSON.stringify(body ?? {}) });
 export const apiPatch = <T = unknown>(path: string, body?: unknown) => request<T>(path, { method: "PATCH", body: JSON.stringify(body ?? {}) });
 export const apiDelete = <T = unknown>(path: string, body?: unknown) => request<T>(path, { method: "DELETE", body: JSON.stringify(body ?? {}) });
+
+export type ApiFilter = { column: string; operator?: string; value?: unknown };
+export type ApiOrder = { column: string; ascending?: boolean };
+
+type QueryState = {
+  table: string; op: "select" | "insert" | "update" | "delete"; select: string;
+  filters: ApiFilter[]; or?: string; order: ApiOrder[]; limit?: number; range?: { from: number; to: number };
+  singleMode?: "single" | "maybeSingle"; values?: unknown;
+};
+
+export class ApiQueryBuilder<T = unknown> implements PromiseLike<{ data: T | null; error: Error | null; count?: number | null }> {
+  private state: QueryState;
+  constructor(table: string) { this.state = { table, op: "select", select: "*", filters: [], order: [] }; }
+  select(columns = "*", _options?: unknown) { this.state.select = columns; return this; }
+  eq(column: string, value: unknown) { this.state.filters.push({ column, operator: "eq", value }); return this; }
+  neq(column: string, value: unknown) { this.state.filters.push({ column, operator: "neq", value }); return this; }
+  gt(column: string, value: unknown) { this.state.filters.push({ column, operator: "gt", value }); return this; }
+  gte(column: string, value: unknown) { this.state.filters.push({ column, operator: "gte", value }); return this; }
+  lt(column: string, value: unknown) { this.state.filters.push({ column, operator: "lt", value }); return this; }
+  lte(column: string, value: unknown) { this.state.filters.push({ column, operator: "lte", value }); return this; }
+  ilike(column: string, value: unknown) { this.state.filters.push({ column, operator: "ilike", value }); return this; }
+  like(column: string, value: unknown) { this.state.filters.push({ column, operator: "like", value }); return this; }
+  in(column: string, values: unknown[]) { this.state.filters.push({ column, operator: "in", value: values }); return this; }
+  is(column: string, value: unknown) { this.state.filters.push({ column, operator: "is", value }); return this; }
+  or(value: string) { this.state.or = value; return this; }
+  order(column: string, options?: { ascending?: boolean }) { this.state.order.push({ column, ascending: options?.ascending !== false }); return this; }
+  limit(value: number) { this.state.limit = value; return this; }
+  range(from: number, to: number) { this.state.range = { from, to }; return this; }
+  single() { this.state.singleMode = "single"; return this; }
+  maybeSingle() { this.state.singleMode = "maybeSingle"; return this; }
+  insert(values: unknown) { this.state.op = "insert"; this.state.values = values; return this; }
+  update(values: unknown) { this.state.op = "update"; this.state.values = values; return this; }
+  delete() { this.state.op = "delete"; return this; }
+  then<TResult1 = { data: T | null; error: Error | null }, TResult2 = never>(onfulfilled?: ((value: { data: T | null; error: Error | null; count?: number | null }) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
+    return request<ApiEnvelope<T>>("data", { method: "POST", body: JSON.stringify(this.state) })
+      .then((payload) => ({ data: payload.data ?? null, error: payload.error ? new Error(payload.error.message) : null, count: payload.count ?? null }))
+      .then(onfulfilled as any, onrejected as any);
+  }
+}
+
+export const apiDb = { from: <T = unknown>(table: string) => new ApiQueryBuilder<T>(table) };
+export const apiRpc = async <T = unknown>(fn: string, args?: Record<string, unknown>) => {
+  const payload = await request<ApiEnvelope<T>>("rpc", { method: "POST", body: JSON.stringify({ fn, args: args ?? {} }) });
+  return { data: payload.data ?? null, error: payload.error ? new Error(payload.error.message) : null };
+};
