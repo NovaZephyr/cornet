@@ -90,7 +90,7 @@ function Editor({ userId, code }: { userId: string; code?: string }) {
     queryKey: ["edit-video", code, userId],
     enabled: isEdit,
     queryFn: async () => {
-      const { data, error } = await supabase.from("videos").select("id, code, title, description, video_path, thumbnail_path, duration_seconds, views, visibility, category").eq("code", code).eq("user_id", userId).maybeSingle();
+      const { data, error } = await supabase.from("videos").select("id, code, title, description, video_path, thumbnail_path, duration_seconds, views, visibility, category").eq("code", code!).eq("user_id", userId).maybeSingle();
       if (error) throw error;
       return data as (VideoRow & { id: string }) | null;
     },
