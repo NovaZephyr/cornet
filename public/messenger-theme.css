@@ -1,0 +1,16 @@
+/* Theme bridge for the existing Messenger layout. Keeps realtime logic untouched. */
+[class*="bg-[#171922]"] { background: hsl(var(--background)) !important; color: hsl(var(--foreground)) !important; border-color: hsl(var(--border)) !important; }
+[class*="bg-[#101116]"] { background: hsl(var(--card)) !important; color: hsl(var(--foreground)) !important; border-color: hsl(var(--border)) !important; }
+[class*="bg-[#1e1f2a]"] { background: hsl(var(--background)) !important; color: hsl(var(--foreground)) !important; }
+[class*="bg-[#20212d]"] { background: hsl(var(--card)) !important; color: hsl(var(--foreground)) !important; border-color: hsl(var(--border)) !important; }
+[class*="border-white/5"] { border-color: hsl(var(--border) / 0.7) !important; }
+[class*="border-white/10"] { border-color: hsl(var(--border)) !important; }
+[class*="text-white/85"], [class*="text-white/70"], [class*="text-white/40"], [class*="text-white/35"], [class*="text-white/30"] { color: hsl(var(--muted-foreground)) !important; }
+[class*="text-white"] { color: hsl(var(--foreground)) !important; }
+[class*="placeholder:text-white"]::placeholder { color: hsl(var(--muted-foreground)) !important; }
+[class*="bg-white/5"] { background: hsl(var(--muted) / 0.35) !important; }
+[class*="bg-white/10"] { background: hsl(var(--muted) / 0.55) !important; }
+[class*="hover:bg-white/5"]:hover { background: hsl(var(--muted) / 0.45) !important; }
+h1.flex.items-center.gap-2.text-2xl.font-bold > [data-slot="badge"] { display: none !important; }
+[class*="bg-indigo-600"] { background: hsl(var(--primary)) !important; }
+[class*="hover:bg-indigo-500"]:hover { background: hsl(var(--primary) / 0.9) !important; }
