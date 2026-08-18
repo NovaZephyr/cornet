@@ -1,0 +1,90 @@
+/* Cornet Custom Theme Gallery. Presets are isolated by data-theme. */
+
+/* Feather 2013 */
+[data-theme="feather2013"]{--background:#f5f5f5;--surface:#fff;--card:#fff;--foreground:#333;--primary:#3b78b4;--border:#d6d6d6;--sidebar:#fff;--sidebar-foreground:#444;color-scheme:light}
+[data-theme="feather2013"] body{background:#f5f5f5!important;color:#333!important;font-family:Arial,Helvetica,sans-serif!important}
+[data-theme="feather2013"] .cn-2012-topbar{background:#fff!important;color:#333!important;border-bottom:1px solid #d0d0d0!important;box-shadow:0 1px 2px rgba(0,0,0,.08)!important}
+[data-theme="feather2013"] .cn-2012-topbar a,[data-theme="feather2013"] .cn-2012-topbar button,[data-theme="feather2013"] .cn-2012-topbar svg{color:#444!important}
+[data-theme="feather2013"] .cn-video-card,[data-theme="feather2013"] .cn-explore-section{border:0!important;background:#fff!important;box-shadow:none!important}
+[data-theme="feather2013"] .cn-2012-sidebar{background:#fff!important;border-right:1px solid #ddd!important;color:#555!important}
+
+/* YouTube 2019 */
+[data-theme="youtube2019"]{color-scheme:light}
+[data-theme="youtube2019"] body{background:#fff!important;color:#0f0f0f!important;font-family:Roboto,Arial,sans-serif!important}
+[data-theme="youtube2019"] .cn-2012-topbar{background:#fff!important;color:#0f0f0f!important;border-bottom:1px solid #ddd!important;box-shadow:none!important}
+[data-theme="youtube2019"] .cn-2012-topbar a,[data-theme="youtube2019"] .cn-2012-topbar button,[data-theme="youtube2019"] .cn-2012-topbar svg{color:#0f0f0f!important}
+[data-theme="youtube2019"] .cn-2012-sidebar{background:#fff!important;border-right:0!important;color:#0f0f0f!important}
+[data-theme="youtube2019"] .cn-video-card{border:0!important;background:transparent!important;box-shadow:none!important}
+[data-theme="youtube2019"] .cn-2012-main{background:#fff!important}
+
+/* Windows Aero */
+[data-theme="windowsAero"]{color-scheme:light}
+[data-theme="windowsAero"] body{background:linear-gradient(180deg,#cfe8ff,#eef7ff 42%,#dbeaff)!important;color:#17324d!important;font-family:"Segoe UI",Arial,sans-serif!important}
+[data-theme="windowsAero"] .cn-2012-topbar{background:linear-gradient(rgba(245,252,255,.94),rgba(170,213,248,.92))!important;border:1px solid rgba(255,255,255,.85)!important;color:#17324d!important;box-shadow:0 1px 8px rgba(0,70,140,.22)!important}
+[data-theme="windowsAero"] .cn-2012-topbar a,[data-theme="windowsAero"] .cn-2012-topbar button,[data-theme="windowsAero"] .cn-2012-topbar svg{color:#17324d!important}
+[data-theme="windowsAero"] .cn-2012-sidebar{background:rgba(245,250,255,.55)!important;backdrop-filter:blur(9px);border-right:1px solid rgba(255,255,255,.8)!important}
+[data-theme="windowsAero"] .cn-video-card,[data-theme="windowsAero"] .cn-explore-section{background:rgba(255,255,255,.72)!important;border:1px solid rgba(130,175,215,.5)!important;box-shadow:0 3px 12px rgba(30,90,150,.14)!important;border-radius:8px!important}
+
+/* Frutiger Aero */
+[data-theme="frutigerAero"]{color-scheme:light}
+[data-theme="frutigerAero"] body{background:linear-gradient(#8fd8ff 0,#d8f6ff 32%,#ecfff3 100%)!important;color:#214833!important;font-family:Arial,Helvetica,sans-serif!important}
+[data-theme="frutigerAero"] .cn-2012-topbar{background:linear-gradient(#e9fbff,#9ad8f5)!important;color:#16445a!important;border-bottom:1px solid #74b9d8!important}
+[data-theme="frutigerAero"] .cn-2012-sidebar{background:rgba(240,255,251,.86)!important;border-right:1px solid #b7dfd5!important}
+[data-theme="frutigerAero"] .cn-video-card{background:rgba(255,255,255,.8)!important;border:1px solid #bfe0d0!important;box-shadow:0 2px 8px rgba(40,100,80,.1)!important;border-radius:10px!important}
+
+/* Web 2.0 Glossy */
+[data-theme="web2Glossy"]{color-scheme:light}
+[data-theme="web2Glossy"] body{background:linear-gradient(#f9fbff,#dce9f6)!important;color:#243b53!important;font-family:Arial,Helvetica,sans-serif!important}
+[data-theme="web2Glossy"] .cn-2012-topbar{background:linear-gradient(#fff,#b9d1ed)!important;border-bottom:1px solid #7d9fca!important;color:#16385e!important;box-shadow:inset 0 1px #fff,0 2px 5px rgba(0,0,0,.18)!important}
+[data-theme="web2Glossy"] .cn-2012-topbar a,[data-theme="web2Glossy"] .cn-2012-topbar button{color:#16385e!important}
+[data-theme="web2Glossy"] .cn-video-card{background:linear-gradient(#fff,#edf4fb)!important;border:1px solid #9db7d3!important;border-radius:8px!important;box-shadow:inset 0 1px #fff,0 2px 4px rgba(0,0,0,.1)!important}
+
+/* Y2K Chrome */
+[data-theme="y2kChrome"]{color-scheme:dark}
+[data-theme="y2kChrome"] body{background:radial-gradient(circle at top,#394454,#090b10 65%)!important;color:#eaf0f7!important;font-family:Arial,Helvetica,sans-serif!important}
+[data-theme="y2kChrome"] .cn-2012-topbar{background:linear-gradient(#6c7784,#171b22)!important;color:#fff!important;border-bottom:1px solid #aeb8c3!important;box-shadow:inset 0 1px rgba(255,255,255,.35),0 2px 8px rgba(0,0,0,.45)!important}
+[data-theme="y2kChrome"] .cn-2012-topbar a,[data-theme="y2kChrome"] .cn-2012-topbar button,[data-theme="y2kChrome"] .cn-2012-topbar svg{color:#fff!important}
+[data-theme="y2kChrome"] .cn-2012-sidebar{background:linear-gradient(#242932,#0f1217)!important;border-right:1px solid #7c8792!important;color:#d6dfe7!important}
+[data-theme="y2kChrome"] .cn-video-card{background:linear-gradient(#242a33,#10141a)!important;border:1px solid #626d79!important;box-shadow:0 2px 10px rgba(0,0,0,.35)!important}
+
+/* Windows XP Luna */
+[data-theme="xpLuna"]{color-scheme:light}
+[data-theme="xpLuna"] body{background:#d8e8fb!important;color:#1e2e45!important;font-family:"Tahoma",Arial,sans-serif!important}
+[data-theme="xpLuna"] .cn-2012-topbar{background:linear-gradient(#3d8dde,#0a4fa3)!important;color:#fff!important;border-bottom:1px solid #164b8b!important}
+[data-theme="xpLuna"] .cn-2012-topbar a,[data-theme="xpLuna"] .cn-2012-topbar button,[data-theme="xpLuna"] .cn-2012-topbar svg{color:#fff!important}
+[data-theme="xpLuna"] .cn-2012-sidebar{background:linear-gradient(#edf6ff,#cbdff7)!important;border-right:1px solid #7fa7d4!important}
+[data-theme="xpLuna"] .cn-video-card{background:#fff!important;border:1px solid #9cb9db!important;border-radius:4px!important;box-shadow:0 1px 3px rgba(0,0,0,.14)!important}
+
+/* CRT / VHS */
+[data-theme="crtVhs"]{color-scheme:dark}
+[data-theme="crtVhs"] body{background:#101010!important;color:#dbf6d5!important;font-family:"Courier New",monospace!important}
+[data-theme="crtVhs"] body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:9999;background:repeating-linear-gradient(to bottom,transparent 0 2px,rgba(0,0,0,.09) 3px 4px);mix-blend-mode:multiply}
+[data-theme="crtVhs"] .cn-2012-topbar{background:#151515!important;border-bottom:2px solid #87c95b!important;color:#d7ffc1!important;font-family:"Courier New",monospace!important}
+[data-theme="crtVhs"] .cn-2012-topbar a,[data-theme="crtVhs"] .cn-2012-topbar button,[data-theme="crtVhs"] .cn-2012-topbar svg{color:#d7ffc1!important}
+[data-theme="crtVhs"] .cn-2012-sidebar{background:#111!important;border-right:1px solid #3d5f2d!important;color:#c7e8b5!important}
+[data-theme="crtVhs"] .cn-video-card{background:#161616!important;border:1px solid #466b35!important;box-shadow:none!important;border-radius:0!important}
+
+/* Shared compact controls */
+[data-theme="feather2013"] button,[data-theme="youtube2019"] button,[data-theme="windowsAero"] button,[data-theme="frutigerAero"] button,[data-theme="web2Glossy"] button,[data-theme="y2kChrome"] button,[data-theme="xpLuna"] button,[data-theme="crtVhs"] button{transition:filter .12s ease,transform .12s ease}
+
+/* Channel layout skins */
+.cn-2012-channel--classic-2009 .cn-2012-titlebar{background:linear-gradient(#f7f7f7,#dedede)!important;border:1px solid #aaa!important;color:#222!important}
+.cn-2012-channel--standard-2012 .cn-2012-titlebar{background:linear-gradient(#fff,#ececec)!important;border:1px solid #c4c9cd!important;color:#333!important}
+.cn-2012-channel--onechannel-2013 .cn-2012-cover{height:240px!important}.cn-2012-channel--onechannel-2013 .cn-2012-titlebar{margin-top:-36px!important;position:relative!important;background:rgba(0,0,0,.72)!important;color:#fff!important;border:0!important}
+.cn-2012-channel--feather-profile .cn-2012-titlebar{background:#fff!important;border:0!important;box-shadow:none!important}.cn-2012-channel--feather-profile .cn-2012-cover{border:0!important}
+.cn-2012-channel--creator-studio .cn-2012-body{grid-template-columns:180px minmax(0,1fr) 220px!important}
+.cn-2012-channel--profile-card .cn-2012-channel-inner{max-width:900px!important}.cn-2012-channel--profile-card .cn-2012-cover{height:130px!important}.cn-2012-channel--profile-card .cn-2012-titlebar{background:#fff!important;border:1px solid #ddd!important;border-radius:12px!important;margin-top:-20px!important;position:relative!important}
+.cn-2012-channel--community-profile .cn-2012-body{grid-template-columns:minmax(0,1fr) 260px!important}.cn-2012-channel--community-profile .cn-2012-video-column{grid-column:1!important}
+.cn-2012-channel--video-channel .cn-2012-feature{display:block!important}.cn-2012-channel--video-channel .cn-2012-body{display:block!important}.cn-2012-channel--video-channel .cn-2012-about{display:none!important}
+.cn-2012-channel--music-channel .cn-2012-feature{background:linear-gradient(135deg,#1b1b1b,#6f3ca4)!important;color:#fff!important}.cn-2012-channel--music-channel .cn-2012-video-column{background:#fafafa!important}
+.cn-2012-channel--gaming-channel .cn-2012-feature{background:linear-gradient(135deg,#0e0e0e,#25234f)!important;color:#fff!important}.cn-2012-channel--gaming-channel .cn-2012-titlebar{border-color:#5c4bd6!important}
+.cn-2012-channel--minimal-profile .cn-2012-cover{height:110px!important}.cn-2012-channel--minimal-profile .cn-2012-titlebar{background:transparent!important;border:0!important;box-shadow:none!important}
+.cn-2012-channel--channel-2015 .cn-2012-cover{height:220px!important}.cn-2012-channel--channel-2015 .cn-2012-tabs{background:#fff!important;border-bottom:1px solid #ddd!important}
+.cn-2012-channel--channel-2019 .cn-2012-cover{height:210px!important}.cn-2012-channel--channel-2019 .cn-2012-titlebar{background:#fff!important;border:0!important;box-shadow:none!important}.cn-2012-channel--channel-2019 .cn-2012-tabs{background:#fff!important;border-bottom:1px solid #ddd!important}
+.cn-2012-channel--classic-channel .cn-2012-body{grid-template-columns:200px minmax(0,1fr)!important}
+
+@media (max-width:780px){
+  .cn-2012-channel--onechannel-2013 .cn-2012-cover{height:170px!important}
+  .cn-2012-channel--profile-card .cn-2012-titlebar{margin-top:0!important}
+  .cn-2012-channel--community-profile .cn-2012-body,.cn-2012-channel--creator-studio .cn-2012-body,.cn-2012-channel--classic-channel .cn-2012-body{display:block!important}
+}
