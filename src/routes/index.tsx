@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { AppShell } from "@/components/AppShell";
 import { ChannelAvatar, VerifiedBadge } from "@/components/Media";
 import { VideoCard } from "@/components/VideoCard";
-import { fetchVideos, searchChannels, type VideoSort } from "@/lib/queries";
+import { fetchHomeFeed, fetchVideos, searchChannels, type VideoSort } from "@/lib/queries";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -23,26 +23,29 @@ export const Route = createFileRoute("/")({
 function Home() {
   const { q, sort = "recent" } = Route.useSearch();
   const navigate = Route.useNavigate();
+  const hasFilters = !!q || sort !== "recent";
   const videoSort: VideoSort = sort;
   const videosQuery = useQuery({
-    queryKey: ["videos", q ?? null, videoSort],
-    queryFn: () => fetchVideos({ ...(q ? { search: q } : {}), orderBy: videoSort, limit: 24 }),
-    staleTime: 30_000,
+    queryKey: hasFilters ? ["videos", q ?? null, videoSort] : ["home-feed"],
+    queryFn: () => hasFilters
+      ? fetchVideos({ ...(q ? { search: q } : {}), orderBy: videoSort, limit: 24 })
+      : fetchHomeFeed(24),
+    staleTime: hasFilters ? 60_000 : 30_000,
     gcTime: 5 * 60_000,
   });
   const channelsQuery = useQuery({
     queryKey: ["channels", q ?? null, sort],
     enabled: !!q,
     queryFn: () => searchChannels(q, sort === "subscribers" ? "subscribers" : "recent"),
-    staleTime: 30_000,
+    staleTime: 60_000,
     gcTime: 5 * 60_000,
   });
-  const setSort = (next: SearchOrder) => { void navigate({ to: "/", search: q ? { q, sort: next } : { sort: next } }); };
+  const setSort = (next: SearchOrder) => { void navigate({ to: "/", search: q ? { q, sort: next } : next === "recent" ? {} : { sort: next } }); };
 
   return <AppShell>
     <h1 className="sr-only">Videos y canales en CoreNetwork</h1>
     <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-      <div>{q ? <p className="text-sm text-muted-foreground">Resultados para <span className="font-medium text-foreground">“{q}”</span></p> : <p className="text-sm text-muted-foreground">Videos recomendados para ti</p>}</div>
+      <div>{q ? <p className="text-sm text-muted-foreground">Resultados para <span className="font-medium text-foreground">“{q}”</span></p> : <p className="text-sm text-muted-foreground">{hasFilters ? "Videos filtrados" : "Recomendaciones para ti"}</p>}</div>
       <Select value={sort} onValueChange={(value) => setSort(value as SearchOrder)}><SelectTrigger className="w-48"><SelectValue placeholder="Ordenar" /></SelectTrigger><SelectContent><SelectItem value="subscribers">Más suscripciones</SelectItem><SelectItem value="views">Más vistos</SelectItem><SelectItem value="recent">Más recientes</SelectItem><SelectItem value="oldest">Más antiguos</SelectItem></SelectContent></Select>
     </div>
     {q && channelsQuery.data && channelsQuery.data.length > 0 && <section className="mb-8"><div className="mb-3 flex items-center justify-between"><h2 className="text-lg font-semibold">Canales</h2><span className="text-xs text-muted-foreground">{channelsQuery.data.length} resultados</span></div><div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">{channelsQuery.data.map((channel) => <Link key={channel.id} to="/c/$username" params={{ username: channel.username }} className="flex items-center gap-3 rounded-xl border border-border bg-card p-3 transition-colors hover:bg-surface-hover"><ChannelAvatar path={channel.avatar_path} name={channel.display_name || channel.username} size={48} /><div className="min-w-0"><div className="flex items-center gap-1 truncate font-medium">{channel.display_name || channel.username}{channel.is_verified && <VerifiedBadge className="h-4 w-4" />}</div><p className="truncate text-xs text-muted-foreground">@{channel.username} · {channel.subscriber_count ?? 0} suscriptores</p></div></Link>)}</div></section>}
