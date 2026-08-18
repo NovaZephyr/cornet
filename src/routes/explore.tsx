@@ -15,7 +15,7 @@ type ExploreSearch = { view: ExploreView; sort?: ExploreSort; category?: string 
 export const Route = createFileRoute("/explore")({
   validateSearch: (search: Record<string, unknown>): ExploreSearch => ({
     view: search.view === "channels" ? "channels" : search.view === "series" ? "series" : "videos",
-    sort: search.sort === "recent" ? "recent" : "views",
+    ...(search.sort === "recent" ? { sort: "recent" as const } : search.sort === "views" ? { sort: "views" as const } : {}),
     ...(typeof search.category === "string" && CATEGORIES.includes(search.category as VideoCategory) ? { category: search.category } : {}),
   }),
   head: () => ({
