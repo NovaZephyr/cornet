@@ -82,3 +82,27 @@
 :is([data-theme="retro2012"],.cn-retro-scope) .cn-cosmic-channel .cn-recommended-channel,
 :is([data-theme="retro2012"],.cn-retro-scope) .cn-cosmic-channel .cn-series-card{border-radius:0}
 @media (max-width:780px){:is([data-theme="retro2012"],.cn-retro-scope) .cn-cosmic-title-strip{min-height:0}:is([data-theme="retro2012"],.cn-retro-scope) .cn-cosmic-title-strip .cn-2012-retro-button{min-height:26px}}
+
+/* Cosmic Panda outer canvas follows the same width model as the normal channel layout:
+   full-width skin/background, centered content area capped at 1180px. The internal Cosmic Panda
+   layout is intentionally left untouched. */
+:is([data-theme="retro2012"],.cn-retro-scope) .cn-cosmic-channel{
+  width:100%!important;
+  max-width:none!important;
+  min-height:calc(100vh - 54px)!important;
+  margin:0!important;
+  padding:0!important;
+  background-position:center top!important;
+  background-size:cover!important;
+  box-sizing:border-box!important;
+}
+:is([data-theme="retro2012"],.cn-retro-scope) .cn-cosmic-channel-inner{
+  width:min(1180px,100%)!important;
+  max-width:1180px!important;
+  margin:0 auto!important;
+  padding:7px!important;
+  box-sizing:border-box!important;
+}
+@media (max-width:780px){
+  :is([data-theme="retro2012"],.cn-retro-scope) .cn-cosmic-channel-inner{width:100%!important;max-width:1180px!important;padding:6px!important}
+}
