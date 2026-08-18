@@ -1,9 +1,10 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Outlet, Link, createRootRouteWithContext, useRouter, useLocation, useRouterState, HeadContent, Scripts } from "@tanstack/react-router";
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useState } from "react";
 import { Compass, Home, MessageCircle, Upload, User as UserIcon, Users } from "lucide-react";
 import appCss from "../styles.css?url";
 import "../global-mobile-bar.css";
+import "../custom-themes-gallery.css";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { AuthProvider, useAuth } from "@/hooks/useAuth";
 import { ThemeProvider } from "@/hooks/useTheme";
@@ -66,7 +67,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "author", content: "Cornet" }, { property: "og:title", content: "Cornet — comparte lo que te importa" }, { property: "og:description", content: "Una plataforma sencilla para ver videos, conversar y compartir." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [
-      { rel: "stylesheet", href: appCss }, { rel: "stylesheet", href: "/retro2012.css" }, { rel: "stylesheet", href: "/explore.css" }, { rel: "stylesheet", href: "/messenger-theme.css" }, { rel: "stylesheet", href: "/user-themes.css" }, { rel: "stylesheet", href: "/cosmic-panda-2012.css" }, { rel: "stylesheet", href: "/cosmic-panda-sidebar-fix.css" }, { rel: "stylesheet", href: "/cosmic-panda-light.css" }, { rel: "stylesheet", href: "/cosmic-panda-channel-fullpage.css" }, { rel: "stylesheet", href: "/cosmic-panda-channel-layout.css" },
+      { rel: "stylesheet", href: appCss }, { rel: "stylesheet", href: "/retro2012.css" }, { rel: "stylesheet", href: "/explore.css" }, { rel: "stylesheet", href: "/messenger-theme.css" }, { rel: "stylesheet", href: "/user-themes.css" }, { rel: "stylesheet", href: "/custom-themes-gallery.css" }, { rel: "stylesheet", href: "/cosmic-panda-2012.css" }, { rel: "stylesheet", href: "/cosmic-panda-sidebar-fix.css" }, { rel: "stylesheet", href: "/cosmic-panda-light.css" }, { rel: "stylesheet", href: "/cosmic-panda-channel-fullpage.css" }, { rel: "stylesheet", href: "/cosmic-panda-channel-layout.css" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" }, { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" }, { rel: "icon", href: "/favicon.png", type: "image/png" },
     ],
@@ -77,6 +78,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   errorComponent: ErrorComponent,
 });
 
-const themeBootstrap = `(function(){try{var t=localStorage.getItem('corenetwork-theme-v3');var v=['dark','light','retro2012','gradients','grad-sunset','grad-ocean','grad-neon','grad-candy','lavanda-oscuro','forest','midnight','rose','custom'];if(!t||v.indexOf(t)<0)t='grad-ocean';var r=document.documentElement;var light=t==='light'||t==='retro2012'||t==='grad-candy';r.dataset.theme=t;r.classList.toggle('dark',!light);r.style.colorScheme=light?'light':'dark';}catch(e){}})();`;
-function RootShell({ children }: { children: ReactNode }) { return <html lang="es" data-theme="dark" className="dark" suppressHydrationWarning><head><HeadContent /><script dangerouslySetInnerHTML={{ __html: themeBootstrap }} /></head><body>{children}<Scripts /></body></html>; }
-function RootComponent() { const { queryClient } = Route.useRouteContext(); return <QueryClientProvider client={queryClient}><ThemeProvider><AuthProvider><MaintenanceAwareContent /><GlobalMobileBottomBar /><Toaster position="bottom-center" /></AuthProvider></ThemeProvider></QueryClientProvider>; }
+const themeBootstrap = `(function(){try{var t=localStorage.getItem('corenetwork-theme-v3');var v=['dark','light','retro2012','feather2013','youtube2019','windowsAero','frutigerAero','web2Glossy','y2kChrome','xpLuna','crtVhs','gradients','grad-sunset','grad-ocean','grad-neon','grad-candy','lavanda-oscuro','forest','midnight','rose','custom'];if(!t||v.indexOf(t)<0)t='grad-ocean';var r=document.documentElement;var light=['light','retro2012','feather2013','youtube2019','windowsAero','frutigerAero','web2Glossy','xpLuna','grad-candy'].indexOf(t)>=0;r.dataset.theme=t;r.classList.toggle('dark',!light);r.style.colorScheme=light?'light':'dark';}catch(e){}})();`;
+
+function RootShell({ children }: { children: React.ReactNode }) {
+  return <ThemeProvider><AuthProvider>{children}</AuthProvider></ThemeProvider>;
+}
+function RootComponent() {
+  return <><HeadContent /><MaintenanceAwareContent /><GlobalMobileBottomBar /><Toaster /><Scripts /></>;
+}
