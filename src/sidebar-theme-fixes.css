@@ -1,11 +1,11 @@
 /* Theme separation. Cosmic Panda owns this file; modern themes use modern-themes.css. */
 
-/* Cosmic Panda: dark gradient sidebar, intentionally isolated from all other themes. */
+/* Cosmic Panda 2011 sidebar: compact, dark, rectangular, high-density navigation. */
 [data-theme="retro2012"] .cn-2012-shell-body > .cn-2012-sidebar--cosmic {
   position: sticky !important;
   top: 54px !important;
   align-self: start !important;
-  width: 238px;
+  width: 214px !important;
   min-height: calc(100vh - 54px);
   height: calc(100vh - 54px);
   max-height: calc(100vh - 54px);
@@ -13,28 +13,182 @@
   padding: 0 !important;
   overflow: hidden auto !important;
   box-sizing: border-box;
-  color: #eef2f5;
-  background:
-    radial-gradient(240px 180px at 50% -30px, rgb(78 99 119 / 45%), transparent 72%),
-    linear-gradient(180deg, #29343f 0%, #1c242d 25%, #12181f 58%, #080c10 100%) !important;
+  color: #e5e5e5;
+  background: #171717 !important;
   border: 0 !important;
-  border-right: 1px solid #05070a !important;
-  box-shadow: inset -1px 0 rgb(125 145 163 / 26%), 2px 0 8px rgb(0 0 0 / 20%);
+  border-right: 1px solid #050505 !important;
+  box-shadow: inset -1px 0 rgba(255,255,255,.045), 2px 0 7px rgba(0,0,0,.2);
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 [data-theme="retro2012"] .cn-2012-shell-body > .cn-2012-sidebar--cosmic.is-collapsed {
-  width: 74px;
+  width: 64px !important;
 }
 
 [data-theme="retro2012"] .cn-2012-shell-body > .cn-2012-sidebar--cosmic .cn-2012-sidebar-inner {
   min-height: calc(100vh - 54px);
-  padding: 12px 10px 18px;
-  background: linear-gradient(90deg, rgb(0 0 0 / 14%), transparent 22%, transparent 78%, rgb(255 255 255 / 3%));
+  padding: 9px 8px 16px !important;
+  background: linear-gradient(90deg, #151515, #1b1b1b 50%, #141414);
+}
+
+[data-theme="retro2012"] .cn-2012-sidebar-add {
+  min-height: 30px;
+  margin: 0 0 8px !important;
+  padding: 6px 8px !important;
+  border: 1px solid #444 !important;
+  border-radius: 0 !important;
+  background: linear-gradient(#4b4b4b, #2f2f2f) !important;
+  color: #eee !important;
+  box-shadow: inset 0 1px rgba(255,255,255,.1), 0 1px 1px rgba(0,0,0,.45);
+  font-size: 11px !important;
+  text-shadow: 0 -1px #000;
+}
+
+[data-theme="retro2012"] .cn-2012-sidebar-account {
+  min-height: 50px;
+  padding: 7px 6px 8px !important;
+  border-top: 1px solid #2e2e2e;
+  border-bottom: 1px solid #080808 !important;
+  background: linear-gradient(#232323, #1a1a1a);
+}
+
+[data-theme="retro2012"] .cn-2012-sidebar-account .text-sm {
+  color: #fff !important;
+  font-size: 12px !important;
+}
+
+[data-theme="retro2012"] .cn-2012-sidebar-account .text-white\/60 {
+  color: #999 !important;
+}
+
+[data-theme="retro2012"] .cn-2012-sidebar-account .rounded-xl,
+[data-theme="retro2012"] .cn-2012-sidebar-account img {
+  border-radius: 0 !important;
+  border: 1px solid #555 !important;
+}
+
+[data-theme="retro2012"] .cn-2012-sidebar-account-nav,
+[data-theme="retro2012"] .cn-2012-sidebar-subscriptions {
+  gap: 0 !important;
+}
+
+[data-theme="retro2012"] .cn-2012-sidebar-link {
+  min-height: 31px !important;
+  margin: 0 !important;
+  padding: 6px 8px !important;
+  border: 1px solid transparent !important;
+  border-radius: 0 !important;
+  color: #d3d3d3 !important;
+  background: transparent !important;
+  font-size: 11px !important;
+  font-weight: 400 !important;
+}
+
+[data-theme="retro2012"] .cn-2012-sidebar-link svg {
+  width: 16px !important;
+  height: 16px !important;
+  color: #aaa !important;
+  fill: currentColor;
+  stroke-width: 1.9;
+}
+
+[data-theme="retro2012"] .cn-2012-sidebar-link:hover {
+  border-color: #3b3b3b !important;
+  background: linear-gradient(#303030, #252525) !important;
+  color: #fff !important;
+}
+
+[data-theme="retro2012"] .cn-2012-sidebar-link:hover svg {
+  color: #fff !important;
+}
+
+[data-theme="retro2012"] .cn-2012-sidebar-divider {
+  height: 1px !important;
+  margin: 7px 0 !important;
+  background: #080808 !important;
+  border-top: 1px solid #2b2b2b;
+}
+
+[data-theme="retro2012"] .cn-2012-sidebar-section-title {
+  margin: 8px 0 3px !important;
+  padding: 4px 7px !important;
+  color: #888 !important;
+  font-size: 9px !important;
+  font-weight: 700 !important;
+  letter-spacing: .08em !important;
+  text-transform: uppercase;
+  border-bottom: 1px solid #242424;
+}
+
+[data-theme="retro2012"] .cn-2012-sidebar-subscription {
+  min-height: 30px !important;
+  padding: 4px 7px !important;
+  border: 1px solid transparent !important;
+  border-radius: 0 !important;
+  color: #c8c8c8 !important;
+  font-size: 10px !important;
+}
+
+[data-theme="retro2012"] .cn-2012-sidebar-subscription:hover {
+  border-color: #363636 !important;
+  background: #262626 !important;
+  color: #fff !important;
+}
+
+[data-theme="retro2012"] .cn-2012-sidebar-subscription img {
+  border-radius: 0 !important;
+  border: 1px solid #4a4a4a !important;
+}
+
+[data-theme="retro2012"] .cn-2012-sidebar-muted {
+  padding: 7px !important;
+  color: #777 !important;
+  font-size: 10px !important;
+}
+
+[data-theme="retro2012"] .cn-2012-sidebar-guest {
+  margin: 7px 0 !important;
+  padding: 9px !important;
+  border: 1px solid #303030 !important;
+  border-radius: 0 !important;
+  background: #1e1e1e !important;
+  color: #999 !important;
+  font-size: 10px !important;
+}
+
+[data-theme="retro2012"] .cn-2012-sidebar-guest p {
+  margin-bottom: 4px !important;
+  color: #ddd !important;
+  font-size: 11px !important;
+}
+
+[data-theme="retro2012"] .cn-2012-sidebar-collapsed-nav {
+  gap: 2px !important;
+  padding-top: 3px;
+}
+
+[data-theme="retro2012"] .cn-2012-sidebar-icon {
+  width: 48px !important;
+  height: 38px !important;
+  border: 1px solid transparent !important;
+  border-radius: 0 !important;
+  color: #a9a9a9 !important;
+}
+
+[data-theme="retro2012"] .cn-2012-sidebar-icon svg {
+  fill: currentColor;
+  stroke-width: 1.9;
+}
+
+[data-theme="retro2012"] .cn-2012-sidebar-icon:hover {
+  border-color: #383838 !important;
+  background: #292929 !important;
+  color: #fff !important;
 }
 
 @media (max-width: 900px) {
   [data-theme="retro2012"] .cn-2012-shell-body > .cn-2012-sidebar--cosmic {
-    width: 220px;
+    width: 204px !important;
     height: calc(100vh - 54px);
   }
 }
