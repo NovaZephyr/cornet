@@ -1,0 +1,64 @@
+/* Cosmic Panda channel: full-width page background + centered channel skin. */
+[data-theme="retro2012"] .cn-2012-main:has(.cn-cosmic-channel){
+  width:100%!important;
+  max-width:none!important;
+  margin:0!important;
+  padding:0!important;
+  background:#d9d9d9!important;
+  overflow:visible!important;
+}
+
+[data-theme="retro2012"] .cn-2012-main:has(.cn-cosmic-channel) > .cn-cosmic-channel{
+  width:100%!important;
+  max-width:none!important;
+  margin:0!important;
+  min-height:calc(100vh - 56px)!important;
+  padding:28px 24px 48px!important;
+  background-color:#d9d9d9!important;
+  background-repeat:no-repeat!important;
+  background-position:center top!important;
+  background-size:cover!important;
+  background-attachment:scroll!important;
+  box-sizing:border-box!important;
+}
+
+[data-theme="retro2012"] .cn-2012-main:has(.cn-cosmic-channel) > .cn-cosmic-channel > .cn-cosmic-channel-inner{
+  width:min(1040px,100%)!important;
+  max-width:1040px!important;
+  margin:0 auto!important;
+  padding:0!important;
+  background:rgba(246,248,249,.97)!important;
+  border:1px solid #aeb5ba!important;
+  box-shadow:0 2px 10px rgba(0,0,0,.24)!important;
+  box-sizing:border-box!important;
+}
+
+[data-theme="retro2012"] .cn-2012-main:has(.cn-cosmic-channel) .cn-cosmic-cover{
+  width:100%!important;
+}
+
+[data-theme="retro2012"] .cn-2012-main:has(.cn-cosmic-channel) .cn-cosmic-title-strip,
+[data-theme="retro2012"] .cn-2012-main:has(.cn-cosmic-channel) .cn-cosmic-tabs{
+  width:100%!important;
+}
+
+[data-theme="retro2012"] .cn-2012-main:has(.cn-cosmic-channel) .cn-cosmic-columns{
+  width:100%!important;
+  max-width:none!important;
+  margin:14px 0 0!important;
+  padding:0 12px 14px!important;
+  box-sizing:border-box!important;
+}
+
+@media (max-width:900px){
+  [data-theme="retro2012"] .cn-2012-main:has(.cn-cosmic-channel) > .cn-cosmic-channel{
+    padding:14px 10px 30px!important;
+  }
+  [data-theme="retro2012"] .cn-2012-main:has(.cn-cosmic-channel) > .cn-cosmic-channel > .cn-cosmic-channel-inner{
+    width:100%!important;
+    max-width:none!important;
+  }
+  [data-theme="retro2012"] .cn-2012-main:has(.cn-cosmic-channel) .cn-cosmic-columns{
+    padding:0 8px 10px!important;
+  }
+}
