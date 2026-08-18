@@ -1,0 +1,128 @@
+name: finish-pending
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  finish:
+    if: ${{ !contains(github.event.head_commit.message, 'finish pending') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Apply pending fixes
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          root = Path('.')
+
+          def patch(path, fn):
+              p = root / path
+              text = p.read_text(encoding='utf-8')
+              new = fn(text)
+              if new == text:
+                  raise SystemExit(f'No change made to {path}')
+              p.write_text(new, encoding='utf-8')
+
+          # 1) Make Explore search typing backward-compatible and fix the known route links.
+          def patch_explore(text):
+              text = text.replace('type ExploreSearch = { view: ExploreView; sort: ExploreSort; category?: string };',
+                                  'type ExploreSearch = { view: ExploreView; sort?: ExploreSort; category?: string };')
+              text = text.replace('const { view, sort, category } = Route.useSearch();',
+                                  'const { view, category } = Route.useSearch();\n  const sort: ExploreSort = Route.useSearch().sort === "recent" ? "recent" : "views";')
+              return text
+          patch('src/routes/explore.tsx', patch_explore)
+
+          def patch_appshell(text):
+              text = text.replace('search={{ view: "channels" }}', 'search={{ view: "channels", sort: "views" }}')
+              text = text.replace('search={{ view: "videos" }}', 'search={{ view: "videos", sort: "views" }}')
+              text = text.replace('search={{ view: "videos" as const }}', 'search={{ view: "videos" as const, sort: "views" }}')
+
+              import_anchor = 'import { UploadSafetyBridge } from "@/components/UploadSafetyBridge";'
+              if 'SafetyToggle } from "@/components/SafetyToggle"' not in text:
+                  text = text.replace(import_anchor, import_anchor + '\nimport { SafetyToggle } from "@/components/SafetyToggle";')
+
+              old_footer = '''function SiteFooter() { const links: { to: "/about" | "/blog" | "/rules" | "/partner" | "/community" | "/playlists" | "/settings"; label: string }[] = [{ to: "/about", label: "Información" }, { to: "/blog", label: "Anuncios" }, { to: "/about", label: "Copyright" }, { to: "/partner", label: "Creadores y Partners" }, { to: "/playlists", label: "Playlists" }, { to: "/about", label: "Términos" }, { to: "/about", label: "Privacidad" }, { to: "/about", label: "Reportar un fallo" }, { to: "/settings", label: "Probar algo nuevo" }]; return <footer className="cn-2012-footer border-t border-border px-6 py-9 pb-24 md:pb-9"><div className="mx-auto flex max-w-6xl flex-col items-center gap-3 text-center"><div className="flex items-center gap-2"><img src={logoMark} alt="" className="h-6 w-6 opacity-80" /><span className="text-sm font-bold tracking-tight">Cornet</span></div><nav className="flex max-w-4xl flex-wrap items-center justify-center gap-x-5 gap-y-2 text-[11px] text-muted-foreground">{links.map((l) => <Link key={`${l.to}-${l.label}`} to={l.to} className="transition-colors hover:text-foreground">{l.label}</Link>)}</nav><div className="flex flex-wrap justify-center gap-2 text-[11px]"><span className="rounded-full border border-border/70 bg-surface/60 px-2.5 py-1">Safety: On</span></div><p className="text-[11px] text-muted-foreground">© {new Date().getFullYear()} Cornet.</p></div></footer>; }'''
+              new_footer = '''function SiteFooter() {
+                const links: { to: "/about" | "/blog" | "/partner" | "/playlists" | "/terms" | "/privacy" | "/new"; label: string }[] = [
+                  { to: "/about", label: "Información" }, { to: "/blog", label: "Anuncios" }, { to: "/about", label: "Copyright" },
+                  { to: "/partner", label: "Creadores y Partners" }, { to: "/playlists", label: "Playlists" }, { to: "/terms", label: "Términos" },
+                  { to: "/privacy", label: "Privacidad" }, { to: "/about", label: "Reportar un fallo" }, { to: "/new", label: "Probar algo nuevo" },
+                ];
+                return <footer className="cn-2012-footer border-t border-border px-6 py-9 pb-24 md:pb-9"><div className="mx-auto flex max-w-6xl flex-col items-center gap-3 text-center"><div className="flex items-center gap-2"><img src={logoMark} alt="" className="h-6 w-6 opacity-80" /><span className="text-sm font-bold tracking-tight">Cornet</span></div><nav className="flex max-w-4xl flex-wrap items-center justify-center gap-x-5 gap-y-2 text-[11px] text-muted-foreground">{links.map((l) => <Link key={`${l.to}-${l.label}`} to={l.to} className="transition-colors hover:text-foreground">{l.label}</Link>)}<a href="https://discord.gg/gYFW8Tbrqw" target="_blank" rel="noreferrer noopener" className="transition-colors hover:text-foreground">Discord</a></nav><div className="flex flex-wrap justify-center gap-2 text-[11px]"><SafetyToggle /></div><p className="text-[11px] text-muted-foreground">© {new Date().getFullYear()} Cornet.</p></div></footer>;
+              }'''
+              if old_footer not in text:
+                  raise SystemExit('AppShell footer pattern not found')
+              text = text.replace(old_footer, new_footer)
+
+              old_bar = 'function bottomBarItems(user: unknown): NavItem[] { const items: NavItem[] = [{ to: "/", label: "Inicio", icon: Home }, { to: "/explore", label: "Explorar", icon: Compass }, { to: "/community", label: "Comunidad", icon: Users }]; if (user) items.push({ to: "/messages", label: "Mensajes", icon: MessageCircle }, { to: "/upload", label: "Subir", icon: Upload }); else items.push({ to: "/auth", label: "Tú", icon: UserIcon }); return items; }'
+              new_bar = '''function bottomBarItems(user: unknown): NavItem[] { const items: NavItem[] = [{ to: "/", label: "Inicio", icon: Home }, { to: "/explore", label: "Explorar", icon: Compass }, { to: "/community", label: "Comunidad", icon: Users }]; if (user) items.push({ to: "/messages", label: "Mensajes", icon: MessageCircle }, { to: "/upload", label: "Subir", icon: Upload }); else items.push({ to: "/auth", label: "Tú", icon: UserIcon }); return items; }
+
+export function MobileBottomBar({ user }: { user: unknown }) { return <nav className="fixed inset-x-0 bottom-0 z-[60] border-t border-border bg-background/95 px-2 pb-[max(env(safe-area-inset-bottom),0.4rem)] pt-1 shadow-2xl backdrop-blur md:hidden" aria-label="Navegación móvil">{bottomBarItems(user).map((item) => { const Icon = item.icon; return <Link key={item.to} to={item.to} className="flex flex-1 flex-col items-center gap-0.5 rounded-lg px-2 py-1.5 text-[10px] text-muted-foreground hover:bg-surface-hover hover:text-foreground"> <Icon className="h-4 w-4" />{item.label}</Link>; })}</nav>; }'''
+              if old_bar not in text:
+                  raise SystemExit('AppShell bottom bar pattern not found')
+              text = text.replace(old_bar, new_bar)
+              return text
+          patch('src/components/AppShell.tsx', patch_appshell)
+
+          # Point 1: hashtag back-link with the new sort parameter.
+          def patch_hashtag(text):
+              return text.replace('search={{ view: "videos" as const }}', 'search={{ view: "videos" as const, sort: "views" }}')
+          patch('src/routes/hashtag/$tag.tsx', patch_hashtag)
+
+          # Remove the dead hideSidebar comparison inside the retro-only branch.
+          def patch_channel(text):
+              return text.replace('if (retroLayout) return <AppShell hideSidebar={style !== "corenetwork"}>', 'if (retroLayout) return <AppShell>')
+          patch('src/routes/c.$username.tsx', patch_channel)
+
+          # Messages currently bypass AppShell; add the same mobile nav there.
+          def patch_messages(text):
+              if 'import { MobileBottomBar } from "@/components/AppShell";' not in text:
+                  text = text.replace('import { ChatMediaPicker, getGifUrl, isGifMessage } from "@/components/ChatMedia";', 'import { ChatMediaPicker, getGifUrl, isGifMessage } from "@/components/ChatMedia";\nimport { MobileBottomBar } from "@/components/AppShell";')
+              marker = '  return <div className="mx-auto w-full max-w-7xl px-3 py-4 sm:px-5 lg:px-6">'
+              if marker not in text:
+                  raise SystemExit('Messages main return marker not found')
+              text = text.replace(marker, '  return <><div className="mx-auto w-full max-w-7xl px-3 py-4 sm:px-5 lg:px-6">', 1)
+              text = text.replace('</div>;\n}\n\nexport const Route', '</div><MobileBottomBar user={user} /></>;\n}\n\nexport const Route', 1)
+              friends_marker = '  if (section === "friends") return <div className="mx-auto w-full max-w-7xl px-3 py-4 sm:px-5 lg:px-6">'
+              text = text.replace(friends_marker, '  if (section === "friends") return <><div className="mx-auto w-full max-w-7xl px-3 py-4 sm:px-5 lg:px-6">', 1)
+              text = text.replace('</div><MobileBottomBar user={user} /></>;\n\n  return <>', '</div><MobileBottomBar user={user} /></>;\n\n  return <>', 1)
+              if text.count('<MobileBottomBar user={user} />') < 2:
+                  raise SystemExit('Messages mobile bar insertion incomplete')
+              return text
+          patch('src/routes/messages.tsx', patch_messages)
+
+          # Add the small Safety state control used in the footer.
+          (root / 'src/components/SafetyToggle.tsx').write_text('''import { useEffect, useState } from "react";\n\nconst KEY = "cornet-safety";\n\nexport function SafetyToggle() {\n  const [enabled, setEnabled] = useState(true);\n  useEffect(() => {\n    try { const saved = window.localStorage.getItem(KEY); if (saved !== null) setEnabled(saved === "1"); } catch {}\n  }, []);\n  const toggle = () => setEnabled((value) => { const next = !value; try { window.localStorage.setItem(KEY, next ? "1" : "0"); } catch {} return next; });\n  return <button type="button" onClick={toggle} className="rounded-full border border-border/70 bg-surface/60 px-2.5 py-1 transition-colors hover:bg-surface-hover" aria-pressed={enabled} title="Alternar Safety">Safety: {enabled ? "On" : "Off"}</button>;\n}\n''', encoding='utf-8')
+
+          # Add Terms, Privacy and New pages.
+          (root / 'src/routes/terms.tsx').write_text('''import { createFileRoute } from "@tanstack/react-router";\nimport { AppShell } from "@/components/AppShell";\n\nexport const Route = createFileRoute("/terms")({ head: () => ({ meta: [{ title: "Términos — Cornet" }] }), component: TermsPage });\n\nfunction TermsPage() {\n  return <AppShell><main className="mx-auto max-w-4xl px-4 py-10"><h1 className="text-3xl font-bold">Términos de uso</h1><p className="mt-3 text-sm text-muted-foreground">Estas condiciones describen las reglas básicas para usar Cornet.</p><section className="mt-8 space-y-6 text-sm leading-7"><div><h2 className="font-semibold">Uso responsable</h2><p>No publiques contenido ilegal, abusivo, fraudulento o que infrinja derechos de otras personas.</p></div><div><h2 className="font-semibold">Contenido y cuentas</h2><p>Eres responsable del contenido que publiques y de mantener segura tu cuenta.</p></div><div><h2 className="font-semibold">Moderación</h2><p>Cornet puede retirar contenido o limitar funciones cuando sea necesario para mantener la plataforma segura y funcional.</p></div></section></main></AppShell>;\n}\n''', encoding='utf-8')
+          (root / 'src/routes/privacy.tsx').write_text('''import { createFileRoute } from "@tanstack/react-router";\nimport { AppShell } from "@/components/AppShell";\n\nexport const Route = createFileRoute("/privacy")({ head: () => ({ meta: [{ title: "Privacidad — Cornet" }] }), component: PrivacyPage });\n\nfunction PrivacyPage() {\n  return <AppShell><main className="mx-auto max-w-4xl px-4 py-10"><h1 className="text-3xl font-bold">Privacidad</h1><p className="mt-3 text-sm text-muted-foreground">Información general sobre los datos que Cornet utiliza para prestar sus funciones.</p><section className="mt-8 space-y-6 text-sm leading-7"><div><h2 className="font-semibold">Datos de cuenta</h2><p>Podemos almacenar datos necesarios para tu cuenta, perfil, autenticación y funcionalidades que utilices.</p></div><div><h2 className="font-semibold">Contenido</h2><p>Los videos, mensajes y archivos que subas se almacenan para proporcionar las funciones correspondientes y respetar tus preferencias de acceso.</p></div><div><h2 className="font-semibold">Tus opciones</h2><p>Puedes gestionar tus preferencias y, cuando corresponda, solicitar cambios o eliminación de datos desde la cuenta.</p></div></section></main></AppShell>;\n}\n''', encoding='utf-8')
+          (root / 'src/routes/new.tsx').write_text('''import { createFileRoute, Link } from "@tanstack/react-router";\nimport { FlaskConical, Palette, MessageCircle, Sparkles } from "lucide-react";\nimport { AppShell } from "@/components/AppShell";\nimport { Card } from "@/components/ui/card";\n\nexport const Route = createFileRoute("/new")({ head: () => ({ meta: [{ title: "Probar algo nuevo — Cornet" }] }), component: NewPage });\n\nfunction NewPage() {\n  return <AppShell><main className="mx-auto max-w-5xl px-4 py-10"><div className="mb-8"><div className="mb-2 inline-flex items-center gap-2 text-sm font-medium text-primary"><FlaskConical className="h-4 w-4" /> Laboratorio de Cornet</div><h1 className="text-3xl font-bold">Probar algo nuevo</h1><p className="mt-2 max-w-2xl text-muted-foreground">Explora funciones nuevas y experimentales sin perder la experiencia principal.</p></div><div className="grid gap-4 md:grid-cols-3"><Card className="p-5"><Palette className="h-6 w-6 text-primary" /><h2 className="mt-4 font-semibold">Temas personalizados</h2><p className="mt-1 text-sm text-muted-foreground">Prueba presets, degradados y colores propios desde Apariencia.</p><Link to="/settings" className="mt-4 inline-block text-sm font-medium text-primary hover:underline">Abrir ajustes →</Link></Card><Card className="p-5"><MessageCircle className="h-6 w-6 text-primary" /><h2 className="mt-4 font-semibold">Messenger</h2><p className="mt-1 text-sm text-muted-foreground">Mensajes en tiempo real, grupos, amigos y GIFs.</p><Link to="/messages" className="mt-4 inline-block text-sm font-medium text-primary hover:underline">Abrir Messenger →</Link></Card><Card className="p-5"><Sparkles className="h-6 w-6 text-primary" /><h2 className="mt-4 font-semibold">Explorar renovado</h2><p className="mt-1 text-sm text-muted-foreground">Categorías y orden por popularidad o recientes.</p><Link to="/explore" search={{ view: "videos", sort: "views" }} className="mt-4 inline-block text-sm font-medium text-primary hover:underline">Explorar →</Link></Card></div></main></AppShell>;\n}\n''', encoding='utf-8')
+
+          # Remove the one-shot workflow once the patch has been committed by this run.
+          wf = root / '.github/workflows/finish-pending.yml'
+          if wf.exists(): wf.unlink()
+          PY
+
+      - name: Verify TypeScript/build
+        run: |
+          if [ -f package-lock.json ]; then npm ci; else npm install; fi
+          npx tsc --noEmit
+
+      - name: Commit finished work
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "finish pending: navigation footer and pages" || exit 0
+          git push
