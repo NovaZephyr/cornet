@@ -12,11 +12,14 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AdminRouteImport } from './routes/admin'
+import { Route as AdminMaintenanceRouteImport } from './routes/admin-maintenance'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as BlogRouteImport } from './routes/blog'
 import { Route as CommunityRouteImport } from './routes/community'
 import { Route as ExploreRouteImport } from './routes/explore'
 import { Route as HistoryRouteImport } from './routes/history'
+import { Route as LiveRouteImport } from './routes/live'
+import { Route as MessagesRouteImport } from './routes/messages'
 import { Route as NotificationsRouteImport } from './routes/notifications'
 import { Route as PartnerRouteImport } from './routes/partner'
 import { Route as PlaylistsRouteImport } from './routes/playlists'
@@ -25,47 +28,169 @@ import { Route as SeriesRouteImport } from './routes/series'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as UploadRouteImport } from './routes/upload'
 import { Route as WatchRouteImport } from './routes/watch'
-import { Route as MessagesRouteImport } from './routes/messages'
 import { Route as AdminReportsRouteImport } from './routes/admin.reports'
 import { Route as CUsernameRouteImport } from './routes/c.$username'
 import { Route as HashtagTagRouteImport } from './routes/hashtag/$tag'
+import { Route as LiveIndexRouteImport } from './routes/live.index'
+import { Route as LiveIdRouteImport } from './routes/live.$id'
+import { Route as LiveUsernameRouteImport } from './routes/live.$username'
+import { Route as LiveStudioRouteImport } from './routes/live.studio'
 import { Route as PlaylistPlaylistIdRouteImport } from './routes/playlist.$playlistId'
 import { Route as TTokenRouteImport } from './routes/t.$token'
-import { Route as AdminMaintenanceRouteImport } from './routes/admin-maintenance'
 
-const IndexRoute = IndexRouteImport.update({ id: '/', path: '/', getParentRoute: () => rootRouteImport } as any)
-const AboutRoute = AboutRouteImport.update({ id: '/about', path: '/about', getParentRoute: () => rootRouteImport } as any)
-const AdminRoute = AdminRouteImport.update({ id: '/admin', path: '/admin', getParentRoute: () => rootRouteImport } as any)
-const AuthRoute = AuthRouteImport.update({ id: '/auth', path: '/auth', getParentRoute: () => rootRouteImport } as any)
-const BlogRoute = BlogRouteImport.update({ id: '/blog', path: '/blog', getParentRoute: () => rootRouteImport } as any)
-const CommunityRoute = CommunityRouteImport.update({ id: '/community', path: '/community', getParentRoute: () => rootRouteImport } as any)
-const ExploreRoute = ExploreRouteImport.update({ id: '/explore', path: '/explore', getParentRoute: () => rootRouteImport } as any)
-const HistoryRoute = HistoryRouteImport.update({ id: '/history', path: '/history', getParentRoute: () => rootRouteImport } as any)
-const NotificationsRoute = NotificationsRouteImport.update({ id: '/notifications', path: '/notifications', getParentRoute: () => rootRouteImport } as any)
-const PartnerRoute = PartnerRouteImport.update({ id: '/partner', path: '/partner', getParentRoute: () => rootRouteImport } as any)
-const PlaylistsRoute = PlaylistsRouteImport.update({ id: '/playlists', path: '/playlists', getParentRoute: () => rootRouteImport } as any)
-const RulesRoute = RulesRouteImport.update({ id: '/rules', path: '/rules', getParentRoute: () => rootRouteImport } as any)
-const SeriesRoute = SeriesRouteImport.update({ id: '/series', path: '/series', getParentRoute: () => rootRouteImport } as any)
-const SettingsRoute = SettingsRouteImport.update({ id: '/settings', path: '/settings', getParentRoute: () => rootRouteImport } as any)
-const UploadRoute = UploadRouteImport.update({ id: '/upload', path: '/upload', getParentRoute: () => rootRouteImport } as any)
-const WatchRoute = WatchRouteImport.update({ id: '/watch', path: '/watch', getParentRoute: () => rootRouteImport } as any)
-const MessagesRoute = MessagesRouteImport.update({ id: '/messages', path: '/messages', getParentRoute: () => rootRouteImport } as any)
-const AdminReportsRoute = AdminReportsRouteImport.update({ id: '/reports', path: '/reports', getParentRoute: () => AdminRoute } as any)
-const CUsernameRoute = CUsernameRouteImport.update({ id: '/c/$username', path: '/c/$username', getParentRoute: () => rootRouteImport } as any)
-const HashtagTagRoute = HashtagTagRouteImport.update({ id: '/hashtag/$tag', path: '/hashtag/$tag', getParentRoute: () => rootRouteImport } as any)
-const PlaylistPlaylistIdRoute = PlaylistPlaylistIdRouteImport.update({ id: '/playlist/$playlistId', path: '/playlist/$playlistId', getParentRoute: () => rootRouteImport } as any)
-const TTokenRoute = TTokenRouteImport.update({ id: '/t/$token', path: '/t/$token', getParentRoute: () => rootRouteImport } as any)
-const AdminMaintenanceRoute = AdminMaintenanceRouteImport.update({ id: '/admin-maintenance', path: '/admin-maintenance', getParentRoute: () => rootRouteImport } as any)
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminMaintenanceRoute = AdminMaintenanceRouteImport.update({
+  id: '/admin-maintenance',
+  path: '/admin-maintenance',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlogRoute = BlogRouteImport.update({
+  id: '/blog',
+  path: '/blog',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CommunityRoute = CommunityRouteImport.update({
+  id: '/community',
+  path: '/community',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExploreRoute = ExploreRouteImport.update({
+  id: '/explore',
+  path: '/explore',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HistoryRoute = HistoryRouteImport.update({
+  id: '/history',
+  path: '/history',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LiveRoute = LiveRouteImport.update({
+  id: '/live',
+  path: '/live',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MessagesRoute = MessagesRouteImport.update({
+  id: '/messages',
+  path: '/messages',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NotificationsRoute = NotificationsRouteImport.update({
+  id: '/notifications',
+  path: '/notifications',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PartnerRoute = PartnerRouteImport.update({
+  id: '/partner',
+  path: '/partner',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PlaylistsRoute = PlaylistsRouteImport.update({
+  id: '/playlists',
+  path: '/playlists',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RulesRoute = RulesRouteImport.update({
+  id: '/rules',
+  path: '/rules',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SeriesRoute = SeriesRouteImport.update({
+  id: '/series',
+  path: '/series',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UploadRoute = UploadRouteImport.update({
+  id: '/upload',
+  path: '/upload',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WatchRoute = WatchRouteImport.update({
+  id: '/watch',
+  path: '/watch',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminReportsRoute = AdminReportsRouteImport.update({
+  id: '/reports',
+  path: '/reports',
+  getParentRoute: () => AdminRoute,
+} as any)
+const CUsernameRoute = CUsernameRouteImport.update({
+  id: '/c/$username',
+  path: '/c/$username',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HashtagTagRoute = HashtagTagRouteImport.update({
+  id: '/hashtag/$tag',
+  path: '/hashtag/$tag',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LiveIndexRoute = LiveIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => LiveRoute,
+} as any)
+const LiveIdRoute = LiveIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => LiveRoute,
+} as any)
+const LiveUsernameRoute = LiveUsernameRouteImport.update({
+  id: '/$username',
+  path: '/$username',
+  getParentRoute: () => LiveRoute,
+} as any)
+const LiveStudioRoute = LiveStudioRouteImport.update({
+  id: '/studio',
+  path: '/studio',
+  getParentRoute: () => LiveRoute,
+} as any)
+const PlaylistPlaylistIdRoute = PlaylistPlaylistIdRouteImport.update({
+  id: '/playlist/$playlistId',
+  path: '/playlist/$playlistId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TTokenRoute = TTokenRouteImport.update({
+  id: '/t/$token',
+  path: '/t/$token',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/admin': typeof AdminRouteWithChildren
+  '/admin-maintenance': typeof AdminMaintenanceRoute
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRoute
   '/community': typeof CommunityRoute
   '/explore': typeof ExploreRoute
   '/history': typeof HistoryRoute
+  '/live': typeof LiveRouteWithChildren
+  '/messages': typeof MessagesRoute
   '/notifications': typeof NotificationsRoute
   '/partner': typeof PartnerRoute
   '/playlists': typeof PlaylistsRoute
@@ -74,25 +199,58 @@ export interface FileRoutesByFullPath {
   '/settings': typeof SettingsRoute
   '/upload': typeof UploadRoute
   '/watch': typeof WatchRoute
-  '/messages': typeof MessagesRoute
   '/admin/reports': typeof AdminReportsRoute
   '/c/$username': typeof CUsernameRoute
   '/hashtag/$tag': typeof HashtagTagRoute
+  '/live/$id': typeof LiveIdRoute
+  '/live/$username': typeof LiveUsernameRoute
+  '/live/studio': typeof LiveStudioRoute
   '/playlist/$playlistId': typeof PlaylistPlaylistIdRoute
   '/t/$token': typeof TTokenRoute
-  '/admin-maintenance': typeof AdminMaintenanceRoute
+  '/live/': typeof LiveIndexRoute
 }
-export interface FileRoutesByTo extends FileRoutesByFullPath {}
+export interface FileRoutesByTo {
+  '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/admin': typeof AdminRouteWithChildren
+  '/admin-maintenance': typeof AdminMaintenanceRoute
+  '/auth': typeof AuthRoute
+  '/blog': typeof BlogRoute
+  '/community': typeof CommunityRoute
+  '/explore': typeof ExploreRoute
+  '/history': typeof HistoryRoute
+  '/messages': typeof MessagesRoute
+  '/notifications': typeof NotificationsRoute
+  '/partner': typeof PartnerRoute
+  '/playlists': typeof PlaylistsRoute
+  '/rules': typeof RulesRoute
+  '/series': typeof SeriesRoute
+  '/settings': typeof SettingsRoute
+  '/upload': typeof UploadRoute
+  '/watch': typeof WatchRoute
+  '/admin/reports': typeof AdminReportsRoute
+  '/c/$username': typeof CUsernameRoute
+  '/hashtag/$tag': typeof HashtagTagRoute
+  '/live/$id': typeof LiveIdRoute
+  '/live/$username': typeof LiveUsernameRoute
+  '/live/studio': typeof LiveStudioRoute
+  '/playlist/$playlistId': typeof PlaylistPlaylistIdRoute
+  '/t/$token': typeof TTokenRoute
+  '/live': typeof LiveIndexRoute
+}
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/admin': typeof AdminRouteWithChildren
+  '/admin-maintenance': typeof AdminMaintenanceRoute
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRoute
   '/community': typeof CommunityRoute
   '/explore': typeof ExploreRoute
   '/history': typeof HistoryRoute
+  '/live': typeof LiveRouteWithChildren
+  '/messages': typeof MessagesRoute
   '/notifications': typeof NotificationsRoute
   '/partner': typeof PartnerRoute
   '/playlists': typeof PlaylistsRoute
@@ -101,31 +259,120 @@ export interface FileRoutesById {
   '/settings': typeof SettingsRoute
   '/upload': typeof UploadRoute
   '/watch': typeof WatchRoute
-  '/messages': typeof MessagesRoute
   '/admin/reports': typeof AdminReportsRoute
   '/c/$username': typeof CUsernameRoute
   '/hashtag/$tag': typeof HashtagTagRoute
+  '/live/$id': typeof LiveIdRoute
+  '/live/$username': typeof LiveUsernameRoute
+  '/live/studio': typeof LiveStudioRoute
   '/playlist/$playlistId': typeof PlaylistPlaylistIdRoute
   '/t/$token': typeof TTokenRoute
-  '/admin-maintenance': typeof AdminMaintenanceRoute
+  '/live/': typeof LiveIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: keyof FileRoutesByFullPath
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/admin'
+    | '/admin-maintenance'
+    | '/auth'
+    | '/blog'
+    | '/community'
+    | '/explore'
+    | '/history'
+    | '/live'
+    | '/messages'
+    | '/notifications'
+    | '/partner'
+    | '/playlists'
+    | '/rules'
+    | '/series'
+    | '/settings'
+    | '/upload'
+    | '/watch'
+    | '/admin/reports'
+    | '/c/$username'
+    | '/hashtag/$tag'
+    | '/live/$id'
+    | '/live/$username'
+    | '/live/studio'
+    | '/playlist/$playlistId'
+    | '/t/$token'
+    | '/live/'
   fileRoutesByTo: FileRoutesByTo
-  to: keyof FileRoutesByFullPath
-  id: keyof FileRoutesById
+  to:
+    | '/'
+    | '/about'
+    | '/admin'
+    | '/admin-maintenance'
+    | '/auth'
+    | '/blog'
+    | '/community'
+    | '/explore'
+    | '/history'
+    | '/messages'
+    | '/notifications'
+    | '/partner'
+    | '/playlists'
+    | '/rules'
+    | '/series'
+    | '/settings'
+    | '/upload'
+    | '/watch'
+    | '/admin/reports'
+    | '/c/$username'
+    | '/hashtag/$tag'
+    | '/live/$id'
+    | '/live/$username'
+    | '/live/studio'
+    | '/playlist/$playlistId'
+    | '/t/$token'
+    | '/live'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/admin'
+    | '/admin-maintenance'
+    | '/auth'
+    | '/blog'
+    | '/community'
+    | '/explore'
+    | '/history'
+    | '/live'
+    | '/messages'
+    | '/notifications'
+    | '/partner'
+    | '/playlists'
+    | '/rules'
+    | '/series'
+    | '/settings'
+    | '/upload'
+    | '/watch'
+    | '/admin/reports'
+    | '/c/$username'
+    | '/hashtag/$tag'
+    | '/live/$id'
+    | '/live/$username'
+    | '/live/studio'
+    | '/playlist/$playlistId'
+    | '/t/$token'
+    | '/live/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   AdminRoute: typeof AdminRouteWithChildren
+  AdminMaintenanceRoute: typeof AdminMaintenanceRoute
   AuthRoute: typeof AuthRoute
   BlogRoute: typeof BlogRoute
   CommunityRoute: typeof CommunityRoute
   ExploreRoute: typeof ExploreRoute
   HistoryRoute: typeof HistoryRoute
+  LiveRoute: typeof LiveRouteWithChildren
+  MessagesRoute: typeof MessagesRoute
   NotificationsRoute: typeof NotificationsRoute
   PartnerRoute: typeof PartnerRoute
   PlaylistsRoute: typeof PlaylistsRoute
@@ -134,44 +381,274 @@ export interface RootRouteChildren {
   SettingsRoute: typeof SettingsRoute
   UploadRoute: typeof UploadRoute
   WatchRoute: typeof WatchRoute
-  MessagesRoute: typeof MessagesRoute
   CUsernameRoute: typeof CUsernameRoute
   HashtagTagRoute: typeof HashtagTagRoute
   PlaylistPlaylistIdRoute: typeof PlaylistPlaylistIdRoute
   TTokenRoute: typeof TTokenRoute
-  AdminMaintenanceRoute: typeof AdminMaintenanceRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': { id: '/'; path: '/'; fullPath: '/'; preLoaderRoute: typeof IndexRouteImport; parentRoute: typeof rootRouteImport }
-    '/about': { id: '/about'; path: '/about'; fullPath: '/about'; preLoaderRoute: typeof AboutRouteImport; parentRoute: typeof rootRouteImport }
-    '/admin': { id: '/admin'; path: '/admin'; fullPath: '/admin'; preLoaderRoute: typeof AdminRouteImport; parentRoute: typeof rootRouteImport }
-    '/auth': { id: '/auth'; path: '/auth'; fullPath: '/auth'; preLoaderRoute: typeof AuthRouteImport; parentRoute: typeof rootRouteImport }
-    '/blog': { id: '/blog'; path: '/blog'; fullPath: '/blog'; preLoaderRoute: typeof BlogRouteImport; parentRoute: typeof rootRouteImport }
-    '/community': { id: '/community'; path: '/community'; fullPath: '/community'; preLoaderRoute: typeof CommunityRouteImport; parentRoute: typeof rootRouteImport }
-    '/explore': { id: '/explore'; path: '/explore'; fullPath: '/explore'; preLoaderRoute: typeof ExploreRouteImport; parentRoute: typeof rootRouteImport }
-    '/history': { id: '/history'; path: '/history'; fullPath: '/history'; preLoaderRoute: typeof HistoryRouteImport; parentRoute: typeof rootRouteImport }
-    '/notifications': { id: '/notifications'; path: '/notifications'; fullPath: '/notifications'; preLoaderRoute: typeof NotificationsRouteImport; parentRoute: typeof rootRouteImport }
-    '/partner': { id: '/partner'; path: '/partner'; fullPath: '/partner'; preLoaderRoute: typeof PartnerRouteImport; parentRoute: typeof rootRouteImport }
-    '/playlists': { id: '/playlists'; path: '/playlists'; fullPath: '/playlists'; preLoaderRoute: typeof PlaylistsRouteImport; parentRoute: typeof rootRouteImport }
-    '/rules': { id: '/rules'; path: '/rules'; fullPath: '/rules'; preLoaderRoute: typeof RulesRouteImport; parentRoute: typeof rootRouteImport }
-    '/series': { id: '/series'; path: '/series'; fullPath: '/series'; preLoaderRoute: typeof SeriesRouteImport; parentRoute: typeof rootRouteImport }
-    '/settings': { id: '/settings'; path: '/settings'; fullPath: '/settings'; preLoaderRoute: typeof SettingsRouteImport; parentRoute: typeof rootRouteImport }
-    '/upload': { id: '/upload'; path: '/upload'; fullPath: '/upload'; preLoaderRoute: typeof UploadRouteImport; parentRoute: typeof rootRouteImport }
-    '/watch': { id: '/watch'; path: '/watch'; fullPath: '/watch'; preLoaderRoute: typeof WatchRouteImport; parentRoute: typeof rootRouteImport }
-    '/messages': { id: '/messages'; path: '/messages'; fullPath: '/messages'; preLoaderRoute: typeof MessagesRouteImport; parentRoute: typeof rootRouteImport }
-    '/admin/reports': { id: '/admin/reports'; path: '/reports'; fullPath: '/admin/reports'; preLoaderRoute: typeof AdminReportsRouteImport; parentRoute: typeof AdminRoute }
-    '/c/$username': { id: '/c/$username'; path: '/c/$username'; fullPath: '/c/$username'; preLoaderRoute: typeof CUsernameRouteImport; parentRoute: typeof rootRouteImport }
-    '/hashtag/$tag': { id: '/hashtag/$tag'; path: '/hashtag/$tag'; fullPath: '/hashtag/$tag'; preLoaderRoute: typeof HashtagTagRouteImport; parentRoute: typeof rootRouteImport }
-    '/playlist/$playlistId': { id: '/playlist/$playlistId'; path: '/playlist/$playlistId'; fullPath: '/playlist/$playlistId'; preLoaderRoute: typeof PlaylistPlaylistIdRouteImport; parentRoute: typeof rootRouteImport }
-    '/t/$token': { id: '/t/$token'; path: '/t/$token'; fullPath: '/t/$token'; preLoaderRoute: typeof TTokenRouteImport; parentRoute: typeof rootRouteImport }
-    '/admin-maintenance': { id: '/admin-maintenance'; path: '/admin-maintenance'; fullPath: '/admin-maintenance'; preLoaderRoute: typeof AdminMaintenanceRouteImport; parentRoute: typeof rootRouteImport }
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin-maintenance': {
+      id: '/admin-maintenance'
+      path: '/admin-maintenance'
+      fullPath: '/admin-maintenance'
+      preLoaderRoute: typeof AdminMaintenanceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog': {
+      id: '/blog'
+      path: '/blog'
+      fullPath: '/blog'
+      preLoaderRoute: typeof BlogRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/community': {
+      id: '/community'
+      path: '/community'
+      fullPath: '/community'
+      preLoaderRoute: typeof CommunityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/explore': {
+      id: '/explore'
+      path: '/explore'
+      fullPath: '/explore'
+      preLoaderRoute: typeof ExploreRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/history': {
+      id: '/history'
+      path: '/history'
+      fullPath: '/history'
+      preLoaderRoute: typeof HistoryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/live': {
+      id: '/live'
+      path: '/live'
+      fullPath: '/live'
+      preLoaderRoute: typeof LiveRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/messages': {
+      id: '/messages'
+      path: '/messages'
+      fullPath: '/messages'
+      preLoaderRoute: typeof MessagesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/notifications': {
+      id: '/notifications'
+      path: '/notifications'
+      fullPath: '/notifications'
+      preLoaderRoute: typeof NotificationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/partner': {
+      id: '/partner'
+      path: '/partner'
+      fullPath: '/partner'
+      preLoaderRoute: typeof PartnerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/playlists': {
+      id: '/playlists'
+      path: '/playlists'
+      fullPath: '/playlists'
+      preLoaderRoute: typeof PlaylistsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/rules': {
+      id: '/rules'
+      path: '/rules'
+      fullPath: '/rules'
+      preLoaderRoute: typeof RulesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/series': {
+      id: '/series'
+      path: '/series'
+      fullPath: '/series'
+      preLoaderRoute: typeof SeriesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/upload': {
+      id: '/upload'
+      path: '/upload'
+      fullPath: '/upload'
+      preLoaderRoute: typeof UploadRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/watch': {
+      id: '/watch'
+      path: '/watch'
+      fullPath: '/watch'
+      preLoaderRoute: typeof WatchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/reports': {
+      id: '/admin/reports'
+      path: '/reports'
+      fullPath: '/admin/reports'
+      preLoaderRoute: typeof AdminReportsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/c/$username': {
+      id: '/c/$username'
+      path: '/c/$username'
+      fullPath: '/c/$username'
+      preLoaderRoute: typeof CUsernameRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/hashtag/$tag': {
+      id: '/hashtag/$tag'
+      path: '/hashtag/$tag'
+      fullPath: '/hashtag/$tag'
+      preLoaderRoute: typeof HashtagTagRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/live/': {
+      id: '/live/'
+      path: '/'
+      fullPath: '/live/'
+      preLoaderRoute: typeof LiveIndexRouteImport
+      parentRoute: typeof LiveRoute
+    }
+    '/live/$id': {
+      id: '/live/$id'
+      path: '/$id'
+      fullPath: '/live/$id'
+      preLoaderRoute: typeof LiveIdRouteImport
+      parentRoute: typeof LiveRoute
+    }
+    '/live/$username': {
+      id: '/live/$username'
+      path: '/$username'
+      fullPath: '/live/$username'
+      preLoaderRoute: typeof LiveUsernameRouteImport
+      parentRoute: typeof LiveRoute
+    }
+    '/live/studio': {
+      id: '/live/studio'
+      path: '/studio'
+      fullPath: '/live/studio'
+      preLoaderRoute: typeof LiveStudioRouteImport
+      parentRoute: typeof LiveRoute
+    }
+    '/playlist/$playlistId': {
+      id: '/playlist/$playlistId'
+      path: '/playlist/$playlistId'
+      fullPath: '/playlist/$playlistId'
+      preLoaderRoute: typeof PlaylistPlaylistIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/t/$token': {
+      id: '/t/$token'
+      path: '/t/$token'
+      fullPath: '/t/$token'
+      preLoaderRoute: typeof TTokenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 interface AdminRouteChildren {
   AdminReportsRoute: typeof AdminReportsRoute
 }
-const AdminRouteChildren: AdminRouteChildren = { AdminReportsRoute: AdminReportsRoute }
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminReportsRoute: AdminReportsRoute,
+}
+
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
+interface LiveRouteChildren {
+  LiveIdRoute: typeof LiveIdRoute
+  LiveUsernameRoute: typeof LiveUsernameRoute
+  LiveStudioRoute: typeof LiveStudioRoute
+  LiveIndexRoute: typeof LiveIndexRoute
+}
+
+const LiveRouteChildren: LiveRouteChildren = {
+  LiveIdRoute: LiveIdRoute,
+  LiveUsernameRoute: LiveUsernameRoute,
+  LiveStudioRoute: LiveStudioRoute,
+  LiveIndexRoute: LiveIndexRoute,
+}
+
+const LiveRouteWithChildren = LiveRoute._addFileChildren(LiveRouteChildren)
+
+const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
+  AdminRoute: AdminRouteWithChildren,
+  AdminMaintenanceRoute: AdminMaintenanceRoute,
+  AuthRoute: AuthRoute,
+  BlogRoute: BlogRoute,
+  CommunityRoute: CommunityRoute,
+  ExploreRoute: ExploreRoute,
+  HistoryRoute: HistoryRoute,
+  LiveRoute: LiveRouteWithChildren,
+  MessagesRoute: MessagesRoute,
+  NotificationsRoute: NotificationsRoute,
+  PartnerRoute: PartnerRoute,
+  PlaylistsRoute: PlaylistsRoute,
+  RulesRoute: RulesRoute,
+  SeriesRoute: SeriesRoute,
+  SettingsRoute: SettingsRoute,
+  UploadRoute: UploadRoute,
+  WatchRoute: WatchRoute,
+  CUsernameRoute: CUsernameRoute,
+  HashtagTagRoute: HashtagTagRoute,
+  PlaylistPlaylistIdRoute: PlaylistPlaylistIdRoute,
+  TTokenRoute: TTokenRoute,
+}
+export const routeTree = rootRouteImport
+  ._addFileChildren(rootRouteChildren)
+  ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

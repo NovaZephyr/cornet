@@ -150,6 +150,51 @@ export type Database = {
           },
         ]
       }
+      community_files: {
+        Row: {
+          created_at: string
+          downloads: number
+          id: string
+          is_public: boolean
+          mime_type: string | null
+          original_name: string
+          public_url: string | null
+          share_token: string
+          size_bytes: number
+          storage_path: string
+          storage_provider: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          downloads?: number
+          id?: string
+          is_public?: boolean
+          mime_type?: string | null
+          original_name: string
+          public_url?: string | null
+          share_token?: string
+          size_bytes: number
+          storage_path: string
+          storage_provider?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          downloads?: number
+          id?: string
+          is_public?: boolean
+          mime_type?: string | null
+          original_name?: string
+          public_url?: string | null
+          share_token?: string
+          size_bytes?: number
+          storage_path?: string
+          storage_provider?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       community_post_comments: {
         Row: {
           content: string
@@ -236,6 +281,42 @@ export type Database = {
         }
         Relationships: []
       }
+      community_temp_files: {
+        Row: {
+          created_at: string
+          downloads: number
+          expires_at: string
+          id: string
+          mime_type: string | null
+          original_name: string
+          size_bytes: number
+          storage_path: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          downloads?: number
+          expires_at: string
+          id?: string
+          mime_type?: string | null
+          original_name: string
+          size_bytes: number
+          storage_path: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          downloads?: number
+          expires_at?: string
+          id?: string
+          mime_type?: string | null
+          original_name?: string
+          size_bytes?: number
+          storage_path?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       content_reports: {
         Row: {
           channel_id: string | null
@@ -293,6 +374,54 @@ export type Database = {
           },
         ]
       }
+      friend_requests: {
+        Row: {
+          created_at: string
+          id: string
+          recipient_id: string
+          requester_id: string
+          responded_at: string | null
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          recipient_id: string
+          requester_id: string
+          responded_at?: string | null
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          recipient_id?: string
+          requester_id?: string
+          responded_at?: string | null
+          status?: string
+        }
+        Relationships: []
+      }
+      friendships: {
+        Row: {
+          created_at: string
+          id: string
+          user_a: string
+          user_b: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          user_a: string
+          user_b: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          user_a?: string
+          user_b?: string
+        }
+        Relationships: []
+      }
       hashtags: {
         Row: {
           created_at: string
@@ -313,6 +442,187 @@ export type Database = {
           normalized_name?: string
         }
         Relationships: []
+      }
+      live_stream_secrets: {
+        Row: {
+          live_stream_id: string
+          rtmp_url: string
+          stream_key: string
+        }
+        Insert: {
+          live_stream_id: string
+          rtmp_url: string
+          stream_key: string
+        }
+        Update: {
+          live_stream_id?: string
+          rtmp_url?: string
+          stream_key?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "live_stream_secrets_live_stream_id_fkey"
+            columns: ["live_stream_id"]
+            isOneToOne: true
+            referencedRelation: "live_streams"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      live_streams: {
+        Row: {
+          cf_live_input_uid: string | null
+          cf_playback_uid: string | null
+          created_at: string
+          description: string | null
+          ended_at: string | null
+          id: string
+          started_at: string | null
+          status: string
+          thumbnail_path: string | null
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          cf_live_input_uid?: string | null
+          cf_playback_uid?: string | null
+          created_at?: string
+          description?: string | null
+          ended_at?: string | null
+          id?: string
+          started_at?: string | null
+          status?: string
+          thumbnail_path?: string | null
+          title?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          cf_live_input_uid?: string | null
+          cf_playback_uid?: string | null
+          created_at?: string
+          description?: string | null
+          ended_at?: string | null
+          id?: string
+          started_at?: string | null
+          status?: string
+          thumbnail_path?: string | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      message_conversation_members: {
+        Row: {
+          conversation_id: string
+          joined_at: string
+          last_read_at: string | null
+          nickname: string | null
+          user_id: string
+        }
+        Insert: {
+          conversation_id: string
+          joined_at?: string
+          last_read_at?: string | null
+          nickname?: string | null
+          user_id: string
+        }
+        Update: {
+          conversation_id?: string
+          joined_at?: string
+          last_read_at?: string | null
+          nickname?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "message_conversation_members_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "message_conversations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      message_conversations: {
+        Row: {
+          created_at: string
+          id: string
+          kind: string
+          last_message_at: string | null
+          name: string | null
+          owner_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          kind?: string
+          last_message_at?: string | null
+          name?: string | null
+          owner_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          kind?: string
+          last_message_at?: string | null
+          name?: string | null
+          owner_id?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      messages: {
+        Row: {
+          content: string
+          conversation_id: string
+          created_at: string
+          deleted_at: string | null
+          edited_at: string | null
+          id: string
+          reply_to_id: string | null
+          sender_id: string
+        }
+        Insert: {
+          content: string
+          conversation_id: string
+          created_at?: string
+          deleted_at?: string | null
+          edited_at?: string | null
+          id?: string
+          reply_to_id?: string | null
+          sender_id: string
+        }
+        Update: {
+          content?: string
+          conversation_id?: string
+          created_at?: string
+          deleted_at?: string | null
+          edited_at?: string | null
+          id?: string
+          reply_to_id?: string | null
+          sender_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "messages_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "message_conversations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "messages_reply_to_id_fkey"
+            columns: ["reply_to_id"]
+            isOneToOne: false
+            referencedRelation: "messages"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       notifications: {
         Row: {
@@ -432,6 +742,8 @@ export type Database = {
           created_at: string
           description: string
           id: string
+          is_series: boolean
+          kind: string
           title: string
           updated_at: string
           user_id: string
@@ -441,6 +753,8 @@ export type Database = {
           created_at?: string
           description?: string
           id?: string
+          is_series?: boolean
+          kind?: string
           title: string
           updated_at?: string
           user_id: string
@@ -450,6 +764,8 @@ export type Database = {
           created_at?: string
           description?: string
           id?: string
+          is_series?: boolean
+          kind?: string
           title?: string
           updated_at?: string
           user_id?: string
@@ -502,6 +818,7 @@ export type Database = {
           gif_path: string | null
           id: string
           is_banned: boolean
+          is_music_channel: boolean
           is_verified: boolean
           preferred_language: string
           subscriber_count: number
@@ -527,6 +844,7 @@ export type Database = {
           gif_path?: string | null
           id: string
           is_banned?: boolean
+          is_music_channel?: boolean
           is_verified?: boolean
           preferred_language?: string
           subscriber_count?: number
@@ -552,6 +870,7 @@ export type Database = {
           gif_path?: string | null
           id?: string
           is_banned?: boolean
+          is_music_channel?: boolean
           is_verified?: boolean
           preferred_language?: string
           subscriber_count?: number
@@ -591,6 +910,27 @@ export type Database = {
           message?: string
           updated_at?: string
           updated_by?: string | null
+        }
+        Relationships: []
+      }
+      site_settings: {
+        Row: {
+          id: boolean
+          maintenance_message: string
+          maintenance_mode: boolean
+          updated_at: string
+        }
+        Insert: {
+          id?: boolean
+          maintenance_message?: string
+          maintenance_mode?: boolean
+          updated_at?: string
+        }
+        Update: {
+          id?: boolean
+          maintenance_message?: string
+          maintenance_mode?: boolean
+          updated_at?: string
         }
         Relationships: []
       }
@@ -656,6 +996,41 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      user_watch_history: {
+        Row: {
+          completed: boolean
+          id: string
+          progress_seconds: number
+          user_id: string
+          video_id: string
+          watched_at: string
+        }
+        Insert: {
+          completed?: boolean
+          id?: string
+          progress_seconds?: number
+          user_id: string
+          video_id: string
+          watched_at?: string
+        }
+        Update: {
+          completed?: boolean
+          id?: string
+          progress_seconds?: number
+          user_id?: string
+          video_id?: string
+          watched_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_watch_history_video_id_fkey"
+            columns: ["video_id"]
+            isOneToOne: false
+            referencedRelation: "videos"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       video_captions: {
         Row: {
@@ -851,6 +1226,11 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      create_cornet_dm: { Args: { p_other_user: string }; Returns: string }
+      create_cornet_group: {
+        Args: { p_member_ids: string[]; p_name: string }
+        Returns: string
+      }
       create_notification: {
         Args: {
           _actor_id?: string
@@ -878,6 +1258,17 @@ export type Database = {
         Args: { _user_id: string }
         Returns: Database["public"]["Enums"]["app_role"][]
       }
+      get_public_community_file: {
+        Args: { _token: string }
+        Returns: {
+          downloads: number
+          id: string
+          mime_type: string
+          original_name: string
+          size_bytes: number
+          storage_path: string
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -885,8 +1276,48 @@ export type Database = {
         }
         Returns: boolean
       }
+      increment_community_file_download: {
+        Args: { _id: string }
+        Returns: undefined
+      }
+      increment_community_temp_download: {
+        Args: { _id: string }
+        Returns: undefined
+      }
       increment_views: { Args: { _video_id: string }; Returns: undefined }
       is_banned: { Args: { _user_id: string }; Returns: boolean }
+      is_message_member: {
+        Args: { p_conversation_id: string; p_user_id: string }
+        Returns: boolean
+      }
+      notify_mentions: {
+        Args: {
+          _body?: string
+          _content: string
+          _link?: string
+          _notification_type?: string
+          _title?: string
+        }
+        Returns: number
+      }
+      notify_mentions_as_user: {
+        Args: {
+          actor_id: string
+          body: string
+          content: string
+          link: string
+          title: string
+        }
+        Returns: number
+      }
+      record_watch_history: {
+        Args: {
+          _completed?: boolean
+          _progress_seconds?: number
+          _video_id: string
+        }
+        Returns: string
+      }
       request_account_deletion: { Args: never; Returns: boolean }
       submit_content_report: {
         Args: {
@@ -898,15 +1329,10 @@ export type Database = {
         }
         Returns: string
       }
-      vote_on_announcement_poll:
-        | {
-            Args: { _announcement_id: string; _option: string }
-            Returns: string
-          }
-        | {
-            Args: { _announcement_id: string; _option_id: string }
-            Returns: string
-          }
+      vote_on_announcement_poll: {
+        Args: { _announcement_id: string; _option_id: string }
+        Returns: string
+      }
     }
     Enums: {
       app_role: "admin" | "moderator" | "partner" | "user"

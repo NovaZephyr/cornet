@@ -28,7 +28,7 @@ export async function uploadToB2(key: string, file: File) {
   const token = sessionData.session?.access_token;
   if (!token) throw new Error("Authentication required");
 
-  const supabaseUrl = supabase.supabaseUrl;
+  const supabaseUrl = (supabase as any).supabaseUrl;
   const headers: Record<string, string> = {
     Authorization: `Bearer ${token}`,
     apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY ?? import.meta.env.VITE_SUPABASE_ANON_KEY ?? "",
