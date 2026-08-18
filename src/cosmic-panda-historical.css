@@ -191,3 +191,52 @@
 @media (max-width: 900px) {
   [data-theme="retro2012"] [data-corenet-player] { padding: 7px !important; }
 }
+
+/* Keep normal and custom channel banners visually separate. */
+[data-theme="retro2012"] .cn-2012-channel:not(.cn-2012-channel--cosmic-panda) .cn-2012-cover {
+  background:#f2f3f4 !important;
+  border:1px solid #c9ced3 !important;
+  box-shadow:inset 0 1px #fff, 0 1px 2px rgba(0,0,0,.08) !important;
+  overflow:hidden !important;
+}
+[data-theme="retro2012"] .cn-2012-channel:not(.cn-2012-channel--cosmic-panda) .cn-2012-cover img { border-radius:0 !important; }
+[data-theme="retro2012"] .cn-2012-channel:not(.cn-2012-channel--cosmic-panda) .cn-2012-titlebar {
+  background:linear-gradient(#fff,#eceff1) !important;
+  border:1px solid #c8cdd2 !important;
+  border-top:0 !important;
+  color:#27323a !important;
+  box-shadow:inset 0 1px #fff, 0 1px 2px rgba(0,0,0,.06) !important;
+}
+[data-theme="retro2012"] .cn-2012-channel:not(.cn-2012-channel--cosmic-panda) .cn-2012-titlebar h1,
+[data-theme="retro2012"] .cn-2012-channel:not(.cn-2012-channel--cosmic-panda) .cn-2012-titlebar p,
+[data-theme="retro2012"] .cn-2012-channel:not(.cn-2012-channel--cosmic-panda) .cn-2012-titlebar span {
+  color:#27323a !important;
+  text-shadow:none !important;
+}
+[data-theme="retro2012"] .cn-2012-channel:not(.cn-2012-channel--cosmic-panda) .cn-2012-tabs {
+  background:linear-gradient(#f4f5f6,#dfe3e6) !important;
+  border:1px solid #c3c8cc !important;
+  border-top:0 !important;
+}
+[data-theme="retro2012"] .cn-2012-channel:not(.cn-2012-channel--cosmic-panda) .cn-2012-tabs span {
+  color:#44515b !important;
+  background:transparent !important;
+  border-right:1px solid #c9ced2 !important;
+}
+[data-theme="retro2012"] .cn-2012-channel:not(.cn-2012-channel--cosmic-panda) .cn-2012-tabs span.is-active {
+  color:#1f4f79 !important;
+  background:#fff !important;
+  border-top:2px solid #b8c0c6 !important;
+  box-shadow:inset 0 1px #fff !important;
+}
+[data-theme="retro2012"] .cn-2012-channel:not(.cn-2012-channel--cosmic-panda) .cn-2012-retro-button { border-radius:2px !important; }
+
+/* Cosmic Panda keeps its own dark identity strip and classic custom-channel chrome. */
+[data-theme="retro2012"] .cn-2012-channel.cn-2012-channel--cosmic-panda .cn-2012-titlebar {
+  background:linear-gradient(#353535,#202020) !important;
+  color:#fff !important;
+  border-color:#111 !important;
+}
+[data-theme="retro2012"] .cn-2012-channel.cn-2012-channel--cosmic-panda .cn-2012-titlebar h1,
+[data-theme="retro2012"] .cn-2012-channel.cn-2012-channel--cosmic-panda .cn-2012-titlebar p,
+[data-theme="retro2012"] .cn-2012-channel.cn-2012-channel--cosmic-panda .cn-2012-titlebar span { color:#fff !important; }
