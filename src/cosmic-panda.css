@@ -1,3 +1,5 @@
+@import url("/cosmic-panda-channel-2012.css");
+
 /* CoreNetwork Cosmic Panda channel layout. Only the user's Cosmic Panda option uses this layout. */
 :is([data-theme="retro2012"],.cn-retro-scope) .cn-cosmic-channel{font-family:Arial,Helvetica,sans-serif;color:var(--cn-channel-text,#26343e);background-color:var(--cn-channel-primary,#26343e);background-repeat:no-repeat;background-size:cover;background-position:center top;padding:14px;min-height:680px}
 :is([data-theme="retro2012"],.cn-retro-scope) .cn-cosmic-channel-inner{max-width:1160px;margin:0 auto;background:rgba(245,247,248,.94);border:1px solid #9ca7af;box-shadow:0 1px 5px rgba(0,0,0,.28);padding:7px}
@@ -41,30 +43,14 @@
 /* ===== Channel background handling (Channel 1.0 / 2.0 / Cosmic Panda) ===== */
 .cn-retro-scope{display:block;width:100%}
 .cn-retro-scope .cn-2012-channel,
-.cn-retro-scope .cn-cosmic-channel{
-  background-attachment:fixed;
-  background-repeat:no-repeat;
-  background-position:center top;
-  background-size:cover;
-  min-height:calc(100vh - 54px);
-}
+.cn-retro-scope .cn-cosmic-channel{background-attachment:fixed;background-repeat:no-repeat;background-position:center top;background-size:cover;min-height:calc(100vh - 54px)}
 .cn-retro-scope .cn-2012-channel::after{display:none}
 .cn-retro-scope .cn-2012-channel::before{opacity:.35}
 .cn-retro-scope .cn-2012-channel-inner{width:min(1180px,100%)}
 
 /* Cosmic Panda polish: dark chrome bar + translucent light content, per 2012 YouTube */
-:is([data-theme="retro2012"],.cn-retro-scope) .cn-cosmic-channel-inner{
-  background:rgba(246,248,249,.93);
-  border:1px solid rgba(0,0,0,.35);
-  box-shadow:0 2px 14px rgba(0,0,0,.45);
-}
-:is([data-theme="retro2012"],.cn-retro-scope) .cn-cosmic-topbar{
-  background:linear-gradient(#3d464e,#242c33);
-  border-color:#161c21;
-  letter-spacing:.04em;
-  text-transform:uppercase;
-  font-weight:700;
-}
+:is([data-theme="retro2012"],.cn-retro-scope) .cn-cosmic-channel-inner{background:rgba(246,248,249,.93);border:1px solid rgba(0,0,0,.35);box-shadow:0 2px 14px rgba(0,0,0,.45)}
+:is([data-theme="retro2012"],.cn-retro-scope) .cn-cosmic-topbar{background:linear-gradient(#3d464e,#242c33);border-color:#161c21;letter-spacing:.04em;text-transform:uppercase;font-weight:700}
 :is([data-theme="retro2012"],.cn-retro-scope) .cn-cosmic-title-strip h1{font-size:20px;letter-spacing:-.01em}
 :is([data-theme="retro2012"],.cn-retro-scope) .cn-cosmic-tabs{background:linear-gradient(#eef1f3,#d5dbdf)}
 :is([data-theme="retro2012"],.cn-retro-scope) .cn-cosmic-tabs .is-active{border-bottom:2px solid var(--cn-channel-primary,#167ac6)}
@@ -95,7 +81,4 @@
 :is([data-theme="retro2012"],.cn-retro-scope) .cn-cosmic-panel .cn-2012-retro-button{font-size:11px;padding:4px 10px}
 :is([data-theme="retro2012"],.cn-retro-scope) .cn-cosmic-channel .cn-recommended-channel,
 :is([data-theme="retro2012"],.cn-retro-scope) .cn-cosmic-channel .cn-series-card{border-radius:0}
-@media (max-width:780px){
-  :is([data-theme="retro2012"],.cn-retro-scope) .cn-cosmic-title-strip{min-height:0}
-  :is([data-theme="retro2012"],.cn-retro-scope) .cn-cosmic-title-strip .cn-2012-retro-button{min-height:26px}
-}
+@media (max-width:780px){:is([data-theme="retro2012"],.cn-retro-scope) .cn-cosmic-title-strip{min-height:0}:is([data-theme="retro2012"],.cn-retro-scope) .cn-cosmic-title-strip .cn-2012-retro-button{min-height:26px}}
