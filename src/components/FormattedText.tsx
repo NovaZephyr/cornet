@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import twemoji from "@twemoji/api";
 import { Link } from "@tanstack/react-router";
 
-const tokenPattern = /(^|\s)(#[\p{L}\p{N}_-]+|@[A-Za-z0-9_][A-Za-z0-9_.-]{0,31})/gu;
+const tokenPattern = /(^|\s)((?:https?:\/\/|www\.)[^\s<]*[^\s<.,:;!?)\]}"']|#[\p{L}\p{N}_-]+|@[A-Za-z0-9_][A-Za-z0-9_.-]{0,31})/gu;
 
 function TwemojiText({ children }: { children: string }) {
   const ref = useRef<HTMLSpanElement | null>(null);
