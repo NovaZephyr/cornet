@@ -1,0 +1,193 @@
+/* Historical YouTube Cosmic Panda 2011 recreation.
+   Scoped exclusively to the retro2012 theme. */
+[data-theme="retro2012"] {
+  --cn-cosmic-black: #111111;
+  --cn-cosmic-dark: #1b1b1b;
+  --cn-cosmic-dark-2: #242424;
+  --cn-cosmic-panel: #2d2d2d;
+  --cn-cosmic-border: #4a4a4a;
+  --cn-cosmic-text: #e6e6e6;
+  --cn-cosmic-muted: #aaa;
+  --cn-cosmic-link: #6ea7d7;
+  --cn-cosmic-light: #ededed;
+}
+
+[data-theme="retro2012"] body {
+  background: #e7e7e7 !important;
+  color: #333;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Top navigation */
+[data-theme="retro2012"] .cn-2012-topbar {
+  background: linear-gradient(#242424, #171717) !important;
+  border-bottom: 1px solid #000 !important;
+  box-shadow: inset 0 1px rgba(255,255,255,.06), 0 1px 4px rgba(0,0,0,.4) !important;
+  color: #ddd !important;
+}
+[data-theme="retro2012"] .cn-2012-topbar a,
+[data-theme="retro2012"] .cn-2012-topbar button,
+[data-theme="retro2012"] .cn-2012-topbar svg { color: #ddd !important; }
+[data-theme="retro2012"] .cn-2012-topbar form input,
+[data-theme="retro2012"] .cn-2012-topbar input {
+  height: 30px !important;
+  border: 1px solid #555 !important;
+  border-radius: 0 !important;
+  background: #333 !important;
+  color: #eee !important;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,.7) !important;
+}
+[data-theme="retro2012"] .cn-2012-topbar form button {
+  height: 30px !important;
+  min-width: 36px;
+  border: 1px solid #555 !important;
+  border-radius: 0 !important;
+  background: linear-gradient(#555, #333) !important;
+  color: #eee !important;
+  box-shadow: inset 0 1px rgba(255,255,255,.08) !important;
+}
+[data-theme="retro2012"] .cn-2012-topbar [aria-label="Cambiar tema"] {
+  border-radius: 2px !important;
+  background: linear-gradient(#444, #252525) !important;
+  border-color: #555 !important;
+}
+
+/* Sidebar */
+[data-theme="retro2012"] .cn-2012-sidebar,
+[data-theme="retro2012"] .cn-2012-sidebar--cosmic {
+  background: linear-gradient(#252525, #111) !important;
+  color: #ddd !important;
+  border-right: 1px solid #000 !important;
+  box-shadow: inset -1px 0 rgba(255,255,255,.04), 2px 0 6px rgba(0,0,0,.25) !important;
+}
+[data-theme="retro2012"] .cn-2012-sidebar-inner { background: transparent !important; }
+[data-theme="retro2012"] .cn-2012-sidebar-link,
+[data-theme="retro2012"] .cn-2012-sidebar-subscription,
+[data-theme="retro2012"] .cn-2012-sidebar-icon {
+  color: #d5d5d5 !important;
+  border-radius: 0 !important;
+}
+[data-theme="retro2012"] .cn-2012-sidebar-link:hover,
+[data-theme="retro2012"] .cn-2012-sidebar-subscription:hover,
+[data-theme="retro2012"] .cn-2012-sidebar-icon:hover {
+  background: #333 !important;
+  border-color: #4b4b4b !important;
+}
+[data-theme="retro2012"] .cn-2012-sidebar-link svg,
+[data-theme="retro2012"] .cn-2012-sidebar-icon svg { color: #bbb !important; }
+[data-theme="retro2012"] .cn-2012-sidebar-account { border-bottom-color: #3c3c3c !important; }
+[data-theme="retro2012"] .cn-2012-sidebar-section-title { color: #8f8f8f !important; }
+[data-theme="retro2012"] .cn-2012-sidebar-add {
+  border-radius: 0 !important;
+  background: linear-gradient(#3f3f3f, #252525) !important;
+  border-color: #555 !important;
+}
+
+/* Historical card language */
+[data-theme="retro2012"] .cn-video-card,
+[data-theme="retro2012"] [data-video-card],
+[data-theme="retro2012"] .rounded-2xl,
+[data-theme="retro2012"] .rounded-xl {
+  border-radius: 0 !important;
+}
+[data-theme="retro2012"] .cn-video-card,
+[data-theme="retro2012"] [data-video-card] {
+  border: 1px solid #c7c7c7 !important;
+  background: #f8f8f8 !important;
+  box-shadow: none !important;
+}
+[data-theme="retro2012"] .cn-video-card:hover,
+[data-theme="retro2012"] [data-video-card]:hover {
+  border-color: #aaa !important;
+  box-shadow: 0 1px 2px rgba(0,0,0,.08) !important;
+}
+
+/* Watch page cinema stage */
+[data-theme="retro2012"] .cn-watch-page,
+[data-theme="retro2012"] [data-corenet-player] {
+  border-radius: 0 !important;
+}
+[data-theme="retro2012"] [data-corenet-player] {
+  position: relative;
+  background: #000 !important;
+  border: 1px solid #000 !important;
+  padding: 14px !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,.28) !important;
+}
+[data-theme="retro2012"] [data-corenet-player] video,
+[data-theme="retro2012"] [data-corenet-player] > div {
+  border-radius: 0 !important;
+}
+[data-theme="retro2012"] [data-corenet-player] .rounded-2xl,
+[data-theme="retro2012"] [data-corenet-player] .rounded-xl,
+[data-theme="retro2012"] [data-corenet-player] button.rounded-lg,
+[data-theme="retro2012"] [data-corenet-player] button.rounded-full { border-radius: 0 !important; }
+
+/* Retro control treatment */
+[data-theme="retro2012"] .cn-watch-button,
+[data-theme="retro2012"] .cn-watch-button,
+[data-theme="retro2012"] button {
+  border-radius: 0;
+}
+[data-theme="retro2012"] .cn-watch-button {
+  border: 1px solid #777 !important;
+  background: linear-gradient(#f4f4f4, #d8d8d8) !important;
+  color: #333 !important;
+  box-shadow: inset 0 1px #fff, 0 1px 1px rgba(0,0,0,.16) !important;
+  text-shadow: 0 1px #fff;
+}
+
+/* Watch content */
+[data-theme="retro2012"] .cn-watch-title { font-size: 20px; font-weight: normal; color: #333; }
+[data-theme="retro2012"] .cn-watch-description,
+[data-theme="retro2012"] .cn-watch-info { border-radius: 0 !important; }
+[data-theme="retro2012"] .cn-watch-info {
+  border: 1px solid #c8c8c8;
+  background: linear-gradient(#fff, #f1f1f1);
+  box-shadow: none;
+}
+[data-theme="retro2012"] .cn-watch-engagement {
+  border-radius: 0 !important;
+  border-top: 1px solid #bbb;
+  border-bottom: 1px solid #ccc;
+  background: linear-gradient(#fafafa, #e2e2e2);
+}
+[data-theme="retro2012"] .cn-watch-recommendations {
+  border-left: 1px solid #c1c1c1 !important;
+  padding-left: 12px;
+}
+[data-theme="retro2012"] .cn-watch-recommendation-card {
+  border-radius: 0 !important;
+  border-bottom: 1px solid #ccc;
+}
+
+/* Filmstrip visual language; usable with the existing recommendation row */
+[data-theme="retro2012"] .cn-cosmic-filmstrip {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 8px;
+  background: #171717;
+  border: 1px solid #444;
+  scrollbar-width: thin;
+}
+[data-theme="retro2012"] .cn-cosmic-filmstrip > * {
+  flex: 0 0 150px;
+  border: 1px solid #444;
+  background: #242424;
+  color: #ddd;
+  border-radius: 0 !important;
+}
+
+/* Home feed */
+[data-theme="retro2012"] .grid .group,
+[data-theme="retro2012"] .grid .rounded-2xl,
+[data-theme="retro2012"] .grid .rounded-xl {
+  border-radius: 0 !important;
+}
+[data-theme="retro2012"] .grid .group:hover { transform: none !important; box-shadow: none !important; }
+[data-theme="retro2012"] .grid img { border-radius: 0 !important; }
+
+@media (max-width: 900px) {
+  [data-theme="retro2012"] [data-corenet-player] { padding: 7px !important; }
+}
