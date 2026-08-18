@@ -95,14 +95,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return () => sub.subscription.unsubscribe();
   }, []);
 
-  const refresh = async () => {
-    await load(user?.id);
-  };
-
-  const signOut = async () => {
-    await supabase.auth.signOut();
-  };
-
   const value = useMemo<AuthState>(
     () => ({
       user,
@@ -112,9 +104,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       loading,
       isAdmin: roles.includes("admin"),
       isPartner: roles.includes("partner"),
-      refresh,
-      signOut,
+      refresh: () => load(user?.id),
+      signOut: async () => {
+        await supabase.auth.signOut();
+        setProfile(null);
+        setRoles([]);
+      },
     }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [user, session, profile, roles, loading],
   );
 
