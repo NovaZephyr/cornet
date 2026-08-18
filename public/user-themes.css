@@ -25,3 +25,319 @@
 [data-theme="custom"] .cn-2012-topbar, [data-theme="custom"] .cn-2012-sidebar, [data-theme="custom"] footer { backdrop-filter:blur(14px); }
 /* Theme selection now lives in Settings > Appearance. */
 header button:has(.lucide-palette) { display:none !important; }
+
+/*
+ * Cosmic Panda / 2012 — StarTube-inspired shell.
+ * StarTube's Cosmic Panda preset deliberately uses Arial, disables rounded/glassy UI,
+ * keeps the guide dark + scrollable, and organizes the page around a compact feed shell.
+ */
+[data-theme="retro2012"] {
+  --cn-cosmic-bg:#2a2c2f;
+  --cn-cosmic-bg-deep:#17181a;
+  --cn-cosmic-guide:#121212;
+  --cn-cosmic-guide-2:#080808;
+  --cn-cosmic-guide-line:#292929;
+  --cn-cosmic-panel:#fff;
+  --cn-cosmic-panel-alt:#f1f1f1;
+  --cn-cosmic-border:#c8c8c8;
+  --cn-cosmic-text:#333;
+  --cn-cosmic-muted:#777;
+  --cn-cosmic-link:#1c6ea4;
+  font-family:Arial,Helvetica,sans-serif !important;
+}
+
+[data-theme="retro2012"] body {
+  margin:0;
+  background:#d9dadd !important;
+  color:var(--cn-cosmic-text) !important;
+  font-family:Arial,Helvetica,sans-serif !important;
+}
+
+[data-theme="retro2012"] .cn-2012-app {
+  min-height:100vh;
+  background:linear-gradient(180deg,#3a3d40 0,#292b2e 58px,#d8dadd 58px,#d8dadd 100%) !important;
+  font-family:Arial,Helvetica,sans-serif !important;
+}
+
+/* Compact Cosmic Panda top bar. */
+[data-theme="retro2012"] .cn-2012-topbar {
+  height:58px !important;
+  min-height:58px !important;
+  background:linear-gradient(180deg,#3c3f42 0%,#282a2c 100%) !important;
+  border-bottom:1px solid #111 !important;
+  box-shadow:0 1px 0 rgb(255 255 255 / .08),0 2px 5px rgb(0 0 0 / .28) !important;
+  color:#eee !important;
+}
+[data-theme="retro2012"] .cn-2012-topbar form input {
+  height:31px !important;
+  border:1px solid #171717 !important;
+  border-right:0 !important;
+  border-radius:2px 0 0 2px !important;
+  background:#fff !important;
+  color:#222 !important;
+  box-shadow:inset 0 1px 2px rgb(0 0 0 / .22) !important;
+  font-size:12px !important;
+}
+[data-theme="retro2012"] .cn-2012-topbar form button {
+  height:31px !important;
+  border:1px solid #171717 !important;
+  border-radius:0 2px 2px 0 !important;
+  background:linear-gradient(#f8f8f8,#d8d8d8) !important;
+  color:#333 !important;
+  box-shadow:inset 0 1px #fff !important;
+}
+[data-theme="retro2012"] .cn-2012-topbar a,
+[data-theme="retro2012"] .cn-2012-topbar button,
+[data-theme="retro2012"] .cn-2012-topbar svg {
+  color:#eee !important;
+}
+[data-theme="retro2012"] .cn-2012-topnav-link {
+  min-height:30px !important;
+  padding:0 8px !important;
+  border:0 !important;
+  border-radius:1px !important;
+  color:#ddd !important;
+  font-size:11px !important;
+  font-weight:400 !important;
+}
+[data-theme="retro2012"] .cn-2012-topnav-link:hover {
+  background:#444 !important;
+  color:#fff !important;
+}
+[data-theme="retro2012"] .cn-2012-topbar [aria-label="Cambiar tema"] {
+  width:31px !important;
+  height:31px !important;
+  border:1px solid #121212 !important;
+  border-radius:2px !important;
+  background:linear-gradient(#4a4a4a,#292929) !important;
+}
+[data-theme="retro2012"] .cn-2012-topbar img { border-radius:0 !important; }
+
+/* The guide is the strongest Cosmic Panda cue: black, quiet, compact, vertically scrollable. */
+[data-theme="retro2012"] .cn-2012-shell-body {
+  grid-template-columns:205px minmax(0,1fr) !important;
+  max-width:none !important;
+  gap:0 !important;
+  background:#d8dadd !important;
+}
+[data-theme="retro2012"] .cn-2012-sidebar {
+  position:sticky !important;
+  top:58px !important;
+  width:205px !important;
+  min-height:calc(100vh - 58px) !important;
+  max-height:calc(100vh - 58px) !important;
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+  padding:0 !important;
+  margin:0 !important;
+  background:linear-gradient(180deg,var(--cn-cosmic-guide) 0%,var(--cn-cosmic-guide-2) 82%,#171717 100%) !important;
+  border-right:1px solid #000 !important;
+  box-shadow:1px 0 3px rgb(0 0 0 / .35) !important;
+  color:#ddd !important;
+}
+[data-theme="retro2012"] .cn-2012-sidebar.is-open { width:205px !important; }
+[data-theme="retro2012"] .cn-2012-sidebar.is-collapsed { width:62px !important; }
+[data-theme="retro2012"] .cn-2012-sidebar-inner { min-height:100%; padding:7px 0 12px !important; }
+[data-theme="retro2012"] .cn-2012-sidebar nav { padding:0 8px !important; gap:1px !important; }
+[data-theme="retro2012"] .cn-2012-sidebar-link,
+[data-theme="retro2012"] .cn-2012-sidebar-subscription,
+[data-theme="retro2012"] .cn-2012-sidebar-icon {
+  border:0 !important;
+  border-radius:1px !important;
+  background:transparent !important;
+  color:#cfcfcf !important;
+  font-size:12px !important;
+  font-weight:400 !important;
+  min-height:30px !important;
+}
+[data-theme="retro2012"] .cn-2012-sidebar-link:hover,
+[data-theme="retro2012"] .cn-2012-sidebar-subscription:hover,
+[data-theme="retro2012"] .cn-2012-sidebar-icon:hover {
+  background:#262626 !important;
+  color:#fff !important;
+  border:0 !important;
+}
+[data-theme="retro2012"] .cn-2012-sidebar-link.bg-surface,
+[data-theme="retro2012"] .cn-2012-sidebar-link[aria-current="page"] {
+  background:linear-gradient(90deg,#333,#242424) !important;
+  color:#fff !important;
+  box-shadow:inset 3px 0 #e62117 !important;
+}
+[data-theme="retro2012"] .cn-2012-sidebar-account {
+  display:flex !important;
+  align-items:center !important;
+  gap:9px !important;
+  margin:2px 9px 8px !important;
+  padding:9px 7px !important;
+  border-bottom:1px solid var(--cn-cosmic-guide-line) !important;
+}
+[data-theme="retro2012"] .cn-2012-sidebar-account p:first-child,
+[data-theme="retro2012"] .cn-2012-sidebar-section-title {
+  color:#fff !important;
+}
+[data-theme="retro2012"] .cn-2012-sidebar-section-title {
+  padding:10px 15px 5px !important;
+  font-size:10px !important;
+  text-transform:uppercase !important;
+  letter-spacing:.08em !important;
+  font-weight:700 !important;
+  color:#858585 !important;
+}
+[data-theme="retro2012"] .cn-2012-sidebar-divider { height:1px !important; margin:7px 12px !important; background:#2c2c2c !important; }
+[data-theme="retro2012"] .cn-2012-sidebar-add {
+  display:flex !important;
+  align-items:center !important;
+  gap:6px !important;
+  margin:0 8px 7px !important;
+  padding:7px 8px !important;
+  border:1px solid #363636 !important;
+  border-radius:1px !important;
+  background:linear-gradient(#2e2e2e,#202020) !important;
+  color:#eee !important;
+  font-size:11px !important;
+}
+[data-theme="retro2012"] .cn-2012-sidebar-subscription { padding:5px 8px !important; gap:8px !important; }
+[data-theme="retro2012"] .cn-2012-sidebar-muted,
+[data-theme="retro2012"] .cn-2012-sidebar-guest span { color:#777 !important; }
+
+/* Main area: wide light canvas like the 2012 feed/watch shell instead of a modern app surface. */
+[data-theme="retro2012"] .cn-2012-main {
+  min-width:0 !important;
+  width:100% !important;
+  padding:18px 24px 35px !important;
+  background:#dfe1e3 !important;
+  color:#333 !important;
+}
+[data-theme="retro2012"] .cn-2012-main a { color:var(--cn-cosmic-link); }
+[data-theme="retro2012"] .cn-2012-main .rounded-xl,
+[data-theme="retro2012"] .cn-2012-main .rounded-2xl,
+[data-theme="retro2012"] .cn-2012-main .rounded-3xl,
+[data-theme="retro2012"] .cn-2012-main .rounded-full { border-radius:2px !important; }
+[data-theme="retro2012"] .cn-2012-main .bg-surface,
+[data-theme="retro2012"] .cn-2012-main .bg-card,
+[data-theme="retro2012"] .cn-2012-main .bg-background {
+  background-color:var(--cn-cosmic-panel) !important;
+}
+[data-theme="retro2012"] .cn-2012-main .border,
+[data-theme="retro2012"] .cn-2012-main .border-border,
+[data-theme="retro2012"] .cn-2012-main .border-input {
+  border-color:var(--cn-cosmic-border) !important;
+}
+[data-theme="retro2012"] .cn-2012-main button:not(.lucide):not([aria-label="Cambiar tema"]),
+[data-theme="retro2012"] .cn-2012-main [role="button"] {
+  border-radius:2px !important;
+}
+[data-theme="retro2012"] .cn-2012-main button[class*="bg-primary"] {
+  background:linear-gradient(#666,#444) !important;
+  border:1px solid #333 !important;
+  color:#fff !important;
+}
+
+/* Feed / recommendation cards: thin borders, white content blocks, compact metadata. */
+[data-theme="retro2012"] .cn-2012-main article,
+[data-theme="retro2012"] .cn-2012-main [class*="group/card"],
+[data-theme="retro2012"] .cn-2012-main .cn-video-card {
+  border-radius:2px !important;
+}
+[data-theme="retro2012"] .cn-2012-main img { border-radius:1px !important; }
+[data-theme="retro2012"] .cn-2012-main h1 { font-weight:400 !important; }
+[data-theme="retro2012"] .cn-2012-main h2,
+[data-theme="retro2012"] .cn-2012-main h3 { font-weight:700 !important; }
+
+/* Watch page: dark player, white information slab, compact right column. */
+[data-theme="retro2012"] .cn-2012-main:has([data-corenet-player]) {
+  background:#dfe1e3 !important;
+  padding:18px 20px 34px !important;
+}
+[data-theme="retro2012"] .cn-2012-main:has([data-corenet-player]) [data-corenet-player] {
+  border:1px solid #111 !important;
+  box-shadow:0 1px 3px rgb(0 0 0 / .35) !important;
+  background:#0b0b0b !important;
+}
+[data-theme="retro2012"] .cn-2012-main:has([data-corenet-player]) h1 {
+  font-size:20px !important;
+  font-weight:400 !important;
+  color:#303030 !important;
+}
+[data-theme="retro2012"] .cn-2012-main:has([data-corenet-player]) aside {
+  border-left:1px solid #c2c2c2 !important;
+  padding-left:12px !important;
+}
+[data-theme="retro2012"] .cn-2012-main:has([data-corenet-player]) aside > div:first-child {
+  background:linear-gradient(#fff,#ededed) !important;
+  border:1px solid #c6c6c6 !important;
+  padding:7px 8px !important;
+}
+[data-theme="retro2012"] .cn-2012-main:has([data-corenet-player]) aside > a,
+[data-theme="retro2012"] .cn-2012-main:has([data-corenet-player]) aside .group {
+  border-bottom:1px solid #d2d2d2 !important;
+  padding:7px 0 !important;
+}
+
+/* Channel pages: keep the historic wide-banner + tabs structure while using Cosmic Panda surfaces. */
+[data-theme="retro2012"] .cn-2012-channel--cosmic-panda {
+  padding:0 0 24px !important;
+  background:#282a2d !important;
+}
+[data-theme="retro2012"] .cn-2012-channel--cosmic-panda:before {
+  background:linear-gradient(180deg,rgba(0,0,0,.28),transparent 230px) !important;
+}
+[data-theme="retro2012"] .cn-2012-channel--cosmic-panda .cn-2012-channel-inner {
+  max-width:1180px !important;
+  padding:0 !important;
+  background:transparent !important;
+}
+[data-theme="retro2012"] .cn-2012-channel--cosmic-panda .cn-2012-cover {
+  height:220px !important;
+  border:0 !important;
+  box-shadow:none !important;
+}
+[data-theme="retro2012"] .cn-2012-channel--cosmic-panda .cn-2012-titlebar {
+  border:0 !important;
+  border-top:1px solid #d0d0d0 !important;
+  background:#fff !important;
+  padding:14px 16px !important;
+}
+[data-theme="retro2012"] .cn-2012-channel--cosmic-panda .cn-2012-titlebar h1 {
+  color:#333 !important;
+  font-size:22px !important;
+  font-weight:400 !important;
+}
+[data-theme="retro2012"] .cn-2012-channel--cosmic-panda .cn-2012-tabs {
+  background:#1e1f21 !important;
+  border:0 !important;
+}
+[data-theme="retro2012"] .cn-2012-channel--cosmic-panda .cn-2012-tabs .is-active {
+  background:#333 !important;
+  color:#fff !important;
+}
+[data-theme="retro2012"] .cn-2012-channel--cosmic-panda .cn-2012-feature,
+[data-theme="retro2012"] .cn-2012-channel--cosmic-panda .cn-2012-about,
+[data-theme="retro2012"] .cn-2012-channel--cosmic-panda .cn-2012-video-column {
+  border:1px solid #c7c7c7 !important;
+  border-radius:2px !important;
+  background:#fff !important;
+  box-shadow:0 1px 2px rgb(0 0 0 / .12) !important;
+}
+
+[data-theme="retro2012"] .cn-2012-footer {
+  background:#1b1b1b !important;
+  color:#aaa !important;
+  border-top:1px solid #111 !important;
+}
+[data-theme="retro2012"] .cn-2012-footer a,
+[data-theme="retro2012"] .cn-2012-footer span,
+[data-theme="retro2012"] .cn-2012-footer p { color:#aaa !important; }
+
+[data-theme="retro2012"] [data-radix-menu-content],
+[data-theme="retro2012"] [data-radix-select-content] {
+  font-family:Arial,Helvetica,sans-serif !important;
+  border-radius:2px !important;
+}
+
+@media (max-width:900px) {
+  [data-theme="retro2012"] .cn-2012-topbar { height:52px !important; min-height:52px !important; }
+  [data-theme="retro2012"] .cn-2012-main { padding:12px !important; }
+  [data-theme="retro2012"] .cn-2012-sidebar { display:none !important; }
+  [data-theme="retro2012"] .cn-2012-app { background:#dfe1e3 !important; }
+}
