@@ -1,7 +1,9 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Outlet, Link, createRootRouteWithContext, useRouter, useLocation, HeadContent, Scripts } from "@tanstack/react-router";
+import { Outlet, Link, createRootRouteWithContext, useRouter, useLocation, useRouterState, HeadContent, Scripts } from "@tanstack/react-router";
 import { useEffect, useState, type ReactNode } from "react";
+import { Compass, Home, MessageCircle, Upload, User as UserIcon, Users } from "lucide-react";
 import appCss from "../styles.css?url";
+import "../global-mobile-bar.css";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { AuthProvider, useAuth } from "@/hooks/useAuth";
 import { ThemeProvider } from "@/hooks/useTheme";
@@ -44,6 +46,18 @@ function MaintenanceAwareContent() {
   return <Outlet />;
 }
 
+function GlobalMobileBottomBar() {
+  const { user } = useAuth();
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const items = [
+    { to: "/", label: "Inicio", icon: Home },
+    { to: "/explore", label: "Explorar", icon: Compass },
+    { to: "/community", label: "Comunidad", icon: Users },
+    ...(user ? [{ to: "/messages", label: "Mensajes", icon: MessageCircle }, { to: "/upload", label: "Subir", icon: Upload }] : [{ to: "/auth", label: "Tú", icon: UserIcon }]),
+  ];
+  return <nav className="cn-global-mobile-bar" aria-label="Navegación móvil">{items.map((item) => { const Icon = item.icon; const active = pathname === item.to || (item.to !== "/" && pathname.startsWith(`${item.to}/`)); return <Link key={item.to} to={item.to} data-active={active ? "true" : "false"} aria-current={active ? "page" : undefined}><Icon /><span>{item.label}</span></Link>; })}</nav>;
+}
+
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   head: () => ({
     meta: [
@@ -65,4 +79,4 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 const themeBootstrap = `(function(){try{var t=localStorage.getItem('corenetwork-theme-v3');var v=['dark','light','retro2012','gradients','grad-sunset','grad-ocean','grad-neon','grad-candy','lavanda-oscuro','forest','midnight','rose','custom'];if(!t||v.indexOf(t)<0)t='grad-ocean';var r=document.documentElement;r.dataset.theme=t;if(t!=='light'&&t!=='retro2012'&&t!=='grad-candy')r.classList.add('dark');}catch(e){}})();`;
 function RootShell({ children }: { children: ReactNode }) { return <html lang="es" data-theme="dark" className="dark" suppressHydrationWarning><head><HeadContent /><script dangerouslySetInnerHTML={{ __html: themeBootstrap }} /></head><body>{children}<Scripts /></body></html>; }
-function RootComponent() { const { queryClient } = Route.useRouteContext(); return <QueryClientProvider client={queryClient}><ThemeProvider><AuthProvider><MaintenanceAwareContent /><Toaster position="bottom-center" /></AuthProvider></ThemeProvider></QueryClientProvider>; }
+function RootComponent() { const { queryClient } = Route.useRouteContext(); return <QueryClientProvider client={queryClient}><ThemeProvider><AuthProvider><MaintenanceAwareContent /><GlobalMobileBottomBar /><Toaster position="bottom-center" /></AuthProvider></ThemeProvider></QueryClientProvider>; }
