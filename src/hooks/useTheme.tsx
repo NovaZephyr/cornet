@@ -9,6 +9,14 @@ export const THEMES = [
   { id: "midnight", label: "Medianoche", hint: "Azul noche y superficies suaves", group: "Sólidos" },
   { id: "rose", label: "Rosa", hint: "Rosa oscuro con superficies cálidas", group: "Sólidos" },
   { id: "retro2012", label: "YouTube 2012 / Cosmic Panda", hint: "Tema claro inspirado en la interfaz clásica de YouTube", group: "Clásicos" },
+  { id: "feather2013", label: "Feather 2013", hint: "Minimalista y ligero", group: "Clásicos" },
+  { id: "youtube2019", label: "YouTube 2019", hint: "Blanco, limpio y centrado en contenido", group: "Clásicos" },
+  { id: "windowsAero", label: "Windows Aero", hint: "Vidrio azul y transparencias", group: "Retro" },
+  { id: "frutigerAero", label: "Frutiger Aero", hint: "Cielo, agua, naturaleza y brillo", group: "Retro" },
+  { id: "web2Glossy", label: "Web 2.0 Glossy", hint: "Gradientes brillantes y botones clásicos", group: "Retro" },
+  { id: "y2kChrome", label: "Y2K Chrome", hint: "Metal, azul eléctrico y tecnología", group: "Retro" },
+  { id: "xpLuna", label: "Windows XP Luna", hint: "Azul XP, verde y superficies clásicas", group: "Retro" },
+  { id: "crtVhs", label: "CRT / VHS", hint: "Scanlines, fósforo verde y monitor antiguo", group: "Experimental" },
   { id: "gradients", label: "Aurora", hint: "Violeta, rojo y azul", group: "Degradados" },
   { id: "grad-sunset", label: "Atardecer", hint: "Naranja y magenta", group: "Degradados" },
   { id: "grad-neon", label: "Neón", hint: "Verde y cian eléctrico", group: "Degradados" },
@@ -26,7 +34,7 @@ function readInitialTheme(): ThemeId { if (typeof window === "undefined") return
 function readCustomTheme(): CustomTheme { if (typeof window === "undefined") return DEFAULT_CUSTOM_THEME; try { return { ...DEFAULT_CUSTOM_THEME, ...(JSON.parse(window.localStorage.getItem(CUSTOM_STORAGE_KEY) || "null") || {}) }; } catch { return DEFAULT_CUSTOM_THEME; } }
 function apply(theme: ThemeId, customTheme: CustomTheme) {
   const root = document.documentElement;
-  const isLightTheme = theme === "light" || theme === "retro2012" || theme === "grad-candy";
+  const isLightTheme = ["light","retro2012","feather2013","youtube2019","windowsAero","frutigerAero","web2Glossy","xpLuna","grad-candy"].includes(theme);
   root.dataset.theme = theme;
   root.classList.toggle("dark", !isLightTheme);
   root.style.colorScheme = isLightTheme ? "light" : "dark";
