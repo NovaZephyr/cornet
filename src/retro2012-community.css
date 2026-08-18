@@ -1,0 +1,87 @@
+[data-theme="retro2012"] .cn-community-page {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 14px 14px 48px;
+}
+
+[data-theme="retro2012"] .cn-community-hero {
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 14px;
+  padding: 18px 20px;
+  border: 1px solid #bcc4ca;
+  border-radius: 3px;
+  background:
+    radial-gradient(520px 130px at 18% -20%, rgb(255 255 255 / 90%), transparent 70%),
+    linear-gradient(#fff 0%, #f1f4f6 52%, #dfe4e8 100%);
+  box-shadow: inset 0 1px #fff, 0 1px 3px rgb(0 0 0 / 10%);
+}
+
+[data-theme="retro2012"] .cn-community-hero h1 {
+  color: #394752;
+  font-size: 27px;
+  line-height: 1.15;
+}
+
+[data-theme="retro2012"] .cn-community-hero p { color: #6c7882; }
+
+[data-theme="retro2012"] .cn-community-pill {
+  border: 1px solid #bcc5cc;
+  border-radius: 2px;
+  background: linear-gradient(#fff, #e8ecef);
+  color: #566572;
+  box-shadow: inset 0 1px #fff;
+}
+
+[data-theme="retro2012"] .cn-community-tabs {
+  display: flex;
+  gap: 2px;
+  padding: 4px;
+  margin-bottom: 12px;
+  border: 1px solid #b8c0c7;
+  border-radius: 3px;
+  background: linear-gradient(#f8f9fa, #dde2e6);
+  box-shadow: inset 0 1px #fff, 0 1px 2px rgb(0 0 0 / 7%);
+}
+
+[data-theme="retro2012"] .cn-community-tabs [role="tab"] {
+  border: 1px solid transparent;
+  border-radius: 2px;
+  color: #4b5a66;
+}
+
+[data-theme="retro2012"] .cn-community-tabs [role="tab"]:hover {
+  background: linear-gradient(#fff, #e5e9ec);
+  border-color: #c3cbd1;
+}
+
+[data-theme="retro2012"] .cn-community-tabs [role="tab"][data-state="active"] {
+  color: #fff;
+  border-color: #334653;
+  background: linear-gradient(#506577, #344652);
+  box-shadow: inset 0 1px rgb(255 255 255 / 14%);
+}
+
+[data-theme="retro2012"] .cn-community-card {
+  border: 1px solid #c4cbd1;
+  border-radius: 3px;
+  background: linear-gradient(#fff, #f4f6f7);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 7%);
+}
+
+[data-theme="retro2012"] .cn-community-card button,
+[data-theme="retro2012"] .cn-community-card input,
+[data-theme="retro2012"] .cn-community-card textarea {
+  border-radius: 2px;
+}
+
+[data-theme="retro2012"] .cn-community-card button {
+  border: 1px solid #adb7bf;
+  background: linear-gradient(#fff, #e4e8eb);
+  color: #44535f;
+  box-shadow: inset 0 1px #fff, 0 1px 1px rgb(0 0 0 / 7%);
+}
+
+[data-theme="retro2012"] .cn-community-card button:hover {
+  background: linear-gradient(#fff, #d9dfe4);
+}
