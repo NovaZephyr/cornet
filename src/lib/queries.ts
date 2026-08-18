@@ -36,18 +36,12 @@ export async function searchChannels(search?: string, orderBy: "subscribers" | "
   return profiles;
 }
 
-export async function fetchVideos(options?: {
-  search?: string;
-  userId?: string;
-  orderBy?: VideoSort;
-  category?: string;
-  limit?: number;
-  excludeVideoId?: string;
-}) {
+export async function fetchVideos(options?: { search?: string; userId?: string; orderBy?: VideoSort; category?: string; limit?: number; excludeVideoId?: string }) {
   const orderBy = options?.orderBy ?? "recent";
   const limit = Math.min(Math.max(options?.limit ?? 24, 1), 48);
   const queryLimit = Math.min(48, options?.excludeVideoId ? limit + 4 : limit);
-  let q = supabase.from("videos").select("id, code, user_id, title, thumbnail_path, duration_seconds, views, created_at, category").limit(queryLimit);
+  const fields = "id, code, user_id, title, description, thumbnail_path, video_path, duration_seconds, views, created_at, category";
+  let q = supabase.from("videos").select(fields).limit(queryLimit);
   if (options?.search) q = q.ilike("title", `%${options.search}%`);
   if (options?.userId) q = q.eq("user_id", options.userId);
   if (options?.category) q = q.eq("category", options.category);
@@ -56,7 +50,7 @@ export async function fetchVideos(options?: {
   let { data, error } = await q;
   if (error) {
     if (options?.category) return [];
-    let fallback = supabase.from("videos").select("id, code, user_id, title, thumbnail_path, duration_seconds, views, created_at").limit(queryLimit);
+    let fallback = supabase.from("videos").select(fields).limit(queryLimit);
     if (options?.search) fallback = fallback.ilike("title", `%${options.search}%`);
     if (options?.userId) fallback = fallback.eq("user_id", options.userId);
     if (orderBy === "views") fallback = fallback.order("views", { ascending: false });
