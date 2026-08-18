@@ -23,7 +23,7 @@ function LegacyWatchRedirect() {
         return;
       }
 
-      window.history.replaceState({}, "", "/watch");
+      window.location.replace("/watch");
     };
 
     void resolveVideo();
