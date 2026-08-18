@@ -1,0 +1,57 @@
+/* Cosmic Panda channel page — period-style 2011/2012 YouTube channel layout. */
+[data-theme="retro2012"] .cn-cosmic-channel{width:100%!important;min-height:100%;margin:0!important;padding:20px 14px 40px!important;background:#dedede!important;color:#333!important;font-family:Arial,Helvetica,sans-serif!important;background-image:none!important}
+[data-theme="retro2012"] .cn-cosmic-channel-inner{width:min(980px,100%)!important;margin:0 auto!important;padding:0!important;background:transparent!important}
+[data-theme="retro2012"] .cn-cosmic-channel .cn-cosmic-topbar{display:none!important}
+[data-theme="retro2012"] .cn-cosmic-cover{width:100%!important;height:190px!important;overflow:hidden!important;border:1px solid #aaa!important;background:#cfcfcf!important;box-shadow:0 1px 2px rgba(0,0,0,.15)!important}
+[data-theme="retro2012"] .cn-cosmic-cover img{display:block!important;width:100%!important;height:100%!important;object-fit:cover!important;border-radius:0!important}
+[data-theme="retro2012"] .cn-cosmic-title-strip{min-height:74px!important;display:flex!important;align-items:center!important;justify-content:space-between!important;gap:18px!important;padding:10px 14px!important;background:linear-gradient(#333,#202020)!important;border:1px solid #111!important;border-top:0!important;color:#fff!important}
+[data-theme="retro2012"] .cn-cosmic-title-strip h1{color:#fff!important;font-size:21px!important;font-weight:400!important;line-height:1.2!important}
+[data-theme="retro2012"] .cn-cosmic-title-strip p{color:#bbb!important}
+[data-theme="retro2012"] .cn-cosmic-title-strip .cn-2012-retro-button{min-height:30px!important;padding:0 13px!important;border-radius:2px!important;font-size:12px!important}
+[data-theme="retro2012"] .cn-cosmic-title-strip .cn-2012-retro-button:first-child{background:linear-gradient(#f8f8f8,#d8d8d8)!important;border:1px solid #999!important;color:#333!important;text-shadow:0 1px #fff!important}
+[data-theme="retro2012"] .cn-cosmic-title-strip .cn-2012-retro-button:last-child{background:linear-gradient(#4b4b4b,#292929)!important;border:1px solid #111!important;color:#eee!important}
+[data-theme="retro2012"] .cn-cosmic-tabs{display:flex!important;align-items:stretch!important;min-height:38px!important;background:#242424!important;border:1px solid #111!important;border-top:0!important;overflow-x:auto!important}
+[data-theme="retro2012"] .cn-cosmic-tabs span{display:inline-flex!important;align-items:center!important;justify-content:center!important;min-width:92px!important;padding:0 15px!important;border-right:1px solid #3b3b3b!important;color:#bbb!important;font-size:11px!important;font-weight:700!important;text-transform:uppercase!important;white-space:nowrap!important}
+[data-theme="retro2012"] .cn-cosmic-tabs span.is-active{background:#fff!important;color:#333!important;border-top:3px solid #d92316!important}
+[data-theme="retro2012"] .cn-cosmic-columns{display:grid!important;grid-template-columns:minmax(0,1fr) 276px!important;gap:14px!important;align-items:start!important;margin-top:14px!important;width:100%!important}
+[data-theme="retro2012"] .cn-cosmic-center{grid-column:1!important;grid-row:1 / span 6!important;min-width:0!important;width:auto!important;display:flex!important;flex-direction:column!important;gap:12px!important}
+[data-theme="retro2012"] .cn-cosmic-left,[data-theme="retro2012"] .cn-cosmic-right{display:contents!important}
+[data-theme="retro2012"] .cn-cosmic-left > section,[data-theme="retro2012"] .cn-cosmic-right > section{grid-column:2!important;width:100%!important;min-width:0!important}
+[data-theme="retro2012"] .cn-cosmic-panel{width:100%!important;min-width:0!important;margin:0!important;padding:0!important;background:#fff!important;border:1px solid #c5c5c5!important;border-radius:0!important;box-shadow:0 1px 2px rgba(0,0,0,.10)!important;overflow:hidden!important}
+[data-theme="retro2012"] .cn-cosmic-panel-title{min-height:34px!important;display:flex!important;align-items:center!important;justify-content:space-between!important;gap:10px!important;padding:0 10px!important;background:linear-gradient(#f8f8f8,#e8e8e8)!important;border-bottom:1px solid #c7c7c7!important;color:#444!important;font-size:12px!important;font-weight:700!important}
+[data-theme="retro2012"] .cn-cosmic-panel > h2{margin:0!important;padding:7px 9px!important;background:linear-gradient(#fafafa,#e8e8e8)!important;border-bottom:1px solid #c9c9c9!important;color:#444!important;font-size:12px!important;font-weight:700!important}
+[data-theme="retro2012"] .cn-cosmic-panel > p,[data-theme="retro2012"] .cn-cosmic-panel > dl,[data-theme="retro2012"] .cn-cosmic-profile-mini,[data-theme="retro2012"] .cn-cosmic-panel > .space-y-3,[data-theme="retro2012"] .cn-cosmic-panel > .cn-cosmic-navlinks{margin:0!important;padding:9px!important}
+[data-theme="retro2012"] .cn-cosmic-featured{padding:0 0 12px!important}
+[data-theme="retro2012"] .cn-cosmic-featured .cn-cosmic-player{margin:10px!important;border:1px solid #171717!important;background:#090909!important;box-shadow:0 1px 3px rgba(0,0,0,.22)!important}
+[data-theme="retro2012"] .cn-cosmic-featured .cn-cosmic-player video{display:block!important;width:100%!important;border-radius:0!important}
+[data-theme="retro2012"] .cn-cosmic-featured > h2,[data-theme="retro2012"] .cn-cosmic-featured > p{display:block!important;margin-left:10px!important;margin-right:10px!important}
+[data-theme="retro2012"] .cn-cosmic-featured > h2{font-size:17px!important;font-weight:700!important;color:#333!important}
+[data-theme="retro2012"] .cn-cosmic-featured > p{color:#666!important;font-size:12px!important;line-height:1.45!important}
+[data-theme="retro2012"] .cn-cosmic-center #uploads .grid{display:flex!important;flex-direction:column!important;gap:0!important;margin:0!important;padding:0!important}
+[data-theme="retro2012"] .cn-cosmic-center #uploads .grid > *{width:100%!important;min-width:0!important;border-radius:0!important;border:0!important;border-top:1px solid #ddd!important;background:#fff!important;box-shadow:none!important;padding:10px!important}
+[data-theme="retro2012"] .cn-cosmic-center #uploads .grid > *:first-child{border-top:0!important}
+[data-theme="retro2012"] .cn-cosmic-center #uploads .grid > *:hover{background:#fafafa!important;box-shadow:none!important}
+[data-theme="retro2012"] .cn-cosmic-stats{display:grid!important;grid-template-columns:1fr 1fr!important;gap:6px!important;padding:9px!important}
+[data-theme="retro2012"] .cn-cosmic-stats div{padding:6px!important;background:#eee!important;border:1px solid #d0d0d0!important}
+[data-theme="retro2012"] .cn-cosmic-stats dt{font-size:9px!important;text-transform:uppercase!important;color:#777!important}
+[data-theme="retro2012"] .cn-cosmic-stats dd{margin-top:2px!important;font-size:13px!important;font-weight:700!important;color:#333!important}
+[data-theme="retro2012"] .cn-cosmic-profile-mini{display:flex!important;gap:9px!important;align-items:center!important}
+[data-theme="retro2012"] .cn-cosmic-profile-mini strong{display:block!important;font-size:13px!important;color:#333!important}
+[data-theme="retro2012"] .cn-cosmic-profile-mini span{display:block!important;margin-top:2px!important;font-size:10px!important;color:#777!important}
+[data-theme="retro2012"] .cn-cosmic-navlinks{display:flex!important;flex-direction:column!important;padding:5px!important}
+[data-theme="retro2012"] .cn-cosmic-navlinks a{padding:6px 8px!important;border-bottom:1px solid #ddd!important;color:#1769aa!important;font-size:11px!important;text-decoration:none!important}
+[data-theme="retro2012"] .cn-cosmic-navlinks a:last-child{border-bottom:0!important}
+[data-theme="retro2012"] .cn-cosmic-right > section .space-y-3{display:flex!important;flex-direction:column!important;gap:0!important}
+[data-theme="retro2012"] .cn-cosmic-right > section .space-y-3 > *{padding:7px 0!important;border-bottom:1px solid #ddd!important;border-radius:0!important;box-shadow:none!important}
+[data-theme="retro2012"] .cn-cosmic-right > section .space-y-3 > *:last-child{border-bottom:0!important}
+@media (max-width:900px){
+[data-theme="retro2012"] .cn-cosmic-channel{padding:10px 8px 28px!important}
+[data-theme="retro2012"] .cn-cosmic-cover{height:150px!important}
+[data-theme="retro2012"] .cn-cosmic-title-strip{align-items:flex-start!important;flex-direction:column!important;padding:9px!important;gap:8px!important}
+[data-theme="retro2012"] .cn-cosmic-title-strip > div:last-child{width:100%!important;display:flex!important}
+[data-theme="retro2012"] .cn-cosmic-title-strip .cn-2012-retro-button{flex:1!important}
+[data-theme="retro2012"] .cn-cosmic-columns{display:flex!important;flex-direction:column!important;gap:10px!important}
+[data-theme="retro2012"] .cn-cosmic-center{display:flex!important;order:1!important;width:100%!important}
+[data-theme="retro2012"] .cn-cosmic-left,[data-theme="retro2012"] .cn-cosmic-right{display:contents!important}
+[data-theme="retro2012"] .cn-cosmic-left > section,[data-theme="retro2012"] .cn-cosmic-right > section{width:100%!important;grid-column:auto!important}
+}
