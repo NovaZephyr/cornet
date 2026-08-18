@@ -13,6 +13,8 @@ export type AppRole = "admin" | "moderator" | "partner" | "user";
 export type ChannelStyle = "corenetwork" | "channel-1" | "channel-2" | "cosmic-panda";
 export type ChannelInfoLayout = "left" | "right" | "top" | "hidden";
 
+export type SocialLink = { platform: string; url: string };
+
 export type Profile = {
   id: string;
   username: string;
@@ -22,6 +24,7 @@ export type Profile = {
   banner_path: string | null;
   background_path: string | null;
   gif_path: string | null;
+  social_links: SocialLink[] | null;
   is_banned: boolean;
   warnings_count: number;
   accent_color: string;
