@@ -10,7 +10,7 @@ import { Activity, Car, Clapperboard, Compass, Gamepad2, Globe2, Headphones, Lap
 const CATEGORIES: VideoCategory[] = ["Autos & Vehicles", "Comedy", "Entertainment", "Film & Animation", "Gaming", "Howto & Style", "Nonprofits & Activism", "People & Blogs", "Pets & Animals", "Science & Technology", "Sports", "Travel & Events"];
 type ExploreView = "channels" | "series" | "videos";
 type ExploreSort = "views" | "recent";
-type ExploreSearch = { view: ExploreView; sort: ExploreSort; category?: string };
+type ExploreSearch = { view: ExploreView; sort?: ExploreSort; category?: string };
 
 export const Route = createFileRoute("/explore")({
   validateSearch: (search: Record<string, unknown>): ExploreSearch => ({
@@ -36,15 +36,16 @@ type RecommendedChannel = { id: string; username: string; display_name: string |
 
 function ExplorePage() {
   const { view, sort, category } = Route.useSearch();
+  const activeSort: ExploreSort = sort ?? "views";
   const activeCategory = category as VideoCategory | undefined;
   const showAllSections = view === "videos" && !activeCategory;
 
   const recommendedChannels = useQuery({ queryKey: ["explore", "recommended-channels"], enabled: view === "channels", staleTime: 60_000, gcTime: 5 * 60_000, queryFn: async () => { const { data, error } = await supabase.from("profiles").select("id,username,display_name,avatar_path,subscriber_count,is_verified").order("subscriber_count", { ascending: false }).limit(24); if (error) throw error; return (data ?? []) as RecommendedChannel[]; } });
-  const filtered = useQuery({ queryKey: ["explore", "filtered", activeCategory ?? null, sort], enabled: view === "videos" && !!activeCategory, queryFn: () => fetchVideos({ ...(activeCategory ? { category: activeCategory } : {}), orderBy: sort, limit: 48 }), staleTime: 30_000, gcTime: 5 * 60_000 });
+  const filtered = useQuery({ queryKey: ["explore", "filtered", activeCategory ?? null, activeSort], enabled: view === "videos" && !!activeCategory, queryFn: () => fetchVideos({ category: activeCategory as VideoCategory, orderBy: activeSort, limit: 48 }), staleTime: 30_000, gcTime: 5 * 60_000 });
   const popular = useQuery({ queryKey: ["explore", "popular"], enabled: showAllSections, queryFn: () => fetchVideos({ orderBy: "views", limit: 4 }), staleTime: 30_000, gcTime: 5 * 60_000 });
   const recent = useQuery({ queryKey: ["explore", "recent"], enabled: showAllSections, queryFn: () => fetchVideos({ orderBy: "recent", limit: 4 }), staleTime: 30_000, gcTime: 5 * 60_000 });
-  const categoryQueries = useQueries({ queries: CATEGORIES.map((item) => ({ queryKey: ["explore", "category", item, sort], enabled: showAllSections, queryFn: () => fetchVideos({ category: item, orderBy: sort, limit: 4 }), staleTime: 30_000, gcTime: 5 * 60_000 })) });
-  const sections = sort === "recent"
+  const categoryQueries = useQueries({ queries: CATEGORIES.map((item) => ({ queryKey: ["explore", "category", item, activeSort], enabled: showAllSections, queryFn: () => fetchVideos({ category: item, orderBy: activeSort, limit: 4 }), staleTime: 30_000, gcTime: 5 * 60_000 })) });
+  const sections = activeSort === "recent"
     ? [{ title: "Recientes de la comunidad", icon: Compass, data: recent.data ?? [] }, { title: "Más vistos", icon: Activity, data: popular.data ?? [] }, ...CATEGORIES.map((item, index) => ({ title: item, icon: iconFor(item), data: categoryQueries[index]?.data ?? [] }))]
     : [{ title: "Más vistos", icon: Activity, data: popular.data ?? [] }, { title: "Recientes de la comunidad", icon: Compass, data: recent.data ?? [] }, ...CATEGORIES.map((item, index) => ({ title: item, icon: iconFor(item), data: categoryQueries[index]?.data ?? [] }))];
   const loading = view === "channels" ? recommendedChannels.isLoading : view === "videos" ? (activeCategory ? filtered.isLoading : popular.isLoading || recent.isLoading) : false;
@@ -54,15 +55,15 @@ function ExplorePage() {
       <div className="cn-explore-sidebar-brand"><Compass className="h-5 w-5" /><div><span className="cn-explore-kicker">COSMIC PANDA</span><h2>Explorar</h2></div></div>
       <nav className="cn-explore-nav">
         <Link to="/explore" search={{ view: "videos", sort: "views" }} className={view === "videos" && !activeCategory ? "is-active" : ""}><Compass className="h-4 w-4" /><span>Inicio</span></Link>
-        <Link to="/explore" search={{ view: "channels", sort }} className={view === "channels" ? "is-active" : ""}><UserPlus className="h-4 w-4" /><span>Canales</span></Link>
-        <Link to="/explore" search={{ view: "series", sort }} className={view === "series" ? "is-active" : ""}><PlaySquare className="h-4 w-4" /><span>Series</span></Link>
-        <Link to="/explore" search={{ view: "videos", sort: "views" }} className={view === "videos" && sort === "views" && !activeCategory ? "is-active" : ""}><Trophy className="h-4 w-4" /><span>Más vistos</span></Link>
-        <Link to="/explore" search={{ view: "videos", sort: "recent" }} className={view === "videos" && sort === "recent" && !activeCategory ? "is-active" : ""}><Activity className="h-4 w-4" /><span>Recientes</span></Link>
+        <Link to="/explore" search={{ view: "channels", sort: activeSort }} className={view === "channels" ? "is-active" : ""}><UserPlus className="h-4 w-4" /><span>Canales</span></Link>
+        <Link to="/explore" search={{ view: "series", sort: activeSort }} className={view === "series" ? "is-active" : ""}><PlaySquare className="h-4 w-4" /><span>Series</span></Link>
+        <Link to="/explore" search={{ view: "videos", sort: "views" }} className={view === "videos" && activeSort === "views" && !activeCategory ? "is-active" : ""}><Trophy className="h-4 w-4" /><span>Más vistos</span></Link>
+        <Link to="/explore" search={{ view: "videos", sort: "recent" }} className={view === "videos" && activeSort === "recent" && !activeCategory ? "is-active" : ""}><Activity className="h-4 w-4" /><span>Recientes</span></Link>
         <Link to="/" search={{ q: "música" }}><Headphones className="h-4 w-4" /><span>Música</span></Link>
       </nav>
       <div className="cn-explore-sidebar-rule" />
       <div className="cn-explore-sidebar-title">Categorías</div>
-      <nav className="cn-explore-nav">{CATEGORIES.map((item) => { const Icon = iconFor(item); return <Link key={item} to="/explore" search={{ view: "videos", sort, category: item }} className={`cn-explore-category-link${activeCategory === item ? " is-active" : ""}`}><Icon className="h-4 w-4" /><span>{item}</span></Link>; })}</nav>
+      <nav className="cn-explore-nav">{CATEGORIES.map((item) => { const Icon = iconFor(item); return <Link key={item} to="/explore" search={{ view: "videos", sort: activeSort, category: item }} className={`cn-explore-category-link${activeCategory === item ? " is-active" : ""}`}><Icon className="h-4 w-4" /><span>{item}</span></Link>; })}</nav>
     </aside>
     <main className="cn-explore-content">
       {view === "channels" ? <><header className="cn-explore-heading"><div><div className="cn-explore-heading-eyebrow"><UserPlus className="h-4 w-4" /> Descubre nuevos canales</div><h1>Canales recomendados</h1><p>Encuentra creadores y suscríbete a nuevos canales de Cornet.</p></div></header>{loading ? <div className="cn-explore-empty">Cargando canales…</div> : recommendedChannels.data && recommendedChannels.data.length > 0 ? <div className="cn-recommended-grid">{recommendedChannels.data.map((channel) => <Link key={channel.id} to="/c/$username" params={{ username: channel.username }} className="cn-recommended-channel"><ChannelAvatar path={channel.avatar_path} name={channel.display_name || channel.username} size={60} /><div className="min-w-0 flex-1"><div className="flex items-center gap-1"><h2 className="truncate">{channel.display_name || channel.username}</h2>{channel.is_verified && <span className="cn-recommended-verified" aria-label="Verificado">✓</span>}</div><p>@{channel.username}</p><span>{channel.subscriber_count ?? 0} suscriptores</span></div><span className="cn-recommended-follow"><UserPlus className="h-4 w-4" /> Ver canal</span></Link>)}</div> : <div className="cn-explore-empty">Todavía no hay canales recomendados.</div>}</>
@@ -70,15 +71,15 @@ function ExplorePage() {
       : <>
         <header className="cn-explore-heading"><div><div className="cn-explore-heading-eyebrow"><Compass className="h-4 w-4" /> Descubre algo nuevo</div><h1>{activeCategory ?? "Explorar"}</h1><p>{activeCategory ? `Videos de la categoría ${activeCategory}.` : "Videos de toda la comunidad de Cornet."}</p></div></header>
         <div className="cn-explore-tabs" role="navigation" aria-label="Explorar">
-          <Link to="/explore" search={{ view: "videos", sort: "views" }} className={!activeCategory && sort === "views" ? "is-active" : ""}><Compass className="h-4 w-4" /> Inicio</Link>
-          <Link to="/explore" search={{ view: "series", sort }}><PlaySquare className="h-4 w-4" /> Series</Link>
-          <Link to="/explore" search={{ view: "videos", sort: "views", ...(activeCategory ? { category: activeCategory } : {}) }} className={sort === "views" ? "is-active" : ""}><Trophy className="h-4 w-4" /> Más vistos</Link>
-          <Link to="/explore" search={{ view: "videos", sort: "recent", ...(activeCategory ? { category: activeCategory } : {}) }} className={sort === "recent" ? "is-active" : ""}><Activity className="h-4 w-4" /> Recientes</Link>
-          {CATEGORIES.slice(0, 5).map((item) => { const Icon = iconFor(item); return <Link key={item} to="/explore" search={{ view: "videos", sort, category: item }} className={activeCategory === item ? "is-active" : ""}><Icon className="h-4 w-4" /> {item}</Link>; })}
+          <Link to="/explore" search={{ view: "videos", sort: "views", ...(activeCategory ? { category: activeCategory } : {}) }} className={activeSort === "views" ? "is-active" : ""}><Compass className="h-4 w-4" /> Inicio</Link>
+          <Link to="/explore" search={{ view: "series", sort: activeSort }}><PlaySquare className="h-4 w-4" /> Series</Link>
+          <Link to="/explore" search={{ view: "videos", sort: "views", ...(activeCategory ? { category: activeCategory } : {}) }} className={activeSort === "views" ? "is-active" : ""}><Trophy className="h-4 w-4" /> Más vistos</Link>
+          <Link to="/explore" search={{ view: "videos", sort: "recent", ...(activeCategory ? { category: activeCategory } : {}) }} className={activeSort === "recent" ? "is-active" : ""}><Activity className="h-4 w-4" /> Recientes</Link>
+          {CATEGORIES.slice(0, 5).map((item) => { const Icon = iconFor(item); return <Link key={item} to="/explore" search={{ view: "videos", sort: activeSort, category: item }} className={activeCategory === item ? "is-active" : ""}><Icon className="h-4 w-4" /> {item}</Link>; })}
         </div>
         {loading ? <div className="cn-explore-empty">Cargando videos…</div>
           : activeCategory ? <section className="cn-explore-section">{filtered.data && filtered.data.length > 0 ? <div className="cn-explore-grid">{filtered.data.map((video) => <VideoCard key={video.id} video={video} />)}</div> : <div className="cn-explore-empty">Todavía no hay videos en {activeCategory}.</div>}</section>
-          : sections.map((section) => { const Icon = section.icon; return <section key={section.title} className="cn-explore-section"><div className="cn-explore-section-head"><div className="cn-explore-section-title"><Icon className="h-4 w-4" /><h2>{section.title}</h2></div>{CATEGORIES.includes(section.title as VideoCategory) ? <Link to="/explore" search={{ view: "videos", sort, category: section.title }}>Ver todo</Link> : <Link to="/" search={{ sort: section.title === "Más vistos" ? "views" : "recent" }}>Ver todo</Link>}</div>{section.data.length > 0 ? <div className="cn-explore-grid">{section.data.map((video) => <VideoCard key={video.id} video={video} />)}</div> : <div className="cn-explore-empty">Todavía no hay videos en esta sección.</div>}</section>; })}
+          : sections.map((section) => { const Icon = section.icon; const isCategory = CATEGORIES.includes(section.title as VideoCategory); const targetSort: ExploreSort = section.title === "Más vistos" ? "views" : "recent"; return <section key={section.title} className="cn-explore-section"><div className="cn-explore-section-head"><div className="cn-explore-section-title"><Icon className="h-4 w-4" /><h2>{section.title}</h2></div>{isCategory ? <Link to="/explore" search={{ view: "videos", sort: activeSort, category: section.title }}>Ver todo</Link> : <Link to="/explore" search={{ view: "videos", sort: targetSort }}>Ver todo</Link>}</div>{section.data.length > 0 ? <div className="cn-explore-grid">{section.data.map((video) => <VideoCard key={video.id} video={video} />)}</div> : <div className="cn-explore-empty">Todavía no hay videos en esta sección.</div>}</section>; })}
       </>}
     </main>
   </div></AppShell>;
