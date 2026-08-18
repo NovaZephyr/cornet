@@ -11,7 +11,7 @@ import { supabase } from "@/integrations/supabase/client";
 import "@/lib/social-links-runtime";
 
 export type AppRole = "admin" | "moderator" | "partner" | "user";
-export type ChannelStyle = "corenetwork" | "channel-1" | "channel-2" | "cosmic-panda";
+export type ChannelStyle = "corenetwork" | "classic-channel" | "classic-2009" | "standard-2012" | "cosmic-panda" | "onechannel-2013" | "feather-profile" | "creator-studio" | "profile-card" | "community-profile" | "video-channel" | "music-channel" | "gaming-channel" | "minimal-profile" | "channel-2015" | "channel-2019" | "channel-1" | "channel-2";
 export type ChannelInfoLayout = "left" | "right" | "top" | "hidden";
 
 export type SocialLink = { platform: string; url: string };
@@ -95,6 +95,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return () => sub.subscription.unsubscribe();
   }, []);
 
+  const refresh = async () => {
+    await load(user?.id);
+  };
+
+  const signOut = async () => {
+    await supabase.auth.signOut();
+  };
+
   const value = useMemo<AuthState>(
     () => ({
       user,
@@ -104,14 +112,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       loading,
       isAdmin: roles.includes("admin"),
       isPartner: roles.includes("partner"),
-      refresh: () => load(user?.id),
-      signOut: async () => {
-        await supabase.auth.signOut();
-        setProfile(null);
-        setRoles([]);
-      },
+      refresh,
+      signOut,
     }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     [user, session, profile, roles, loading],
   );
 
