@@ -11,7 +11,11 @@ import { supabase } from "@/integrations/supabase/client";
 import "@/lib/social-links-runtime";
 
 export type AppRole = "admin" | "moderator" | "partner" | "user";
-export type ChannelStyle = "corenetwork" | "classic-channel" | "classic-2009" | "standard-2012" | "cosmic-panda" | "onechannel-2013" | "feather-profile" | "creator-studio" | "profile-card" | "community-profile" | "video-channel" | "music-channel" | "gaming-channel" | "minimal-profile" | "channel-2015" | "channel-2019" | "channel-1" | "channel-2";
+export type ChannelStyle =
+  | "corenetwork" | "classic-2009" | "standard-2012" | "cosmic-panda"
+  | "onechannel-2013" | "feather-profile" | "creator-studio" | "profile-card"
+  | "community-profile" | "video-channel" | "music-channel" | "gaming-channel"
+  | "minimal-profile" | "channel-2015" | "channel-2019";
 export type ChannelInfoLayout = "left" | "right" | "top" | "hidden";
 
 export type SocialLink = { platform: string; url: string };
@@ -80,40 +84,32 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const { data: sub } = supabase.auth.onAuthStateChange((_event, newSession) => {
       setSession(newSession);
       setUser(newSession?.user ?? null);
-      setTimeout(() => {
-        void load(newSession?.user?.id);
-      }, 0);
+      setTimeout(() => void load(newSession?.user?.id), 0);
     });
-
     void supabase.auth.getSession().then(async ({ data }) => {
       setSession(data.session);
       setUser(data.session?.user ?? null);
       await load(data.session?.user?.id);
       setLoading(false);
     });
-
     return () => sub.subscription.unsubscribe();
   }, []);
 
-  const value = useMemo<AuthState>(
-    () => ({
-      user,
-      session,
-      profile,
-      roles,
-      loading,
-      isAdmin: roles.includes("admin"),
-      isPartner: roles.includes("partner"),
-      refresh: () => load(user?.id),
-      signOut: async () => {
-        await supabase.auth.signOut();
-        setProfile(null);
-        setRoles([]);
-      },
-    }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [user, session, profile, roles, loading],
-  );
+  const value = useMemo<AuthState>(() => ({
+    user,
+    session,
+    profile,
+    roles,
+    loading,
+    isAdmin: roles.includes("admin"),
+    isPartner: roles.includes("partner"),
+    refresh: () => load(user?.id),
+    signOut: async () => {
+      await supabase.auth.signOut();
+      setProfile(null);
+      setRoles([]);
+    },
+  }), [user, session, profile, roles, loading]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
