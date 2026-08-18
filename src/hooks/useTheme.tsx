@@ -8,7 +8,7 @@ export const THEMES = [
   { id: "forest", label: "Bosque", hint: "Verde profundo y natural", group: "Sólidos" },
   { id: "midnight", label: "Medianoche", hint: "Azul noche y superficies suaves", group: "Sólidos" },
   { id: "rose", label: "Rosa", hint: "Rosa oscuro con superficies cálidas", group: "Sólidos" },
-  { id: "retro2012", label: "YouTube 2012 / Cosmic Panda", hint: "Composición retro inspirada en la era Cosmic Panda", group: "Clásicos" },
+  { id: "retro2012", label: "YouTube 2012 / Cosmic Panda", hint: "Tema claro inspirado en la interfaz clásica de YouTube", group: "Clásicos" },
   { id: "gradients", label: "Aurora", hint: "Violeta, rojo y azul", group: "Degradados" },
   { id: "grad-sunset", label: "Atardecer", hint: "Naranja y magenta", group: "Degradados" },
   { id: "grad-neon", label: "Neón", hint: "Verde y cian eléctrico", group: "Degradados" },
@@ -25,8 +25,15 @@ const VALID: ThemeId[] = [...THEMES.map((t) => t.id), "custom"];
 function readInitialTheme(): ThemeId { if (typeof window === "undefined") return DEFAULT_THEME; const stored = (window.localStorage.getItem(STORAGE_KEY) || window.localStorage.getItem("corenetwork-theme-v2") || window.localStorage.getItem("corenetwork-theme")) as ThemeId | null; return stored && VALID.includes(stored) ? stored : DEFAULT_THEME; }
 function readCustomTheme(): CustomTheme { if (typeof window === "undefined") return DEFAULT_CUSTOM_THEME; try { return { ...DEFAULT_CUSTOM_THEME, ...(JSON.parse(window.localStorage.getItem(CUSTOM_STORAGE_KEY) || "null") || {}) }; } catch { return DEFAULT_CUSTOM_THEME; } }
 function apply(theme: ThemeId, customTheme: CustomTheme) {
-  const root = document.documentElement; root.dataset.theme = theme; root.classList.toggle("dark", !(theme === "light" || theme === "retro2012" || theme === "grad-candy"));
-  if (theme !== "custom") { ["--background","--foreground","--surface","--surface-hover","--card","--card-foreground","--popover","--popover-foreground","--primary","--primary-foreground","--secondary","--secondary-foreground","--muted","--muted-foreground","--accent","--accent-foreground","--border","--input","--ring","--sidebar","--sidebar-foreground","--sidebar-primary","--sidebar-primary-foreground","--sidebar-accent","--sidebar-accent-foreground","--sidebar-border","--sidebar-ring","--verified","--partner","--cn-custom-gradient"].forEach((name) => root.style.removeProperty(name)); return; }
+  const root = document.documentElement;
+  const isLightTheme = theme === "light" || theme === "retro2012" || theme === "grad-candy";
+  root.dataset.theme = theme;
+  root.classList.toggle("dark", !isLightTheme);
+  root.style.colorScheme = isLightTheme ? "light" : "dark";
+  if (theme !== "custom") {
+    ["--background","--foreground","--surface","--surface-hover","--card","--card-foreground","--popover","--popover-foreground","--primary","--primary-foreground","--secondary","--secondary-foreground","--muted","--muted-foreground","--accent","--accent-foreground","--border","--input","--ring","--sidebar","--sidebar-foreground","--sidebar-primary","--sidebar-primary-foreground","--sidebar-accent","--sidebar-accent-foreground","--sidebar-border","--sidebar-ring","--verified","--partner","--cn-custom-gradient"].forEach((name) => root.style.removeProperty(name));
+    return;
+  }
   const vars: Record<string, string> = { "--background":customTheme.background,"--foreground":customTheme.foreground,"--surface":customTheme.surface,"--surface-hover":customTheme.surfaceHover,"--card":customTheme.card,"--card-foreground":customTheme.foreground,"--popover":customTheme.surface,"--popover-foreground":customTheme.foreground,"--primary":customTheme.primary,"--primary-foreground":"#fff","--secondary":customTheme.secondary,"--secondary-foreground":customTheme.foreground,"--muted":customTheme.secondary,"--muted-foreground":`color-mix(in srgb, ${customTheme.foreground} 65%, transparent)`,"--accent":customTheme.accent,"--accent-foreground":"#fff","--border":customTheme.border,"--input":customTheme.surface,"--ring":customTheme.accent,"--sidebar":customTheme.sidebar,"--sidebar-foreground":customTheme.foreground,"--sidebar-primary":customTheme.primary,"--sidebar-primary-foreground":"#fff","--sidebar-accent":customTheme.surfaceHover,"--sidebar-accent-foreground":customTheme.foreground,"--sidebar-border":customTheme.border,"--sidebar-ring":customTheme.accent };
   Object.entries(vars).forEach(([name, value]) => root.style.setProperty(name, value)); root.style.setProperty("--verified", customTheme.accent); root.style.setProperty("--partner", customTheme.primary); root.style.setProperty("--cn-custom-gradient", customTheme.gradientEnabled ? `linear-gradient(${customTheme.gradientAngle}deg, ${customTheme.gradientFrom}, ${customTheme.gradientTo})` : customTheme.background);
 }
