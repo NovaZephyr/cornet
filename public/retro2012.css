@@ -57,3 +57,24 @@
   :is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-channel--channel-1 .cn-2012-body,:is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-channel--channel-2 .cn-2012-body,:is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-channel--cosmic-panda .cn-2012-body{display:block}
   :is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-channel--channel-1 .cn-2012-about,:is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-channel--channel-2 .cn-2012-about,:is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-channel--cosmic-panda .cn-2012-about{margin-top:10px}
 }
+
+/* 2012 dropdowns and select menus */
+[data-theme="retro2012"] [data-radix-menu-content]{font-family:Arial,Helvetica,sans-serif!important;background:linear-gradient(#fafafa,#ededed)!important;border:1px solid #aeb6bd!important;border-radius:2px!important;box-shadow:0 3px 12px rgba(0,0,0,.35)!important;color:#222!important;padding:4px!important}
+[data-theme="retro2012"] [data-radix-menu-content] [role="menuitem"]{border-radius:1px!important;color:#2d353b!important;font-size:13px!important;line-height:1.2!important;padding:7px 9px!important}
+[data-theme="retro2012"] [data-radix-menu-content] [role="menuitem"]:focus,[data-theme="retro2012"] [data-radix-menu-content] [role="menuitem"][data-highlighted]{background:linear-gradient(#e9eef2,#d9e0e5)!important;color:#1d2e3a!important;outline:0}
+[data-theme="retro2012"] [data-radix-menu-content] [role="separator"]{background:#c8cdd1!important;margin:4px 2px!important}
+[data-theme="retro2012"] [data-radix-menu-content] [data-slot="label"]{color:#66717a!important;font-size:10px!important;letter-spacing:.05em!important}
+[data-theme="retro2012"] [data-radix-menu-content] svg{color:#42515c!important}
+[data-theme="retro2012"] [data-radix-select-content]{font-family:Arial,Helvetica,sans-serif!important;background:#f7f7f7!important;border:1px solid #aeb6bd!important;border-radius:2px!important;box-shadow:0 3px 12px rgba(0,0,0,.28)!important;color:#222!important}
+[data-theme="retro2012"] [data-radix-select-item][data-highlighted]{background:#dfe6eb!important;color:#1d2e3a!important}
+
+/* Clean, period-correct file controls used by the settings page. */
+[data-theme="retro2012"] input[type="file"]{height:36px!important;border:1px solid #b4bdc4!important;border-radius:2px!important;background:linear-gradient(#fff,#eceff1)!important;color:#333!important;font-family:Arial,Helvetica,sans-serif!important;font-size:11px!important;padding:3px 5px!important}
+[data-theme="retro2012"] input[type="file"]::file-selector-button{margin-right:9px;border:1px solid #9da7ae;border-radius:2px;background:linear-gradient(#fff,#d9dee2);color:#28343d;font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:700;padding:4px 9px;cursor:pointer}
+[data-theme="retro2012"] input[type="file"]::file-selector-button:hover{background:linear-gradient(#fff,#cbd2d7)}
+
+/* Cosmic Panda shell: keep menus/cards inside the 2012 visual language. */
+:is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-sidebar{font-family:Arial,Helvetica,sans-serif}
+:is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-sidebar-link,
+:is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-sidebar-subscription{border-radius:1px!important}
+:is([data-theme="retro2012"],.cn-retro-scope) .cn-2012-mobile-bar{font-family:Arial,Helvetica,sans-serif}
