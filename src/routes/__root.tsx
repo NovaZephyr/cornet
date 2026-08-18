@@ -23,12 +23,19 @@ function MaintenanceAwareContent() {
   useEffect(() => {
     if (isAuthRoute) return;
     let cancelled = false; setSettingsLoading(true);
-    void supabase.from("site_settings").select("maintenance_mode, maintenance_message").eq("id", true).maybeSingle().then(({ data, error }) => {
-      if (cancelled) return;
-      if (error) { console.error("[Cornet] maintenance settings failed", error); setMaintenance({ enabled: false, message: "" }); }
-      else setMaintenance({ enabled: Boolean(data?.maintenance_mode), message: data?.maintenance_message ?? "" });
-      setSettingsLoading(false);
-    }).catch((error) => { if (cancelled) return; console.error("[Cornet] maintenance settings failed", error); setMaintenance({ enabled: false, message: "" }); setSettingsLoading(false); });
+    void (async () => {
+      try {
+        const { data, error } = await supabase.from("site_settings").select("maintenance_mode, maintenance_message").eq("id", true).maybeSingle();
+        if (cancelled) return;
+        if (error) { console.error("[Cornet] maintenance settings failed", error); setMaintenance({ enabled: false, message: "" }); }
+        else setMaintenance({ enabled: Boolean(data?.maintenance_mode), message: data?.maintenance_message ?? "" });
+      } catch (error) {
+        if (cancelled) return;
+        console.error("[Cornet] maintenance settings failed", error);
+        setMaintenance({ enabled: false, message: "" });
+      }
+      if (!cancelled) setSettingsLoading(false);
+    })();
     return () => { cancelled = true; };
   }, [isAuthRoute]);
   if (isAuthRoute) return <Outlet />;
