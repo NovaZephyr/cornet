@@ -1,0 +1,55 @@
+/* Cosmic Panda is a light theme. Dark chrome is component-scoped, not a dark theme. */
+[data-theme="retro2012"] {
+  color-scheme: light !important;
+  --background:#e5e5e5 !important;
+  --foreground:#333333 !important;
+  --surface:#ffffff !important;
+  --surface-hover:#f2f2f2 !important;
+  --card:#ffffff !important;
+  --card-foreground:#333333 !important;
+  --popover:#ffffff !important;
+  --popover-foreground:#333333 !important;
+  --primary:#555555 !important;
+  --primary-foreground:#ffffff !important;
+  --secondary:#eeeeee !important;
+  --secondary-foreground:#333333 !important;
+  --muted:#eeeeee !important;
+  --muted-foreground:#6b6b6b !important;
+  --accent:#dddddd !important;
+  --accent-foreground:#222222 !important;
+  --border:#c6c6c6 !important;
+  --input:#ffffff !important;
+  --ring:#777777 !important;
+  --sidebar:#111111 !important;
+  --sidebar-foreground:#d8d8d8 !important;
+  --sidebar-primary:#d92316 !important;
+  --sidebar-primary-foreground:#ffffff !important;
+  --sidebar-accent:#292929 !important;
+  --sidebar-accent-foreground:#ffffff !important;
+  --sidebar-border:#000000 !important;
+  --sidebar-ring:#777777 !important;
+}
+[data-theme="retro2012"] body,
+[data-theme="retro2012"] .cn-2012-app,
+[data-theme="retro2012"] .cn-2012-main {
+  background:#e5e5e5 !important;
+  color:#333333 !important;
+}
+[data-theme="retro2012"] .cn-2012-main .bg-background,
+[data-theme="retro2012"] .cn-2012-main .bg-surface,
+[data-theme="retro2012"] .cn-2012-main .bg-card,
+[data-theme="retro2012"] .cn-2012-main .bg-popover {
+  background:#ffffff !important;
+  color:#333333 !important;
+}
+[data-theme="retro2012"] .cn-2012-main .text-foreground,
+[data-theme="retro2012"] .cn-2012-main .text-card-foreground,
+[data-theme="retro2012"] .cn-2012-main .text-popover-foreground {
+  color:#333333 !important;
+}
+[data-theme="retro2012"] .cn-2012-main .text-muted-foreground {
+  color:#6b6b6b !important;
+}
+/* The historic guide/topbar may be dark visually, but the theme itself remains light. */
+[data-theme="retro2012"] .cn-2012-topbar,
+[data-theme="retro2012"] .cn-2012-sidebar { color-scheme:dark !important; }
