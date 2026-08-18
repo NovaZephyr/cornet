@@ -1,0 +1,173 @@
+/* Cosmic Panda channel page: standalone full-page canvas + centered historic channel skin. */
+[data-theme="retro2012"] .cn-2012-channel-mode,
+[data-theme="retro2012"] .cn-2012-shell-body--cosmic-channel{
+  background:#3e6d87!important;
+}
+
+[data-theme="retro2012"] .cn-2012-shell-body--cosmic-channel{
+  display:block!important;
+  width:100%!important;
+  min-width:0!important;
+  max-width:none!important;
+  margin:0!important;
+  padding:0!important;
+}
+
+[data-theme="retro2012"] .cn-2012-shell-body--cosmic-channel .cn-2012-main{
+  display:block!important;
+  width:100%!important;
+  max-width:none!important;
+  min-width:0!important;
+  margin:0!important;
+  padding:0!important;
+  background:#3e6d87!important;
+}
+
+[data-theme="retro2012"] .cn-2012-shell-body--cosmic-channel .cn-site-banner-container{
+  display:none!important;
+}
+
+/* Cancel the generic retro rule that constrains every direct child of .cn-2012-main. */
+[data-theme="retro2012"] .cn-2012-shell-body--cosmic-channel .cn-2012-main > .cn-cosmic-channel{
+  display:block!important;
+  width:100%!important;
+  max-width:none!important;
+  margin:0!important;
+  padding:30px 24px 48px!important;
+  min-height:calc(100vh - 54px)!important;
+  box-sizing:border-box!important;
+  background-color:#3e6d87!important;
+  background-repeat:no-repeat!important;
+  background-position:center top!important;
+  background-size:cover!important;
+}
+
+/* The actual historic channel frame stays centered inside the full-page background. */
+[data-theme="retro2012"] .cn-cosmic-channel-inner{
+  width:min(1000px,100%)!important;
+  max-width:1000px!important;
+  margin:0 auto!important;
+  padding:8px!important;
+  box-sizing:border-box!important;
+  background:rgba(238,238,238,.96)!important;
+  border:1px solid #9d9d9d!important;
+  box-shadow:0 2px 12px rgba(0,0,0,.32)!important;
+}
+
+/* Channel content: large central video/list + separate right information rail. */
+[data-theme="retro2012"] .cn-cosmic-columns{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) 285px!important;
+  gap:12px!important;
+  width:100%!important;
+  margin:12px 0 0!important;
+  align-items:start!important;
+}
+
+[data-theme="retro2012"] .cn-cosmic-center{
+  grid-column:1!important;
+  grid-row:1 / span 20!important;
+  width:100%!important;
+  min-width:0!important;
+  display:flex!important;
+  flex-direction:column!important;
+  gap:12px!important;
+}
+
+/* Merge information blocks into the one right rail instead of creating a left column. */
+[data-theme="retro2012"] .cn-cosmic-left,
+[data-theme="retro2012"] .cn-cosmic-right{
+  display:contents!important;
+}
+
+[data-theme="retro2012"] .cn-cosmic-left > section,
+[data-theme="retro2012"] .cn-cosmic-right > section{
+  grid-column:2!important;
+  width:100%!important;
+  min-width:0!important;
+}
+
+/* Keep the main video/list visually spacious. */
+[data-theme="retro2012"] .cn-cosmic-featured{
+  width:100%!important;
+  background:#fff!important;
+  border:1px solid #c9c9c9!important;
+}
+
+[data-theme="retro2012"] .cn-cosmic-featured .cn-cosmic-player{
+  width:calc(100% - 18px)!important;
+  margin:9px!important;
+  background:#111!important;
+  border:1px solid #222!important;
+}
+
+[data-theme="retro2012"] .cn-cosmic-center #uploads .grid{
+  width:100%!important;
+  display:flex!important;
+  flex-direction:column!important;
+  gap:0!important;
+  margin:0!important;
+  padding:0!important;
+}
+
+[data-theme="retro2012"] .cn-cosmic-center #uploads .grid > *{
+  width:100%!important;
+  min-width:0!important;
+  margin:0!important;
+  padding:10px!important;
+  border:0!important;
+  border-top:1px solid #d7d7d7!important;
+  border-radius:0!important;
+  background:#fff!important;
+  box-shadow:none!important;
+}
+
+[data-theme="retro2012"] .cn-cosmic-center #uploads .grid > *:first-child{
+  border-top:0!important;
+}
+
+/* Right rail cards: compact, distinct, and clearly separated from the main feed. */
+[data-theme="retro2012"] .cn-cosmic-right > section,
+[data-theme="retro2012"] .cn-cosmic-left > section{
+  align-self:start!important;
+}
+
+[data-theme="retro2012"] .cn-cosmic-panel{
+  border-radius:0!important;
+}
+
+@media (max-width:900px){
+  [data-theme="retro2012"] .cn-2012-shell-body--cosmic-channel .cn-2012-main > .cn-cosmic-channel{
+    padding:18px 10px 32px!important;
+  }
+  [data-theme="retro2012"] .cn-cosmic-channel-inner{
+    width:100%!important;
+    max-width:none!important;
+  }
+  [data-theme="retro2012"] .cn-cosmic-columns{
+    grid-template-columns:minmax(0,1fr) 230px!important;
+    gap:9px!important;
+  }
+}
+
+@media (max-width:720px){
+  [data-theme="retro2012"] .cn-cosmic-columns{
+    display:flex!important;
+    flex-direction:column!important;
+  }
+  [data-theme="retro2012"] .cn-cosmic-center{
+    order:1!important;
+    width:100%!important;
+  }
+  [data-theme="retro2012"] .cn-cosmic-left > section,
+  [data-theme="retro2012"] .cn-cosmic-right > section{
+    width:100%!important;
+    grid-column:auto!important;
+  }
+  [data-theme="retro2012"] .cn-cosmic-left > section{
+    order:2!important;
+  }
+  [data-theme="retro2012"] .cn-cosmic-right > section{
+    order:3!important;
+  }
+}
