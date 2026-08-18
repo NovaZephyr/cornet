@@ -8,6 +8,7 @@ import {
 } from "react";
 import type { Session, User } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
+import "@/lib/social-links-runtime";
 
 export type AppRole = "admin" | "moderator" | "partner" | "user";
 export type ChannelStyle = "corenetwork" | "channel-1" | "channel-2" | "cosmic-panda";
