@@ -1,4 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
+import "@/custom-themes-gallery.css";
+import { readExtensions, saveExtensions } from "@/extensions";
 
 export const THEMES = [
   { id: "grad-ocean", label: "Océano", hint: "Azul fresco, turquesa y cristal", group: "Recomendado" },
@@ -47,5 +49,5 @@ function apply(theme: ThemeId, customTheme: CustomTheme) {
 }
 type ThemeState = { theme: ThemeId; customTheme: CustomTheme; setTheme: (theme: ThemeId) => void; setCustomTheme: (theme: CustomTheme) => void };
 const ThemeContext = createContext<ThemeState | undefined>(undefined);
-export function ThemeProvider({ children }: { children: ReactNode }) { const [theme, setThemeState] = useState<ThemeId>(readInitialTheme); const [customTheme, setCustomThemeState] = useState<CustomTheme>(readCustomTheme); useEffect(() => { apply(theme, customTheme); window.localStorage.setItem(STORAGE_KEY, theme); window.localStorage.setItem(CUSTOM_STORAGE_KEY, JSON.stringify(customTheme)); }, [theme, customTheme]); const setTheme = useCallback((next: ThemeId) => { if (VALID.includes(next)) setThemeState(next); }, []); const setCustomTheme = useCallback((next: CustomTheme) => { setCustomThemeState(next); setThemeState("custom"); }, []); const value = useMemo(() => ({ theme, customTheme, setTheme, setCustomTheme }), [theme, customTheme, setTheme, setCustomTheme]); return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>; }
+export function ThemeProvider({ children }: { children: ReactNode }) { const [theme, setThemeState] = useState<ThemeId>(readInitialTheme); const [customTheme, setCustomThemeState] = useState<CustomTheme>(readCustomTheme); useEffect(() => { apply(theme, customTheme); window.localStorage.setItem(STORAGE_KEY, theme); window.localStorage.setItem(CUSTOM_STORAGE_KEY, JSON.stringify(customTheme)); saveExtensions(readExtensions()); }, [theme, customTheme]); const setTheme = useCallback((next: ThemeId) => { if (VALID.includes(next)) setThemeState(next); }, []); const setCustomTheme = useCallback((next: CustomTheme) => { setCustomThemeState(next); setThemeState("custom"); }, []); const value = useMemo(() => ({ theme, customTheme, setTheme, setCustomTheme }), [theme, customTheme, setTheme, setCustomTheme]); return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>; }
 export function useTheme() { const ctx = useContext(ThemeContext); if (!ctx) throw new Error("useTheme must be used within ThemeProvider"); return ctx; }
