@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { getBannerIcon } from "@/lib/icons";
+import "@/site-banner-cosmic.css";
 
 type SiteBannerRow = {
   message: string;
@@ -24,13 +25,12 @@ export function SiteBanner() {
       const { data } = await supabase.from("site_banner").select("*").eq("id", true).maybeSingle();
       return (data as SiteBannerRow) ?? null;
     },
-    refetchInterval: 60_000, // revisa cada minuto por si un admin lo cambia
+    refetchInterval: 60_000,
   });
 
   useEffect(() => {
     if (!banner) return;
     const stored = localStorage.getItem(DISMISS_KEY);
-    // Si el banner se actualizó después de que lo cerraste, vuelve a mostrarse
     setDismissed(!!stored && stored === banner.updated_at);
   }, [banner]);
 
@@ -40,11 +40,14 @@ export function SiteBanner() {
 
   return (
     <div
-      className="flex items-center gap-2 px-4 py-2 text-center text-sm font-medium text-black"
-      style={{ backgroundColor: banner.color }}
+      className="cn-site-banner"
+      style={{ "--cn-banner-color": banner.color } as React.CSSProperties}
+      role="status"
     >
-      {Icon && <Icon className="h-4 w-4 shrink-0" />}
-      <span className="min-w-0 flex-1 truncate">{banner.message}</span>
+      <div className="cn-site-banner-mark" aria-hidden="true" />
+      {Icon && <Icon className="cn-site-banner-icon" aria-hidden="true" />}
+      <span className="cn-site-banner-label">AVISO</span>
+      <span className="cn-site-banner-message">{banner.message}</span>
       {banner.dismissible && (
         <button
           type="button"
@@ -53,7 +56,7 @@ export function SiteBanner() {
             localStorage.setItem(DISMISS_KEY, banner.updated_at);
             setDismissed(true);
           }}
-          className="shrink-0 rounded-full p-0.5 hover:bg-black/10"
+          className="cn-site-banner-close"
         >
           <X className="h-4 w-4" />
         </button>
