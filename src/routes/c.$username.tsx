@@ -5,7 +5,7 @@ import { AppShell } from "@/components/AppShell";
 import { ReportDialog } from "@/components/ReportDialog";
 import { useAuth } from "@/hooks/useAuth";
 import { ChannelLayoutStyles } from "@/design-library/ChannelLayoutStyles";
-import { ChannelLayout } from "@/design-library/channel-layouts";
+import { getChannelLayoutComponent, channelLayoutUsesShellSidebar } from "@/design-library/channel-layout-registry";
 import { useChannelData } from "@/design-library/useChannelData";
 import type { ChannelLayoutProps } from "@/design-library/channel-data";
 
@@ -42,13 +42,14 @@ function Channel() {
     onSubscribe: () => void toggleSubscription(),
     onReport: openReport,
   };
-  const hideSidebar = layoutId !== "corenetwork";
+  const showShellSidebar = channelLayoutUsesShellSidebar(layoutId);
+  const Layout = getChannelLayoutComponent(layoutId);
 
   return (
-    <AppShell hideSidebar={hideSidebar}>
+    <AppShell hideSidebar={!showShellSidebar}>
       <ChannelLayoutStyles layoutId={layoutId} />
-      <div className={hideSidebar ? "cn-retro-scope" : undefined}>
-        <ChannelLayout {...layoutProps} />
+      <div className={!showShellSidebar ? "cn-retro-scope" : undefined}>
+        <Layout {...layoutProps} />
       </div>
       <ReportDialog
         target={{ type: "channel", id: data.profile.id, name: data.profile.display_name || data.profile.username }}
