@@ -1,7 +1,6 @@
 export type DesignCategory = "normal" | "custom";
 export type DesignKind = "theme" | "layout";
-export type CustomThemeFamily = "historical-youtube" | "classic-web" | "desktop-era" | "broadcast";
-export type CustomThemePage = "home" | "watch" | "channel" | "community" | "settings";
+export type DesignPage = "home" | "watch" | "channel" | "community" | "settings" | "explore" | "playlists";
 
 export type ThemeDefinition = {
   id: string;
@@ -10,8 +9,8 @@ export type ThemeDefinition = {
   kind: "theme";
   description: string;
   stylesheets: string[];
-  family?: CustomThemeFamily;
-  pages?: CustomThemePage[];
+  family?: string;
+  pages?: DesignPage[];
 };
 
 export type ChannelLayoutDefinition = {
@@ -34,15 +33,15 @@ export const themes: ThemeDefinition[] = [
   { id: "midnight", name: "Medianoche", category: "normal", kind: "theme", description: "Tema nocturno del sistema normal.", stylesheets: [] },
   { id: "rose", name: "Rosa", category: "normal", kind: "theme", description: "Tema rosa del sistema normal.", stylesheets: [] },
   { id: "lavanda-oscuro", name: "Lavanda oscuro", category: "normal", kind: "theme", description: "Tema lavanda oscuro del sistema normal.", stylesheets: [] },
-  { id: "retro2012", name: "Cosmic Panda 2012", category: "custom", kind: "theme", description: "Experiencia global inspirada en Cosmic Panda / YouTube 2012.", stylesheets: ["/cosmic-panda-theme.css"], family: "historical-youtube", pages: ["home", "watch", "channel", "community", "settings"] },
-  { id: "feather2013", name: "Feather 2013", category: "custom", kind: "theme", description: "Experiencia ligera y enfocada en vídeo.", stylesheets: ["/custom-theme-experiences.css"], family: "historical-youtube", pages: ["home", "watch", "settings"] },
-  { id: "youtube2019", name: "YouTube 2019 / Polymer", category: "custom", kind: "theme", description: "Experiencia global basada en Polymer 2019.", stylesheets: ["/youtube-polymer-2019.css", "/youtube-polymer-2019-home.css", "/youtube-polymer-2019-shell-final.css"], family: "historical-youtube", pages: ["home", "watch", "channel", "community", "settings"] },
-  { id: "windowsAero", name: "Windows Aero", category: "custom", kind: "theme", description: "Cristal, blur y chrome inspirado en Vista/7.", stylesheets: ["/custom-theme-experiences.css", "/aero-family-overrides.css"], family: "desktop-era", pages: ["home", "watch", "settings"] },
-  { id: "frutigerAero", name: "Frutiger Aero", category: "custom", kind: "theme", description: "Naturaleza, agua, cielo y vidrio translúcido.", stylesheets: ["/custom-theme-experiences.css", "/aero-family-overrides.css"], family: "classic-web", pages: ["home", "watch", "community", "settings"] },
-  { id: "web2Glossy", name: "Web 2.0 Glossy", category: "custom", kind: "theme", description: "Glossy, gradients, chrome y skeuomorfismo web.", stylesheets: ["/custom-theme-experiences.css", "/aero-family-overrides.css"], family: "classic-web", pages: ["home", "watch", "community", "settings"] },
-  { id: "y2kChrome", name: "Y2K Chrome", category: "custom", kind: "theme", description: "Metal, azul eléctrico y estética tecnológica Y2K.", stylesheets: ["/custom-theme-experiences.css"], family: "classic-web", pages: ["home", "watch", "settings"] },
-  { id: "xpLuna", name: "Windows XP Luna", category: "custom", kind: "theme", description: "Chrome azul, superficies plateadas y controles Luna.", stylesheets: ["/custom-theme-experiences.css"], family: "desktop-era", pages: ["home", "watch", "settings"] },
-  { id: "crtVhs", name: "CRT / VHS", category: "custom", kind: "theme", description: "Scanlines, fósforo, glow y estética de televisión antigua.", stylesheets: ["/custom-theme-experiences.css"], family: "broadcast", pages: ["home", "watch", "community", "settings"] },
+  { id: "retro2012", name: "Cosmic Panda 2012", category: "custom", kind: "theme", description: "Experiencia global inspirada en Cosmic Panda / YouTube 2012.", stylesheets: ["/cosmic-panda-theme.css"], family: "youtube-historical", pages: ["home", "watch", "explore", "settings"] },
+  { id: "feather2013", name: "Feather 2013", category: "custom", kind: "theme", description: "Experiencia ligera y enfocada en vídeo.", stylesheets: ["/custom-theme-experiences.css"], family: "youtube-historical", pages: ["home", "watch", "explore"] },
+  { id: "youtube2019", name: "YouTube 2019 / Polymer", category: "custom", kind: "theme", description: "Experiencia modular basada en la interfaz Polymer de 2019.", stylesheets: ["/youtube-polymer-2019.css", "/youtube-polymer-2019-home.css", "/youtube-polymer-2019-design-system.css"], family: "youtube-polymer", pages: ["home", "watch", "channel", "community", "settings", "explore", "playlists"] },
+  { id: "windowsAero", name: "Windows Aero", category: "custom", kind: "theme", description: "Cristal, blur y chrome inspirado en Vista/7.", stylesheets: ["/custom-theme-experiences.css", "/aero-family-overrides.css"], family: "desktop-era", pages: ["home", "watch", "channel", "settings"] },
+  { id: "frutigerAero", name: "Frutiger Aero", category: "custom", kind: "theme", description: "Naturaleza, agua, cielo y vidrio translúcido.", stylesheets: ["/custom-theme-experiences.css", "/aero-family-overrides.css"], family: "web-aesthetic", pages: ["home", "watch", "channel", "explore"] },
+  { id: "web2Glossy", name: "Web 2.0 Glossy", category: "custom", kind: "theme", description: "Glossy, gradients, chrome y skeuomorfismo web.", stylesheets: ["/custom-theme-experiences.css", "/aero-family-overrides.css"], family: "web-aesthetic", pages: ["home", "watch", "channel", "explore"] },
+  { id: "y2kChrome", name: "Y2K Chrome", category: "custom", kind: "theme", description: "Metal, azul eléctrico y estética tecnológica Y2K.", stylesheets: ["/custom-theme-experiences.css"], family: "web-aesthetic", pages: ["home", "watch", "channel"] },
+  { id: "xpLuna", name: "Windows XP Luna", category: "custom", kind: "theme", description: "Chrome azul, superficies plateadas y controles Luna.", stylesheets: ["/custom-theme-experiences.css"], family: "desktop-era", pages: ["home", "watch", "channel", "settings"] },
+  { id: "crtVhs", name: "CRT / VHS", category: "custom", kind: "theme", description: "Scanlines, fósforo, glow y estética de televisión antigua.", stylesheets: ["/custom-theme-experiences.css"], family: "broadcast-era", pages: ["home", "watch"] },
 ];
 
 export const channelLayouts: ChannelLayoutDefinition[] = [
@@ -66,4 +65,3 @@ export const channelLayouts: ChannelLayoutDefinition[] = [
 export function getTheme(themeId: string) { return themes.find((theme) => theme.id === themeId) ?? themes.find((theme) => theme.id === "grad-ocean")!; }
 export function getChannelLayout(layoutId: string) { return channelLayouts.find((layout) => layout.id === layoutId) ?? channelLayouts[0]; }
 export function getThemesByCategory(category: DesignCategory) { return themes.filter((theme) => theme.category === category); }
-export function getCustomThemesByFamily(family: CustomThemeFamily) { return themes.filter((theme) => theme.category === "custom" && theme.family === family); }
