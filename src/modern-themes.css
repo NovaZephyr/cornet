@@ -1,85 +1,17 @@
-/* CoreNetwork normal-theme shell only.
- * Custom themes and historical skins are intentionally excluded.
- * Do not add [data-theme]:not(...) selectors here: custom themes own their CSS.
- */
+/* Normal themes only. Custom skins never enter this file. */
+:where(html[data-theme-kind="normal"]) .cn-shell{background:var(--background);color:var(--foreground);}
+:where(html[data-theme-kind="normal"]) .cn-shell-header{background:var(--surface);border-color:var(--border);box-shadow:0 1px 8px rgb(0 0 0 / .04);}
+:where(html[data-theme-kind="normal"]) .cn-shell-sidebar{background:var(--sidebar);border-color:var(--sidebar-border);}
+:where(html[data-theme-kind="normal"]) .cn-shell-sidebar nav a[data-active="true"]{background:color-mix(in oklab,var(--sidebar-primary) 10%,var(--sidebar-accent));color:var(--sidebar-primary);}
+:where(html[data-theme-kind="normal"]) .cn-shell-search input{background:var(--input);border-color:var(--border);color:var(--foreground);}
+:where(html[data-theme-kind="normal"]) .cn-shell-main{background:var(--background);}
+:where(html[data-theme-kind="normal"]) .cn-shell-footer{background:var(--surface);border-color:var(--border);}
 
-:is(html[data-theme="dark"],html[data-theme="light"],html[data-theme="grad-ocean"],html[data-theme="grad-sunset"],html[data-theme="grad-neon"],html[data-theme="grad-candy"],html[data-theme="gradients"],html[data-theme="forest"],html[data-theme="midnight"],html[data-theme="rose"],html[data-theme="lavanda-oscuro"]) .cn-2012-shell-body {
-  grid-template-columns: auto minmax(0,1fr);
-  align-items: stretch;
-}
-
-:is(html[data-theme="dark"],html[data-theme="light"],html[data-theme="grad-ocean"],html[data-theme="grad-sunset"],html[data-theme="grad-neon"],html[data-theme="grad-candy"],html[data-theme="gradients"],html[data-theme="forest"],html[data-theme="midnight"],html[data-theme="rose"],html[data-theme="lavanda-oscuro"]) .cn-2012-sidebar:not(.cn-2012-sidebar--cosmic) {
-  position:relative !important;
-  top:auto !important;
-  align-self:stretch !important;
-  height:auto !important;
-  max-height:none !important;
-  min-height:calc(100vh - 64px);
-  width:236px;
-  margin:0;
-  padding:14px 10px !important;
-  overflow:visible !important;
-  background:color-mix(in oklab,var(--color-background) 72%,var(--color-surface)) !important;
-  border-right:1px solid color-mix(in oklab,var(--color-border) 72%,transparent) !important;
-  box-shadow:10px 0 35px rgb(0 0 0 / 4%);
-}
-
-:is(html[data-theme="dark"],html[data-theme="light"],html[data-theme="grad-ocean"],html[data-theme="grad-sunset"],html[data-theme="grad-neon"],html[data-theme="grad-candy"],html[data-theme="gradients"],html[data-theme="forest"],html[data-theme="midnight"],html[data-theme="rose"],html[data-theme="lavanda-oscuro"]) .cn-2012-sidebar:not(.cn-2012-sidebar--cosmic).is-collapsed { width:76px; }
-:is(html[data-theme="dark"],html[data-theme="light"],html[data-theme="grad-ocean"],html[data-theme="grad-sunset"],html[data-theme="grad-neon"],html[data-theme="grad-candy"],html[data-theme="gradients"],html[data-theme="forest"],html[data-theme="midnight"],html[data-theme="rose"],html[data-theme="lavanda-oscuro"]) .cn-2012-sidebar:not(.cn-2012-sidebar--cosmic) nav { gap:5px; }
-:is(html[data-theme="dark"],html[data-theme="light"],html[data-theme="grad-ocean"],html[data-theme="grad-sunset"],html[data-theme="grad-neon"],html[data-theme="grad-candy"],html[data-theme="gradients"],html[data-theme="forest"],html[data-theme="midnight"],html[data-theme="rose"],html[data-theme="lavanda-oscuro"]) .cn-2012-sidebar:not(.cn-2012-sidebar--cosmic) nav a {
-  min-height:42px;
-  padding:9px 11px !important;
-  border:1px solid transparent;
-  border-radius:12px !important;
-  color:var(--color-foreground);
-  background:transparent;
-}
-:is(html[data-theme="dark"],html[data-theme="light"],html[data-theme="grad-ocean"],html[data-theme="grad-sunset"],html[data-theme="grad-neon"],html[data-theme="grad-candy"],html[data-theme="gradients"],html[data-theme="forest"],html[data-theme="midnight"],html[data-theme="rose"],html[data-theme="lavanda-oscuro"]) .cn-2012-sidebar:not(.cn-2012-sidebar--cosmic) nav a:hover {
-  transform:none;
-  background:var(--color-surface-hover) !important;
-  border-color:color-mix(in oklab,var(--color-border) 82%,transparent);
-}
-:is(html[data-theme="dark"],html[data-theme="light"],html[data-theme="grad-ocean"],html[data-theme="grad-sunset"],html[data-theme="grad-neon"],html[data-theme="grad-candy"],html[data-theme="gradients"],html[data-theme="forest"],html[data-theme="midnight"],html[data-theme="rose"],html[data-theme="lavanda-oscuro"]) .cn-2012-sidebar:not(.cn-2012-sidebar--cosmic) nav a.bg-surface {
-  background:color-mix(in oklab,var(--color-primary) 10%,var(--color-surface)) !important;
-  border-color:color-mix(in oklab,var(--color-primary) 22%,var(--color-border));
-  box-shadow:inset 3px 0 var(--color-primary),0 5px 16px rgb(0 0 0 / 5%);
-}
-
-:is(html[data-theme="dark"],html[data-theme="light"],html[data-theme="grad-ocean"],html[data-theme="grad-sunset"],html[data-theme="grad-neon"],html[data-theme="grad-candy"],html[data-theme="gradients"],html[data-theme="forest"],html[data-theme="midnight"],html[data-theme="rose"],html[data-theme="lavanda-oscuro"]) .cn-2012-main {
-  width:min(100%,1720px);
-  max-width:none;
-  padding:clamp(20px,3vw,40px) clamp(18px,3vw,46px) 56px;
-}
-:is(html[data-theme="dark"],html[data-theme="light"],html[data-theme="grad-ocean"],html[data-theme="grad-sunset"],html[data-theme="grad-neon"],html[data-theme="grad-candy"],html[data-theme="gradients"],html[data-theme="forest"],html[data-theme="midnight"],html[data-theme="rose"],html[data-theme="lavanda-oscuro"]) .cn-2012-main > * { max-width:1440px; margin-inline:auto; }
-:is(html[data-theme="dark"],html[data-theme="light"],html[data-theme="grad-ocean"],html[data-theme="grad-sunset"],html[data-theme="grad-neon"],html[data-theme="grad-candy"],html[data-theme="gradients"],html[data-theme="forest"],html[data-theme="midnight"],html[data-theme="rose"],html[data-theme="lavanda-oscuro"]) .cn-2012-topbar {
-  min-height:64px;
-  background:color-mix(in oklab,var(--color-background) 82%,transparent) !important;
-  border-bottom-color:color-mix(in oklab,var(--color-border) 78%,transparent) !important;
-  box-shadow:0 10px 30px rgb(0 0 0 / 6%);
-}
-:is(html[data-theme="dark"],html[data-theme="light"],html[data-theme="grad-ocean"],html[data-theme="grad-sunset"],html[data-theme="grad-neon"],html[data-theme="grad-candy"],html[data-theme="gradients"],html[data-theme="forest"],html[data-theme="midnight"],html[data-theme="rose"],html[data-theme="lavanda-oscuro"]) .cn-2012-topbar input { border-radius:14px !important; min-height:42px; }
-:is(html[data-theme="dark"],html[data-theme="light"],html[data-theme="grad-ocean"],html[data-theme="grad-sunset"],html[data-theme="grad-neon"],html[data-theme="grad-candy"],html[data-theme="gradients"],html[data-theme="forest"],html[data-theme="midnight"],html[data-theme="rose"],html[data-theme="lavanda-oscuro"]) .cn-2012-topbar button,
-:is(html[data-theme="dark"],html[data-theme="light"],html[data-theme="grad-ocean"],html[data-theme="grad-sunset"],html[data-theme="grad-neon"],html[data-theme="grad-candy"],html[data-theme="gradients"],html[data-theme="forest"],html[data-theme="midnight"],html[data-theme="rose"],html[data-theme="lavanda-oscuro"]) .cn-2012-topbar a { border-radius:12px; }
-:is(html[data-theme="dark"],html[data-theme="light"],html[data-theme="grad-ocean"],html[data-theme="grad-sunset"],html[data-theme="grad-neon"],html[data-theme="grad-candy"],html[data-theme="gradients"],html[data-theme="forest"],html[data-theme="midnight"],html[data-theme="rose"],html[data-theme="lavanda-oscuro"]) button { transition:transform 160ms ease,box-shadow 160ms ease,background-color 160ms ease,border-color 160ms ease; }
-:is(html[data-theme="dark"],html[data-theme="light"],html[data-theme="grad-ocean"],html[data-theme="grad-sunset"],html[data-theme="grad-neon"],html[data-theme="grad-candy"],html[data-theme="gradients"],html[data-theme="forest"],html[data-theme="midnight"],html[data-theme="rose"],html[data-theme="lavanda-oscuro"]) button:hover:not(:disabled) { transform:translateY(-1px); box-shadow:0 8px 20px rgb(0 0 0 / 8%); }
-:is(html[data-theme="dark"],html[data-theme="light"],html[data-theme="grad-ocean"],html[data-theme="grad-sunset"],html[data-theme="grad-neon"],html[data-theme="grad-candy"],html[data-theme="gradients"],html[data-theme="forest"],html[data-theme="midnight"],html[data-theme="rose"],html[data-theme="lavanda-oscuro"]) .rounded-2xl,
-:is(html[data-theme="dark"],html[data-theme="light"],html[data-theme="grad-ocean"],html[data-theme="grad-sunset"],html[data-theme="grad-neon"],html[data-theme="grad-candy"],html[data-theme="gradients"],html[data-theme="forest"],html[data-theme="midnight"],html[data-theme="rose"],html[data-theme="lavanda-oscuro"]) .rounded-xl,
-:is(html[data-theme="dark"],html[data-theme="light"],html[data-theme="grad-ocean"],html[data-theme="grad-sunset"],html[data-theme="grad-neon"],html[data-theme="grad-candy"],html[data-theme="gradients"],html[data-theme="forest"],html[data-theme="midnight"],html[data-theme="rose"],html[data-theme="lavanda-oscuro"]) .rounded-lg { border-color:color-mix(in oklab,var(--color-border) 78%,transparent); }
-
-:is(html[data-theme="dark"],html[data-theme="light"],html[data-theme="grad-ocean"],html[data-theme="grad-sunset"],html[data-theme="grad-neon"],html[data-theme="grad-candy"],html[data-theme="gradients"],html[data-theme="forest"],html[data-theme="midnight"],html[data-theme="rose"],html[data-theme="lavanda-oscuro"]) .bg-surface,
-:is(html[data-theme="dark"],html[data-theme="light"],html[data-theme="grad-ocean"],html[data-theme="grad-sunset"],html[data-theme="grad-neon"],html[data-theme="grad-candy"],html[data-theme="gradients"],html[data-theme="forest"],html[data-theme="midnight"],html[data-theme="rose"],html[data-theme="lavanda-oscuro"]) .bg-card { background:color-mix(in oklab,var(--color-surface) 92%,transparent) !important; }
-:is(html[data-theme="dark"],html[data-theme="light"],html[data-theme="grad-ocean"],html[data-theme="grad-sunset"],html[data-theme="grad-neon"],html[data-theme="grad-candy"],html[data-theme="gradients"],html[data-theme="forest"],html[data-theme="midnight"],html[data-theme="rose"],html[data-theme="lavanda-oscuro"]) .border-border { border-color:color-mix(in oklab,var(--color-border) 78%,transparent) !important; }
-
-[data-theme="light"] .cn-2012-app { background:radial-gradient(900px 380px at 50% -180px,rgb(59 130 246 / 10%),transparent 72%),#f7f9fc; }
-[data-theme="dark"] .cn-2012-app { background:radial-gradient(900px 420px at 50% -160px,rgb(255 92 66 / 13%),transparent 72%),#0b0d10; }
-[data-theme="grad-ocean"] .cn-2012-app { background:radial-gradient(900px 420px at 15% -180px,rgb(34 197 94 / 11%),transparent 68%),radial-gradient(800px 360px at 90% 0,rgb(14 165 233 / 12%),transparent 68%),var(--color-background); }
-[data-theme="gradients"] .cn-2012-topbar,
-[data-theme^="grad-"] .cn-2012-topbar { background:color-mix(in oklab,var(--color-background) 74%,transparent) !important; backdrop-filter:blur(18px); }
-[data-theme="grad-neon"] .cn-2012-sidebar:not(.cn-2012-sidebar--cosmic) nav a.bg-surface { box-shadow:inset 3px 0 #74f7ce,0 0 22px rgb(116 247 206 / 8%); }
-[data-theme="grad-candy"] .cn-2012-sidebar:not(.cn-2012-sidebar--cosmic) nav a.bg-surface { box-shadow:inset 3px 0 #ec6bb4,0 8px 25px rgb(236 107 180 / 10%); }
-
-@media (max-width:767px){
-  :is(html[data-theme="dark"],html[data-theme="light"],html[data-theme="grad-ocean"],html[data-theme="grad-sunset"],html[data-theme="grad-neon"],html[data-theme="grad-candy"],html[data-theme="gradients"],html[data-theme="forest"],html[data-theme="midnight"],html[data-theme="rose"],html[data-theme="lavanda-oscuro"]) .cn-2012-shell-body { display:block; }
-  :is(html[data-theme="dark"],html[data-theme="light"],html[data-theme="grad-ocean"],html[data-theme="grad-sunset"],html[data-theme="grad-neon"],html[data-theme="grad-candy"],html[data-theme="gradients"],html[data-theme="forest"],html[data-theme="midnight"],html[data-theme="rose"],html[data-theme="lavanda-oscuro"]) .cn-2012-sidebar:not(.cn-2012-sidebar--cosmic) { display:none; }
-  :is(html[data-theme="dark"],html[data-theme="light"],html[data-theme="grad-ocean"],html[data-theme="grad-sunset"],html[data-theme="grad-neon"],html[data-theme="grad-candy"],html[data-theme="gradients"],html[data-theme="forest"],html[data-theme="midnight"],html[data-theme="rose"],html[data-theme="lavanda-oscuro"]) .cn-2012-main { width:100%; padding:16px 14px 34px; }
-}
+html[data-theme="light"] .cn-shell{background:#f7f9fc;}
+html[data-theme="light"] .cn-shell-header{background:#fff;}
+html[data-theme="light"] .cn-shell-sidebar{background:#fff;}
+html[data-theme="grad-ocean"] .cn-shell{background:radial-gradient(900px 420px at 12% -10%,rgb(14 165 233 / .12),transparent 60%),radial-gradient(800px 360px at 90% 0,rgb(34 197 94 / .09),transparent 62%),var(--background);}
+html[data-theme="grad-sunset"] .cn-shell{background:radial-gradient(900px 420px at 10% 0,rgb(249 115 22 / .12),transparent 60%),radial-gradient(760px 360px at 90% 0,rgb(236 72 153 / .10),transparent 60%),var(--background);}
+html[data-theme="grad-neon"] .cn-shell{background:radial-gradient(900px 420px at 10% 0,rgb(34 197 94 / .12),transparent 60%),radial-gradient(760px 360px at 90% 0,rgb(6 182 212 / .10),transparent 60%),var(--background);}
+html[data-theme="grad-candy"] .cn-shell{background:radial-gradient(900px 420px at 10% 0,rgb(236 72 153 / .09),transparent 62%),radial-gradient(760px 360px at 90% 0,rgb(167 139 250 / .10),transparent 60%),#fffafe;}
+:where(html[data-theme-kind="normal"]) .cn-shell-icon-button:hover,:where(html[data-theme-kind="normal"]) .cn-shell-avatar-button:hover{box-shadow:0 4px 16px rgb(0 0 0 / .05);}
