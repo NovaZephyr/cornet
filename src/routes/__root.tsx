@@ -6,7 +6,6 @@ import appCss from "../styles.css?url";
 import "../global-mobile-bar.css";
 import "../custom-themes-gallery.css";
 import "../custom-theme-experiences.css";
-import "../aero-family-overrides.css";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { AuthProvider, useAuth } from "@/hooks/useAuth";
 import { ThemeProvider } from "@/hooks/useTheme";
