@@ -44,13 +44,13 @@ export const themes: ThemeDefinition[] = [
   { id: "crtVhs", name: "CRT / VHS", category: "custom", kind: "theme", description: "Scanlines, fósforo, glow y estética de televisión antigua.", stylesheets: ["/custom-theme-packs.css"], family: "broadcast-era", pages: ["home", "watch"] },
 ];
 
-const channelLayoutStyles = ["/custom-channel-layouts.css"];
 const variantStyles = ["/channel-layout-variants.css"];
+const extraStyles = ["/channel-layout-extra.css"];
 
 export const channelLayouts: ChannelLayoutDefinition[] = [
   { id: "corenetwork", name: "Classic Channel", category: "historical", kind: "layout", description: "Layout base de Cornet.", stylesheets: [] },
-  { id: "classic-2009", name: "Classic 2009", category: "historical", kind: "layout", description: "Canal compacto inspirado en 2009.", stylesheets: variantStyles },
-  { id: "standard-2012", name: "Standard 2012", category: "historical", kind: "layout", description: "Estructura general de YouTube alrededor de 2012.", stylesheets: variantStyles },
+  { id: "classic-2009", name: "Classic 2009", category: "historical", kind: "layout", description: "Canal compacto inspirado en 2009.", stylesheets: extraStyles },
+  { id: "standard-2012", name: "Standard 2012", category: "historical", kind: "layout", description: "Estructura general de YouTube alrededor de 2012.", stylesheets: extraStyles },
   { id: "cosmic-panda", name: "Cosmic Panda", category: "historical", kind: "layout", description: "Layout de canal Cosmic Panda; independiente del tema global.", stylesheets: ["/cosmic-panda-channel-core.css"] },
   { id: "early-youtube-2005", name: "Early YouTube 2005–2006", category: "historical", kind: "layout", description: "Canal mínimo de la era temprana: tabla simple, enlaces y poco chrome.", stylesheets: variantStyles },
   { id: "star-rating-2007", name: "Star Rating 2007–2008", category: "historical", kind: "layout", description: "Canal clásico con paneles grises y referencias a la era de estrellas.", stylesheets: variantStyles },
@@ -62,8 +62,8 @@ export const channelLayouts: ChannelLayoutDefinition[] = [
   { id: "modern-minimal-2020", name: "Modern Minimal 2020–2023", category: "special", kind: "layout", description: "Canal amplio y minimalista con poco chrome.", stylesheets: variantStyles },
   { id: "terminal", name: "Terminal / CLI", category: "special", kind: "layout", description: "Canal con estética de terminal y navegación monoespaciada.", stylesheets: ["/custom-channel-layouts.css"] },
   { id: "bento-grid", name: "Bento Grid", category: "special", kind: "layout", description: "Canal modular con superficies tipo bento y jerarquía de tarjetas.", stylesheets: ["/custom-channel-layouts.css"] },
-  { id: "magazine", name: "Magazine / Editorial", category: "special", kind: "layout", description: "Canal editorial con tipografía de revista y divisores fuertes.", stylesheets: variantStyles },
-  { id: "cinephile", name: "Cinephile / Sala oscura", category: "special", kind: "layout", description: "Canal inmersivo orientado a cine y cortometrajes.", stylesheets: variantStyles },
+  { id: "magazine", name: "Magazine / Editorial", category: "special", kind: "layout", description: "Canal editorial con tipografía de revista y divisores fuertes.", stylesheets: extraStyles },
+  { id: "cinephile", name: "Cinephile / Sala oscura", category: "special", kind: "layout", description: "Canal inmersivo orientado a cine y cortometrajes.", stylesheets: extraStyles },
   { id: "feather-profile", name: "Feather Profile", category: "special", kind: "layout", description: "Perfil ligero y centrado en contenido.", stylesheets: variantStyles },
   { id: "creator-studio", name: "Creator Studio", category: "functional", kind: "layout", description: "Perfil orientado a creadores y estadísticas.", stylesheets: variantStyles },
   { id: "profile-card", name: "Profile Card", category: "special", kind: "layout", description: "Perfil social compacto.", stylesheets: variantStyles },
