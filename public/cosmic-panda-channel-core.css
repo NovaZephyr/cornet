@@ -1,6 +1,5 @@
 /* Cosmic Panda channel layout — Design Library canonical stylesheet. */
 
-/* The channel layout owns the full content row. No sidebar column is reserved, regardless of global theme. */
 body:has(.cn-cosmic-channel) .cn-2012-shell-body{display:grid!important;grid-template-columns:minmax(0,1fr)!important;width:100%!important;max-width:none!important;margin:0!important;padding:0!important}
 body:has(.cn-cosmic-channel) .cn-2012-shell-body > .cn-2012-sidebar{display:none!important}
 body:has(.cn-cosmic-channel) .cn-2012-shell-body > .cn-2012-main{grid-column:1 / -1!important;width:100%!important;min-width:0!important;max-width:none!important;margin:0!important;padding:0!important}
@@ -8,7 +7,6 @@ body:has(.cn-cosmic-channel) .cn-2012-shell-body > .cn-2012-main{grid-column:1 /
 .cn-cosmic-channel{width:100%;min-height:calc(100vh - 54px);margin:0;padding:18px 20px 42px;box-sizing:border-box;background:#d9dadb;color:#333;font-family:Arial,Helvetica,sans-serif;background-repeat:no-repeat;background-position:center top;background-size:cover}
 .cn-cosmic-channel-inner{width:min(1180px,100%);max-width:1180px;margin:0 auto;padding:0;box-sizing:border-box;background:#f5f5f5;border:1px solid #999;box-shadow:0 2px 8px rgba(0,0,0,.2)}
 
-/* Cosmic Panda global shell rules are neutralized inside the channel canvas. */
 [data-theme="retro2012"] .cn-2012-shell-body:has(.cn-cosmic-channel){display:grid!important;grid-template-columns:minmax(0,1fr)!important;width:100%!important;max-width:none!important;margin:0!important;padding:0!important}
 [data-theme="retro2012"] .cn-2012-shell-body:has(.cn-cosmic-channel)> .cn-2012-sidebar{display:none!important}
 [data-theme="retro2012"] .cn-2012-shell-body:has(.cn-cosmic-channel)> .cn-2012-main{grid-column:1 / -1!important;display:block!important;width:100%!important;max-width:none!important;min-width:0!important;margin:0!important;padding:0!important;background:#d9dadb!important}
@@ -21,10 +19,10 @@ body:has(.cn-cosmic-channel) .cn-2012-shell-body > .cn-2012-main{grid-column:1 /
 .cn-cosmic-columns{display:grid;grid-template-columns:220px minmax(0,1fr) 260px;gap:12px;padding:12px;align-items:start;background:#e7e7e7}.cn-cosmic-left,.cn-cosmic-center,.cn-cosmic-right{min-width:0}.cn-cosmic-center{display:flex;flex-direction:column;gap:12px}.cn-cosmic-left,.cn-cosmic-right{display:flex;flex-direction:column;gap:12px}
 .cn-cosmic-panel{width:100%;box-sizing:border-box;background:#fff;border:1px solid #c7c7c7;border-radius:0;box-shadow:0 1px 2px rgba(0,0,0,.08);color:#333;padding:9px}.cn-cosmic-panel h2{margin:0 0 7px;padding:7px 8px;border-bottom:1px solid #d0d0d0;background:linear-gradient(#fafafa,#e9e9e9);color:#444;font:700 12px/1.2 Arial,Helvetica,sans-serif;text-transform:uppercase;letter-spacing:.03em}.cn-cosmic-panel p{font-size:12px;line-height:1.45}.cn-cosmic-panel a{color:#1673aa}.cn-cosmic-panel-title{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:-1px -1px 8px;padding:7px 8px;background:linear-gradient(#f7f7f7,#e5e5e5);border-bottom:1px solid #c7c7c7;color:#444;font:700 12px/1.2 Arial,Helvetica,sans-serif}.cn-cosmic-panel-title a{font-size:11px;text-decoration:none}.cn-cosmic-panel-title a:hover{text-decoration:underline}
 .cn-cosmic-featured{padding:8px}.cn-cosmic-player{width:100%;background:#111;border:1px solid #222;box-sizing:border-box}.cn-cosmic-featured .cn-cosmic-player video{display:block;width:100%;border-radius:0!important}.cn-cosmic-stats{margin:8px 0 0;border-top:1px solid #ddd}.cn-cosmic-stats div{display:flex;justify-content:space-between;gap:6px;padding:5px 0;border-bottom:1px solid #ddd;font-size:11px}.cn-cosmic-stats dt{color:#777}.cn-cosmic-stats dd{margin:0;font-weight:700;color:#333}.cn-cosmic-navlinks{display:flex;flex-direction:column;gap:1px}.cn-cosmic-navlinks a{display:block;padding:6px 7px;border:1px solid transparent;color:#1673aa;font-size:11px;text-decoration:none}.cn-cosmic-navlinks a:hover{background:#eee;border-color:#d1d1d1;text-decoration:underline}.cn-cosmic-profile-mini{display:flex;align-items:center;gap:8px}.cn-cosmic-profile-mini strong{display:block;font-size:12px}.cn-cosmic-profile-mini span{display:block;margin-top:1px;color:#777;font-size:10px}
-.cn-cosmic-community-section{width:100%;margin:0;border:1px solid #c7c7c7;background:#fff;box-sizing:border-box}.cn-cosmic-community-section > h2{margin:0;padding:9px 10px;border-bottom:1px solid #d0d0d0;background:linear-gradient(#fafafa,#e9e9e9);font-size:12px;text-transform:uppercase}.cn-cosmic-community-section > *:not(h2){padding-left:10px;padding-right:10px}
+.cn-cosmic-community-section{display:none;width:100%;margin:0;border:1px solid #c7c7c7;background:#fff;box-sizing:border-box}.cn-cosmic-community-section > h2{margin:0;padding:9px 10px;border-bottom:1px solid #d0d0d0;background:linear-gradient(#fafafa,#e9e9e9);font-size:12px;text-transform:uppercase}.cn-cosmic-community-section > *:not(h2){padding-left:10px;padding-right:10px}
 .cn-cosmic-channel .cn-2012-retro-button{border-radius:2px!important;font-size:11px!important}.cn-cosmic-channel img{border-radius:0!important}.cn-cosmic-channel button,.cn-cosmic-channel input,.cn-cosmic-channel textarea,.cn-cosmic-channel select{font-family:Arial,Helvetica,sans-serif}
 
-/* Channel tab views — the tab changes the content view just like the normal CoreNetwork channel. */
+/* Channel tab views — the tab changes the content view like the normal CoreNetwork channel. */
 .cn-cosmic-channel-inner[data-cosmic-view="videos"] .cn-cosmic-left,
 .cn-cosmic-channel-inner[data-cosmic-view="videos"] .cn-cosmic-right,
 .cn-cosmic-channel-inner[data-cosmic-view="videos"] .cn-cosmic-featured{display:none!important}
@@ -41,8 +39,6 @@ body:has(.cn-cosmic-channel) .cn-2012-shell-body > .cn-2012-main{grid-column:1 /
 .cn-cosmic-channel-inner[data-cosmic-view="information"] .cn-cosmic-left{display:flex!important;max-width:640px;margin:0 auto}
 .cn-cosmic-channel-inner[data-cosmic-view="information"] .cn-cosmic-left > .cn-cosmic-panel:not(#about){display:none!important}
 .cn-cosmic-channel-inner[data-cosmic-view="information"] #about{display:block!important}
-
-.cn-cosmic-channel-inner[data-cosmic-view="channel"] .cn-cosmic-community-section{display:block}
 
 @media(max-width:1000px){.cn-cosmic-channel{padding:12px 10px 30px}.cn-cosmic-columns{grid-template-columns:190px minmax(0,1fr) 220px;gap:9px}}
 @media(max-width:780px){.cn-cosmic-channel{padding:0 0 28px}.cn-cosmic-channel-inner{width:100%;max-width:none}.cn-cosmic-cover{height:160px}.cn-cosmic-title-strip{align-items:flex-start;flex-direction:column;min-height:0}.cn-cosmic-columns{display:flex;flex-direction:column;gap:9px;padding:9px}.cn-cosmic-left,.cn-cosmic-center,.cn-cosmic-right{width:100%}.cn-cosmic-tabs span,.cn-cosmic-tabs a{min-width:76px;padding:0 10px;font-size:10px}}
