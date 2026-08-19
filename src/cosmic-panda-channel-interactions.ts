@@ -2,12 +2,19 @@ import { toast } from "sonner";
 
 const selectors = ".cn-cosmic-tabs > span";
 
-function scrollToSection(id: string) {
-  document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+function getCanvas() {
+  return document.querySelector<HTMLElement>(".cn-cosmic-channel-inner");
+}
+
+function setView(view: "channel" | "videos" | "community" | "information") {
+  const canvas = getCanvas();
+  if (!canvas) return;
+  canvas.dataset.cosmicView = view;
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 function relocateSections() {
-  const canvas = document.querySelector<HTMLElement>(".cn-cosmic-channel-inner");
+  const canvas = getCanvas();
   const columns = document.querySelector<HTMLElement>(".cn-cosmic-columns");
   if (!canvas || !columns) return;
 
@@ -19,10 +26,16 @@ function relocateSections() {
 
   const about = columns.querySelector<HTMLElement>(".cn-cosmic-left > .cn-cosmic-panel");
   if (about && !about.id) about.id = "about";
+
+  const uploadsTitle = document.querySelector<HTMLElement>("#uploads .cn-cosmic-panel-title span:first-child");
+  if (uploadsTitle) uploadsTitle.textContent = "Videos";
 }
 
 function setupCosmicTabs(root: ParentNode = document) {
   relocateSections();
+  const canvas = getCanvas();
+  if (canvas && !canvas.dataset.cosmicView) canvas.dataset.cosmicView = "channel";
+
   root.querySelectorAll<HTMLElement>(selectors).forEach((tab) => {
     if (tab.dataset.cosmicInteractive === "true") return;
     tab.dataset.cosmicInteractive = "true";
@@ -39,17 +52,17 @@ function setupCosmicTabs(root: ParentNode = document) {
 
       switch (label) {
         case "CANAL":
-          window.scrollTo({ top: 0, behavior: "smooth" });
+          setView("channel");
           break;
         case "VIDEOS":
-          scrollToSection("uploads");
+          setView("videos");
           break;
         case "COMUNIDAD":
-          scrollToSection("community");
+          setView("community");
           break;
         case "INFORMACIÓN":
         case "INFORMACION":
-          scrollToSection("about");
+          setView("information");
           break;
         case "PLAYLISTS":
           window.location.href = "/playlists";
