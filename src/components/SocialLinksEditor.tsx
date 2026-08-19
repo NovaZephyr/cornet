@@ -22,9 +22,9 @@ export const SOCIAL_PLATFORMS: Array<{ value: SocialPlatform; label: string; Ico
 
 export function normalizeSocialLinks(value: unknown): SocialLink[] {
   if (!Array.isArray(value)) return [];
-  const allowed = new Set(SOCIAL_PLATFORMS.map((item) => item.value));
+  const allowed = new Set<string>(SOCIAL_PLATFORMS.map((item) => item.value));
   return value
-    .filter((item): item is { platform: SocialPlatform; url: string } => Boolean(item) && typeof item === "object" && allowed.has((item as { platform?: SocialPlatform }).platform ?? "") && typeof (item as { url?: unknown }).url === "string")
+    .filter((item): item is { platform: SocialPlatform; url: string } => Boolean(item) && typeof item === "object" && allowed.has(String((item as { platform?: unknown }).platform ?? "")) && typeof (item as { url?: unknown }).url === "string")
     .map((item) => ({ platform: item.platform, url: item.url.trim() }))
     .filter((item) => item.url.length > 0);
 }
