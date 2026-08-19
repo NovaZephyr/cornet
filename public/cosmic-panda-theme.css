@@ -1,99 +1,64 @@
-/* Cosmic Panda 2012 — single Design Library entry.
- * This is the only stylesheet the theme runtime loads for the global Cosmic Panda theme.
- * Channel/profile layout styles are intentionally excluded and are loaded by ChannelLayoutStyles.
+/* Cosmic Panda 2012 — single Design Library global theme entry.
+ * Global shell only. Channel/profile layout is intentionally not included here.
  */
-@import url("/cosmic-panda-2012.css");
+@import url("/cosmic-panda-custom-theme.css");
 @import url("/cosmic-panda-light.css");
 @import url("/cosmic-panda-sidebar-fix.css");
 
-/* Guard the theme as a light experience even when the normal dark class is present. */
 [data-theme="retro2012"] {
   color-scheme: light !important;
-  --background:#e5e5e5 !important;
-  --foreground:#333 !important;
-  --surface:#fff !important;
-  --surface-hover:#f2f2f2 !important;
-  --card:#fff !important;
-  --card-foreground:#333 !important;
-  --primary:#555 !important;
-  --primary-foreground:#fff !important;
-  --border:#c6c6c6 !important;
-  font-family:Arial,Helvetica,sans-serif!important;
+  font-family: Arial, Helvetica, sans-serif !important;
 }
-
-/* Global Cosmic Panda shell; no channel-layout selectors live here. */
 [data-theme="retro2012"] body,
 [data-theme="retro2012"] .cn-2012-app {
   color-scheme: light !important;
-  font-family:Arial,Helvetica,sans-serif!important;
+  font-family: Arial, Helvetica, sans-serif !important;
 }
-[data-theme="retro2012"] body::before {
-  content:"";
-  position:fixed;
-  inset:0;
-  z-index:0;
-  pointer-events:none;
-  background:linear-gradient(180deg,rgba(255,255,255,.18),transparent 150px),radial-gradient(900px 420px at 50% -140px,rgba(255,255,255,.5),transparent 68%);
-}
-[data-theme="retro2012"] #root { position:relative; z-index:1; }
+
+/* The guide/topbar are dark chrome inside an otherwise light theme. */
 [data-theme="retro2012"] .cn-2012-topbar,
-[data-theme="retro2012"] .cn-2012-sidebar { color-scheme:dark!important; }
-
-[data-theme="retro2012"] .cn-2012-topbar {
-  background:linear-gradient(#3a3a3a,#202020)!important;
-  border-bottom:1px solid #0b0b0b!important;
-  box-shadow:0 1px 0 rgba(255,255,255,.08),0 2px 5px rgba(0,0,0,.28)!important;
-}
-[data-theme="retro2012"] .cn-2012-topbar .cn-2012-topnav-link {
-  color:#ddd!important;
-  font:400 11px/30px Arial,Helvetica,sans-serif!important;
-}
-[data-theme="retro2012"] .cn-2012-topbar .cn-2012-topnav-link:hover { background:#464646!important;color:#fff!important; }
-[data-theme="retro2012"] .cn-2012-topbar form input { height:31px!important;border:1px solid #111!important;background:#fff!important;color:#222!important; }
-[data-theme="retro2012"] .cn-2012-topbar form button { height:31px!important;border:1px solid #111!important;background:linear-gradient(#f8f8f8,#d8d8d8)!important;color:#333!important; }
-
-[data-theme="retro2012"] .cn-2012-shell-body { grid-template-columns:210px minmax(0,1fr)!important;max-width:none!important;gap:0!important; }
 [data-theme="retro2012"] .cn-2012-sidebar {
-  width:210px!important;
-  background:linear-gradient(180deg,#161616 0%,#090909 73%,#151515 100%)!important;
-  border-right:1px solid #000!important;
-  box-shadow:1px 0 4px rgba(0,0,0,.25)!important;
+  color-scheme: dark !important;
 }
-[data-theme="retro2012"] .cn-2012-sidebar-link:hover,
-[data-theme="retro2012"] .cn-2012-sidebar-subscription:hover { background:#252525!important;color:#fff!important; }
-[data-theme="retro2012"] .cn-2012-sidebar-link[aria-current="page"] { background:#303030!important;color:#fff!important;box-shadow:inset 3px 0 #d92316!important; }
 
-[data-theme="retro2012"] .cn-2012-main { background:#d8d8d8!important;color:#333!important; }
+/* Global Cosmic Panda content rhythm. No channel-layout selectors here. */
+[data-theme="retro2012"] .cn-2012-main {
+  background: #d8d8d8 !important;
+  color: #333 !important;
+}
 [data-theme="retro2012"] .cn-2012-main .bg-background,
 [data-theme="retro2012"] .cn-2012-main .bg-surface,
-[data-theme="retro2012"] .cn-2012-main .bg-card { background:#fff!important; }
+[data-theme="retro2012"] .cn-2012-main .bg-card {
+  background: #fff !important;
+}
 [data-theme="retro2012"] .cn-2012-main .border,
 [data-theme="retro2012"] .cn-2012-main .border-border,
-[data-theme="retro2012"] .cn-2012-main .border-input { border-color:#c6c6c6!important; }
+[data-theme="retro2012"] .cn-2012-main .border-input {
+  border-color: #c6c6c6 !important;
+}
 [data-theme="retro2012"] .cn-2012-main .rounded-xl,
 [data-theme="retro2012"] .cn-2012-main .rounded-2xl,
-[data-theme="retro2012"] .cn-2012-main .rounded-3xl { border-radius:2px!important; }
-[data-theme="retro2012"] .cn-2012-main img { border-radius:1px!important; }
-[data-theme="retro2012"] [data-corenet-player] { border-radius:0!important;background:#000!important;border:1px solid #111!important; }
-
+[data-theme="retro2012"] .cn-2012-main .rounded-3xl {
+  border-radius: 2px !important;
+}
+[data-theme="retro2012"] .cn-2012-main img { border-radius: 1px !important; }
+[data-theme="retro2012"] [data-corenet-player] {
+  border-radius: 0 !important;
+  background: #000 !important;
+  border: 1px solid #111 !important;
+}
 [data-theme="retro2012"] .cn-explore-section,
 [data-theme="retro2012"] .cn-watch-page,
 [data-theme="retro2012"] .cn-watch-recommendations {
-  border-radius:2px!important;border:1px solid #c6c6c6!important;background:#fff!important;box-shadow:0 1px 2px rgba(0,0,0,.08)!important;
+  border-radius: 2px !important;
+  border: 1px solid #c6c6c6 !important;
+  background: #fff !important;
+  box-shadow: 0 1px 2px rgba(0,0,0,.08) !important;
 }
-[data-theme="retro2012"] .cn-watch-recommendations { background:#efefef!important; }
-[data-theme="retro2012"] .cn-settings-page { font-family:Arial,Helvetica,sans-serif!important; }
-[data-theme="retro2012"] .cn-settings-nav { background:#161616!important;border-color:#000!important; }
-[data-theme="retro2012"] .cn-settings-nav button[data-active="true"] { background:#303030!important;color:#fff!important;box-shadow:inset 3px 0 #d92316!important; }
-[data-theme="retro2012"] .cn-settings-card { border-radius:2px!important;background:#fff!important;border-color:#c7c7c7!important;box-shadow:0 1px 2px rgba(0,0,0,.08)!important; }
-[data-theme="retro2012"] footer { background:#202020!important;border-top:1px solid #0a0a0a!important;color:#999!important; }
-[data-theme="retro2012"] .cn-global-mobile-bar { background:#171717!important;border-top:1px solid #000!important; }
-[data-theme="retro2012"] ::-webkit-scrollbar { width:11px;height:11px; }
-[data-theme="retro2012"] ::-webkit-scrollbar-track { background:#202020; }
-[data-theme="retro2012"] ::-webkit-scrollbar-thumb { background:#555;border:2px solid #202020; }
-
-@media(max-width:900px){
-  [data-theme="retro2012"] .cn-2012-sidebar { display:none!important; }
-  [data-theme="retro2012"] .cn-2012-shell-body { display:block!important; }
-  [data-theme="retro2012"] .cn-2012-main { padding:14px 12px 30px!important; }
-}
+[data-theme="retro2012"] .cn-watch-recommendations { background: #efefef !important; }
+[data-theme="retro2012"] .cn-settings-page { font-family: Arial, Helvetica, sans-serif !important; }
+[data-theme="retro2012"] .cn-settings-nav { background: #161616 !important; border-color: #000 !important; }
+[data-theme="retro2012"] .cn-settings-nav button[data-active="true"] { background: #303030 !important; color: #fff !important; box-shadow: inset 3px 0 #d92316 !important; }
+[data-theme="retro2012"] .cn-settings-card { border-radius: 2px !important; background: #fff !important; border-color: #c7c7c7 !important; box-shadow: 0 1px 2px rgba(0,0,0,.08) !important; }
+[data-theme="retro2012"] footer { background: #202020 !important; border-top: 1px solid #0a0a0a !important; color: #999 !important; }
+[data-theme="retro2012"] .cn-global-mobile-bar { background: #171717 !important; border-top: 1px solid #000 !important; }
