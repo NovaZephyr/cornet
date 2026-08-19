@@ -4,6 +4,7 @@ import { getTheme } from "./index";
 const THEME_KEY = "corenetwork-theme-v3";
 const LOADED_LINKS = "data-cornet-design-library";
 const LEGACY_COSMIC_LINKS = ["/cosmic-panda-channel-fullpage.css", "/cosmic-panda-channel-layout.css"];
+const CORNET_THEME_PRESETS = "/cornet-theme-presets.css";
 
 function removeLegacyGlobalLayoutStyles() {
   document.head.querySelectorAll<HTMLLinkElement>("link[rel='stylesheet']").forEach((link) => {
@@ -35,7 +36,7 @@ function loadStylesheets(stylesheets: string[]) {
 function syncTheme(themeId: string) {
   const theme = getTheme(themeId);
   removeLegacyGlobalLayoutStyles();
-  loadStylesheets(theme.stylesheets);
+  loadStylesheets([CORNET_THEME_PRESETS, ...theme.stylesheets]);
 }
 
 export function DesignLibraryRuntime() {
