@@ -1,48 +1,365 @@
-/* Cosmic Panda 2012 — independent light-content / dark-guide skin. */
-[data-theme="retro2012"]{
-  color-scheme:light;
-  --background:#d9dadc;
-  --foreground:#333;
-  --surface:#fff;
-  --surface-hover:#f1f1f1;
-  --card:#fff;
-  --card-foreground:#333;
-  --popover:#fff;
-  --popover-foreground:#333;
-  --primary:#c91d17;
-  --primary-foreground:#fff;
-  --secondary:#e8e8e8;
-  --secondary-foreground:#333;
-  --muted:#ededed;
-  --muted-foreground:#777;
-  --accent:#2b2d30;
-  --accent-foreground:#fff;
-  --border:#c6c7c9;
-  --input:#fff;
-  --ring:#c91d17;
-  --sidebar:#111315;
-  --sidebar-foreground:#cfcfcf;
-  --sidebar-primary:#fff;
-  --sidebar-primary-foreground:#111;
-  --sidebar-accent:#27292b;
-  --sidebar-accent-foreground:#fff;
-  --sidebar-border:#2e3032;
-  --sidebar-ring:#c91d17;
-  font-family:Arial,Helvetica,sans-serif!important;
+/* Cosmic Panda 2012 — historical 2012 light shell + dark guide. */
+[data-theme="retro2012"] {
+  color-scheme: light !important;
+  --background: #e7e7e7;
+  --foreground: #333;
+  --surface: #fff;
+  --surface-hover: #f3f3f3;
+  --card: #fff;
+  --card-foreground: #333;
+  --popover: #fff;
+  --popover-foreground: #333;
+  --primary: #cc181e;
+  --primary-foreground: #fff;
+  --secondary: #eee;
+  --secondary-foreground: #333;
+  --muted: #eee;
+  --muted-foreground: #777;
+  --accent: #333;
+  --accent-foreground: #fff;
+  --border: #d5d5d5;
+  --input: #fff;
+  --ring: #cc181e;
+  --sidebar: #292929;
+  --sidebar-foreground: #d7d7d7;
+  --sidebar-primary: #fff;
+  --sidebar-primary-foreground: #222;
+  --sidebar-accent: #3b3b3b;
+  --sidebar-accent-foreground: #fff;
+  --sidebar-border: #111;
+  --sidebar-ring: #cc181e;
+  font-family: Arial, Helvetica, sans-serif !important;
 }
-html[data-theme="retro2012"] body{margin:0;background:#d9dadc!important;color:#333!important;font-family:Arial,Helvetica,sans-serif!important;}
-html[data-theme="retro2012"] .cn-shell{background:linear-gradient(#3c3f42 0,#292b2e 60px,#d9dadc 60px,#d9dadc 100%)!important;color:#333!important;}
-html[data-theme="retro2012"] .cn-shell-header{height:58px;min-height:58px;background:linear-gradient(#3d4144,#27292b);border-color:#111;color:#eee;box-shadow:0 2px 5px rgb(0 0 0 / .28)}
-html[data-theme="retro2012"] .cn-shell-header a,html[data-theme="retro2012"] .cn-shell-header button{color:#eee}
-html[data-theme="retro2012"] .cn-shell-search input{height:31px;border:1px solid #151515;border-radius:2px;background:#fff;color:#222;box-shadow:inset 0 1px 2px rgb(0 0 0 / .22)}
-html[data-theme="retro2012"] .cn-shell-search button{border-radius:2px;background:linear-gradient(#fafafa,#d8d8d8);color:#333}
-html[data-theme="retro2012"] .cn-shell-sidebar{top:58px;height:calc(100vh - 58px);background:linear-gradient(#111,#080808 82%,#171717);border-color:#000;box-shadow:1px 0 3px rgb(0 0 0 / .35)}
-html[data-theme="retro2012"] .cn-shell-sidebar nav a{min-height:32px;border-radius:1px;color:#cfcfcf;font-size:12px;}
-html[data-theme="retro2012"] .cn-shell-sidebar nav a:hover{background:#262626;color:#fff}
-html[data-theme="retro2012"] .cn-shell-sidebar nav a[data-active="true"]{background:linear-gradient(90deg,#343434,#242424);color:#fff;box-shadow:inset 3px 0 #e62117}
-html[data-theme="retro2012"] .cn-shell-main{background:#dfe1e3}
-html[data-theme="retro2012"] .cn-shell-footer{background:#d6d8da;border-color:#c1c3c5;color:#666}
-html[data-theme="retro2012"] .cn-shell-mobile-nav{background:#111;border-color:#2b2b2b;color:#ccc}
-html[data-theme="retro2012"] .cn-shell-mobile-nav a[data-active="true"]{color:#fff}
-html[data-theme="retro2012"] .cn-shorts-page{background:#dfe1e3}
-html[data-theme="retro2012"] .cn-shorts-header h1{font-weight:400}
+
+html[data-theme="retro2012"],
+html[data-theme="retro2012"] body {
+  margin: 0;
+  background: #e7e7e7 !important;
+  color: #333 !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+}
+
+html[data-theme="retro2012"] .cn-shell {
+  min-height: 100vh;
+  background: #e7e7e7 !important;
+  color: #333 !important;
+}
+
+/* 2012-era chrome: white top bar, compact search, no modern glass. */
+html[data-theme="retro2012"] .cn-shell-header {
+  height: 50px !important;
+  min-height: 50px !important;
+  padding: 0 12px !important;
+  background: #fff !important;
+  border-bottom: 1px solid #d6d6d6 !important;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 6%) !important;
+  color: #333 !important;
+}
+html[data-theme="retro2012"] .cn-shell-header a,
+html[data-theme="retro2012"] .cn-shell-header button,
+html[data-theme="retro2012"] .cn-shell-header svg {
+  color: #333 !important;
+}
+html[data-theme="retro2012"] .cn-shell-logo img {
+  width: 28px !important;
+  height: 28px !important;
+}
+html[data-theme="retro2012"] .cn-shell-logo strong {
+  font-size: 18px !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.4px !important;
+}
+html[data-theme="retro2012"] .cn-shell-logo small {
+  display: none !important;
+}
+html[data-theme="retro2012"] .cn-shell-search {
+  max-width: 510px !important;
+  height: 31px !important;
+}
+html[data-theme="retro2012"] .cn-shell-search input {
+  height: 31px !important;
+  min-height: 31px !important;
+  border: 1px solid #bdbdbd !important;
+  border-radius: 2px 0 0 2px !important;
+  background: #fff !important;
+  color: #222 !important;
+  box-shadow: inset 0 1px 2px rgb(0 0 0 / 10%) !important;
+  font-size: 13px !important;
+}
+html[data-theme="retro2012"] .cn-shell-search button {
+  height: 31px !important;
+  width: 46px !important;
+  border: 1px solid #bdbdbd !important;
+  border-left: 0 !important;
+  border-radius: 0 2px 2px 0 !important;
+  background: linear-gradient(#fafafa, #e4e4e4) !important;
+  box-shadow: none !important;
+}
+html[data-theme="retro2012"] .cn-shell-icon-button {
+  border-radius: 2px !important;
+  box-shadow: none !important;
+}
+
+/* Historical guide: compact dark rail instead of a modern floating sidebar. */
+html[data-theme="retro2012"] .cn-shell-layout {
+  background: #e7e7e7 !important;
+}
+html[data-theme="retro2012"] .cn-shell-sidebar {
+  width: 190px !important;
+  min-width: 190px !important;
+  padding: 8px 7px !important;
+  background: linear-gradient(#2d2d2d, #242424) !important;
+  border-right: 1px solid #171717 !important;
+  box-shadow: 1px 0 2px rgb(0 0 0 / 12%) !important;
+}
+html[data-theme="retro2012"] .cn-shell-sidebar.cn-shell-sidebar-collapsed {
+  width: 58px !important;
+  min-width: 58px !important;
+}
+html[data-theme="retro2012"] .cn-shell-account {
+  padding: 7px 7px 9px !important;
+  margin-bottom: 6px !important;
+  border-bottom: 1px solid #444 !important;
+}
+html[data-theme="retro2012"] .cn-shell-account strong {
+  color: #fff !important;
+  font-size: 12px !important;
+}
+html[data-theme="retro2012"] .cn-shell-account span {
+  color: #a7a7a7 !important;
+  font-size: 10px !important;
+}
+html[data-theme="retro2012"] .cn-shell-sidebar nav {
+  gap: 0 !important;
+}
+html[data-theme="retro2012"] .cn-shell-sidebar nav a {
+  min-height: 31px !important;
+  padding: 7px 8px !important;
+  margin: 1px 0 !important;
+  border: 0 !important;
+  border-radius: 1px !important;
+  color: #cfcfcf !important;
+  background: transparent !important;
+  font-size: 12px !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+html[data-theme="retro2012"] .cn-shell-sidebar nav a:hover {
+  background: #3a3a3a !important;
+  color: #fff !important;
+}
+html[data-theme="retro2012"] .cn-shell-sidebar nav a[data-active="true"] {
+  background: #3d3d3d !important;
+  color: #fff !important;
+  box-shadow: inset 3px 0 #cc181e !important;
+}
+
+/* Main canvas: gray page surround with a white centered 2012 content plate. */
+html[data-theme="retro2012"] .cn-shell-main {
+  min-width: 0 !important;
+  padding: 18px 18px 40px !important;
+  background: #e7e7e7 !important;
+}
+html[data-theme="retro2012"] .cn-shell-main > :not(.cn-shell-footer) {
+  width: min(100%, 1080px) !important;
+  max-width: 1080px !important;
+  margin-inline: auto !important;
+}
+html[data-theme="retro2012"] .cn-shell-footer {
+  width: min(100%, 1080px) !important;
+  margin: 28px auto 0 !important;
+  padding-top: 16px !important;
+  border-top: 1px solid #d0d0d0 !important;
+  background: transparent !important;
+  color: #777 !important;
+}
+
+/* Global 2012 component language: square controls, almost no shadow, small typography. */
+html[data-theme="retro2012"] button,
+html[data-theme="retro2012"] [role="button"],
+html[data-theme="retro2012"] input,
+html[data-theme="retro2012"] select,
+html[data-theme="retro2012"] textarea,
+html[data-theme="retro2012"] .rounded-xl,
+html[data-theme="retro2012"] .rounded-2xl,
+html[data-theme="retro2012"] .rounded-lg {
+  border-radius: 2px !important;
+  box-shadow: none !important;
+}
+html[data-theme="retro2012"] img {
+  border-radius: 0 !important;
+}
+html[data-theme="retro2012"] .cn-shell-main .bg-card,
+html[data-theme="retro2012"] .cn-shell-main .bg-surface {
+  background: #fff !important;
+}
+html[data-theme="retro2012"] .cn-shell-main .border-border {
+  border-color: #d7d7d7 !important;
+}
+
+/* 2012 homepage: white plate, section headings, horizontal video shelves. */
+html[data-theme="retro2012"] .cn-cosmic-home {
+  width: 100% !important;
+  max-width: 1080px !important;
+  margin: 0 auto !important;
+  background: #fff !important;
+  border: 1px solid #d6d6d6 !important;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 5%) !important;
+}
+html[data-theme="retro2012"] .cn-cosmic-home-tabs {
+  display: flex !important;
+  align-items: stretch !important;
+  gap: 0 !important;
+  padding: 0 12px !important;
+  min-height: 36px !important;
+  background: #f3f3f3 !important;
+  border-bottom: 1px solid #d6d6d6 !important;
+}
+html[data-theme="retro2012"] .cn-cosmic-home-tabs button {
+  min-height: 36px !important;
+  padding: 0 12px !important;
+  border: 0 !important;
+  border-bottom: 2px solid transparent !important;
+  background: transparent !important;
+  color: #666 !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+}
+html[data-theme="retro2012"] .cn-cosmic-home-tabs button:hover {
+  background: #e9e9e9 !important;
+  color: #333 !important;
+}
+html[data-theme="retro2012"] .cn-cosmic-home-tabs button.is-active {
+  color: #cc181e !important;
+  border-bottom-color: #cc181e !important;
+}
+html[data-theme="retro2012"] .cn-cosmic-feature {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1.7fr) minmax(260px, 0.9fr) !important;
+  gap: 0 !important;
+  border-bottom: 1px solid #d6d6d6 !important;
+}
+html[data-theme="retro2012"] .cn-cosmic-feature-main {
+  min-width: 0 !important;
+  padding: 14px !important;
+  border-right: 1px solid #ddd !important;
+}
+html[data-theme="retro2012"] .cn-cosmic-feature-list {
+  min-width: 0 !important;
+  padding: 10px !important;
+}
+html[data-theme="retro2012"] .cn-cosmic-feature-list > div {
+  padding: 7px 0 !important;
+  border-bottom: 1px solid #e2e2e2 !important;
+}
+html[data-theme="retro2012"] .cn-cosmic-shelf {
+  padding: 14px !important;
+  border-bottom: 1px solid #ddd !important;
+}
+html[data-theme="retro2012"] .cn-cosmic-shelf-heading {
+  display: flex !important;
+  align-items: baseline !important;
+  justify-content: space-between !important;
+  margin-bottom: 9px !important;
+  padding-bottom: 6px !important;
+  border-bottom: 1px solid #d9d9d9 !important;
+}
+html[data-theme="retro2012"] .cn-cosmic-shelf-heading h2 {
+  margin: 0 !important;
+  color: #333 !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+}
+html[data-theme="retro2012"] .cn-cosmic-shelf-heading span {
+  color: #999 !important;
+  font-size: 10px !important;
+}
+html[data-theme="retro2012"] .cn-cosmic-grid {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 12px !important;
+}
+html[data-theme="retro2012"] .cn-cosmic-home .cn-cosmic-grid > * {
+  min-width: 0 !important;
+}
+html[data-theme="retro2012"] .cn-cosmic-home .cn-video-card,
+html[data-theme="retro2012"] .cn-cosmic-home article {
+  border-radius: 2px !important;
+  box-shadow: none !important;
+}
+html[data-theme="retro2012"] .cn-cosmic-home a {
+  color: inherit;
+}
+html[data-theme="retro2012"] .cn-cosmic-home .cn-cosmic-grid a.line-clamp-2 {
+  font-size: 12px !important;
+  line-height: 1.35 !important;
+}
+html[data-theme="retro2012"] .cn-cosmic-home .cn-cosmic-grid p,
+html[data-theme="retro2012"] .cn-cosmic-home .cn-cosmic-grid a.text-xs {
+  font-size: 10px !important;
+}
+
+/* Watch page: Cosmic Panda's characteristic black player stage and gray details. */
+html[data-theme="retro2012"] [data-corenet-player] {
+  background: #111 !important;
+  border: 1px solid #111 !important;
+  padding: 8px !important;
+  box-shadow: none !important;
+}
+html[data-theme="retro2012"] [data-corenet-player] video {
+  border-radius: 0 !important;
+}
+html[data-theme="retro2012"] .cn-shell-main > div {
+  color: #333 !important;
+}
+html[data-theme="retro2012"] .cn-shell-main .bg-black {
+  background: #111 !important;
+}
+
+/* Shorts keeps its own feed behavior, but the skin remains historically styled. */
+html[data-theme="retro2012"] .cn-shorts-page {
+  background: #e7e7e7 !important;
+}
+html[data-theme="retro2012"] .cn-shorts-card,
+html[data-theme="retro2012"] .cn-shorts-header,
+html[data-theme="retro2012"] .cn-shorts-empty {
+  border-radius: 2px !important;
+  box-shadow: none !important;
+}
+html[data-theme="retro2012"] .cn-shorts-header,
+html[data-theme="retro2012"] .cn-shorts-empty {
+  background: #fff !important;
+  border: 1px solid #d6d6d6 !important;
+}
+html[data-theme="retro2012"] .cn-shorts-kicker {
+  color: #cc181e !important;
+  font-weight: 700 !important;
+}
+
+@media (max-width: 900px) {
+  html[data-theme="retro2012"] .cn-cosmic-feature {
+    grid-template-columns: 1fr !important;
+  }
+  html[data-theme="retro2012"] .cn-cosmic-feature-main {
+    border-right: 0 !important;
+    border-bottom: 1px solid #ddd !important;
+  }
+  html[data-theme="retro2012"] .cn-cosmic-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 600px) {
+  html[data-theme="retro2012"] .cn-shell-main {
+    padding: 10px !important;
+  }
+  html[data-theme="retro2012"] .cn-cosmic-home {
+    border-left: 0 !important;
+    border-right: 0 !important;
+  }
+  html[data-theme="retro2012"] .cn-cosmic-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
