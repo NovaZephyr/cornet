@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import { Flag, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -9,22 +10,20 @@ import { ChannelDistinctions } from "@/components/ChannelDistinctions";
 import { useSignedUrl } from "@/lib/storage";
 import type { ChannelData, ChannelLayoutProps } from "./channel-data";
 
-function channelVars(data: ChannelData): React.CSSProperties {
+function channelVars(data: ChannelData): CSSProperties {
   return {
     "--cn-channel-primary": data.profile.channel_primary_color ?? "#1f4fa3",
     "--cn-channel-secondary": data.profile.channel_secondary_color ?? "#2aa84a",
     "--cn-channel-surface": data.profile.channel_surface_color ?? "#ffffff",
     "--cn-channel-text": data.profile.channel_text_color ?? "#222222",
-  } as React.CSSProperties;
+  } as CSSProperties;
 }
 
 function ChannelIdentity({ data, size = 64 }: { data: ChannelData; size?: number }) {
   return (
     <div className="relative shrink-0">
       <ChannelAvatar path={data.profile.avatar_path} name={data.profile.display_name || data.profile.username} size={size} />
-      {data.isPartnerChannel && data.partnerGif ? (
-        <img src={data.partnerGif} alt="Distintivo animado Partner" className="absolute -bottom-1 -right-1 h-6 w-6 rounded-full border object-cover" />
-      ) : null}
+      {data.isPartnerChannel && data.partnerGif ? <img src={data.partnerGif} alt="Distintivo animado Partner" className="absolute -bottom-1 -right-1 h-6 w-6 rounded-full border object-cover" /> : null}
     </div>
   );
 }
@@ -44,10 +43,7 @@ export function CosmicPandaChannel({ data, onSubscribe, onReport }: ChannelLayou
         <div className="cn-cosmic-banner-wrap">
           <div className="cn-cosmic-cover"><SignedImage path={data.profile.banner_path} alt={`Banner de ${data.profile.display_name}`} className="h-full w-full object-cover" /></div>
           <div className="cn-cosmic-title-strip">
-            <div className="flex min-w-0 items-center gap-3">
-              <ChannelIdentity data={data} size={56} />
-              <div className="min-w-0"><h1 className="truncate text-[20px] font-bold">{data.profile.display_name || data.profile.username}<ChannelDistinctions className="ml-2" isVerified={data.profile.is_verified} isMusic={data.profile.is_music_channel} roles={data.roles} /></h1><p className="text-[11px] opacity-70">@{data.profile.username} · {data.profile.subscriber_count ?? data.subscriptions.length} suscriptores · {data.videos.length} videos</p></div>
-            </div>
+            <div className="flex min-w-0 items-center gap-3"><ChannelIdentity data={data} size={56} /><div className="min-w-0"><h1 className="truncate text-[20px] font-bold">{data.profile.display_name || data.profile.username}<ChannelDistinctions className="ml-2" isVerified={data.profile.is_verified} isMusic={data.profile.is_music_channel} roles={data.roles} /></h1><p className="text-[11px] opacity-70">@{data.profile.username} · {data.profile.subscriber_count ?? data.subscriptions.length} suscriptores · {data.videos.length} videos</p></div></div>
             <div className="flex gap-2"><Button onClick={onSubscribe} className="cn-2012-retro-button" variant={data.isSubscribed ? "secondary" : "default"}>{data.isSubscribed ? "Suscrito" : "Suscribirse"}</Button><Button onClick={onReport} variant="outline" className="cn-2012-retro-button"><Flag className="mr-2 h-4 w-4" />Denunciar</Button></div>
           </div>
           <div className="cn-cosmic-tabs"><span className="is-active">CANAL</span><span>VIDEOS</span><span>COMUNIDAD</span><span>PLAYLISTS</span><span>INFORMACIÓN</span></div>
