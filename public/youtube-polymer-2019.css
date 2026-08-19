@@ -1,0 +1,66 @@
+/* YouTube 2019 / Polymer — Custom Theme for Cornet. */
+[data-theme="youtube2019"]{
+  color-scheme:light;
+  --poly-bg:#fff;
+  --poly-subtle:#f9f9f9;
+  --poly-guide:#fff;
+  --poly-hover:#f2f2f2;
+  --poly-border:#e5e5e5;
+  --poly-text:#0f0f0f;
+  --poly-muted:#606060;
+  --poly-red:#ff0000;
+  font-family:Roboto,Arial,sans-serif!important;
+}
+[data-theme="youtube2019"] body{background:var(--poly-bg)!important;color:var(--poly-text)!important;font-family:Roboto,Arial,sans-serif!important}
+[data-theme="youtube2019"] .cn-2012-app{background:#fff!important;min-height:100vh}
+[data-theme="youtube2019"] .cn-2012-topbar{
+  height:56px!important;min-height:56px!important;background:#fff!important;color:#0f0f0f!important;
+  border-bottom:1px solid var(--poly-border)!important;box-shadow:none!important;
+}
+[data-theme="youtube2019"] .cn-2012-topbar a,[data-theme="youtube2019"] .cn-2012-topbar button,[data-theme="youtube2019"] .cn-2012-topbar svg{color:#0f0f0f!important}
+[data-theme="youtube2019"] .cn-2012-topbar form{max-width:640px!important}
+[data-theme="youtube2019"] .cn-2012-topbar form input{
+  height:40px!important;border:1px solid #ccc!important;border-right:0!important;border-radius:2px 0 0 2px!important;
+  background:#fff!important;color:#0f0f0f!important;box-shadow:inset 0 1px 2px rgba(0,0,0,.08)!important;font-size:15px!important;
+}
+[data-theme="youtube2019"] .cn-2012-topbar form button{
+  height:40px!important;min-width:64px!important;border:1px solid #ccc!important;border-radius:0 2px 2px 0!important;
+  background:#f8f8f8!important;color:#606060!important;box-shadow:none!important;
+}
+[data-theme="youtube2019"] .cn-2012-topnav-link{font-size:13px!important;border-radius:2px!important;color:#606060!important}
+[data-theme="youtube2019"] .cn-2012-topnav-link:hover{background:#f2f2f2!important;color:#0f0f0f!important}
+[data-theme="youtube2019"] .cn-2012-shell-body{grid-template-columns:240px minmax(0,1fr)!important;gap:0!important;max-width:none!important;background:#fff!important}
+[data-theme="youtube2019"] .cn-2012-sidebar{
+  position:sticky!important;top:56px!important;width:240px!important;min-height:calc(100vh - 56px)!important;max-height:calc(100vh - 56px)!important;
+  overflow:auto!important;background:#fff!important;border-right:0!important;box-shadow:none!important;padding:10px 0!important;color:#0f0f0f!important;
+}
+[data-theme="youtube2019"] .cn-2012-sidebar-inner{padding:0 12px!important}
+[data-theme="youtube2019"] .cn-2012-sidebar nav{padding:0!important;gap:2px!important}
+[data-theme="youtube2019"] .cn-2012-sidebar-link,[data-theme="youtube2019"] .cn-2012-sidebar-subscription{
+  min-height:40px!important;border-radius:8px!important;border:0!important;color:#0f0f0f!important;background:transparent!important;font-size:14px!important;
+}
+[data-theme="youtube2019"] .cn-2012-sidebar-link:hover,[data-theme="youtube2019"] .cn-2012-sidebar-subscription:hover{background:#f2f2f2!important;color:#0f0f0f!important}
+[data-theme="youtube2019"] .cn-2012-sidebar-link.bg-surface,[data-theme="youtube2019"] .cn-2012-sidebar-link[aria-current="page"]{background:#f2f2f2!important;box-shadow:none!important;color:#0f0f0f!important;font-weight:500!important}
+[data-theme="youtube2019"] .cn-2012-sidebar-section-title{padding:16px 14px 8px!important;font-size:12px!important;color:#606060!important;letter-spacing:.04em!important}
+[data-theme="youtube2019"] .cn-2012-sidebar-divider{background:#e5e5e5!important;margin:10px 0!important}
+[data-theme="youtube2019"] .cn-2012-sidebar-add{border:1px solid #d3d3d3!important;border-radius:2px!important;background:#fff!important;color:#606060!important;padding:9px 10px!important}
+[data-theme="youtube2019"] .cn-2012-main{background:#fff!important;padding:24px 32px 48px!important;color:#0f0f0f!important}
+[data-theme="youtube2019"] .cn-2012-main a{color:#065fd4!important}
+[data-theme="youtube2019"] .cn-2012-main .rounded-xl,[data-theme="youtube2019"] .cn-2012-main .rounded-2xl,[data-theme="youtube2019"] .cn-2012-main .rounded-3xl{border-radius:8px!important}
+[data-theme="youtube2019"] .cn-video-card{border:0!important;background:transparent!important;box-shadow:none!important;border-radius:0!important}
+[data-theme="youtube2019"] .cn-video-card:hover{background:transparent!important}
+[data-theme="youtube2019"] .cn-video-card img{border-radius:8px!important}
+[data-theme="youtube2019"] .cn-explore-section,[data-theme="youtube2019"] .cn-watch-page,[data-theme="youtube2019"] .cn-watch-recommendations{background:#fff!important;border:0!important;box-shadow:none!important;border-radius:0!important}
+[data-theme="youtube2019"] [data-corenet-player]{background:#000!important;border-radius:0!important}
+[data-theme="youtube2019"] footer{background:#fff!important;border-top:1px solid #e5e5e5!important;color:#606060!important}
+[data-theme="youtube2019"] button{border-radius:2px!important}
+[data-theme="youtube2019"] .cn-settings-page{font-family:Roboto,Arial,sans-serif!important}
+[data-theme="youtube2019"] .cn-settings-nav{background:#fff!important;border-color:#e5e5e5!important}
+[data-theme="youtube2019"] .cn-settings-nav button[data-active="true"]{background:#f2f2f2!important;color:#0f0f0f!important;box-shadow:none!important}
+[data-theme="youtube2019"] .cn-settings-card{background:#fff!important;border-color:#e5e5e5!important;box-shadow:none!important;border-radius:8px!important}
+@media(max-width:900px){
+  [data-theme="youtube2019"] .cn-2012-sidebar{display:none!important}
+  [data-theme="youtube2019"] .cn-2012-shell-body{display:block!important}
+  [data-theme="youtube2019"] .cn-2012-main{padding:16px 14px 32px!important}
+  [data-theme="youtube2019"] .cn-2012-topbar form{max-width:100%!important}
+}
