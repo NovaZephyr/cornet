@@ -29,12 +29,20 @@ const polymerFilters: Array<{ value: SearchOrder; label: string }> = [
   { value: "subscribers", label: "Más suscripciones" },
 ];
 
+const cosmicFilters: Array<{ value: SearchOrder; label: string }> = [
+  { value: "recommended", label: "Recomendados" },
+  { value: "recent", label: "Más recientes" },
+  { value: "views", label: "Más vistos" },
+  { value: "subscribers", label: "Suscripciones" },
+];
+
 function Home() {
   const { q, sort = "recommended" } = Route.useSearch();
   const navigate = Route.useNavigate();
   const { theme } = useTheme();
   const isRecommended = !q && sort === "recommended";
   const isPolymerHome = theme === "youtube2019" && !q;
+  const isCosmicHome = theme === "retro2012" && !q;
   const videoSort: VideoSort = sort === "subscribers" || sort === "views" || sort === "recent" || sort === "oldest" ? sort : "recent";
   const videosQuery = useQuery({
     queryKey: ["home-feed", q ?? null, sort],
@@ -65,6 +73,22 @@ function Home() {
     return shelves;
   })();
 
+  const cosmicRows = videosQuery.data ?? [];
+  const cosmicFeatured = cosmicRows[0] ?? null;
+  const cosmicRecommendations = cosmicRows.slice(1, 5);
+  const cosmicShelves = (() => {
+    const rows = cosmicRows.slice(5);
+    const buckets = new Map<string, typeof rows>();
+    for (const video of rows) {
+      const key = video.category?.trim() || "Recomendados";
+      const existing = buckets.get(key) ?? [];
+      if (existing.length < 4) existing.push(video);
+      buckets.set(key, existing);
+    }
+    if (!buckets.size && cosmicRows.length) return [["Más videos", cosmicRows.slice(0, 4)]] as const;
+    return Array.from(buckets.entries()).slice(0, 8);
+  })();
+
   return <AppShell>
     <h1 className="sr-only">Videos y canales en CoreNetwork</h1>
     {isPolymerHome ? <>
@@ -73,6 +97,21 @@ function Home() {
       </nav>
       <div className="cn-polymer-home-frame">
         {videosQuery.isLoading ? <div className="cn-polymer-shelf-grid">{Array.from({ length: 16 }).map((_, i) => <div key={i} className="cn-polymer-skeleton"><Skeleton className="aspect-video w-full rounded-none" /><Skeleton className="mt-2 h-4 w-5/6" /><Skeleton className="mt-2 h-3 w-3/5" /></div>)}</div> : polymerShelves.length > 0 ? polymerShelves.map(([title, videos], shelfIndex) => <section className="cn-polymer-shelf" key={`${title}-${shelfIndex}`}><div className="cn-polymer-shelf-heading"><h2>{title}</h2><span>{sort === "recommended" ? "Recomendados" : "Filtrado"}</span></div><div className="cn-polymer-video-grid">{videos.map((video) => <VideoCard key={video.id} video={video} />)}</div></section>) : <div className="cn-polymer-empty"><p>No encontramos videos.</p></div>}
+      </div>
+    </> : isCosmicHome ? <>
+      <div className="cn-cosmic-home">
+        <nav className="cn-cosmic-home-tabs" aria-label="Filtros de inicio">
+          {cosmicFilters.map((filter) => <button key={filter.value} type="button" onClick={() => setSort(filter.value)} className={sort === filter.value ? "is-active" : ""}>{filter.label}</button>)}
+        </nav>
+        {videosQuery.isLoading ? <div className="cn-cosmic-shelf"><div className="cn-cosmic-grid">{Array.from({ length: 8 }).map((_, i) => <div key={i}><Skeleton className="aspect-video w-full rounded-none" /><Skeleton className="mt-2 h-3 w-4/5" /><Skeleton className="mt-1 h-2 w-2/5" /></div>)}</div></div> : cosmicFeatured ? <>
+          <section className="cn-cosmic-feature">
+            <div className="cn-cosmic-feature-main">
+              <VideoCard video={cosmicFeatured} />
+            </div>
+            {cosmicRecommendations.length > 0 && <aside className="cn-cosmic-feature-list" aria-label="Videos recomendados">{cosmicRecommendations.map((video) => <VideoCard key={video.id} video={video} compact />)}</aside>}
+          </section>
+          {cosmicShelves.map(([title, videos], shelfIndex) => <section className="cn-cosmic-shelf" key={`${title}-${shelfIndex}`}><div className="cn-cosmic-shelf-heading"><h2>{title}</h2><span>{videos.length} videos</span></div><div className="cn-cosmic-grid">{videos.map((video) => <VideoCard key={video.id} video={video} />)}</div></section>)}
+        </> : <section className="cn-cosmic-shelf"><p className="py-16 text-center text-sm text-muted-foreground">No encontramos videos.</p></section>}
       </div>
     </> : <>
       <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
