@@ -65,3 +65,4 @@ export const channelLayouts: ChannelLayoutDefinition[] = [
 export function getTheme(themeId: string) { return themes.find((theme) => theme.id === themeId) ?? themes.find((theme) => theme.id === "grad-ocean")!; }
 export function getChannelLayout(layoutId: string) { return channelLayouts.find((layout) => layout.id === layoutId) ?? channelLayouts[0]; }
 export function getThemesByCategory(category: DesignCategory) { return themes.filter((theme) => theme.category === category); }
+export function getThemesByFamily(family: string) { return themes.filter((theme) => theme.category === "custom" && theme.family === family); }
