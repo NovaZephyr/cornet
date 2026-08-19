@@ -21,6 +21,14 @@ export const Route = createFileRoute("/")({
   component: Home,
 });
 
+const polymerFilters: Array<{ value: SearchOrder; label: string }> = [
+  { value: "recommended", label: "Recomendados" },
+  { value: "views", label: "Más vistos" },
+  { value: "recent", label: "Más recientes" },
+  { value: "oldest", label: "Más antiguos" },
+  { value: "subscribers", label: "Más suscripciones" },
+];
+
 function Home() {
   const { q, sort = "recommended" } = Route.useSearch();
   const navigate = Route.useNavigate();
@@ -61,14 +69,10 @@ function Home() {
     <h1 className="sr-only">Videos y canales en CoreNetwork</h1>
     {isPolymerHome ? <>
       <nav className="cn-polymer-home-tabs" aria-label="Filtros de inicio">
-        <Link to="/" search={{}} className={sort === "recommended" ? "is-active" : ""}>Recomendados</Link>
-        <Link to="/" search={{ sort: "views" }} className={sort === "views" ? "is-active" : ""}>Más vistos</Link>
-        <Link to="/" search={{ sort: "recent" }} className={sort === "recent" ? "is-active" : ""}>Más recientes</Link>
-        <Link to="/" search={{ sort: "oldest" }} className={sort === "oldest" ? "is-active" : ""}>Más antiguos</Link>
-        <Link to="/" search={{ sort: "subscribers" }} className={sort === "subscribers" ? "is-active" : ""}>Más suscripciones</Link>
+        {polymerFilters.map((filter) => <button key={filter.value} type="button" onClick={() => setSort(filter.value)} className={sort === filter.value ? "is-active" : ""}>{filter.label}</button>)}
       </nav>
       <div className="cn-polymer-home-frame">
-        {videosQuery.isLoading ? <div className="cn-polymer-shelf-grid">{Array.from({ length: 16 }).map((_, i) => <div key={i} className="cn-polymer-skeleton"><Skeleton className="aspect-video w-full rounded-none" /><Skeleton className="mt-2 h-4 w-5/6" /><Skeleton className="mt-2 h-3 w-3/5" /></div>)}</div> : polymerShelves.length > 0 ? polymerShelves.map(([title, videos], shelfIndex) => <section className="cn-polymer-shelf" key={`${title}-${shelfIndex}`}><div className="cn-polymer-shelf-heading"><h2>{title}</h2><span>{sort === "recommended" ? "Recommended videos" : "Videos"}</span></div><div className="cn-polymer-video-grid">{videos.map((video) => <VideoCard key={video.id} video={video} />)}</div></section>) : <div className="cn-polymer-empty"><p>No encontramos videos.</p></div>}
+        {videosQuery.isLoading ? <div className="cn-polymer-shelf-grid">{Array.from({ length: 16 }).map((_, i) => <div key={i} className="cn-polymer-skeleton"><Skeleton className="aspect-video w-full rounded-none" /><Skeleton className="mt-2 h-4 w-5/6" /><Skeleton className="mt-2 h-3 w-3/5" /></div>)}</div> : polymerShelves.length > 0 ? polymerShelves.map(([title, videos], shelfIndex) => <section className="cn-polymer-shelf" key={`${title}-${shelfIndex}`}><div className="cn-polymer-shelf-heading"><h2>{title}</h2><span>{sort === "recommended" ? "Recomendados" : "Filtrado"}</span></div><div className="cn-polymer-video-grid">{videos.map((video) => <VideoCard key={video.id} video={video} />)}</div></section>) : <div className="cn-polymer-empty"><p>No encontramos videos.</p></div>}
       </div>
     </> : <>
       <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
