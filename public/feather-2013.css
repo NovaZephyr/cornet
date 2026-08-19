@@ -1,0 +1,110 @@
+/* Feather 2013 — independent light theme. No shared modern/custom shell rules. */
+[data-theme="feather2013"] {
+  color-scheme: light !important;
+  --feather-bg: #f4f5f6;
+  --feather-surface: #fff;
+  --feather-line: #d9dde1;
+  --feather-text: #2f363d;
+  --feather-muted: #707981;
+  --feather-blue: #4b82ae;
+  font-family: Arial, Helvetica, sans-serif !important;
+}
+[data-theme="feather2013"] body,
+[data-theme="feather2013"] #root,
+[data-theme="feather2013"] .cn-2012-app {
+  min-height:100vh !important;
+  background:var(--feather-bg) !important;
+  color:var(--feather-text) !important;
+  font-family:Arial,Helvetica,sans-serif !important;
+}
+[data-theme="feather2013"] .cn-2012-topbar {
+  min-height:50px !important;
+  height:50px !important;
+  background:var(--feather-surface) !important;
+  border-bottom:1px solid var(--feather-line) !important;
+  box-shadow:0 1px 2px rgb(0 0 0 / 4%) !important;
+  color:var(--feather-text) !important;
+}
+[data-theme="feather2013"] .cn-2012-topbar form input {
+  height:30px !important;
+  border:1px solid #bcc3ca !important;
+  border-radius:2px 0 0 2px !important;
+  background:#fff !important;
+  color:#222 !important;
+  box-shadow:inset 0 1px 2px rgb(0 0 0 / 7%) !important;
+}
+[data-theme="feather2013"] .cn-2012-topbar form button {
+  height:30px !important;
+  border:1px solid #bcc3ca !important;
+  border-radius:0 2px 2px 0 !important;
+  background:#edf0f2 !important;
+  color:#46515a !important;
+}
+[data-theme="feather2013"] .cn-2012-shell-body {
+  display:grid !important;
+  grid-template-columns:180px minmax(0,1fr) !important;
+  gap:0 !important;
+  max-width:none !important;
+  background:var(--feather-bg) !important;
+}
+[data-theme="feather2013"] .cn-2012-sidebar {
+  position:sticky !important;
+  top:50px !important;
+  width:180px !important;
+  min-height:calc(100vh - 50px) !important;
+  max-height:calc(100vh - 50px) !important;
+  padding:6px 0 !important;
+  overflow:auto !important;
+  background:#eceff1 !important;
+  border-right:1px solid var(--feather-line) !important;
+  box-shadow:none !important;
+  color:var(--feather-text) !important;
+}
+[data-theme="feather2013"] .cn-2012-sidebar-link,
+[data-theme="feather2013"] .cn-2012-sidebar-subscription {
+  min-height:32px !important;
+  padding:0 12px !important;
+  border-radius:0 !important;
+  border:0 !important;
+  color:#59636c !important;
+  background:transparent !important;
+  font-size:12px !important;
+}
+[data-theme="feather2013"] .cn-2012-sidebar-link:hover,
+[data-theme="feather2013"] .cn-2012-sidebar-subscription:hover,
+[data-theme="feather2013"] .cn-2012-sidebar-link[aria-current="page"] {
+  background:#fff !important;
+  color:var(--feather-blue) !important;
+}
+[data-theme="feather2013"] .cn-2012-main {
+  min-width:0 !important;
+  padding:18px 22px 38px !important;
+  background:var(--feather-bg) !important;
+}
+[data-theme="feather2013"] .cn-2012-main > * {
+  width:min(100%,1120px) !important;
+  max-width:1120px !important;
+  margin-inline:auto !important;
+}
+[data-theme="feather2013"] .cn-2012-main .bg-surface,
+[data-theme="feather2013"] .cn-2012-main .bg-card,
+[data-theme="feather2013"] .cn-2012-main .bg-background {
+  background:var(--feather-surface) !important;
+}
+[data-theme="feather2013"] .cn-2012-main article,
+[data-theme="feather2013"] .cn-2012-main .cn-video-card {
+  border:0 !important;
+  border-bottom:1px solid var(--feather-line) !important;
+  border-radius:0 !important;
+  background:var(--feather-surface) !important;
+  box-shadow:none !important;
+}
+[data-theme="feather2013"] .cn-2012-main img { border-radius:0 !important; }
+[data-theme="feather2013"] button,
+[data-theme="feather2013"] [role="button"] { border-radius:2px !important; box-shadow:none !important; }
+[data-theme="feather2013"] footer { background:#eceff1 !important; border-top:1px solid var(--feather-line) !important; color:var(--feather-muted) !important; }
+@media (max-width:767px){
+  [data-theme="feather2013"] .cn-2012-shell-body{display:block!important}
+  [data-theme="feather2013"] .cn-2012-sidebar{display:none!important}
+  [data-theme="feather2013"] .cn-2012-main{padding:14px 12px 30px!important}
+}
