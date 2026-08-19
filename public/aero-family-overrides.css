@@ -1,0 +1,161 @@
+/* Aero / Frutiger Aero / Web 2.0 family override.
+   Shared visual vocabulary: glass, skeuomorphism, luminous gradients, dark chrome,
+   nature/sky atmosphere and glossy controls. Channel layouts remain independent. */
+
+/* Shared family foundation */
+:is([data-theme="windowsAero"],[data-theme="frutigerAero"],[data-theme="web2Glossy"]) {
+  --aero-panel:rgba(255,255,255,.68);
+  --aero-panel-strong:rgba(255,255,255,.86);
+  --aero-edge:rgba(255,255,255,.82);
+  --aero-blue:#2f8fcb;
+  --aero-green:#5dbb47;
+  --aero-shadow:0 4px 16px rgba(27,76,111,.18);
+}
+
+/* Windows Aero: Vista/7 glass is the primary identity. */
+[data-theme="windowsAero"] body{
+  background:
+    radial-gradient(900px 500px at 12% 8%,rgba(255,255,255,.75),transparent 58%),
+    linear-gradient(180deg,#76b9ea 0,#d8f1ff 38%,#eaf8ff 100%)!important;
+  color:#183a56!important;
+}
+[data-theme="windowsAero"] .cn-2012-app{
+  min-height:100vh;
+  background:
+    linear-gradient(180deg,rgba(80,145,203,.24),transparent 18%),
+    linear-gradient(180deg,#8bc8ef 0,#dff5ff 45%,#eaf8ff 100%)!important;
+}
+[data-theme="windowsAero"] .cn-2012-topbar{
+  background:linear-gradient(180deg,rgba(255,255,255,.94),rgba(203,232,251,.72) 48%,rgba(130,191,235,.72))!important;
+  border:1px solid rgba(255,255,255,.95)!important;
+  border-bottom-color:rgba(55,111,157,.48)!important;
+  box-shadow:inset 0 1px rgba(255,255,255,.95),0 3px 12px rgba(29,79,123,.22)!important;
+  backdrop-filter:blur(16px)!important;
+}
+[data-theme="windowsAero"] .cn-2012-topbar form input{
+  background:rgba(255,255,255,.92)!important;
+  border:1px solid rgba(84,132,169,.6)!important;
+  box-shadow:inset 0 1px 2px rgba(35,73,103,.12),0 1px 0 rgba(255,255,255,.85)!important;
+}
+[data-theme="windowsAero"] .cn-2012-topbar form button,
+[data-theme="windowsAero"] button{
+  background:linear-gradient(180deg,#ffffff,#d7eaf7 48%,#b9d7ea)!important;
+  color:#214966!important;
+  border:1px solid #83aeca!important;
+  box-shadow:inset 0 1px #fff,0 1px 2px rgba(47,82,111,.14)!important;
+}
+[data-theme="windowsAero"] .cn-2012-sidebar{
+  background:linear-gradient(180deg,rgba(255,255,255,.62),rgba(216,240,255,.46))!important;
+  backdrop-filter:blur(14px)!important;
+  border-right:1px solid rgba(255,255,255,.86)!important;
+  box-shadow:inset -1px 0 rgba(255,255,255,.55),2px 0 14px rgba(32,83,127,.13)!important;
+}
+[data-theme="windowsAero"] .cn-2012-sidebar-link:hover{background:rgba(255,255,255,.4)!important}
+[data-theme="windowsAero"] .cn-2012-main{background:transparent!important}
+[data-theme="windowsAero"] .cn-video-card,
+[data-theme="windowsAero"] .cn-explore-section,
+[data-theme="windowsAero"] .cn-watch-page{
+  background:var(--aero-panel)!important;
+  border:1px solid rgba(112,167,210,.48)!important;
+  box-shadow:var(--aero-shadow),inset 0 1px rgba(255,255,255,.8)!important;
+  backdrop-filter:blur(10px)!important;
+}
+
+/* Frutiger Aero: nature, water, luminous green/blue and translucent content slabs. */
+[data-theme="frutigerAero"] body{
+  background:
+    radial-gradient(500px 260px at 8% 18%,rgba(255,255,255,.7),transparent 56%),
+    linear-gradient(180deg,#53c7f7 0,#bceeff 31%,#e7fff8 60%,#9bdc75 100%)!important;
+  color:#214d37!important;
+}
+[data-theme="frutigerAero"] .cn-2012-app{
+  background:
+    linear-gradient(180deg,rgba(61,197,243,.2),transparent 22%),
+    linear-gradient(180deg,#58c9f7,#d8f9ff 44%,#effff5 66%,#9cd97d)!important;
+}
+[data-theme="frutigerAero"] .cn-2012-topbar{
+  background:linear-gradient(180deg,rgba(247,255,255,.96),rgba(174,235,248,.8) 42%,rgba(91,198,225,.78))!important;
+  border:1px solid rgba(255,255,255,.9)!important;
+  border-bottom-color:#70b7c9!important;
+  box-shadow:inset 0 1px rgba(255,255,255,.96),0 3px 12px rgba(39,116,103,.18)!important;
+  backdrop-filter:blur(10px)!important;
+}
+[data-theme="frutigerAero"] .cn-2012-sidebar{
+  background:linear-gradient(180deg,rgba(241,255,249,.78),rgba(206,245,230,.64))!important;
+  border-right:1px solid rgba(255,255,255,.88)!important;
+  box-shadow:1px 0 7px rgba(42,116,81,.13)!important;
+  backdrop-filter:blur(10px)!important;
+}
+[data-theme="frutigerAero"] .cn-2012-main{background:transparent!important}
+[data-theme="frutigerAero"] .cn-video-card,
+[data-theme="frutigerAero"] .cn-explore-section,
+[data-theme="frutigerAero"] .cn-watch-page{
+  background:linear-gradient(180deg,rgba(255,255,255,.9),rgba(241,255,248,.74))!important;
+  border:1px solid rgba(116,186,157,.48)!important;
+  border-radius:12px!important;
+  box-shadow:0 5px 16px rgba(44,121,87,.12),inset 0 1px rgba(255,255,255,.95)!important;
+  backdrop-filter:blur(8px)!important;
+}
+[data-theme="frutigerAero"] button{
+  background:linear-gradient(180deg,#ffffff,#e9fbf6 50%,#c5edd7)!important;
+  color:#275f43!important;
+  border:1px solid #8ac6a6!important;
+  box-shadow:inset 0 1px #fff,0 2px 4px rgba(47,105,73,.12)!important;
+}
+
+/* Web 2.0 Glossy: same Aero family, but louder gradients and glossy beveled chrome. */
+[data-theme="web2Glossy"] body{
+  background:
+    radial-gradient(650px 280px at 20% 5%,rgba(255,255,255,.95),transparent 58%),
+    linear-gradient(180deg,#7fd9ff 0,#d9f5ff 35%,#f3fbff 62%,#c6dced 100%)!important;
+  color:#203a52!important;
+}
+[data-theme="web2Glossy"] .cn-2012-app{
+  background:linear-gradient(180deg,#89ddff 0,#e0f7ff 38%,#eef7ff 65%,#c3d7ea 100%)!important;
+}
+[data-theme="web2Glossy"] .cn-2012-topbar{
+  background:linear-gradient(180deg,#ffffff 0,#d7f1ff 42%,#74b9e4 58%,#3e84bd 100%)!important;
+  border:1px solid #6d9dc1!important;
+  box-shadow:inset 0 1px #fff,0 3px 9px rgba(44,88,125,.22)!important;
+}
+[data-theme="web2Glossy"] .cn-2012-topbar form input{
+  background:#fff!important;
+  border:1px solid #7295af!important;
+  box-shadow:inset 0 1px 2px rgba(0,0,0,.16)!important;
+}
+[data-theme="web2Glossy"] .cn-2012-topbar form button,
+[data-theme="web2Glossy"] button{
+  background:linear-gradient(180deg,#ffffff 0,#e9f6ff 38%,#b9d8ee 60%,#7da9cb 100%)!important;
+  color:#224b6d!important;
+  border:1px solid #7094b1!important;
+  box-shadow:inset 0 1px #fff,inset 0 -1px rgba(51,90,122,.18),0 1px 2px rgba(0,0,0,.12)!important;
+}
+[data-theme="web2Glossy"] .cn-2012-sidebar{
+  background:linear-gradient(180deg,#eef9ff 0,#c8e3f5 47%,#a9c8df 100%)!important;
+  border-right:1px solid #8eafc6!important;
+  box-shadow:inset -1px 0 #fff,2px 0 8px rgba(45,80,110,.13)!important;
+}
+[data-theme="web2Glossy"] .cn-2012-sidebar-link:hover{background:linear-gradient(#ffffff,#d9edf8)!important}
+[data-theme="web2Glossy"] .cn-2012-main{background:transparent!important}
+[data-theme="web2Glossy"] .cn-video-card,
+[data-theme="web2Glossy"] .cn-explore-section,
+[data-theme="web2Glossy"] .cn-watch-page{
+  background:linear-gradient(180deg,#ffffff 0,#f8fcff 36%,#e4f1fb 100%)!important;
+  border:1px solid #9db7cf!important;
+  border-radius:9px!important;
+  box-shadow:inset 0 1px #fff,0 4px 9px rgba(46,78,109,.16)!important;
+}
+[data-theme="web2Glossy"] .cn-video-card:hover{transform:translateY(-1px)!important;box-shadow:inset 0 1px #fff,0 6px 12px rgba(46,78,109,.2)!important}
+
+/* Shared glossy details, intentionally restrained to the Aero-family themes. */
+:is([data-theme="windowsAero"],[data-theme="frutigerAero"],[data-theme="web2Glossy"]) .cn-2012-main input,
+:is([data-theme="windowsAero"],[data-theme="frutigerAero"],[data-theme="web2Glossy"]) .cn-2012-main textarea,
+:is([data-theme="windowsAero"],[data-theme="frutigerAero"],[data-theme="web2Glossy"]) .cn-2012-main select{
+  background:rgba(255,255,255,.88)!important;
+  border-color:rgba(105,151,183,.55)!important;
+  box-shadow:inset 0 1px 2px rgba(25,63,89,.1),0 1px 0 rgba(255,255,255,.75)!important;
+}
+
+@media(max-width:900px){
+  :is([data-theme="windowsAero"],[data-theme="frutigerAero"],[data-theme="web2Glossy"]) .cn-2012-main{padding:14px 12px 30px!important}
+}
