@@ -26,7 +26,20 @@ function publicMediaUrl(path: string | null | undefined) {
   if (!path) return null;
   if (/^https?:\/\//i.test(path)) return path;
   const key = path.startsWith("media/") ? path.slice("media/".length) : path;
-  return supabase.storage.from("media").getPublicUrl(key).data.publicUrl || null;
+  const url = supabase.storage.from("media").getPublicUrl(key).data.publicUrl;
+  return url || null;
+}
+
+function absolutePublicMediaUrl(path: string | null | undefined, fallback = DEFAULT_EMBED_IMAGE) {
+  const url = publicMediaUrl(path);
+  if (!url) return fallback;
+  try {
+    const absolute = new URL(url, SITE_ORIGIN);
+    if (absolute.protocol === "http:" || absolute.protocol === "https:") return absolute.toString();
+  } catch {
+    // Fall through to the public fallback for malformed media paths.
+  }
+  return fallback;
 }
 
 export const Route = createFileRoute("/watch")({
@@ -34,47 +47,76 @@ export const Route = createFileRoute("/watch")({
   loader: async ({ location }): Promise<WatchLoaderData> => {
     const code = new URLSearchParams(location.searchStr).get("v") ?? "";
     if (!code) return null;
-    const { data: rawVideo, error } = await supabase.from("videos").select("id, code, user_id, title, description, video_path, thumbnail_path, views, created_at, category").eq("code", code).eq("visibility", "public").maybeSingle();
+
+    const { data: rawVideo, error } = await supabase
+      .from("videos")
+      .select("id, code, user_id, title, description, video_path, thumbnail_path, views, created_at, category")
+      .eq("code", code)
+      .eq("visibility", "public")
+      .maybeSingle();
+
     if (error || !rawVideo) return null;
-    const { data: profile } = await supabase.from("profiles").select("username, display_name, avatar_path, is_verified").eq("id", rawVideo.user_id).maybeSingle();
+
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("username, display_name, avatar_path, is_verified")
+      .eq("id", rawVideo.user_id)
+      .maybeSingle();
+
     return {
       video: rawVideo as WatchVideo,
-      channel: profile ? { username: profile.username, display_name: profile.display_name, avatar_path: profile.avatar_path, is_verified: Boolean(profile.is_verified) } : null,
+      channel: profile
+        ? {
+            username: profile.username,
+            display_name: profile.display_name,
+            avatar_path: profile.avatar_path,
+            is_verified: Boolean(profile.is_verified),
+          }
+        : null,
     };
   },
   head: ({ loaderData }) => {
     const video = loaderData?.video;
     const channel = loaderData?.channel;
-    const title = video?.title?.trim() || "Video en Cornet";
-    const description = (video?.description || "Mira este video en Cornet.").replace(/\s+/g, " ").trim().slice(0, 300);
-    const author = channel?.display_name || channel?.username || "Cornet";
-    const image = publicMediaUrl(video?.thumbnail_path) || DEFAULT_EMBED_IMAGE;
+
+    const videoTitle = video?.title?.trim() || "Video en Cornet";
+    const channelName = channel?.display_name?.trim() || channel?.username?.trim() || "Cornet";
+    const channelHandle = channel?.username ? `@${channel.username}` : "@cornet";
+    const descriptionText = (video?.description || "").replace(/\s+/g, " ").trim();
+    const shortDescription = descriptionText
+      ? descriptionText.slice(0, 220) + (descriptionText.length > 220 ? "…" : "")
+      : `Canal: ${channelHandle}`;
+    const image = absolutePublicMediaUrl(video?.thumbnail_path);
     const canonicalPath = video?.code ? `/watch?v=${encodeURIComponent(video.code)}` : "/watch";
     const canonical = `${SITE_ORIGIN}${canonicalPath}`;
-    const icon = publicMediaUrl(channel?.avatar_path) || DEFAULT_EMBED_IMAGE;
+    const authorIcon = absolutePublicMediaUrl(channel?.avatar_path);
+
     return {
       meta: [
-        { title: `${title} - Cornet` },
-        { name: "description", content: description },
-        { name: "author", content: author },
-        { property: "og:title", content: title },
-        { property: "og:description", content: description },
-        { property: "og:type", content: "article" },
+        { title: `${videoTitle} - ${channelName}` },
+        { name: "description", content: shortDescription },
+        { name: "author", content: channelName },
+        { property: "og:title", content: `${videoTitle} - ${channelName}` },
+        { property: "og:description", content: shortDescription },
+        { property: "og:type", content: "video.other" },
         { property: "og:url", content: canonical },
         { property: "og:site_name", content: "Cornet" },
         { property: "og:image", content: image },
         { property: "og:image:secure_url", content: image },
-        { property: "og:image:alt", content: title },
+        { property: "og:image:type", content: "image/jpeg" },
+        { property: "og:image:width", content: "1280" },
+        { property: "og:image:height", content: "720" },
+        { property: "og:image:alt", content: `${videoTitle} - ${channelName}` },
         { property: "og:locale", content: "es_ES" },
         { name: "twitter:card", content: "summary_large_image" },
-        { name: "twitter:title", content: title },
-        { name: "twitter:description", content: description },
+        { name: "twitter:title", content: `${videoTitle} - ${channelName}` },
+        { name: "twitter:description", content: shortDescription },
         { name: "twitter:image", content: image },
-        { name: "twitter:image:alt", content: title },
+        { name: "twitter:image:alt", content: `${videoTitle} - ${channelName}` },
       ],
       links: [
         { rel: "canonical", href: canonical },
-        { rel: "icon", href: icon },
+        { rel: "icon", href: authorIcon },
       ],
     };
   },
@@ -83,5 +125,11 @@ export const Route = createFileRoute("/watch")({
 
 function WatchRoute() {
   const loaderData = Route.useLoaderData();
-  return <ClientOnly fallback={<div className="flex min-h-[60vh] items-center justify-center text-sm text-muted-foreground">Cargando video…</div>}><Suspense fallback={<div className="flex min-h-[60vh] items-center justify-center text-sm text-muted-foreground">Cargando video…</div>}><WatchContent initialVideo={loaderData} /></Suspense></ClientOnly>;
+  return (
+    <ClientOnly fallback={<div className="flex min-h-[60vh] items-center justify-center text-sm text-muted-foreground">Cargando video…</div>}>
+      <Suspense fallback={<div className="flex min-h-[60vh] items-center justify-center text-sm text-muted-foreground">Cargando video…</div>}>
+        <WatchContent initialVideo={loaderData} />
+      </Suspense>
+    </ClientOnly>
+  );
 }
