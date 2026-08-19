@@ -5,10 +5,19 @@ import { supabase } from "@/integrations/supabase/client";
 const WatchContent = lazy(() => import("./watch-content").then((module) => ({ default: module.WatchContent })));
 
 const DEFAULT_EMBED_IMAGE = "https://mvwpxnszcpyayofqgtmv.supabase.co/storage/v1/object/public/media/61fe7d8d-f53f-4838-a870-4588c16e474b/announcement-7871ca44-f13f-45e5-a3c1-7908f0c348a9.png";
+const SITE_ORIGIN = "https://corenetwork.lovable.app";
 
 type WatchVideo = {
-  id: string; code: string; user_id: string; title: string; description: string; video_path: string;
-  thumbnail_path: string | null; views: number; created_at: string; category: string | null;
+  id: string;
+  code: string;
+  user_id: string;
+  title: string;
+  description: string;
+  video_path: string;
+  thumbnail_path: string | null;
+  views: number;
+  created_at: string;
+  category: string | null;
 };
 type WatchChannel = { username: string; display_name: string; avatar_path: string | null; is_verified: boolean };
 type WatchLoaderData = { video: WatchVideo; channel: WatchChannel | null } | null;
@@ -40,15 +49,33 @@ export const Route = createFileRoute("/watch")({
     const description = (video?.description || "Mira este video en Cornet.").replace(/\s+/g, " ").trim().slice(0, 300);
     const author = channel?.display_name || channel?.username || "Cornet";
     const image = publicMediaUrl(video?.thumbnail_path) || DEFAULT_EMBED_IMAGE;
-    const canonical = video?.code ? `/watch?v=${encodeURIComponent(video.code)}` : "/watch";
+    const canonicalPath = video?.code ? `/watch?v=${encodeURIComponent(video.code)}` : "/watch";
+    const canonical = `${SITE_ORIGIN}${canonicalPath}`;
+    const icon = publicMediaUrl(channel?.avatar_path) || DEFAULT_EMBED_IMAGE;
     return {
       meta: [
-        { title: `${title} - Cornet` }, { name: "description", content: description }, { name: "author", content: author },
-        { property: "og:title", content: title }, { property: "og:description", content: description }, { property: "og:type", content: "article" },
-        { property: "og:url", content: canonical }, { property: "og:site_name", content: "Cornet" }, { property: "og:image", content: image }, { property: "og:image:alt", content: title },
-        { name: "twitter:card", content: "summary_large_image" }, { name: "twitter:title", content: title }, { name: "twitter:description", content: description }, { name: "twitter:image", content: image },
+        { title: `${title} - Cornet` },
+        { name: "description", content: description },
+        { name: "author", content: author },
+        { property: "og:title", content: title },
+        { property: "og:description", content: description },
+        { property: "og:type", content: "article" },
+        { property: "og:url", content: canonical },
+        { property: "og:site_name", content: "Cornet" },
+        { property: "og:image", content: image },
+        { property: "og:image:secure_url", content: image },
+        { property: "og:image:alt", content: title },
+        { property: "og:locale", content: "es_ES" },
+        { name: "twitter:card", content: "summary_large_image" },
+        { name: "twitter:title", content: title },
+        { name: "twitter:description", content: description },
+        { name: "twitter:image", content: image },
+        { name: "twitter:image:alt", content: title },
       ],
-      links: [{ rel: "canonical", href: canonical }, { rel: "icon", href: publicMediaUrl(channel?.avatar_path) || DEFAULT_EMBED_IMAGE }],
+      links: [
+        { rel: "canonical", href: canonical },
+        { rel: "icon", href: icon },
+      ],
     };
   },
   component: WatchRoute,
