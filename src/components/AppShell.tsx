@@ -57,7 +57,7 @@ export function AppShell({ children, hideSidebar = false }: { children: ReactNod
     { to: "/partner", label: "Partners", icon: Sparkles },
     { to: "/settings", label: "Configuración", icon: Settings },
     { to: "/about", label: "Información", icon: Info },
-    ...(isAdmin ? [{ to: "/admin", label: "Administración", icon: Shield } as NavItem] : []),
+    ...(isAdmin ? [{ to: "/admin", label: "Administración", icon: Shield } as NavItem, { to: "/admin-cornet", label: "Cuenta oficial", icon: Building2 as typeof Home } as NavItem] : []),
   ];
   const handleSearch = (event: FormEvent) => { event.preventDefault(); void navigate({ to: "/", search: query.trim() ? { q: query.trim() } : {} }); };
   const active = (to: string) => to === "/" ? pathname === "/" : pathname === to || pathname.startsWith(`${to}/`);
