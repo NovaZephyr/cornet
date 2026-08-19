@@ -7,6 +7,7 @@ import {
   type ReactNode,
 } from "react";
 import type { Session, User } from "@supabase/supabase-js";
+import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import "@/lib/social-links-runtime";
 
@@ -60,6 +61,7 @@ type AuthState = {
 const AuthContext = createContext<AuthState | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
+  const queryClient = useQueryClient();
   const [session, setSession] = useState<Session | null>(null);
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
@@ -82,9 +84,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const { data: sub } = supabase.auth.onAuthStateChange((_event, newSession) => {
+      const nextUser = newSession?.user ?? null;
+      const previousUserId = user?.id ?? null;
+      const nextUserId = nextUser?.id ?? null;
+
       setSession(newSession);
-      setUser(newSession?.user ?? null);
-      setTimeout(() => void load(newSession?.user?.id), 0);
+      setUser(nextUser);
+      if (previousUserId !== nextUserId) {
+        // Prevent private queries from one account being shown while another
+        // session is initializing. Public queries can be refetched normally.
+        queryClient.removeQueries({ predicate: (query) => String(query.queryKey[0] ?? "").startsWith("my-") });
+        if (!nextUser) queryClient.clear();
+        else void queryClient.invalidateQueries();
+      }
+      setTimeout(() => void load(nextUser?.id), 0);
     });
     void supabase.auth.getSession().then(async ({ data }) => {
       setSession(data.session);
@@ -93,7 +106,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setLoading(false);
     });
     return () => sub.subscription.unsubscribe();
-  }, []);
+  }, [queryClient]);
 
   const value = useMemo<AuthState>(() => ({
     user,
@@ -108,8 +121,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       await supabase.auth.signOut();
       setProfile(null);
       setRoles([]);
+      queryClient.clear();
     },
-  }), [user, session, profile, roles, loading]);
+  }), [user, session, profile, roles, loading, queryClient]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
