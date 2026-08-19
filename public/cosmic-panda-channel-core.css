@@ -1,29 +1,31 @@
 /* Cosmic Panda channel layout — page canvas with centered channel content.
- * IMPORTANT: AppShell owns functional navigation. Cosmic Panda only owns the
- * channel surface inside .cn-shell-main.
+ * IMPORTANT: AppShell owns functional navigation. Cosmic Panda is an independent
+ * channel layout and must work regardless of which global theme is selected.
  */
 
-/* Critical shell fix: the 240px AppShell sidebar is one grid column, never the
- * width of the channel main. Keep the global sidebar and let main consume all
- * remaining viewport width. */
-html[data-theme="retro2012"] .cn-shell-layout:has(.cn-cosmic-channel) {
+/* Global shell geometry: preserve the normal 240px navigation column and let
+ * the main surface consume all remaining width. These selectors intentionally
+ * do not depend on [data-theme] so the layout also works with Light/Dark/etc. */
+.cn-shell-layout:has(.cn-cosmic-channel) {
   display: grid !important;
   grid-template-columns: 240px minmax(0, 1fr) !important;
   width: 100% !important;
   max-width: none !important;
   min-width: 0 !important;
 }
-
-html[data-theme="retro2012"] .cn-shell-layout:has(.cn-cosmic-channel) > .cn-shell-main {
+.cn-shell-layout:has(.cn-cosmic-channel) > .cn-shell-main {
   grid-column: 2 !important;
   grid-row: 1 !important;
   width: auto !important;
   max-width: none !important;
   min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: visible !important;
 }
 
 /* The channel fills the entire main surface left behind by AppShell. */
-html[data-theme="retro2012"] .cn-shell-main:has(.cn-cosmic-channel) {
+.cn-shell-main:has(.cn-cosmic-channel) {
   width: 100% !important;
   max-width: none !important;
   min-width: 0 !important;
@@ -33,7 +35,7 @@ html[data-theme="retro2012"] .cn-shell-main:has(.cn-cosmic-channel) {
   background: #d9dadb !important;
 }
 
-html[data-theme="retro2012"] .cn-shell-main:has(.cn-cosmic-channel) > .cn-cosmic-channel {
+.cn-shell-main:has(.cn-cosmic-channel) > .cn-cosmic-channel {
   display: block !important;
   width: 100% !important;
   max-width: none !important;
@@ -51,7 +53,7 @@ html[data-theme="retro2012"] .cn-shell-main:has(.cn-cosmic-channel) > .cn-cosmic
 }
 
 /* The only constrained element is the historical channel page itself. */
-html[data-theme="retro2012"] .cn-shell-main:has(.cn-cosmic-channel) > .cn-cosmic-channel > .cn-cosmic-channel-inner {
+.cn-shell-main:has(.cn-cosmic-channel) > .cn-cosmic-channel > .cn-cosmic-channel-inner {
   display: block !important;
   width: min(1180px, 100%) !important;
   max-width: 1180px !important;
@@ -61,10 +63,13 @@ html[data-theme="retro2012"] .cn-shell-main:has(.cn-cosmic-channel) > .cn-cosmic
   box-sizing: border-box !important;
 }
 
-/* Safety reset for legacy channel wrappers. They must never become an extra
- * layout grid around the modern AppShell. */
-html[data-theme="retro2012"] .cn-cosmic-channel,
-html[data-theme="retro2012"] .cn-cosmic-channel-inner {
+/* Legacy wrappers cannot create another sidebar/column around the layout. */
+body:has(.cn-cosmic-channel) .cn-2012-shell-body,
+body:has(.cn-cosmic-channel) .cn-2012-main {
+  min-width: 0 !important;
+}
+.cn-cosmic-channel,
+.cn-cosmic-channel-inner {
   float: none !important;
   position: relative !important;
   left: auto !important;
@@ -155,16 +160,17 @@ html[data-theme="retro2012"] .cn-cosmic-channel-inner {
 .cn-cosmic-channel-inner[data-cosmic-view="information"] #about { display:block !important }
 
 @media (max-width:1000px) {
-  html[data-theme="retro2012"] .cn-shell-layout:has(.cn-cosmic-channel) { grid-template-columns: 200px minmax(0, 1fr) !important }
-  html[data-theme="retro2012"] .cn-shell-main:has(.cn-cosmic-channel) > .cn-cosmic-channel { padding:16px 16px 38px !important }
+  .cn-shell-layout:has(.cn-cosmic-channel) { grid-template-columns: 200px minmax(0, 1fr) !important }
+  .cn-shell-main:has(.cn-cosmic-channel) > .cn-cosmic-channel { padding:16px 16px 38px !important }
   .cn-cosmic-channel { padding:16px 16px 38px }
   .cn-cosmic-columns { grid-template-columns:190px minmax(0,1fr) 220px; gap:9px }
 }
 @media (max-width:900px) {
-  html[data-theme="retro2012"] .cn-shell-layout:has(.cn-cosmic-channel) { display:block !important }
+  .cn-shell-layout:has(.cn-cosmic-channel) { display:block !important; grid-template-columns:none !important }
+  .cn-shell-layout:has(.cn-cosmic-channel) > .cn-shell-main { grid-column:auto !important; width:100% !important }
 }
 @media (max-width:780px) {
-  html[data-theme="retro2012"] .cn-shell-main:has(.cn-cosmic-channel) > .cn-cosmic-channel { padding:0 0 28px !important }
+  .cn-shell-main:has(.cn-cosmic-channel) > .cn-cosmic-channel { padding:0 0 28px !important }
   .cn-cosmic-channel { padding:0 0 28px }
   .cn-cosmic-channel-inner { width:100%; max-width:none }
   .cn-cosmic-cover { height:160px }
