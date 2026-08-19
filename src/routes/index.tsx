@@ -60,12 +60,15 @@ function Home() {
   return <AppShell>
     <h1 className="sr-only">Videos y canales en CoreNetwork</h1>
     {isPolymerHome ? <>
-      <div className="cn-polymer-home-tabs" role="navigation" aria-label="Navegación de inicio">
-        <Link to="/" search={{}} className="is-active">Home</Link>
-        <Link to="/explore" search={{ view: "videos", sort: "views" }}>Trending</Link>
-      </div>
+      <nav className="cn-polymer-home-tabs" aria-label="Filtros de inicio">
+        <Link to="/" search={{}} className={sort === "recommended" ? "is-active" : ""}>Recomendados</Link>
+        <Link to="/" search={{ sort: "views" }} className={sort === "views" ? "is-active" : ""}>Más vistos</Link>
+        <Link to="/" search={{ sort: "recent" }} className={sort === "recent" ? "is-active" : ""}>Más recientes</Link>
+        <Link to="/" search={{ sort: "oldest" }} className={sort === "oldest" ? "is-active" : ""}>Más antiguos</Link>
+        <Link to="/" search={{ sort: "subscribers" }} className={sort === "subscribers" ? "is-active" : ""}>Más suscripciones</Link>
+      </nav>
       <div className="cn-polymer-home-frame">
-        {videosQuery.isLoading ? <div className="cn-polymer-shelf-grid">{Array.from({ length: 16 }).map((_, i) => <div key={i} className="cn-polymer-skeleton"><Skeleton className="aspect-video w-full rounded-none" /><Skeleton className="mt-2 h-4 w-5/6" /><Skeleton className="mt-2 h-3 w-3/5" /></div>)}</div> : polymerShelves.length > 0 ? polymerShelves.map(([title, videos], shelfIndex) => <section className="cn-polymer-shelf" key={`${title}-${shelfIndex}`}><div className="cn-polymer-shelf-heading"><h2>{title}</h2><span>{shelfIndex === 0 ? "Recommended videos" : "Recommended videos"}</span></div><div className="cn-polymer-video-grid">{videos.map((video) => <VideoCard key={video.id} video={video} />)}</div></section>) : <div className="cn-polymer-empty"><p>No encontramos videos.</p></div>}
+        {videosQuery.isLoading ? <div className="cn-polymer-shelf-grid">{Array.from({ length: 16 }).map((_, i) => <div key={i} className="cn-polymer-skeleton"><Skeleton className="aspect-video w-full rounded-none" /><Skeleton className="mt-2 h-4 w-5/6" /><Skeleton className="mt-2 h-3 w-3/5" /></div>)}</div> : polymerShelves.length > 0 ? polymerShelves.map(([title, videos], shelfIndex) => <section className="cn-polymer-shelf" key={`${title}-${shelfIndex}`}><div className="cn-polymer-shelf-heading"><h2>{title}</h2><span>{sort === "recommended" ? "Recommended videos" : "Videos"}</span></div><div className="cn-polymer-video-grid">{videos.map((video) => <VideoCard key={video.id} video={video} />)}</div></section>) : <div className="cn-polymer-empty"><p>No encontramos videos.</p></div>}
       </div>
     </> : <>
       <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
