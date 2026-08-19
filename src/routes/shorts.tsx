@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Bookmark, ExternalLink, Heart, Loader2, MessageCircle, MoreVertical, PlaySquare, Share2, Volume2, VolumeX } from "lucide-react";
 import { toast } from "sonner";
@@ -12,10 +12,14 @@ import { formatViews } from "@/lib/format";
 import { AppShell } from "@/components/AppShell";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
+import { isExperimentEnabled } from "@/lib/experiments";
 import "@/shorts.css";
 
 export const Route = createFileRoute("/shorts")({
   ssr: false,
+  beforeLoad: () => {
+    if (!isExperimentEnabled("shorts")) throw notFound();
+  },
   head: () => ({ meta: [{ title: "Shorts — Cornet" }] }),
   component: ShortsPage,
 });
