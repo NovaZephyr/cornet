@@ -20,12 +20,15 @@ import { Route as ExploreRouteImport } from './routes/explore'
 import { Route as HistoryRouteImport } from './routes/history'
 import { Route as LiveRouteImport } from './routes/live'
 import { Route as MessagesRouteImport } from './routes/messages'
+import { Route as NewRouteImport } from './routes/new'
 import { Route as NotificationsRouteImport } from './routes/notifications'
 import { Route as PartnerRouteImport } from './routes/partner'
 import { Route as PlaylistsRouteImport } from './routes/playlists'
+import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as RulesRouteImport } from './routes/rules'
 import { Route as SeriesRouteImport } from './routes/series'
 import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as TermsRouteImport } from './routes/terms'
 import { Route as UploadRouteImport } from './routes/upload'
 import { Route as WatchRouteImport } from './routes/watch'
 import { Route as AdminReportsRouteImport } from './routes/admin.reports'
@@ -37,6 +40,7 @@ import { Route as LiveUsernameRouteImport } from './routes/live.$username'
 import { Route as LiveStudioRouteImport } from './routes/live.studio'
 import { Route as PlaylistPlaylistIdRouteImport } from './routes/playlist.$playlistId'
 import { Route as TTokenRouteImport } from './routes/t.$token'
+import { Route as WatchVideoIdRouteImport } from './routes/watch.$videoId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -93,6 +97,11 @@ const MessagesRoute = MessagesRouteImport.update({
   path: '/messages',
   getParentRoute: () => rootRouteImport,
 } as any)
+const NewRoute = NewRouteImport.update({
+  id: '/new',
+  path: '/new',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const NotificationsRoute = NotificationsRouteImport.update({
   id: '/notifications',
   path: '/notifications',
@@ -108,6 +117,11 @@ const PlaylistsRoute = PlaylistsRouteImport.update({
   path: '/playlists',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RulesRoute = RulesRouteImport.update({
   id: '/rules',
   path: '/rules',
@@ -121,6 +135,11 @@ const SeriesRoute = SeriesRouteImport.update({
 const SettingsRoute = SettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
 const UploadRoute = UploadRouteImport.update({
@@ -178,6 +197,11 @@ const TTokenRoute = TTokenRouteImport.update({
   path: '/t/$token',
   getParentRoute: () => rootRouteImport,
 } as any)
+const WatchVideoIdRoute = WatchVideoIdRouteImport.update({
+  id: '/$videoId',
+  path: '/$videoId',
+  getParentRoute: () => WatchRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -191,14 +215,17 @@ export interface FileRoutesByFullPath {
   '/history': typeof HistoryRoute
   '/live': typeof LiveRouteWithChildren
   '/messages': typeof MessagesRoute
+  '/new': typeof NewRoute
   '/notifications': typeof NotificationsRoute
   '/partner': typeof PartnerRoute
   '/playlists': typeof PlaylistsRoute
+  '/privacy': typeof PrivacyRoute
   '/rules': typeof RulesRoute
   '/series': typeof SeriesRoute
   '/settings': typeof SettingsRoute
+  '/terms': typeof TermsRoute
   '/upload': typeof UploadRoute
-  '/watch': typeof WatchRoute
+  '/watch': typeof WatchRouteWithChildren
   '/admin/reports': typeof AdminReportsRoute
   '/c/$username': typeof CUsernameRoute
   '/hashtag/$tag': typeof HashtagTagRoute
@@ -207,6 +234,7 @@ export interface FileRoutesByFullPath {
   '/live/studio': typeof LiveStudioRoute
   '/playlist/$playlistId': typeof PlaylistPlaylistIdRoute
   '/t/$token': typeof TTokenRoute
+  '/watch/$videoId': typeof WatchVideoIdRoute
   '/live/': typeof LiveIndexRoute
 }
 export interface FileRoutesByTo {
@@ -220,14 +248,17 @@ export interface FileRoutesByTo {
   '/explore': typeof ExploreRoute
   '/history': typeof HistoryRoute
   '/messages': typeof MessagesRoute
+  '/new': typeof NewRoute
   '/notifications': typeof NotificationsRoute
   '/partner': typeof PartnerRoute
   '/playlists': typeof PlaylistsRoute
+  '/privacy': typeof PrivacyRoute
   '/rules': typeof RulesRoute
   '/series': typeof SeriesRoute
   '/settings': typeof SettingsRoute
+  '/terms': typeof TermsRoute
   '/upload': typeof UploadRoute
-  '/watch': typeof WatchRoute
+  '/watch': typeof WatchRouteWithChildren
   '/admin/reports': typeof AdminReportsRoute
   '/c/$username': typeof CUsernameRoute
   '/hashtag/$tag': typeof HashtagTagRoute
@@ -236,6 +267,7 @@ export interface FileRoutesByTo {
   '/live/studio': typeof LiveStudioRoute
   '/playlist/$playlistId': typeof PlaylistPlaylistIdRoute
   '/t/$token': typeof TTokenRoute
+  '/watch/$videoId': typeof WatchVideoIdRoute
   '/live': typeof LiveIndexRoute
 }
 export interface FileRoutesById {
@@ -251,14 +283,17 @@ export interface FileRoutesById {
   '/history': typeof HistoryRoute
   '/live': typeof LiveRouteWithChildren
   '/messages': typeof MessagesRoute
+  '/new': typeof NewRoute
   '/notifications': typeof NotificationsRoute
   '/partner': typeof PartnerRoute
   '/playlists': typeof PlaylistsRoute
+  '/privacy': typeof PrivacyRoute
   '/rules': typeof RulesRoute
   '/series': typeof SeriesRoute
   '/settings': typeof SettingsRoute
+  '/terms': typeof TermsRoute
   '/upload': typeof UploadRoute
-  '/watch': typeof WatchRoute
+  '/watch': typeof WatchRouteWithChildren
   '/admin/reports': typeof AdminReportsRoute
   '/c/$username': typeof CUsernameRoute
   '/hashtag/$tag': typeof HashtagTagRoute
@@ -267,6 +302,7 @@ export interface FileRoutesById {
   '/live/studio': typeof LiveStudioRoute
   '/playlist/$playlistId': typeof PlaylistPlaylistIdRoute
   '/t/$token': typeof TTokenRoute
+  '/watch/$videoId': typeof WatchVideoIdRoute
   '/live/': typeof LiveIndexRoute
 }
 export interface FileRouteTypes {
@@ -283,12 +319,15 @@ export interface FileRouteTypes {
     | '/history'
     | '/live'
     | '/messages'
+    | '/new'
     | '/notifications'
     | '/partner'
     | '/playlists'
+    | '/privacy'
     | '/rules'
     | '/series'
     | '/settings'
+    | '/terms'
     | '/upload'
     | '/watch'
     | '/admin/reports'
@@ -299,6 +338,7 @@ export interface FileRouteTypes {
     | '/live/studio'
     | '/playlist/$playlistId'
     | '/t/$token'
+    | '/watch/$videoId'
     | '/live/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -312,12 +352,15 @@ export interface FileRouteTypes {
     | '/explore'
     | '/history'
     | '/messages'
+    | '/new'
     | '/notifications'
     | '/partner'
     | '/playlists'
+    | '/privacy'
     | '/rules'
     | '/series'
     | '/settings'
+    | '/terms'
     | '/upload'
     | '/watch'
     | '/admin/reports'
@@ -328,6 +371,7 @@ export interface FileRouteTypes {
     | '/live/studio'
     | '/playlist/$playlistId'
     | '/t/$token'
+    | '/watch/$videoId'
     | '/live'
   id:
     | '__root__'
@@ -342,12 +386,15 @@ export interface FileRouteTypes {
     | '/history'
     | '/live'
     | '/messages'
+    | '/new'
     | '/notifications'
     | '/partner'
     | '/playlists'
+    | '/privacy'
     | '/rules'
     | '/series'
     | '/settings'
+    | '/terms'
     | '/upload'
     | '/watch'
     | '/admin/reports'
@@ -358,6 +405,7 @@ export interface FileRouteTypes {
     | '/live/studio'
     | '/playlist/$playlistId'
     | '/t/$token'
+    | '/watch/$videoId'
     | '/live/'
   fileRoutesById: FileRoutesById
 }
@@ -373,14 +421,17 @@ export interface RootRouteChildren {
   HistoryRoute: typeof HistoryRoute
   LiveRoute: typeof LiveRouteWithChildren
   MessagesRoute: typeof MessagesRoute
+  NewRoute: typeof NewRoute
   NotificationsRoute: typeof NotificationsRoute
   PartnerRoute: typeof PartnerRoute
   PlaylistsRoute: typeof PlaylistsRoute
+  PrivacyRoute: typeof PrivacyRoute
   RulesRoute: typeof RulesRoute
   SeriesRoute: typeof SeriesRoute
   SettingsRoute: typeof SettingsRoute
+  TermsRoute: typeof TermsRoute
   UploadRoute: typeof UploadRoute
-  WatchRoute: typeof WatchRoute
+  WatchRoute: typeof WatchRouteWithChildren
   CUsernameRoute: typeof CUsernameRoute
   HashtagTagRoute: typeof HashtagTagRoute
   PlaylistPlaylistIdRoute: typeof PlaylistPlaylistIdRoute
@@ -466,6 +517,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MessagesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/new': {
+      id: '/new'
+      path: '/new'
+      fullPath: '/new'
+      preLoaderRoute: typeof NewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/notifications': {
       id: '/notifications'
       path: '/notifications'
@@ -487,6 +545,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PlaylistsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/rules': {
       id: '/rules'
       path: '/rules'
@@ -506,6 +571,13 @@ declare module '@tanstack/react-router' {
       path: '/settings'
       fullPath: '/settings'
       preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/upload': {
@@ -585,6 +657,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TTokenRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/watch/$videoId': {
+      id: '/watch/$videoId'
+      path: '/$videoId'
+      fullPath: '/watch/$videoId'
+      preLoaderRoute: typeof WatchVideoIdRouteImport
+      parentRoute: typeof WatchRoute
+    }
   }
 }
 
@@ -614,6 +693,16 @@ const LiveRouteChildren: LiveRouteChildren = {
 
 const LiveRouteWithChildren = LiveRoute._addFileChildren(LiveRouteChildren)
 
+interface WatchRouteChildren {
+  WatchVideoIdRoute: typeof WatchVideoIdRoute
+}
+
+const WatchRouteChildren: WatchRouteChildren = {
+  WatchVideoIdRoute: WatchVideoIdRoute,
+}
+
+const WatchRouteWithChildren = WatchRoute._addFileChildren(WatchRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
@@ -626,14 +715,17 @@ const rootRouteChildren: RootRouteChildren = {
   HistoryRoute: HistoryRoute,
   LiveRoute: LiveRouteWithChildren,
   MessagesRoute: MessagesRoute,
+  NewRoute: NewRoute,
   NotificationsRoute: NotificationsRoute,
   PartnerRoute: PartnerRoute,
   PlaylistsRoute: PlaylistsRoute,
+  PrivacyRoute: PrivacyRoute,
   RulesRoute: RulesRoute,
   SeriesRoute: SeriesRoute,
   SettingsRoute: SettingsRoute,
+  TermsRoute: TermsRoute,
   UploadRoute: UploadRoute,
-  WatchRoute: WatchRoute,
+  WatchRoute: WatchRouteWithChildren,
   CUsernameRoute: CUsernameRoute,
   HashtagTagRoute: HashtagTagRoute,
   PlaylistPlaylistIdRoute: PlaylistPlaylistIdRoute,
