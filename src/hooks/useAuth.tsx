@@ -18,7 +18,9 @@ export type ChannelStyle =
   | "corenetwork" | "classic-2009" | "standard-2012" | "cosmic-panda"
   | "onechannel-2013" | "feather-profile" | "creator-studio" | "profile-card"
   | "community-profile" | "video-channel" | "music-channel" | "gaming-channel"
-  | "minimal-profile" | "channel-2015" | "channel-2019";
+  | "minimal-profile" | "channel-2015" | "channel-2019"
+  | "early-youtube-2005" | "star-rating-2007" | "transition-2010" | "material-lite-2015"
+  | "modern-minimal-2020" | "terminal" | "bento-grid" | "magazine" | "cinephile";
 export type ChannelInfoLayout = "left" | "right" | "top" | "hidden";
 export type SocialLink = { platform: string; url: string };
 
