@@ -2,7 +2,6 @@ import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Loader2, PlaySquare, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { ChannelAvatar } from "@/components/Media";
 import { useSignedUrl } from "@/lib/storage";
 import { fetchShorts } from "@/lib/shorts";
 import { formatViews } from "@/lib/format";
