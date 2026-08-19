@@ -32,7 +32,7 @@ export const themes: ThemeDefinition[] = [
   { id: "lavanda-oscuro", name: "Lavanda oscuro", category: "normal", kind: "theme", description: "Tema lavanda oscuro del sistema normal.", stylesheets: [] },
   { id: "retro2012", name: "Cosmic Panda 2012", category: "custom", kind: "theme", description: "Experiencia global inspirada en Cosmic Panda / YouTube 2012.", stylesheets: ["/cosmic-panda-theme.css"] },
   { id: "feather2013", name: "Feather 2013", category: "custom", kind: "theme", description: "Experiencia ligera y enfocada en vídeo.", stylesheets: ["/custom-theme-experiences.css"] },
-  { id: "youtube2019", name: "YouTube 2019 / Polymer", category: "custom", kind: "theme", description: "Experiencia global basada en Polymer 2019.", stylesheets: ["/youtube-polymer-2019.css"] },
+  { id: "youtube2019", name: "YouTube 2019 / Polymer", category: "custom", kind: "theme", description: "Experiencia global basada en Polymer 2019.", stylesheets: ["/youtube-polymer-2019.css", "/youtube-polymer-2019-home.css"] },
   { id: "windowsAero", name: "Windows Aero", category: "custom", kind: "theme", description: "Cristal, blur y chrome inspirado en Vista/7.", stylesheets: ["/custom-theme-experiences.css", "/aero-family-overrides.css"] },
   { id: "frutigerAero", name: "Frutiger Aero", category: "custom", kind: "theme", description: "Naturaleza, agua, cielo y vidrio translúcido.", stylesheets: ["/custom-theme-experiences.css", "/aero-family-overrides.css"] },
   { id: "web2Glossy", name: "Web 2.0 Glossy", category: "custom", kind: "theme", description: "Glossy, gradients, chrome y skeuomorfismo web.", stylesheets: ["/custom-theme-experiences.css", "/aero-family-overrides.css"] },
