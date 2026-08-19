@@ -6,7 +6,20 @@ function scrollToSection(id: string) {
   document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
+function relocateCommunity(root: ParentNode = document) {
+  const community = document.getElementById("community");
+  const canvas = document.querySelector<HTMLElement>(".cn-cosmic-channel-inner");
+  const columns = document.querySelector<HTMLElement>(".cn-cosmic-columns");
+  if (!community || !canvas || !columns) return;
+  if (community.closest(".cn-cosmic-channel-inner") !== canvas) return;
+  if (community.parentElement === canvas) return;
+
+  community.classList.add("cn-cosmic-community-section");
+  canvas.appendChild(community);
+}
+
 function setupCosmicTabs(root: ParentNode = document) {
+  relocateCommunity(root);
   root.querySelectorAll<HTMLElement>(selectors).forEach((tab) => {
     if (tab.dataset.cosmicInteractive === "true") return;
     tab.dataset.cosmicInteractive = "true";
@@ -32,13 +45,11 @@ function setupCosmicTabs(root: ParentNode = document) {
           scrollToSection("community");
           break;
         case "INFORMACIÓN":
-        case "INFORMACION": {
-          const about = document.querySelector<HTMLElement>(".cn-cosmic-left .cn-cosmic-panel");
-          about?.scrollIntoView({ behavior: "smooth", block: "start" });
+        case "INFORMACION":
+          scrollToSection("about");
           break;
-        }
         case "PLAYLISTS":
-          toast.info("Las playlists del canal todavía no están disponibles.");
+          window.location.href = "/playlists";
           break;
         default:
           break;
