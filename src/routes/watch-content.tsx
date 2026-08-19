@@ -14,67 +14,44 @@ import { Textarea } from "@/components/ui/textarea";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/hooks/useAuth";
 import { getSignedUrl, useSignedUrl } from "@/lib/storage";
-import { fetchProfilesByIds, fetchRelatedVideos, type ProfileLite } from "@/lib/queries";
+import { fetchProfilesByIds, fetchRelatedVideos } from "@/lib/queries";
 import { formatViews, timeAgo } from "@/lib/format";
 import { TwemojiPicker } from "@/components/TwemojiTools";
 import { ExpandableText } from "@/components/ExpandableText";
 
 type VideoRow = { id: string; code: string; user_id: string; title: string; description: string; video_path: string; thumbnail_path: string | null; views: number; created_at: string; category: string | null };
 type PlaylistLite = { id: string; title: string; visibility: "public" | "private" };
-
-type InitialWatchData = {
-  video: VideoRow;
-  channel: { username: string; display_name: string; avatar_path: string | null } | null;
-} | null;
+type InitialWatchData = { video: VideoRow; channel: { username: string; display_name: string; avatar_path: string | null; is_verified: boolean } | null } | null;
 
 export function WatchContent({ initialVideo }: { initialVideo: InitialWatchData }) {
   const code = initialVideo?.video.code ?? (typeof window !== "undefined" ? new URLSearchParams(window.location.search).get("v") ?? "" : "");
-  const { user } = useAuth();
-  const qc = useQueryClient();
-  const [comment, setComment] = useState("");
-  const [reportOpen, setReportOpen] = useState(false);
-  const countedCode = useRef<string | null>(null);
-  const historyCode = useRef<string | null>(null);
+  const { user } = useAuth(); const qc = useQueryClient();
+  const [comment, setComment] = useState(""); const [reportOpen, setReportOpen] = useState(false);
+  const countedCode = useRef<string | null>(null); const historyCode = useRef<string | null>(null);
 
   const videoQuery = useQuery({
-    queryKey: ["video", code],
-    enabled: !!code && !initialVideo,
+    queryKey: ["video", code], enabled: !!code && !initialVideo,
     queryFn: async () => {
-      const { data: video, error } = await supabase
-        .from("videos")
-        .select("id, code, user_id, title, description, video_path, thumbnail_path, views, created_at, category")
-        .eq("code", code)
-        .eq("visibility", "public")
-        .maybeSingle();
-      if (error) throw error;
-      if (!video) return null;
+      const { data: video, error } = await supabase.from("videos").select("id, code, user_id, title, description, video_path, thumbnail_path, views, created_at, category").eq("code", code).eq("visibility", "public").maybeSingle();
+      if (error) throw error; if (!video) return null;
       const profiles = await fetchProfilesByIds([(video as VideoRow).user_id]);
-      return { video: video as VideoRow, channel: profiles.get((video as VideoRow).user_id) ?? null };
+      const profile = profiles.get((video as VideoRow).user_id);
+      return { video: video as VideoRow, channel: profile ? { username: profile.username, display_name: profile.display_name, avatar_path: profile.avatar_path, is_verified: Boolean(profile.is_verified) } : null };
     },
   });
 
   const data = initialVideo ?? videoQuery.data ?? null;
-  const videoUrl = useSignedUrl(data?.video.video_path);
-  const posterUrl = useSignedUrl(data?.video.thumbnail_path);
+  const videoUrl = useSignedUrl(data?.video.video_path); const posterUrl = useSignedUrl(data?.video.thumbnail_path);
 
   useEffect(() => {
-    if (typeof window === "undefined" || typeof document === "undefined") return;
-    const baseTitle = data?.video.title?.trim();
-    const creator = data?.channel?.display_name || data?.channel?.username || "Cornet";
-    if (!baseTitle) {
-      document.title = "Cornet";
-      return;
-    }
-    document.title = `${baseTitle} - Cornet`;
-    return () => {
-      document.title = "Cornet";
-    };
-  }, [data?.video.title, data?.channel?.display_name, data?.channel?.username]);
+    if (typeof document === "undefined") return;
+    document.title = data?.video.title?.trim() ? `${data.video.title.trim()} - Cornet` : "Cornet";
+    return () => { document.title = "Cornet"; };
+  }, [data?.video.title]);
 
   useEffect(() => {
     if (!data?.video.id || countedCode.current === code) return;
-    countedCode.current = code;
-    let cancelled = false;
+    countedCode.current = code; let cancelled = false;
     void (async () => {
       const { data: nextViews, error } = await supabase.rpc("increment_views", { _video_id: data.video.id });
       if (error || cancelled) return;
@@ -86,11 +63,8 @@ export function WatchContent({ initialVideo }: { initialVideo: InitialWatchData 
 
   useEffect(() => {
     if (!user || !data?.video.id || historyCode.current === code) return;
-    historyCode.current = code;
-    let cancelled = false;
-    void supabase.rpc("record_watch_history", { _video_id: data.video.id, _progress_seconds: 0, _completed: false }).then(({ error }) => {
-      if (error && !cancelled) console.warn("[Cornet] watch history failed", error.message);
-    });
+    historyCode.current = code; let cancelled = false;
+    void supabase.rpc("record_watch_history", { _video_id: data.video.id, _progress_seconds: 0, _completed: false }).then(({ error }) => { if (error && !cancelled) console.warn("[Cornet] watch history failed", error.message); });
     return () => { cancelled = true; };
   }, [code, data?.video.id, user?.id]);
 
@@ -105,11 +79,8 @@ export function WatchContent({ initialVideo }: { initialVideo: InitialWatchData 
 
   if (data === null) return <AppShell><p className="py-24 text-center text-muted-foreground">Este video no existe.</p></AppShell>;
 
-  const channel: ProfileLite | null = data.channel ? { ...data.channel, is_verified: false } : null;
-  const likeCount = likes?.filter((l) => l.is_like).length ?? 0;
-  const dislikeCount = likes?.filter((l) => !l.is_like).length ?? 0;
-  const myLike = likes?.find((l) => l.user_id === user?.id);
-  const isSubscribed = !!subs?.some((s) => s.subscriber_id === user?.id);
+  const channel = data.channel;
+  const likeCount = likes?.filter((l) => l.is_like).length ?? 0; const dislikeCount = likes?.filter((l) => !l.is_like).length ?? 0; const myLike = likes?.find((l) => l.user_id === user?.id); const isSubscribed = !!subs?.some((s) => s.subscriber_id === user?.id);
   const react = async (isLike: boolean) => { if (!user || !data) return void toast.error("Inicia sesión para reaccionar"); if (myLike?.is_like === isLike) await supabase.from("video_likes").delete().eq("video_id", data.video.id).eq("user_id", user.id); else await supabase.from("video_likes").upsert({ video_id: data.video.id, user_id: user.id, is_like: isLike }); void qc.invalidateQueries({ queryKey: ["likes", data.video.id] }); };
   const toggleSub = async () => { if (!user || !data) return void toast.error("Inicia sesión para suscribirte"); if (isSubscribed) await supabase.from("subscriptions").delete().eq("subscriber_id", user.id).eq("channel_id", data.video.user_id); else await supabase.from("subscriptions").insert({ subscriber_id: user.id, channel_id: data.video.user_id }); void qc.invalidateQueries({ queryKey: ["subs", data.video.user_id] }); };
   const saveToPlaylist = async (playlist: PlaylistLite) => { if (!user || !data) return; if (existingItemsQuery.data?.has(playlist.id)) return void toast.success("El video ya está en esa lista"); const { data: maxRows } = await supabase.from("playlist_items").select("position").eq("playlist_id", playlist.id).order("position", { ascending: false }).limit(1); const position = ((maxRows?.[0]?.position as number | undefined) ?? -1) + 1; const { error } = await supabase.from("playlist_items").insert({ playlist_id: playlist.id, video_id: data.video.id, position }); if (error) return void toast.error(error.message); void qc.invalidateQueries({ queryKey: ["playlist-items-for-video", data.video.id, user.id] }); toast.success(`Añadido a ${playlist.title}`); };
