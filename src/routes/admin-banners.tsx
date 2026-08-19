@@ -22,6 +22,11 @@ function AdminBannersPage() {
   const [banner, setBanner] = useState<Banner | null>(null);
   const [busy, setBusy] = useState(false);
   const [iconSearch, setIconSearch] = useState("");
+  const filteredIcons = useMemo(() => {
+    const term = iconSearch.trim().toLowerCase();
+    if (!term) return BANNER_ICON_OPTIONS;
+    return BANNER_ICON_OPTIONS.filter((option) => option.label.toLowerCase().includes(term) || option.id.includes(term));
+  }, [iconSearch]);
 
   useEffect(() => {
     if (!isAdmin || !user) return;
@@ -36,12 +41,6 @@ function AdminBannersPage() {
   if (!banner) return <AppShell><div className="flex min-h-[60vh] items-center justify-center text-sm text-muted-foreground">Cargando banner…</div></AppShell>;
 
   const update = <K extends keyof Banner>(key: K, value: Banner[K]) => setBanner((current) => current ? { ...current, [key]: value } : current);
-  const filteredIcons = useMemo(() => {
-    const term = iconSearch.trim().toLowerCase();
-    if (!term) return BANNER_ICON_OPTIONS;
-    return BANNER_ICON_OPTIONS.filter((option) => option.label.toLowerCase().includes(term) || option.id.includes(term));
-  }, [iconSearch]);
-
   const save = async () => {
     if (!banner) return;
     setBusy(true);
