@@ -1,7 +1,5 @@
 /* Cosmic Panda channel layout only. Loaded through ChannelLayoutStyles.
    Deliberately does not reference data-theme, so changing the global Theme cannot activate it. */
-@import url("/cosmic-panda-channel-2012.css");
-
 .cn-cosmic-channel{font-family:Arial,Helvetica,sans-serif;color:var(--cn-channel-text,#26343e);background-color:var(--cn-channel-primary,#26343e);background-repeat:no-repeat;background-size:cover;background-position:center top;padding:14px;min-height:680px}
 .cn-cosmic-channel-inner{max-width:1160px;margin:0 auto;background:rgba(245,247,248,.94);border:1px solid #9ca7af;box-shadow:0 1px 5px rgba(0,0,0,.28);padding:7px}
 .cn-cosmic-topbar{display:flex;justify-content:space-between;align-items:center;min-height:28px;padding:0 8px;background:linear-gradient(#4c5862,#2c3740);color:#fff;border:1px solid #202830;font-size:11px;text-shadow:0 -1px #111}
