@@ -3,6 +3,7 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
   type ReactNode,
 } from "react";
@@ -62,6 +63,7 @@ const AuthContext = createContext<AuthState | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const queryClient = useQueryClient();
+  const currentUserIdRef = useRef<string | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
@@ -85,26 +87,31 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const { data: sub } = supabase.auth.onAuthStateChange((_event, newSession) => {
       const nextUser = newSession?.user ?? null;
-      const previousUserId = user?.id ?? null;
       const nextUserId = nextUser?.id ?? null;
+      const identityChanged = currentUserIdRef.current !== nextUserId;
+      currentUserIdRef.current = nextUserId;
 
       setSession(newSession);
       setUser(nextUser);
-      if (previousUserId !== nextUserId) {
-        // Prevent private queries from one account being shown while another
-        // session is initializing. Public queries can be refetched normally.
-        queryClient.removeQueries({ predicate: (query) => String(query.queryKey[0] ?? "").startsWith("my-") });
-        if (!nextUser) queryClient.clear();
-        else void queryClient.invalidateQueries();
+      if (identityChanged) {
+        // A user switch must never reuse private queries from the previous session.
+        queryClient.clear();
+      } else if (nextUserId) {
+        // Session refreshes keep the cache but mark it stale so the UI revalidates.
+        void queryClient.invalidateQueries();
       }
-      setTimeout(() => void load(nextUser?.id), 0);
+      setTimeout(() => void load(nextUserId ?? undefined), 0);
     });
+
     void supabase.auth.getSession().then(async ({ data }) => {
+      const initialUserId = data.session?.user?.id ?? null;
+      currentUserIdRef.current = initialUserId;
       setSession(data.session);
       setUser(data.session?.user ?? null);
-      await load(data.session?.user?.id);
+      await load(initialUserId ?? undefined);
       setLoading(false);
     });
+
     return () => sub.subscription.unsubscribe();
   }, [queryClient]);
 
@@ -121,6 +128,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       await supabase.auth.signOut();
       setProfile(null);
       setRoles([]);
+      currentUserIdRef.current = null;
       queryClient.clear();
     },
   }), [user, session, profile, roles, loading, queryClient]);
