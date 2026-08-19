@@ -82,15 +82,8 @@ export async function fetchShorts(limit = 24): Promise<ShortVideo[]> {
 
   if (error) throw error;
 
-  const candidates = ((data ?? []) as ShortVideo[]).filter((video) => {
-    if (video.is_shorts_enabled === false) return false;
-    const width = Number(video.video_width ?? 0);
-    const height = Number(video.video_height ?? 0);
-    if (width > 0 && height > 0) return height >= width;
-    return Number(video.duration_seconds ?? 0) <= LEGACY_SHORT_DURATION;
-  });
-
-  const needsProbe = candidates.filter((video) => !video.video_width || !video.video_height).slice(0, Math.min(32, candidates.length));
+  const candidates = (data ?? []) as ShortVideo[];
+  const needsProbe = candidates.filter((video) => !video.video_width || !video.video_height).slice(0, Math.min(48, candidates.length));
   const enriched = await Promise.all(needsProbe.map((video) => enrichOrientation(video)));
   const enrichedById = new Map(enriched.map((video) => [video.id, video]));
 
@@ -100,7 +93,10 @@ export async function fetchShorts(limit = 24): Promise<ShortVideo[]> {
       if (video.is_shorts_enabled === false) return false;
       const width = Number(video.video_width ?? 0);
       const height = Number(video.video_height ?? 0);
-      return width > 0 && height > 0 ? height >= width : Number(video.duration_seconds ?? 0) <= LEGACY_SHORT_DURATION;
+      // New/known media: square or vertical is a Short.
+      if (width > 0 && height > 0) return height >= width;
+      // Legacy fallback while a video cannot expose metadata to the browser.
+      return Number(video.duration_seconds ?? 0) <= LEGACY_SHORT_DURATION;
     })
     .slice(0, limit);
 
