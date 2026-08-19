@@ -1,2 +1,5 @@
-/* Compatibility alias. Canonical Cosmic Panda channel styles live in the Design Library. */
-@import url("/cosmic-panda-channel-core.css");
+/* Deprecated compatibility URL.
+ * Cosmic Panda channel CSS is loaded only by
+ * src/design-library/ChannelLayoutStyles.tsx.
+ * This file intentionally performs no global CSS import.
+ */
