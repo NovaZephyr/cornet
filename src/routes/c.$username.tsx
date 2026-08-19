@@ -22,7 +22,7 @@ import { ChannelLayoutStyles } from "@/design-library/ChannelLayoutStyles";
 
 export const Route = createFileRoute("/c/$username")({ head: () => ({ meta: [{ title: "Canal — Cornet" }] }), component: Channel });
 
-type ChannelProfile = Profile & { channel_style?: string; subscriber_count?: number; channel_primary_color?: string; channel_secondary_color?: string; channel_surface_color?: string; channel_text_color?: string; channel_info_layout?: ChannelInfoLayout };
+type ChannelProfile = Omit<Profile, "channel_style"> & { channel_style?: string; subscriber_count?: number; channel_primary_color?: string; channel_secondary_color?: string; channel_surface_color?: string; channel_text_color?: string; channel_info_layout?: ChannelInfoLayout };
 
 const CHANNEL_STYLE_LABELS: Record<string, string> = { corenetwork: "Cornet", "channel-1": "Channel 1.0", "channel-2": "Channel 2.0", "cosmic-panda": "Cosmic Panda" };
 
