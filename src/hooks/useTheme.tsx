@@ -11,6 +11,7 @@ export const THEMES = [
   { id: "retro2012", label: "YouTube 2012 / Cosmic Panda", hint: "Custom claro inspirado en Cosmic Panda", group: "Históricos", kind: "custom" },
   { id: "feather2013", label: "Feather 2013", hint: "Tema claro ligero y autónomo", group: "Clásicos", kind: "normal" },
   { id: "youtube2019", label: "YouTube 2019", hint: "Polymer claro e independiente", group: "Clásicos", kind: "custom" },
+  { id: "liquid-glass", label: "Liquid Glass", hint: "Cristal translúcido, profundidad y superficies suaves", group: "Custom", kind: "custom" },
   { id: "windowsAero", label: "Windows Aero", hint: "Vidrio azul y transparencias", group: "Retro", kind: "custom" },
   { id: "frutigerAero", label: "Frutiger Aero", hint: "Cielo, agua, naturaleza y brillo", group: "Retro", kind: "custom" },
   { id: "web2Glossy", label: "Web 2.0 Glossy", hint: "Gradientes brillantes y botones clásicos", group: "Retro", kind: "custom" },
@@ -48,7 +49,7 @@ function apply(theme: ThemeId, customTheme: CustomTheme) {
   const root = document.documentElement;
   const definition = THEMES.find((item) => item.id === theme);
   const themeKind = theme === "custom" ? "custom" : definition?.kind ?? "normal";
-  const isLightTheme = ["light", "retro2012", "feather2013", "youtube2019", "windowsAero", "frutigerAero", "web2Glossy", "xpLuna", "grad-candy"].includes(theme);
+  const isLightTheme = ["light", "retro2012", "feather2013", "youtube2019", "liquid-glass", "windowsAero", "frutigerAero", "web2Glossy", "xpLuna", "grad-candy"].includes(theme);
   root.dataset.theme = theme;
   root.dataset.themeKind = themeKind;
   root.classList.toggle("dark", !isLightTheme);
