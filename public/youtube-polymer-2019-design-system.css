@@ -1,0 +1,278 @@
+/*
+ * Cornet Design Library — YouTube 2019 / Polymer
+ * Page-independent shell tokens + components.
+ * Keep this file free of route definitions and legacy 2012 imports.
+ */
+
+[data-theme="youtube2019"] {
+  color-scheme: light;
+  --polymer-bg: #f9f9f9;
+  --polymer-surface: #fff;
+  --polymer-surface-subtle: #f5f5f5;
+  --polymer-border: #d9d9d9;
+  --polymer-border-soft: #e5e5e5;
+  --polymer-text: #0f0f0f;
+  --polymer-muted: #606060;
+  --polymer-hover: #f2f2f2;
+  --polymer-active: #e5e5e5;
+  --polymer-red: #ff0000;
+  --polymer-blue: #065fd4;
+  --polymer-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  --polymer-radius: 2px;
+  font-family: Roboto, Arial, Helvetica, sans-serif !important;
+}
+
+[data-theme="youtube2019"] body,
+[data-theme="youtube2019"] .cn-2012-app {
+  background: var(--polymer-bg) !important;
+  color: var(--polymer-text) !important;
+  font-family: Roboto, Arial, Helvetica, sans-serif !important;
+}
+
+/* Fixed white topbar. */
+[data-theme="youtube2019"] .cn-2012-topbar {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 50 !important;
+  height: 56px !important;
+  min-height: 56px !important;
+  background: #fff !important;
+  color: #0f0f0f !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--polymer-border-soft) !important;
+  border-radius: 0 !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+}
+
+[data-theme="youtube2019"] .cn-2012-topbar * {
+  border-radius: 0 !important;
+}
+
+[data-theme="youtube2019"] .cn-2012-topbar a,
+[data-theme="youtube2019"] .cn-2012-topbar button,
+[data-theme="youtube2019"] .cn-2012-topbar svg {
+  color: #0f0f0f !important;
+}
+
+[data-theme="youtube2019"] .cn-2012-topbar form {
+  width: min(640px, 50vw) !important;
+  max-width: 640px !important;
+}
+
+[data-theme="youtube2019"] .cn-2012-topbar form input {
+  height: 36px !important;
+  background: #fff !important;
+  color: #0f0f0f !important;
+  border: 1px solid #c6c6c6 !important;
+  border-right: 0 !important;
+  border-radius: 2px 0 0 2px !important;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,.08) !important;
+  font-size: 14px !important;
+}
+
+[data-theme="youtube2019"] .cn-2012-topbar form button {
+  height: 36px !important;
+  min-width: 58px !important;
+  background: #f8f8f8 !important;
+  color: #606060 !important;
+  border: 1px solid #c6c6c6 !important;
+  border-radius: 0 2px 2px 0 !important;
+  box-shadow: none !important;
+}
+
+/* Drawer / guide: white, squared, with a thin separator. */
+[data-theme="youtube2019"] .cn-2012-shell-body {
+  display: grid !important;
+  grid-template-columns: 216px minmax(0, 1fr) !important;
+  gap: 0 !important;
+  width: 100% !important;
+  max-width: none !important;
+  background: var(--polymer-bg) !important;
+}
+
+[data-theme="youtube2019"] .cn-2012-sidebar,
+[data-theme="youtube2019"] .cn-2012-sidebar--cosmic {
+  position: sticky !important;
+  top: 56px !important;
+  width: 216px !important;
+  height: calc(100vh - 56px) !important;
+  min-height: calc(100vh - 56px) !important;
+  max-height: calc(100vh - 56px) !important;
+  overflow-y: auto !important;
+  background: #fff !important;
+  color: #0f0f0f !important;
+  border: 0 !important;
+  border-right: 1px solid var(--polymer-border-soft) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 8px 0 !important;
+}
+
+[data-theme="youtube2019"] .cn-2012-sidebar-inner {
+  padding: 0 !important;
+}
+
+[data-theme="youtube2019"] .cn-2012-sidebar-account,
+[data-theme="youtube2019"] .cn-2012-sidebar-guest,
+[data-theme="youtube2019"] .cn-2012-sidebar-add {
+  border-radius: 0 !important;
+  background: #fff !important;
+  color: #0f0f0f !important;
+}
+
+[data-theme="youtube2019"] .cn-2012-sidebar-account {
+  padding: 12px 14px !important;
+  border-bottom: 1px solid var(--polymer-border-soft) !important;
+}
+
+[data-theme="youtube2019"] .cn-2012-sidebar-link,
+[data-theme="youtube2019"] .cn-2012-sidebar-subscription,
+[data-theme="youtube2019"] .cn-2012-sidebar-icon,
+[data-theme="youtube2019"] .cn-2012-sidebar-add {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  width: 100% !important;
+  min-height: 38px !important;
+  padding: 0 14px !important;
+  background: #fff !important;
+  color: #0f0f0f !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  font-size: 13px !important;
+  text-decoration: none !important;
+}
+
+[data-theme="youtube2019"] .cn-2012-sidebar-link:hover,
+[data-theme="youtube2019"] .cn-2012-sidebar-subscription:hover,
+[data-theme="youtube2019"] .cn-2012-sidebar-add:hover,
+[data-theme="youtube2019"] .cn-2012-sidebar-link[aria-current="page"],
+[data-theme="youtube2019"] .cn-2012-sidebar-link.bg-surface {
+  background: var(--polymer-hover) !important;
+  color: #0f0f0f !important;
+  box-shadow: none !important;
+}
+
+[data-theme="youtube2019"] .cn-2012-sidebar-section-title {
+  padding: 16px 14px 7px !important;
+  color: var(--polymer-muted) !important;
+  background: #fff !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  text-transform: uppercase !important;
+}
+
+[data-theme="youtube2019"] .cn-2012-sidebar-divider {
+  height: 1px !important;
+  margin: 8px 0 !important;
+  background: var(--polymer-border-soft) !important;
+}
+
+/* Main canvas. */
+[data-theme="youtube2019"] .cn-2012-main {
+  min-width: 0 !important;
+  background: var(--polymer-bg) !important;
+  color: var(--polymer-text) !important;
+  padding: 0 !important;
+}
+
+[data-theme="youtube2019"] .cn-2012-main a {
+  color: var(--polymer-blue) !important;
+}
+
+/* Generic Polymer surfaces and cards. */
+[data-theme="youtube2019"] .cn-polymer-surface,
+[data-theme="youtube2019"] .cn-polymer-card,
+[data-theme="youtube2019"] .cn-polymer-home-frame {
+  background: var(--polymer-surface) !important;
+  border: 1px solid var(--polymer-border-soft) !important;
+  border-radius: var(--polymer-radius) !important;
+  box-shadow: var(--polymer-shadow) !important;
+}
+
+[data-theme="youtube2019"] .cn-video-card {
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+[data-theme="youtube2019"] .cn-video-card img,
+[data-theme="youtube2019"] .cn-polymer-video-grid img {
+  border-radius: 2px !important;
+}
+
+[data-theme="youtube2019"] .cn-polymer-video-grid .text-sm,
+[data-theme="youtube2019"] .cn-video-card .text-sm {
+  color: #0f0f0f !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  line-height: 18px !important;
+}
+
+[data-theme="youtube2019"] .cn-polymer-video-grid .text-xs,
+[data-theme="youtube2019"] .cn-video-card .text-xs {
+  color: #606060 !important;
+  font-size: 11px !important;
+  line-height: 16px !important;
+}
+
+/* Buttons: Material-inspired, flat, lightly raised, with a click ripple. */
+[data-theme="youtube2019"] button,
+[data-theme="youtube2019"] [role="button"] {
+  border-radius: 2px !important;
+}
+
+[data-theme="youtube2019"] button:not(:disabled) {
+  position: relative;
+  overflow: hidden;
+}
+
+[data-theme="youtube2019"] button:not(:disabled)::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0);
+  pointer-events: none;
+  transition: background .16s ease;
+}
+
+[data-theme="youtube2019"] button:not(:disabled):active::after {
+  background: rgba(0,0,0,.08);
+}
+
+[data-theme="youtube2019"] .cn-polymer-filter-bar {
+  background: #fff !important;
+  border-bottom: 1px solid var(--polymer-border-soft) !important;
+}
+
+/* Footer stays white and square. */
+[data-theme="youtube2019"] footer,
+[data-theme="youtube2019"] .cn-2012-footer {
+  background: #fff !important;
+  color: #606060 !important;
+  border-top: 1px solid var(--polymer-border-soft) !important;
+  border-radius: 0 !important;
+}
+
+[data-theme="youtube2019"] .rounded-full,
+[data-theme="youtube2019"] .rounded-xl,
+[data-theme="youtube2019"] .rounded-2xl,
+[data-theme="youtube2019"] .rounded-3xl {
+  border-radius: 2px !important;
+}
+
+@media (max-width: 900px) {
+  [data-theme="youtube2019"] .cn-2012-sidebar,
+  [data-theme="youtube2019"] .cn-2012-sidebar--cosmic {
+    display: none !important;
+  }
+
+  [data-theme="youtube2019"] .cn-2012-shell-body {
+    display: block !important;
+  }
+
+  [data-theme="youtube2019"] .cn-2012-topbar form {
+    width: min(56vw, 520px) !important;
+  }
+}
