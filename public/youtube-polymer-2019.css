@@ -1,15 +1,35 @@
 /* Polymer 2019 — independent light skin. Shell structure lives in app-shell.css. */
 [data-theme="youtube2019"]{
   color-scheme:light;
-  --poly-bg:#f8f9fa;
+  --poly-bg:#f9f9f9;
   --poly-surface:#fff;
-  --poly-line:#e1e4e7;
-  --poly-text:#202124;
-  --poly-muted:#5f6368;
-  --poly-blue:#1769d3;
-  --poly-blue-soft:#eaf2ff;
-  --poly-hover:#f1f3f4;
-  --poly-red:#ff0033;
+  --poly-surface-soft:#f5f5f5;
+  --poly-line:#e5e5e5;
+  --poly-line-strong:#d2d2d2;
+  --poly-text:#0f0f0f;
+  --poly-text-soft:#606060;
+  --poly-text-muted:#909090;
+  --poly-blue:#065fd4;
+  --poly-blue-soft:#e8f0fe;
+  --poly-blue-hover:#034ea2;
+  --poly-hover:#f2f2f2;
+  --poly-red:#ff0000;
+  --poly-primary:var(--poly-blue);
+  --poly-primary-soft:var(--poly-blue-soft);
+  --poly-primary-hover:var(--poly-blue-hover);
+  --polymer-canvas:var(--poly-bg);
+  --polymer-bg:var(--poly-bg);
+  --polymer-surface:var(--poly-surface);
+  --polymer-surface-soft:var(--poly-surface-soft);
+  --polymer-surface-hover:var(--poly-hover);
+  --polymer-border:var(--poly-line);
+  --polymer-border-strong:var(--poly-line-strong);
+  --polymer-text:var(--poly-text);
+  --polymer-text-soft:var(--poly-text-soft);
+  --polymer-text-muted:var(--poly-text-muted);
+  --polymer-primary:var(--poly-primary);
+  --polymer-primary-soft:var(--poly-primary-soft);
+  --polymer-primary-hover:var(--poly-primary-hover);
   --background:var(--poly-bg);
   --foreground:var(--poly-text);
   --surface:var(--poly-surface);
@@ -20,10 +40,10 @@
   --popover-foreground:var(--poly-text);
   --primary:var(--poly-blue);
   --primary-foreground:#fff;
-  --secondary:#eef1f4;
+  --secondary:#f2f2f2;
   --secondary-foreground:var(--poly-text);
-  --muted:#eef1f4;
-  --muted-foreground:var(--poly-muted);
+  --muted:#f2f2f2;
+  --muted-foreground:var(--poly-text-soft);
   --accent:var(--poly-hover);
   --accent-foreground:var(--poly-text);
   --border:var(--poly-line);
@@ -31,29 +51,116 @@
   --ring:var(--poly-blue);
   --sidebar:#fff;
   --sidebar-foreground:var(--poly-text);
-  --sidebar-primary:var(--poly-blue);
+  --sidebar-primary:var(--poly-red);
   --sidebar-primary-foreground:#fff;
-  --sidebar-accent:var(--poly-hover);
+  --sidebar-accent:#f2f2f2;
   --sidebar-accent-foreground:var(--poly-text);
   --sidebar-border:var(--poly-line);
-  --sidebar-ring:var(--poly-blue);
+  --sidebar-ring:var(--poly-red);
   font-family:Roboto,Arial,sans-serif!important;
 }
-html[data-theme="youtube2019"] body{background:var(--poly-bg)!important;color:var(--poly-text)!important;font-family:Roboto,Arial,sans-serif!important;}
-html[data-theme="youtube2019"] .cn-shell{background:linear-gradient(#fff 0,#f8f9fa 145px)!important;color:var(--poly-text)!important;}
-html[data-theme="youtube2019"] .cn-shell-header{height:56px;min-height:56px;background:#fff;border-bottom:1px solid var(--poly-line);box-shadow:0 1px 3px rgb(0 0 0 / .05);}
-html[data-theme="youtube2019"] .cn-shell-logo small{color:#7a7f84;}
-html[data-theme="youtube2019"] .cn-shell-search input{height:36px;border:1px solid #c8ccd0;border-radius:2px;background:#fff;box-shadow:inset 0 1px 2px rgb(0 0 0 / .06);}
-html[data-theme="youtube2019"] .cn-shell-search button{border-radius:2px;color:#5f6368;}
-html[data-theme="youtube2019"] .cn-shell-sidebar{width:208px;background:#fff;border-right:1px solid var(--poly-line);box-shadow:none;}
-html[data-theme="youtube2019"] .cn-shell-sidebar nav a{min-height:38px;border-radius:2px;font-size:13px;color:#5f6368;}
-html[data-theme="youtube2019"] .cn-shell-sidebar nav a:hover{background:#f2f2f2;color:#202124;}
-html[data-theme="youtube2019"] .cn-shell-sidebar nav a[data-active="true"]{background:#e8eaed;color:#202124;font-weight:500;box-shadow:inset 3px 0 var(--poly-red);}
-html[data-theme="youtube2019"] .cn-shell-main{background:#f8f9fa;}
-html[data-theme="youtube2019"] .cn-shell-footer{background:#fff;border-top:1px solid var(--poly-line);}
-html[data-theme="youtube2019"] .cn-shell-mobile-nav{background:#fff;border-top:1px solid var(--poly-line);}
-html[data-theme="youtube2019"] .cn-shell-mobile-nav a[data-active="true"]{color:var(--poly-red);}
-html[data-theme="youtube2019"] .cn-shorts-page{background:#f8f9fa;}
-html[data-theme="youtube2019"] .cn-shorts-upload{border-color:#cfd3d7;background:#fff;color:#202124;}
+
+html[data-theme="youtube2019"],
+html[data-theme="youtube2019"] body{
+  background:var(--poly-bg)!important;
+  color:var(--poly-text)!important;
+  font-family:Roboto,Arial,sans-serif!important;
+}
+
+html[data-theme="youtube2019"] .cn-shell{
+  background:var(--poly-bg)!important;
+  color:var(--poly-text)!important;
+}
+
+/* 2019 YouTube chrome: compact white header and clean iconography. */
+html[data-theme="youtube2019"] .cn-shell-header{
+  height:56px;
+  min-height:56px;
+  padding:0 16px;
+  background:#fff;
+  border-bottom:1px solid #e5e5e5;
+  box-shadow:none;
+}
+html[data-theme="youtube2019"] .cn-shell-logo small{display:none;}
+html[data-theme="youtube2019"] .cn-shell-logo strong{
+  font-size:18px;
+  font-weight:500;
+  letter-spacing:-.02em;
+}
+html[data-theme="youtube2019"] .cn-shell-search{width:min(620px,100%);}
+html[data-theme="youtube2019"] .cn-shell-search input{
+  height:34px;
+  border:1px solid #c6c6c6;
+  border-radius:2px;
+  background:#fff;
+  box-shadow:inset 0 1px 2px rgb(0 0 0 / 8%);
+  color:#0f0f0f;
+  font-size:14px;
+}
+html[data-theme="youtube2019"] .cn-shell-search button{
+  width:54px;
+  height:30px;
+  border-radius:0 2px 2px 0;
+  color:#606060;
+}
+html[data-theme="youtube2019"] .cn-shell-icon-button,
+html[data-theme="youtube2019"] .cn-shell-avatar-button{
+  border-radius:2px;
+  color:#606060;
+}
+html[data-theme="youtube2019"] .cn-shell-icon-button:hover,
+html[data-theme="youtube2019"] .cn-shell-avatar-button:hover{
+  background:#f2f2f2;
+}
+
+/* 2019-style left guide: wide enough for labels, visually quiet. */
+html[data-theme="youtube2019"] .cn-shell-sidebar{
+  width:240px;
+  min-width:240px;
+  background:#fff;
+  border-right:1px solid #e5e5e5;
+  box-shadow:none;
+  padding:8px 12px;
+}
+html[data-theme="youtube2019"] .cn-shell-sidebar nav{gap:2px;}
+html[data-theme="youtube2019"] .cn-shell-sidebar nav a{
+  min-height:40px;
+  padding:0 12px;
+  border-radius:2px;
+  color:#606060;
+  font-size:14px;
+  font-weight:400;
+}
+html[data-theme="youtube2019"] .cn-shell-sidebar nav a:hover{
+  background:#f2f2f2;
+  color:#0f0f0f;
+}
+html[data-theme="youtube2019"] .cn-shell-sidebar nav a[data-active="true"]{
+  background:#e5e5e5;
+  color:#0f0f0f;
+  font-weight:500;
+  box-shadow:none;
+}
+html[data-theme="youtube2019"] .cn-shell-account{
+  margin:2px 4px 10px;
+  padding:8px 4px 10px;
+  border-bottom:1px solid #e5e5e5;
+}
+
+html[data-theme="youtube2019"] .cn-shell-main{
+  min-width:0;
+  background:#f9f9f9;
+}
+html[data-theme="youtube2019"] .cn-shell-footer{
+  background:#fff;
+  border-top:1px solid #e5e5e5;
+}
+html[data-theme="youtube2019"] .cn-shell-mobile-nav{
+  background:#fff;
+  border-top:1px solid #e5e5e5;
+}
+html[data-theme="youtube2019"] .cn-shell-mobile-nav a[data-active="true"]{color:#ff0000;}
+html[data-theme="youtube2019"] .cn-shorts-page{background:#f9f9f9;}
+html[data-theme="youtube2019"] .cn-shorts-upload{border-color:#d0d0d0;background:#fff;color:#0f0f0f;}
 html[data-theme="youtube2019"] .cn-shorts-header h1{font-weight:500;}
-html[data-theme="youtube2019"] .cn-shorts-player-wrap{border-color:#cfd3d7;box-shadow:0 8px 24px rgb(0 0 0 / .08);}
+html[data-theme="youtube2019"] .cn-shorts-player-wrap{border-color:#d0d0d0;box-shadow:none;}
