@@ -45,7 +45,7 @@ export const channelLayouts: ChannelLayoutDefinition[] = [
   { id: "corenetwork", name: "Classic Channel", category: "historical", kind: "layout", description: "Layout base de Cornet.", stylesheets: [] },
   { id: "classic2009", name: "Classic 2009", category: "historical", kind: "layout", description: "Canal compacto inspirado en 2009.", stylesheets: [] },
   { id: "standard2012", name: "Standard 2012", category: "historical", kind: "layout", description: "Estructura general de YouTube alrededor de 2012.", stylesheets: ["/retro2012.css"] },
-  { id: "cosmic-panda", name: "Cosmic Panda Channel", category: "historical", kind: "layout", description: "Layout de canal Cosmic Panda.", stylesheets: ["/cosmic-panda-channel-core.css", "/cosmic-panda-channel-fullpage.css", "/cosmic-panda-channel-layout.css"] },
+  { id: "cosmic-panda", name: "Cosmic Panda Channel", category: "historical", kind: "layout", description: "Layout de canal Cosmic Panda; independiente del tema global.", stylesheets: ["/cosmic-panda-channel-core.css"] },
   { id: "oneChannel2013", name: "One Channel 2013", category: "historical", kind: "layout", description: "Portada de canal centrada en el banner.", stylesheets: [] },
   { id: "featherProfile", name: "Feather Profile", category: "special", kind: "layout", description: "Perfil ligero y centrado en contenido.", stylesheets: [] },
   { id: "creatorStudio", name: "Creator Studio", category: "functional", kind: "layout", description: "Perfil orientado a creadores y estadísticas.", stylesheets: [] },
