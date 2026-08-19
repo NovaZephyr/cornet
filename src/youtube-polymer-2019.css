@@ -1,47 +1,222 @@
-/* YouTube 2019 / Polymer — Custom Theme for Cornet. */
-[data-theme="youtube2019"]{
-  color-scheme:light;
-  --poly-bg:#fff;
-  --poly-subtle:#f9f9f9;
-  --poly-guide:#fff;
-  --poly-hover:#f2f2f2;
-  --poly-border:#e5e5e5;
-  --poly-text:#0f0f0f;
-  --poly-muted:#606060;
-  --poly-red:#ff0000;
-  font-family:Roboto,Arial,sans-serif!important;
+/*
+ * CoreNetwork — Polymer
+ *
+ * Polymer is intentionally a LIGHT, independent theme.
+ * It owns its shell, navigation, surfaces, cards, controls and responsive behavior.
+ * Keep all selectors scoped to [data-theme="youtube2019"] so other themes remain isolated.
+ * This source copy mirrors public/youtube2019.css for consistency.
+ */
+
+[data-theme="youtube2019"] {
+  color-scheme: light !important;
+  --polymer-bg: #f5f7fa;
+  --polymer-canvas: #ffffff;
+  --polymer-surface: #ffffff;
+  --polymer-surface-soft: #f8fafc;
+  --polymer-surface-hover: #eef3f8;
+  --polymer-border: #dfe5eb;
+  --polymer-border-strong: #c8d1db;
+  --polymer-text: #1b2430;
+  --polymer-text-soft: #52606d;
+  --polymer-text-muted: #7b8794;
+  --polymer-primary: #1769d3;
+  --polymer-primary-hover: #0f58b6;
+  --polymer-primary-soft: #e8f1ff;
+  --polymer-accent: #14a4a4;
+  --polymer-danger: #d93025;
+  --polymer-selection: #dceaff;
+  font-family: Roboto, Arial, Helvetica, sans-serif !important;
 }
-[data-theme="youtube2019"] body{background:var(--poly-bg)!important;color:var(--poly-text)!important;font-family:Roboto,Arial,sans-serif!important}
-[data-theme="youtube2019"] .cn-2012-app{background:#fff!important;min-height:100vh}
-[data-theme="youtube2019"] .cn-2012-topbar{height:56px!important;min-height:56px!important;background:#fff!important;color:#0f0f0f!important;border-bottom:1px solid var(--poly-border)!important;box-shadow:none!important}
-[data-theme="youtube2019"] .cn-2012-topbar a,[data-theme="youtube2019"] .cn-2012-topbar button,[data-theme="youtube2019"] .cn-2012-topbar svg{color:#0f0f0f!important}
-[data-theme="youtube2019"] .cn-2012-topbar form{max-width:640px!important}
-[data-theme="youtube2019"] .cn-2012-topbar form input{height:40px!important;border:1px solid #ccc!important;border-right:0!important;border-radius:2px 0 0 2px!important;background:#fff!important;color:#0f0f0f!important;box-shadow:inset 0 1px 2px rgba(0,0,0,.08)!important;font-size:15px!important}
-[data-theme="youtube2019"] .cn-2012-topbar form button{height:40px!important;min-width:64px!important;border:1px solid #ccc!important;border-radius:0 2px 2px 0!important;background:#f8f8f8!important;color:#606060!important;box-shadow:none!important}
-[data-theme="youtube2019"] .cn-2012-topnav-link{font-size:13px!important;border-radius:2px!important;color:#606060!important}
-[data-theme="youtube2019"] .cn-2012-topnav-link:hover{background:#f2f2f2!important;color:#0f0f0f!important}
-[data-theme="youtube2019"] .cn-2012-shell-body{grid-template-columns:240px minmax(0,1fr)!important;gap:0!important;max-width:none!important;background:#fff!important}
-[data-theme="youtube2019"] .cn-2012-sidebar{position:sticky!important;top:56px!important;width:240px!important;min-height:calc(100vh - 56px)!important;max-height:calc(100vh - 56px)!important;overflow:auto!important;background:#fff!important;border-right:0!important;box-shadow:none!important;padding:10px 0!important;color:#0f0f0f!important}
-[data-theme="youtube2019"] .cn-2012-sidebar-inner{padding:0 12px!important}
-[data-theme="youtube2019"] .cn-2012-sidebar nav{padding:0!important;gap:2px!important}
-[data-theme="youtube2019"] .cn-2012-sidebar-link,[data-theme="youtube2019"] .cn-2012-sidebar-subscription{min-height:40px!important;border-radius:8px!important;border:0!important;color:#0f0f0f!important;background:transparent!important;font-size:14px!important}
-[data-theme="youtube2019"] .cn-2012-sidebar-link:hover,[data-theme="youtube2019"] .cn-2012-sidebar-subscription:hover{background:#f2f2f2!important;color:#0f0f0f!important}
-[data-theme="youtube2019"] .cn-2012-sidebar-link.bg-surface,[data-theme="youtube2019"] .cn-2012-sidebar-link[aria-current="page"]{background:#f2f2f2!important;box-shadow:none!important;color:#0f0f0f!important;font-weight:500!important}
-[data-theme="youtube2019"] .cn-2012-sidebar-section-title{padding:16px 14px 8px!important;font-size:12px!important;color:#606060!important;letter-spacing:.04em!important}
-[data-theme="youtube2019"] .cn-2012-sidebar-divider{background:#e5e5e5!important;margin:10px 0!important}
-[data-theme="youtube2019"] .cn-2012-sidebar-add{border:1px solid #d3d3d3!important;border-radius:2px!important;background:#fff!important;color:#606060!important;padding:9px 10px!important}
-[data-theme="youtube2019"] .cn-2012-main{background:#fff!important;padding:24px 32px 48px!important;color:#0f0f0f!important}
-[data-theme="youtube2019"] .cn-2012-main a{color:#065fd4!important}
-[data-theme="youtube2019"] .cn-2012-main .rounded-xl,[data-theme="youtube2019"] .cn-2012-main .rounded-2xl,[data-theme="youtube2019"] .cn-2012-main .rounded-3xl{border-radius:8px!important}
-[data-theme="youtube2019"] .cn-video-card{border:0!important;background:transparent!important;box-shadow:none!important;border-radius:0!important}
-[data-theme="youtube2019"] .cn-video-card:hover{background:transparent!important}
-[data-theme="youtube2019"] .cn-video-card img{border-radius:8px!important}
-[data-theme="youtube2019"] .cn-explore-section,[data-theme="youtube2019"] .cn-watch-page,[data-theme="youtube2019"] .cn-watch-recommendations{background:#fff!important;border:0!important;box-shadow:none!important;border-radius:0!important}
-[data-theme="youtube2019"] [data-corenet-player]{background:#000!important;border-radius:0!important}
-[data-theme="youtube2019"] footer{background:#fff!important;border-top:1px solid #e5e5e5!important;color:#606060!important}
-[data-theme="youtube2019"] button{border-radius:2px!important}
-[data-theme="youtube2019"] .cn-settings-page{font-family:Roboto,Arial,sans-serif!important}
-[data-theme="youtube2019"] .cn-settings-nav{background:#fff!important;border-color:#e5e5e5!important}
-[data-theme="youtube2019"] .cn-settings-nav button[data-active="true"]{background:#f2f2f2!important;color:#0f0f0f!important;box-shadow:none!important}
-[data-theme="youtube2019"] .cn-settings-card{background:#fff!important;border-color:#e5e5e5!important;box-shadow:none!important;border-radius:8px!important}
-@media(max-width:900px){[data-theme="youtube2019"] .cn-2012-sidebar{display:none!important}[data-theme="youtube2019"] .cn-2012-shell-body{display:block!important}[data-theme="youtube2019"] .cn-2012-main{padding:16px 14px 32px!important}[data-theme="youtube2019"] .cn-2012-topbar form{max-width:100%!important}]
+
+[data-theme="youtube2019"] body { margin:0 !important; min-height:100vh !important; background:var(--polymer-bg) !important; color:var(--polymer-text) !important; font-family:Roboto,Arial,Helvetica,sans-serif !important; }
+[data-theme="youtube2019"] html,
+[data-theme="youtube2019"] body,
+[data-theme="youtube2019"] #root { background:var(--polymer-bg) !important; }
+[data-theme="youtube2019"] *,
+[data-theme="youtube2019"] button,
+[data-theme="youtube2019"] input,
+[data-theme="youtube2019"] textarea,
+[data-theme="youtube2019"] select { box-sizing:border-box; font-family:inherit !important; }
+[data-theme="youtube2019"] a { color:inherit; }
+
+/* Independent light shell. */
+[data-theme="youtube2019"] .cn-2012-app {
+  min-height:100vh !important;
+  background:radial-gradient(900px 420px at 65% -180px,rgb(23 105 211 / 7%),transparent 72%),linear-gradient(#fbfcfe 0,var(--polymer-bg) 180px) !important;
+  color:var(--polymer-text) !important;
+}
+[data-theme="youtube2019"] .cn-2012-topbar {
+  position:sticky !important; top:0 !important; z-index:200 !important;
+  height:62px !important; min-height:62px !important; padding:0 18px !important; gap:14px !important;
+  background:rgb(255 255 255 / 96%) !important; border-bottom:1px solid var(--polymer-border) !important;
+  box-shadow:0 2px 14px rgb(24 39 57 / 6%) !important; backdrop-filter:blur(12px) !important; color:var(--polymer-text) !important;
+}
+[data-theme="youtube2019"] .cn-2012-topbar > button:first-child { width:38px !important; height:38px !important; border-radius:10px !important; border:1px solid transparent !important; background:transparent !important; color:var(--polymer-text-soft) !important; }
+[data-theme="youtube2019"] .cn-2012-topbar > button:first-child:hover { background:var(--polymer-surface-hover) !important; border-color:var(--polymer-border) !important; }
+[data-theme="youtube2019"] .cn-2012-topbar a[aria-label*="Cornet"],
+[data-theme="youtube2019"] .cn-2012-topbar a[aria-label*="CoreNetwork"] { display:flex !important; align-items:center !important; min-width:max-content !important; color:var(--polymer-text) !important; }
+[data-theme="youtube2019"] .cn-2012-topbar a[aria-label*="Cornet"] img,
+[data-theme="youtube2019"] .cn-2012-topbar a[aria-label*="CoreNetwork"] img { border-radius:7px !important; }
+[data-theme="youtube2019"] .cn-2012-topbar form { flex:1 1 620px !important; max-width:700px !important; margin:0 auto !important; }
+[data-theme="youtube2019"] .cn-2012-topbar form > div { width:100% !important; }
+[data-theme="youtube2019"] .cn-2012-topbar form input { height:40px !important; padding-left:42px !important; padding-right:62px !important; border:1px solid var(--polymer-border-strong) !important; border-radius:9px !important; background:var(--polymer-canvas) !important; color:var(--polymer-text) !important; box-shadow:inset 0 1px 2px rgb(24 39 57 / 5%) !important; font-size:14px !important; }
+[data-theme="youtube2019"] .cn-2012-topbar form input:focus { outline:none !important; border-color:var(--polymer-primary) !important; box-shadow:0 0 0 3px rgb(23 105 211 / 11%) !important; }
+[data-theme="youtube2019"] .cn-2012-topbar form .lucide-search { left:14px !important; color:var(--polymer-text-muted) !important; }
+[data-theme="youtube2019"] .cn-2012-topbar form button { right:2px !important; height:36px !important; min-width:48px !important; margin-top:2px !important; border:0 !important; border-radius:7px !important; background:var(--polymer-primary-soft) !important; color:var(--polymer-primary) !important; box-shadow:none !important; }
+[data-theme="youtube2019"] .cn-2012-topbar form button:hover { background:#dbe9ff !important; }
+[data-theme="youtube2019"] .cn-2012-topbar form button svg { color:var(--polymer-primary) !important; }
+[data-theme="youtube2019"] .cn-2012-topnav-link,
+[data-theme="youtube2019"] .cn-2012-topbar a,
+[data-theme="youtube2019"] .cn-2012-topbar button { border-radius:10px !important; color:var(--polymer-text-soft) !important; }
+[data-theme="youtube2019"] .cn-2012-topnav-link:hover,
+[data-theme="youtube2019"] .cn-2012-topbar a:hover,
+[data-theme="youtube2019"] .cn-2012-topbar button:hover { background:var(--polymer-surface-hover) !important; color:var(--polymer-text) !important; }
+
+/* Distinct Polymer sidebar. */
+[data-theme="youtube2019"] .cn-2012-shell-body { display:grid !important; grid-template-columns:228px minmax(0,1fr) !important; align-items:stretch !important; width:100% !important; max-width:none !important; gap:0 !important; background:transparent !important; }
+[data-theme="youtube2019"] .cn-2012-sidebar { position:sticky !important; top:62px !important; width:228px !important; min-height:calc(100vh - 62px) !important; max-height:calc(100vh - 62px) !important; overflow-y:auto !important; overflow-x:hidden !important; padding:12px 10px 26px !important; background:linear-gradient(180deg,#fbfcfe 0,#f3f6f9 100%) !important; border-right:1px solid var(--polymer-border) !important; box-shadow:3px 0 18px rgb(25 47 72 / 4%) !important; color:var(--polymer-text-soft) !important; }
+[data-theme="youtube2019"] .cn-2012-sidebar.is-collapsed { width:76px !important; }
+[data-theme="youtube2019"] .cn-2012-sidebar-inner { padding:0 !important; }
+[data-theme="youtube2019"] .cn-2012-sidebar-link,
+[data-theme="youtube2019"] .cn-2012-sidebar-subscription,
+[data-theme="youtube2019"] .cn-2012-sidebar-icon { min-height:40px !important; padding:0 12px !important; border:1px solid transparent !important; border-radius:10px !important; background:transparent !important; color:var(--polymer-text-soft) !important; font-size:13px !important; font-weight:400 !important; }
+[data-theme="youtube2019"] .cn-2012-sidebar-link:hover,
+[data-theme="youtube2019"] .cn-2012-sidebar-subscription:hover,
+[data-theme="youtube2019"] .cn-2012-sidebar-icon:hover { background:var(--polymer-surface-hover) !important; border-color:var(--polymer-border) !important; color:var(--polymer-text) !important; }
+[data-theme="youtube2019"] .cn-2012-sidebar-link[aria-current="page"],
+[data-theme="youtube2019"] .cn-2012-sidebar-link.bg-surface { background:var(--polymer-primary-soft) !important; border-color:#c9ddfb !important; color:var(--polymer-primary) !important; font-weight:600 !important; box-shadow:inset 3px 0 var(--polymer-primary),0 2px 8px rgb(23 105 211 / 5%) !important; }
+[data-theme="youtube2019"] .cn-2012-sidebar-link svg,
+[data-theme="youtube2019"] .cn-2012-sidebar-subscription svg,
+[data-theme="youtube2019"] .cn-2012-sidebar-icon svg { color:currentColor !important; }
+[data-theme="youtube2019"] .cn-2012-sidebar-section-title { padding:15px 12px 7px !important; color:var(--polymer-text-muted) !important; font-size:10px !important; font-weight:700 !important; letter-spacing:.12em !important; text-transform:uppercase !important; }
+[data-theme="youtube2019"] .cn-2012-sidebar-divider { height:1px !important; margin:10px 8px !important; background:var(--polymer-border) !important; }
+[data-theme="youtube2019"] .cn-2012-sidebar-account { margin:2px 4px 10px !important; padding:10px 8px !important; border-bottom:1px solid var(--polymer-border) !important; }
+[data-theme="youtube2019"] .cn-2012-sidebar-account p:first-child { color:var(--polymer-text) !important; font-weight:600 !important; }
+[data-theme="youtube2019"] .cn-2012-sidebar-account p:last-child,
+[data-theme="youtube2019"] .cn-2012-sidebar-muted,
+[data-theme="youtube2019"] .cn-2012-sidebar-guest span { color:var(--polymer-text-muted) !important; }
+[data-theme="youtube2019"] .cn-2012-sidebar-add { margin:4px 2px 9px !important; padding:8px 10px !important; border:1px solid #c9ddfb !important; border-radius:9px !important; background:#f5f9ff !important; color:var(--polymer-primary) !important; box-shadow:none !important; }
+
+/* Main surface/card language. */
+[data-theme="youtube2019"] .cn-2012-main { min-width:0 !important; width:100% !important; max-width:none !important; padding:24px 30px 52px !important; background:transparent !important; color:var(--polymer-text) !important; }
+[data-theme="youtube2019"] .cn-2012-main > * { width:min(100%,1440px) !important; max-width:1440px !important; margin-inline:auto !important; }
+[data-theme="youtube2019"] .cn-2012-main .bg-background,
+[data-theme="youtube2019"] .cn-2012-main .bg-surface,
+[data-theme="youtube2019"] .cn-2012-main .bg-card { background:var(--polymer-surface) !important; }
+[data-theme="youtube2019"] .cn-2012-main .text-muted-foreground { color:var(--polymer-text-soft) !important; }
+[data-theme="youtube2019"] .cn-2012-main .border,
+[data-theme="youtube2019"] .cn-2012-main .border-border,
+[data-theme="youtube2019"] .cn-2012-main .border-input { border-color:var(--polymer-border) !important; }
+[data-theme="youtube2019"] .cn-2012-main h1,
+[data-theme="youtube2019"] .cn-2012-main h2,
+[data-theme="youtube2019"] .cn-2012-main h3 { color:var(--polymer-text) !important; letter-spacing:-.015em !important; }
+[data-theme="youtube2019"] .cn-2012-main h1 { font-size:28px !important; font-weight:700 !important; }
+[data-theme="youtube2019"] .cn-2012-main h2 { font-size:20px !important; font-weight:650 !important; }
+[data-theme="youtube2019"] .cn-2012-main h3 { font-size:16px !important; font-weight:600 !important; }
+[data-theme="youtube2019"] .cn-2012-main article,
+[data-theme="youtube2019"] .cn-2012-main [class*="group/card"],
+[data-theme="youtube2019"] .cn-2012-main .cn-video-card { border:1px solid var(--polymer-border) !important; border-radius:12px !important; background:var(--polymer-surface) !important; box-shadow:0 5px 18px rgb(25 47 72 / 6%) !important; overflow:hidden !important; }
+[data-theme="youtube2019"] .cn-2012-main article:hover,
+[data-theme="youtube2019"] .cn-2012-main [class*="group/card"]:hover,
+[data-theme="youtube2019"] .cn-2012-main .cn-video-card:hover { border-color:#cbd7e3 !important; box-shadow:0 10px 26px rgb(25 47 72 / 10%) !important; }
+[data-theme="youtube2019"] .cn-2012-main img { border-radius:8px !important; }
+[data-theme="youtube2019"] .cn-2012-main [class*="aspect-video"] { border-radius:9px !important; overflow:hidden !important; }
+[data-theme="youtube2019"] .cn-2012-main button,
+[data-theme="youtube2019"] .cn-2012-main [role="button"] { border-radius:9px !important; }
+[data-theme="youtube2019"] .cn-2012-main button[class*="bg-primary"] { border:1px solid var(--polymer-primary) !important; background:var(--polymer-primary) !important; color:#fff !important; box-shadow:0 3px 10px rgb(23 105 211 / 18%) !important; }
+[data-theme="youtube2019"] .cn-2012-main button[class*="bg-primary"]:hover { background:var(--polymer-primary-hover) !important; }
+[data-theme="youtube2019"] .cn-2012-main input,
+[data-theme="youtube2019"] .cn-2012-main textarea,
+[data-theme="youtube2019"] .cn-2012-main select { border:1px solid var(--polymer-border-strong) !important; border-radius:8px !important; background:var(--polymer-canvas) !important; color:var(--polymer-text) !important; box-shadow:inset 0 1px 2px rgb(25 47 72 / 4%) !important; }
+[data-theme="youtube2019"] .cn-2012-main input:focus,
+[data-theme="youtube2019"] .cn-2012-main textarea:focus,
+[data-theme="youtube2019"] .cn-2012-main select:focus { outline:none !important; border-color:var(--polymer-primary) !important; box-shadow:0 0 0 3px rgb(23 105 211 / 10%) !important; }
+
+/* Explore. */
+[data-theme="youtube2019"] .cn-explore-page,
+[data-theme="youtube2019"] .cn-explore-section,
+[data-theme="youtube2019"] .cn-explore-sidebar { background:transparent !important; border-color:var(--polymer-border) !important; box-shadow:none !important; }
+[data-theme="youtube2019"] .cn-explore-tabs { display:flex !important; gap:8px !important; padding:0 0 16px !important; overflow-x:auto !important; border-bottom:1px solid var(--polymer-border) !important; }
+[data-theme="youtube2019"] .cn-explore-tabs a { padding:7px 13px !important; border:1px solid var(--polymer-border) !important; border-radius:999px !important; background:var(--polymer-surface) !important; color:var(--polymer-text-soft) !important; font-size:13px !important; white-space:nowrap !important; }
+[data-theme="youtube2019"] .cn-explore-tabs a:hover { background:var(--polymer-surface-hover) !important; color:var(--polymer-text) !important; }
+[data-theme="youtube2019"] .cn-explore-tabs a.is-active { background:var(--polymer-primary) !important; border-color:var(--polymer-primary) !important; color:#fff !important; }
+[data-theme="youtube2019"] .cn-explore-grid { gap:22px 16px !important; }
+[data-theme="youtube2019"] .cn-recommended-channel,
+[data-theme="youtube2019"] .cn-series-card { border:1px solid var(--polymer-border) !important; border-radius:12px !important; background:var(--polymer-surface) !important; box-shadow:0 4px 15px rgb(25 47 72 / 5%) !important; }
+
+/* Watch page: black player is the only intentionally dark surface. */
+[data-theme="youtube2019"] .cn-2012-main:has([data-corenet-player]) { padding-top:18px !important; }
+[data-theme="youtube2019"] [data-corenet-player] { background:#0b0f14 !important; border:1px solid #121923 !important; border-radius:12px !important; box-shadow:0 14px 36px rgb(10 18 28 / 16%) !important; overflow:hidden !important; }
+[data-theme="youtube2019"] [data-corenet-player] video { border-radius:0 !important; }
+[data-theme="youtube2019"] .cn-2012-main:has([data-corenet-player]) h1 { margin-top:18px !important; padding-bottom:15px !important; border-bottom:1px solid var(--polymer-border) !important; font-size:22px !important; }
+[data-theme="youtube2019"] .cn-2012-main:has([data-corenet-player]) aside > div:first-child { border:1px solid var(--polymer-border) !important; border-radius:12px !important; background:var(--polymer-surface) !important; box-shadow:0 5px 18px rgb(25 47 72 / 6%) !important; }
+
+/* Channel pages. */
+[data-theme="youtube2019"] .cn-2012-channel--cosmic-panda,
+[data-theme="youtube2019"] .cn-2012-channel--channel-1,
+[data-theme="youtube2019"] .cn-2012-channel--channel-2 { background:transparent !important; min-height:0 !important; padding-bottom:34px !important; }
+[data-theme="youtube2019"] .cn-2012-channel-inner { width:min(100%,1280px) !important; margin-inline:auto !important; background:var(--polymer-surface) !important; border:1px solid var(--polymer-border) !important; border-radius:14px !important; box-shadow:0 8px 28px rgb(25 47 72 / 6%) !important; overflow:hidden !important; }
+[data-theme="youtube2019"] .cn-2012-cover { height:290px !important; border-radius:0 !important; }
+[data-theme="youtube2019"] .cn-2012-titlebar { min-height:92px !important; padding:16px 22px !important; background:var(--polymer-surface) !important; border-top:1px solid var(--polymer-border) !important; border-bottom:1px solid var(--polymer-border) !important; }
+[data-theme="youtube2019"] .cn-2012-titlebar h1 { color:var(--polymer-text) !important; font-size:22px !important; font-weight:700 !important; }
+[data-theme="youtube2019"] .cn-2012-tabs { display:flex !important; min-height:50px !important; background:var(--polymer-surface-soft) !important; border-bottom:1px solid var(--polymer-border) !important; overflow-x:auto !important; }
+[data-theme="youtube2019"] .cn-2012-tabs a,
+[data-theme="youtube2019"] .cn-2012-tabs span { display:flex !important; align-items:center !important; justify-content:center !important; min-height:50px !important; padding:0 20px !important; border-radius:0 !important; color:var(--polymer-text-soft) !important; font-size:13px !important; font-weight:600 !important; }
+[data-theme="youtube2019"] .cn-2012-tabs a:hover,
+[data-theme="youtube2019"] .cn-2012-tabs span:hover { background:var(--polymer-surface-hover) !important; color:var(--polymer-text) !important; }
+[data-theme="youtube2019"] .cn-2012-tabs .is-active { color:var(--polymer-primary) !important; background:transparent !important; box-shadow:inset 0 -2px var(--polymer-primary) !important; }
+
+/* Settings, dialogs, footer. */
+[data-theme="youtube2019"] .cn-settings-nav,
+[data-theme="youtube2019"] .cn-settings-card { background:var(--polymer-surface) !important; border:1px solid var(--polymer-border) !important; border-radius:12px !important; box-shadow:0 5px 18px rgb(25 47 72 / 5%) !important; }
+[data-theme="youtube2019"] .cn-settings-nav button[data-active="true"] { background:var(--polymer-primary-soft) !important; color:var(--polymer-primary) !important; box-shadow:inset 3px 0 var(--polymer-primary) !important; }
+[data-theme="youtube2019"] [role="dialog"],
+[data-theme="youtube2019"] [data-radix-menu-content],
+[data-theme="youtube2019"] [data-radix-select-content] { border:1px solid var(--polymer-border-strong) !important; border-radius:11px !important; background:var(--polymer-surface) !important; color:var(--polymer-text) !important; box-shadow:0 14px 40px rgb(25 47 72 / 16%) !important; }
+[data-theme="youtube2019"] [data-radix-menu-content] [role="menuitem"] { color:var(--polymer-text) !important; border-radius:7px !important; }
+[data-theme="youtube2019"] [data-radix-menu-content] [role="menuitem"]:hover,
+[data-theme="youtube2019"] [data-radix-menu-content] [role="menuitem"][data-highlighted] { background:var(--polymer-surface-hover) !important; }
+[data-theme="youtube2019"] footer,
+[data-theme="youtube2019"] .cn-2012-footer { background:#eef2f6 !important; border-top:1px solid var(--polymer-border) !important; color:var(--polymer-text-soft) !important; }
+
+/* Neutralize shared glass/gradient motion for this theme. */
+[data-theme="youtube2019"] [class*="backdrop-blur"] { backdrop-filter:none !important; }
+[data-theme="youtube2019"] [class*="bg-gradient-to"],
+[data-theme="youtube2019"] [class*="bg-linear"] { background-image:none !important; }
+[data-theme="youtube2019"] button:hover:not(:disabled),
+[data-theme="youtube2019"] [role="button"]:hover { transform:none !important; }
+[data-theme="youtube2019"] .shadow,
+[data-theme="youtube2019"] .shadow-sm,
+[data-theme="youtube2019"] .shadow-md,
+[data-theme="youtube2019"] .shadow-lg,
+[data-theme="youtube2019"] .shadow-xl { box-shadow:none !important; }
+
+/* Mobile. */
+[data-theme="youtube2019"] .cn-global-mobile-bar,
+[data-theme="youtube2019"] .cn-2012-mobile-bar { background:rgb(255 255 255 / 98%) !important; border-top:1px solid var(--polymer-border) !important; box-shadow:0 -5px 18px rgb(25 47 72 / 8%) !important; backdrop-filter:blur(10px) !important; }
+[data-theme="youtube2019"] .cn-global-mobile-bar a,
+[data-theme="youtube2019"] .cn-2012-mobile-bar a { color:var(--polymer-text-muted) !important; border-radius:10px !important; }
+[data-theme="youtube2019"] .cn-global-mobile-bar a[data-active="true"],
+[data-theme="youtube2019"] .cn-2012-mobile-bar a.font-semibold { background:var(--polymer-primary-soft) !important; color:var(--polymer-primary) !important; }
+
+@media (max-width:900px) {
+  [data-theme="youtube2019"] .cn-2012-topbar { height:58px !important; min-height:58px !important; padding:0 10px !important; }
+  [data-theme="youtube2019"] .cn-2012-shell-body { display:block !important; }
+  [data-theme="youtube2019"] .cn-2012-sidebar { display:none !important; }
+  [data-theme="youtube2019"] .cn-2012-main { padding:16px 14px 82px !important; }
+  [data-theme="youtube2019"] .cn-2012-main > * { width:100% !important; max-width:none !important; }
+  [data-theme="youtube2019"] .cn-2012-cover { height:190px !important; }
+  [data-theme="youtube2019"] .cn-2012-channel-inner { border-radius:11px !important; }
+}
+
+@media (max-width:650px) {
+  [data-theme="youtube2019"] .cn-2012-topbar form { max-width:none !important; }
+  [data-theme="youtube2019"] .cn-2012-topbar form input { height:38px !important; }
+  [data-theme="youtube2019"] .cn-2012-topbar > div:last-child > *:not(:last-child) { display:none !important; }
+  [data-theme="youtube2019"] .cn-2012-main h1 { font-size:23px !important; }
+  [data-theme="youtube2019"] .cn-2012-main article,
+  [data-theme="youtube2019"] .cn-2012-main [class*="group/card"],
+  [data-theme="youtube2019"] .cn-2012-main .cn-video-card { border-radius:10px !important; }
+  [data-theme="youtube2019"] .cn-2012-tabs a,
+  [data-theme="youtube2019"] .cn-2012-tabs span { padding:0 15px !important; }
+}
