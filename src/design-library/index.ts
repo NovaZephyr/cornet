@@ -1,6 +1,6 @@
 export type DesignCategory = "normal" | "custom";
 export type DesignKind = "theme" | "layout";
-export type DesignPage = "home" | "watch" | "channel" | "community" | "settings" | "explore" | "playlists";
+export type DesignPage = "home" | "watch" | "shorts" | "channel" | "community" | "settings" | "explore" | "playlists";
 
 export type ThemeDefinition = {
   id: string;
@@ -33,9 +33,9 @@ export const themes: ThemeDefinition[] = [
   { id: "midnight", name: "Medianoche", category: "normal", kind: "theme", description: "Tema nocturno del sistema normal.", stylesheets: [] },
   { id: "rose", name: "Rosa", category: "normal", kind: "theme", description: "Tema rosa del sistema normal.", stylesheets: [] },
   { id: "lavanda-oscuro", name: "Lavanda oscuro", category: "normal", kind: "theme", description: "Tema lavanda oscuro del sistema normal.", stylesheets: [] },
-  { id: "retro2012", name: "Cosmic Panda 2012", category: "custom", kind: "theme", description: "Experiencia global inspirada en Cosmic Panda / YouTube 2012.", stylesheets: ["/cosmic-panda-theme.css"], family: "youtube-historical", pages: ["home", "watch", "explore", "settings"] },
-  { id: "feather2013", name: "Feather 2013", category: "normal", kind: "theme", description: "Tema claro ligero y autónomo; no activa layouts históricos adicionales.", stylesheets: ["/feather-2013.css"], family: "feather-light", pages: ["home", "watch", "explore", "settings"] },
-  { id: "youtube2019", name: "YouTube 2019 / Polymer", category: "custom", kind: "theme", description: "Tema claro e independiente con CSS propio y shell aislado.", stylesheets: ["/youtube-polymer-2019.css", "/youtube-polymer-2019-design-system.css", "/youtube-polymer-2019-home.css"], family: "youtube-polymer", pages: ["home", "watch", "channel", "community", "settings", "explore", "playlists"] },
+  { id: "retro2012", name: "Cosmic Panda 2012", category: "custom", kind: "theme", description: "Experiencia global inspirada en Cosmic Panda / YouTube 2012.", stylesheets: ["/cosmic-panda-theme.css"], family: "youtube-historical", pages: ["home", "watch", "shorts", "explore", "settings"] },
+  { id: "feather2013", name: "Feather 2013", category: "normal", kind: "theme", description: "Tema claro ligero y autónomo; no activa layouts históricos adicionales.", stylesheets: ["/feather-2013.css"], family: "feather-light", pages: ["home", "watch", "shorts", "explore", "settings"] },
+  { id: "youtube2019", name: "YouTube 2019 / Polymer", category: "custom", kind: "theme", description: "Tema claro e independiente con CSS propio y shell aislado.", stylesheets: ["/youtube-polymer-2019.css", "/youtube-polymer-2019-design-system.css", "/youtube-polymer-2019-home.css"], family: "youtube-polymer", pages: ["home", "watch", "shorts", "channel", "community", "settings", "explore", "playlists"] },
   { id: "windowsAero", name: "Windows Aero", category: "custom", kind: "theme", description: "Cristal, blur y chrome inspirado en Vista/7.", stylesheets: ["/custom-theme-experiences.css", "/aero-family-overrides.css"], family: "desktop-era", pages: ["home", "watch", "channel", "settings"] },
   { id: "frutigerAero", name: "Frutiger Aero", category: "custom", kind: "theme", description: "Naturaleza, agua, cielo y vidrio translúcido.", stylesheets: ["/custom-theme-experiences.css", "/aero-family-overrides.css"], family: "web-aesthetic", pages: ["home", "watch", "channel", "explore"] },
   { id: "web2Glossy", name: "Web 2.0 Glossy", category: "custom", kind: "theme", description: "Glossy, gradients, chrome y skeuomorfismo web.", stylesheets: ["/custom-theme-experiences.css", "/aero-family-overrides.css"], family: "web-aesthetic", pages: ["home", "watch", "channel", "explore"] },
