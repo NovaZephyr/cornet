@@ -1,93 +1,6 @@
-import { createStart, createCsrfMiddleware, createMiddleware } from "@tanstack/react-start";
+import { createStart, createCsrfMiddleware } from "@tanstack/react-start";
 
 import { attachSupabaseAuth } from "@/integrations/supabase/auth-attacher";
-import { supabase } from "@/integrations/supabase/client";
-
-const videoSeoMiddleware = createMiddleware().server(async ({ request, next }) => {
-  const result = await next();
-  const response = result as unknown as Response;
-  const url = new URL(request.url);
-
-  if (url.pathname !== "/watch") return result;
-
-  const code = url.searchParams.get("v");
-  const contentType = response.headers.get("content-type") ?? "";
-  if (!code || !contentType.includes("text/html")) return result;
-
-  try {
-    const { data: video } = await supabase
-      .from("videos")
-      .select("id, code, user_id, title, description, thumbnail_path")
-      .eq("code", code)
-      .eq("visibility", "public")
-      .maybeSingle();
-
-    if (!video) return result;
-
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("username, display_name")
-      .eq("id", video.user_id)
-      .maybeSingle();
-
-    const channelName = profile?.display_name || profile?.username || "CoreNetwork";
-    const title = `${video.title} - CoreNetwork`;
-    const description = (video.description || `Video publicado por ${channelName}`)
-      .replace(/\s+/g, " ")
-      .trim()
-      .slice(0, 180);
-    const siteName = `${channelName} - Author`;
-    const canonical = `${url.origin}/watch?v=${encodeURIComponent(video.code)}`;
-
-    let imageUrl = `${url.origin}/no-thumbnail.svg`;
-    if (video.thumbnail_path) {
-      const rawPath = String(video.thumbnail_path);
-      if (rawPath.toLowerCase().startsWith("http://") || rawPath.toLowerCase().startsWith("https://")) {
-        imageUrl = rawPath;
-      } else {
-        const key = rawPath.startsWith("media/") ? rawPath.slice(6) : rawPath;
-        const publicUrl = supabase.storage.from("media").getPublicUrl(key).data.publicUrl;
-        if (publicUrl) imageUrl = publicUrl;
-      }
-    }
-
-    const escapeAttr = (value: string) =>
-      value
-        .replace(/&/g, "&amp;")
-        .replace(/"/g, "&quot;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;");
-
-    let html = await response.text();
-    html = html.replace(/<title>[^<]*<\/title>/i, "");
-
-    const tags = [
-      `<title>${escapeAttr(title)}</title>`,
-      `<meta name="author" content="${escapeAttr(channelName)}" />`,
-      `<meta property="og:title" content="${escapeAttr(title)}" />`,
-      `<meta property="og:description" content="${escapeAttr(description)}" />`,
-      `<meta property="og:site_name" content="${escapeAttr(siteName)}" />`,
-      `<meta property="og:type" content="video.other" />`,
-      `<meta property="og:url" content="${escapeAttr(canonical)}" />`,
-      `<meta property="og:image" content="${escapeAttr(imageUrl)}" />`,
-      `<meta name="twitter:card" content="summary_large_image" />`,
-      `<meta name="twitter:title" content="${escapeAttr(title)}" />`,
-      `<meta name="twitter:description" content="${escapeAttr(description)}" />`,
-      `<meta name="twitter:image" content="${escapeAttr(imageUrl)}" />`,
-    ].join("\n");
-
-    html = html.replace(/<head>/i, `<head>\n${tags}\n`);
-
-    return new Response(html, {
-      status: response.status,
-      statusText: response.statusText,
-      headers: response.headers,
-    }) as unknown as typeof result;
-  } catch (error) {
-    console.error("[video-seo] failed to enrich watch metadata", error);
-    return result;
-  }
-});
 
 const csrfMiddleware = createCsrfMiddleware({
   filter: (ctx) => ctx.handlerType === "serverFn",
@@ -95,5 +8,5 @@ const csrfMiddleware = createCsrfMiddleware({
 
 export const startInstance = createStart(() => ({
   functionMiddleware: [attachSupabaseAuth],
-  requestMiddleware: [videoSeoMiddleware, csrfMiddleware],
+  requestMiddleware: [csrfMiddleware],
 }));
