@@ -1,0 +1,80 @@
+:root[data-theme="liquid-glass"]{
+  --background:#eef3f8;
+  --foreground:#142033;
+  --surface:rgb(255 255 255 / 58%);
+  --surface-hover:rgb(255 255 255 / 72%);
+  --card:rgb(255 255 255 / 66%);
+  --card-foreground:#142033;
+  --popover:rgb(255 255 255 / 88%);
+  --popover-foreground:#142033;
+  --primary:#1684ff;
+  --primary-foreground:#fff;
+  --secondary:rgb(255 255 255 / 50%);
+  --secondary-foreground:#23405f;
+  --muted:rgb(225 234 245 / 72%);
+  --muted-foreground:#60758e;
+  --accent:rgb(180 219 255 / 58%);
+  --accent-foreground:#0f5ca8;
+  --border:rgb(255 255 255 / 64%);
+  --input:rgb(255 255 255 / 70%);
+  --ring:#1684ff;
+  --sidebar:rgb(245 249 253 / 66%);
+  --sidebar-foreground:#21334a;
+  --sidebar-primary:#1684ff;
+  --sidebar-primary-foreground:#fff;
+  --sidebar-accent:rgb(255 255 255 / 64%);
+  --sidebar-accent-foreground:#142033;
+  --sidebar-border:rgb(255 255 255 / 74%);
+  --sidebar-ring:#1684ff;
+}
+html[data-theme="liquid-glass"] body{
+  background:
+    radial-gradient(circle at 15% 10%,rgb(139 203 255 / 28%),transparent 30%),
+    radial-gradient(circle at 85% 20%,rgb(195 169 255 / 24%),transparent 28%),
+    radial-gradient(circle at 50% 90%,rgb(116 238 210 / 20%),transparent 34%),
+    #eef3f8;
+}
+html[data-theme="liquid-glass"] .cn-shell{
+  background:transparent;
+}
+html[data-theme="liquid-glass"] .cn-shell-header,
+html[data-theme="liquid-glass"] .cn-shell-sidebar,
+html[data-theme="liquid-glass"] .cn-shell-mobile-nav,
+html[data-theme="liquid-glass"] .cn-shell-footer{
+  background:rgb(255 255 255 / 46%);
+  backdrop-filter:blur(24px) saturate(150%);
+  -webkit-backdrop-filter:blur(24px) saturate(150%);
+  border-color:rgb(255 255 255 / 70%);
+  box-shadow:0 10px 35px rgb(45 75 110 / 10%);
+}
+html[data-theme="liquid-glass"] .cn-shell-header{
+  box-shadow:0 8px 30px rgb(45 75 110 / 12%);
+}
+html[data-theme="liquid-glass"] .cn-shell-sidebar nav a[data-active="true"],
+html[data-theme="liquid-glass"] .cn-shell-sidebar nav a:hover{
+  background:rgb(255 255 255 / 62%);
+  box-shadow:inset 0 1px 0 rgb(255 255 255 / 85%),0 5px 18px rgb(55 95 140 / 7%);
+}
+html[data-theme="liquid-glass"] .cn-shell-main{
+  background:transparent;
+}
+html[data-theme="liquid-glass"] .cn-shell-search input{
+  background:rgb(255 255 255 / 58%);
+  border-color:rgb(255 255 255 / 78%);
+  box-shadow:inset 0 1px 0 rgb(255 255 255 / 90%),0 8px 24px rgb(45 75 110 / 8%);
+  backdrop-filter:blur(18px);
+}
+html[data-theme="liquid-glass"] .cn-shell-search input:focus{
+  background:rgb(255 255 255 / 72%);
+  box-shadow:0 0 0 3px rgb(22 132 255 / 13%),0 10px 26px rgb(45 75 110 / 11%);
+}
+html[data-theme="liquid-glass"] .cn-shell-icon-button,
+html[data-theme="liquid-glass"] .cn-shell-avatar-button{
+  background:rgb(255 255 255 / 42%);
+  border-color:rgb(255 255 255 / 74%);
+  box-shadow:inset 0 1px 0 rgb(255 255 255 / 85%);
+}
+html[data-theme="liquid-glass"] .cn-shell-icon-button:hover,
+html[data-theme="liquid-glass"] .cn-shell-avatar-button:hover{
+  background:rgb(255 255 255 / 68%);
+}
