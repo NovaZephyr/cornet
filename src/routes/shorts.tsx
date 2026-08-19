@@ -29,8 +29,18 @@ function ShortCard({ video, active, onDisabled }: { video: ShortVideo; active: b
   const videoUrl = useSignedUrl(video.video_path);
   const posterUrl = useSignedUrl(video.thumbnail_path);
   const { user } = useAuth();
+  const qc = useQueryClient();
   const [muted, setMuted] = useState(true);
-  const [liked, setLiked] = useState(false);
+
+  const likesQuery = useQuery({
+    queryKey: ["short-likes", video.id],
+    queryFn: async () => {
+      const { data, error } = await supabase.from("video_likes").select("user_id, is_like").eq("video_id", video.id);
+      if (error) throw error;
+      return (data ?? []) as { user_id: string; is_like: boolean }[];
+    },
+    staleTime: 30_000,
+  });
 
   useEffect(() => {
     const element = videoRef.current;
@@ -39,6 +49,20 @@ function ShortCard({ video, active, onDisabled }: { video: ShortVideo; active: b
     if (active) void element.play().catch(() => undefined);
     else element.pause();
   }, [active, muted, videoUrl]);
+
+  const liked = likesQuery.data?.some((like) => like.user_id === user?.id && like.is_like) ?? false;
+  const likeCount = likesQuery.data?.filter((like) => like.is_like).length ?? 0;
+
+  const toggleLike = async () => {
+    if (!user) return void toast.error("Inicia sesión para reaccionar");
+    const current = likesQuery.data?.find((like) => like.user_id === user.id);
+    const result = current?.is_like
+      ? await supabase.from("video_likes").delete().eq("video_id", video.id).eq("user_id", user.id)
+      : await supabase.from("video_likes").upsert({ video_id: video.id, user_id: user.id, is_like: true });
+    if (result.error) return void toast.error(result.error.message);
+    void qc.invalidateQueries({ queryKey: ["short-likes", video.id] });
+    void qc.invalidateQueries({ queryKey: ["likes", video.id] });
+  };
 
   const toggleShort = async () => {
     if (!user || user.id !== video.user_id) return;
@@ -63,20 +87,17 @@ function ShortCard({ video, active, onDisabled }: { video: ShortVideo; active: b
       <div className="cn-shorts-gradient" />
       <div className="cn-shorts-overlay">
         <div className="cn-shorts-meta">
-          <Link to="/c/$username" params={{ username: video.profiles?.username ?? "" }} className="cn-shorts-author">
-            <ChannelAvatar path={video.profiles?.avatar_path} name={video.profiles?.display_name || video.profiles?.username || "Canal"} size={34} />
-            <span>{video.profiles?.display_name || video.profiles?.username || "Canal"}{video.profiles?.is_verified && <VerifiedBadge className="h-3.5 w-3.5" />}</span>
-          </Link>
+          <Link to="/c/$username" params={{ username: video.profiles?.username ?? "" }} className="cn-shorts-author"><ChannelAvatar path={video.profiles?.avatar_path} name={video.profiles?.display_name || video.profiles?.username || "Canal"} size={34} /><span>{video.profiles?.display_name || video.profiles?.username || "Canal"}{video.profiles?.is_verified && <VerifiedBadge className="h-3.5 w-3.5" />}</span></Link>
           <h2>{video.title}</h2>
           {video.description && <p className="cn-shorts-description">{video.description}</p>}
           <p className="cn-shorts-stats">{formatViews(video.views ?? 0)} visualizaciones</p>
         </div>
         <div className="cn-shorts-actions">
-          <button type="button" aria-label="Me gusta" data-active={liked ? "true" : "false"} onClick={() => setLiked((value) => !value)}><Heart className={liked ? "fill-current" : ""} /><span>Me gusta</span></button>
-          <button type="button" aria-label="Comentarios"><MessageCircle /><span>Comentarios</span></button>
+          <button type="button" aria-label="Me gusta" data-active={liked ? "true" : "false"} onClick={() => void toggleLike()}><Heart className={liked ? "fill-current" : ""} /><span>{likeCount}</span></button>
+          <Link to="/watch" search={{ v: video.code }} aria-label="Comentarios"><MessageCircle /><span>Comentarios</span></Link>
           <button type="button" aria-label="Compartir" onClick={() => void share()}><Share2 /><span>Compartir</span></button>
-          <button type="button" aria-label="Guardar"><Bookmark /><span>Guardar</span></button>
-          <button type="button" aria-label="Ver video"><Link to="/watch" search={{ v: video.code }}><ExternalLink /><span>Ver</span></Link></button>
+          <Link to="/watch" search={{ v: video.code }} aria-label="Guardar"><Bookmark /><span>Guardar</span></Link>
+          <Link to="/watch" search={{ v: video.code }} aria-label="Ver video"><ExternalLink /><span>Ver</span></Link>
           {user?.id === video.user_id && <DropdownMenu><DropdownMenuTrigger asChild><button type="button" aria-label="Más opciones"><MoreVertical /><span>Más</span></button></DropdownMenuTrigger><DropdownMenuContent align="end"><DropdownMenuItem onClick={() => void toggleShort()}>No mostrar como Short</DropdownMenuItem></DropdownMenuContent></DropdownMenu>}
         </div>
       </div>
@@ -109,10 +130,5 @@ function ShortsPage() {
     qc.setQueryData<ShortVideo[]>(["shorts-feed"], (old) => (old ?? []).filter((video) => video.id !== videoId));
   };
 
-  return <AppShell hideSidebar>
-    <div className="cn-shorts-page">
-      <header className="cn-shorts-header"><div><span className="cn-shorts-kicker">Cornet</span><h1>Shorts</h1><p>Videos verticales y cuadrados en un feed continuo.</p></div><Link to="/upload" className="cn-shorts-upload">Crear un Short</Link></header>
-      {query.isLoading ? <div className="cn-shorts-loading"><Loader2 className="h-5 w-5 animate-spin" />Cargando Shorts…</div> : query.data && query.data.length > 0 ? <div ref={cardsRef} className="cn-shorts-feed" aria-label="Feed de Shorts">{query.data.map((video) => <ShortCard key={video.id} video={video} active={activeId === video.id} onDisabled={disableFromFeed} />)}</div> : <section className="cn-shorts-empty"><PlaySquare className="h-8 w-8" /><h2>Aún no hay Shorts</h2><p>Los videos verticales o cuadrados de hasta 180 segundos aparecerán aquí, salvo que el creador los desactive.</p><Button asChild><Link to="/upload">Subir el primero</Link></Button></section>}
-    </div>
-  </AppShell>;
+  return <AppShell hideSidebar><div className="cn-shorts-page"><header className="cn-shorts-header"><div><span className="cn-shorts-kicker">Cornet</span><h1>Shorts</h1><p>Videos verticales y cuadrados en un feed continuo.</p></div><Link to="/upload" className="cn-shorts-upload">Crear un Short</Link></header>{query.isLoading ? <div className="cn-shorts-loading"><Loader2 className="h-5 w-5 animate-spin" />Cargando Shorts…</div> : query.data && query.data.length > 0 ? <div ref={cardsRef} className="cn-shorts-feed" aria-label="Feed de Shorts">{query.data.map((video) => <ShortCard key={video.id} video={video} active={activeId === video.id} onDisabled={disableFromFeed} />)}</div> : <section className="cn-shorts-empty"><PlaySquare className="h-8 w-8" /><h2>Aún no hay Shorts</h2><p>Los videos verticales o cuadrados de hasta 180 segundos aparecerán aquí, salvo que el creador los desactive.</p><Button asChild><Link to="/upload">Subir el primero</Link></Button></section>}</div></AppShell>;
 }
