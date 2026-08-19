@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import { Megaphone } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { AppShell } from "@/components/AppShell";
+import { BlogAd } from "@/components/BlogAd";
 import { ChannelAvatar, SignedImage } from "@/components/Media";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
@@ -11,13 +12,11 @@ import { timeAgo } from "@/lib/format";
 import { fetchProfilesByIds } from "@/lib/queries";
 
 export const Route = createFileRoute("/blog")({
-  head: () => ({
-    meta: [
-      { title: "Anuncios — Cornet" },
-      { name: "description", content: "Novedades y anuncios oficiales del equipo de Cornet." },
-      { property: "og:title", content: "Anuncios — Cornet" },
-    ],
-  }),
+  head: () => ({ meta: [
+    { title: "Anuncios — Cornet" },
+    { name: "description", content: "Novedades y anuncios oficiales del equipo de Cornet." },
+    { property: "og:title", content: "Anuncios — Cornet" },
+  ]}),
   component: BlogPage,
 });
 
@@ -37,5 +36,5 @@ function PollBlock({ announcementId }: { announcementId: string }) {
 
 function BlogPage() {
   const { data: announcements, isLoading } = useQuery({ queryKey: ["announcements"], queryFn: async () => { const { data, error } = await supabase.from("announcements").select("*").order("created_at", { ascending: false }); if (error) throw error; const rows = (data ?? []) as Announcement[]; const profiles = await fetchProfilesByIds(rows.map((r) => r.author_id)); return rows.map((r) => ({ ...r, author: profiles.get(r.author_id) ?? null })); } });
-  return <AppShell><div className="mx-auto max-w-2xl"><h1 className="mb-6 flex items-center gap-2 text-xl font-bold"><Megaphone className="h-5 w-5 text-primary" /> Anuncios</h1>{isLoading ? <p className="py-12 text-center text-muted-foreground">Cargando…</p> : announcements && announcements.length > 0 ? <div className="space-y-5">{announcements.map((a) => <article key={a.id} className="rounded-2xl bg-surface p-5"><div className="flex items-center gap-3"><ChannelAvatar path={a.author?.avatar_path ?? null} name={a.author?.display_name || "Cornet"} size={36} /><div><p className="text-sm font-medium">{a.author?.display_name || "Equipo Cornet"}</p><p className="text-xs text-muted-foreground">{timeAgo(a.created_at)}</p></div></div><h2 className="mt-3 text-lg font-semibold">{a.title}</h2>{a.body && <p className="mt-1 whitespace-pre-wrap text-sm">{a.body}</p>}{a.post_type === "image" && a.image_path && <div className="mt-3 overflow-hidden rounded-xl bg-background"><SignedImage path={a.image_path} alt={a.title} className="w-full object-cover" /></div>}{a.post_type === "poll" && <PollBlock announcementId={a.id} />}</article>)}</div> : <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-border py-24 text-center"><Megaphone className="mb-3 h-10 w-10 text-muted-foreground" /><p className="text-lg font-medium">Todavía no hay anuncios</p><p className="mt-1 text-sm text-muted-foreground">Aquí verás las novedades oficiales de Cornet.</p></div>}</div></AppShell>;
+  return <AppShell><div className="mx-auto max-w-2xl"><h1 className="mb-6 flex items-center gap-2 text-xl font-bold"><Megaphone className="h-5 w-5 text-primary" /> Anuncios</h1><div className="mb-5"><BlogAd slot="article-top" /></div>{isLoading ? <p className="py-12 text-center text-muted-foreground">Cargando…</p> : announcements && announcements.length > 0 ? <div className="space-y-5">{announcements.map((a, index) => <div key={a.id}><article className="rounded-2xl bg-surface p-5"><div className="flex items-center gap-3"><ChannelAvatar path={a.author?.avatar_path ?? null} name={a.author?.display_name || "Cornet"} size={36} /><div><p className="text-sm font-medium">{a.author?.display_name || "Equipo Cornet"}</p><p className="text-xs text-muted-foreground">{timeAgo(a.created_at)}</p></div></div><h2 className="mt-3 text-lg font-semibold">{a.title}</h2>{a.body && <p className="mt-1 whitespace-pre-wrap text-sm">{a.body}</p>}{a.post_type === "image" && a.image_path && <div className="mt-3 overflow-hidden rounded-xl bg-background"><SignedImage path={a.image_path} alt={a.title} className="w-full object-cover" /></div>}{a.post_type === "poll" && <PollBlock announcementId={a.id} />}</article>{index === 1 ? <div className="mt-5"><BlogAd slot="feed-between" /></div> : null}</div>)}</div> : <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-border py-24 text-center"><Megaphone className="mb-3 h-10 w-10 text-muted-foreground" /><p className="text-lg font-medium">Todavía no hay anuncios</p><p className="mt-1 text-sm text-muted-foreground">Aquí verás las novedades oficiales de Cornet.</p></div>}</div></AppShell>;
 }
