@@ -1,0 +1,32 @@
+/* Polymer 2019 — final shell layer. Loaded last by Design Library. */
+[data-theme="youtube2019"] .cn-2012-app,
+[data-theme="youtube2019"] .cn-2012-app > *{background:#fff!important}
+[data-theme="youtube2019"] .cn-2012-topbar,
+[data-theme="youtube2019"] .cn-2012-topbar *{box-sizing:border-box!important}
+[data-theme="youtube2019"] .cn-2012-topbar{background:#fff!important;color:#0f0f0f!important;border-radius:0!important;border:0!important;border-bottom:1px solid #e5e5e5!important;box-shadow:none!important}
+[data-theme="youtube2019"] .cn-2012-topbar .cn-2012-topbar-left,
+[data-theme="youtube2019"] .cn-2012-topbar .cn-2012-topbar-center,
+[data-theme="youtube2019"] .cn-2012-topbar .cn-2012-topbar-right{background:#fff!important;color:#0f0f0f!important}
+[data-theme="youtube2019"] .cn-2012-topbar button,
+[data-theme="youtube2019"] .cn-2012-topbar a{background:transparent!important;color:#0f0f0f!important;border-radius:0!important}
+[data-theme="youtube2019"] .cn-2012-sidebar,
+[data-theme="youtube2019"] .cn-2012-sidebar-inner,
+[data-theme="youtube2019"] .cn-2012-sidebar nav,
+[data-theme="youtube2019"] .cn-2012-sidebar > div{background:#fff!important;color:#0f0f0f!important;border-radius:0!important;box-shadow:none!important}
+[data-theme="youtube2019"] .cn-2012-sidebar{border-right:1px solid #e5e5e5!important}
+[data-theme="youtube2019"] .cn-2012-sidebar-link,
+[data-theme="youtube2019"] .cn-2012-sidebar-subscription,
+[data-theme="youtube2019"] .cn-2012-sidebar-add{background:#fff!important;color:#0f0f0f!important;border-radius:0!important;box-shadow:none!important}
+[data-theme="youtube2019"] .cn-2012-sidebar-link:hover,
+[data-theme="youtube2019"] .cn-2012-sidebar-subscription:hover,
+[data-theme="youtube2019"] .cn-2012-sidebar-add:hover,
+[data-theme="youtube2019"] .cn-2012-sidebar-link[aria-current="page"]{background:#eee!important;color:#0f0f0f!important}
+[data-theme="youtube2019"] .cn-2012-sidebar-account{background:#fff!important;color:#0f0f0f!important}
+[data-theme="youtube2019"] .cn-2012-sidebar-account p{color:#0f0f0f!important}
+[data-theme="youtube2019"] .cn-2012-sidebar-account p.text-white\/60{color:#606060!important}
+[data-theme="youtube2019"] .cn-2012-sidebar-section-title{background:#fff!important;color:#606060!important}
+[data-theme="youtube2019"] .cn-2012-main{background:#f2f2f2!important;color:#0f0f0f!important}
+[data-theme="youtube2019"] .cn-polymer-home-tabs{background:#fff!important;border-color:#e5e5e5!important}
+[data-theme="youtube2019"] .cn-polymer-home-tabs a{background:#fff!important;color:#606060!important;border-radius:0!important}
+[data-theme="youtube2019"] .cn-polymer-home-tabs a:hover{background:#f2f2f2!important}
+[data-theme="youtube2019"] .cn-polymer-home-tabs a.is-active{background:#fff!important;color:#0f0f0f!important}
