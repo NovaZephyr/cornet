@@ -4,18 +4,17 @@ import { getTheme } from "./index";
 const THEME_KEY = "corenetwork-theme-v3";
 const LOADED_LINKS = "data-cornet-design-library";
 
-function normalizeHrefs(stylesheets: string[]) {
-  return Array.from(new Set(stylesheets));
-}
-
 function loadStylesheets(stylesheets: string[]) {
-  const desired = new Set(normalizeHrefs(stylesheets));
+  const desired = new Set(stylesheets);
   document.head.querySelectorAll<HTMLLinkElement>(`link[${LOADED_LINKS}]`).forEach((link) => {
-    if (!desired.has(link.getAttribute("href") ?? "")) link.remove();
+    const href = link.getAttribute("href") ?? "";
+    if (!desired.has(href)) link.remove();
   });
 
   desired.forEach((href) => {
-    const exists = document.head.querySelector(`link[${LOADED_LINKS}][href="${CSS.escape(href)}"]`);
+    const exists = Array.from(document.head.querySelectorAll<HTMLLinkElement>(`link[${LOADED_LINKS}]`)).some(
+      (link) => link.getAttribute("href") === href,
+    );
     if (exists) return;
     const link = document.createElement("link");
     link.rel = "stylesheet";
@@ -27,28 +26,31 @@ function loadStylesheets(stylesheets: string[]) {
 
 function syncTheme(themeId: string) {
   const theme = getTheme(themeId);
-  const root = document.documentElement;
-  root.dataset.theme = theme.id;
-  const light = ["light", "retro2012", "feather2013", "youtube2019", "windowsAero", "frutigerAero", "web2Glossy", "xpLuna", "grad-candy"].includes(theme.id);
-  root.classList.toggle("dark", !light);
-  root.style.colorScheme = light ? "light" : "dark";
   loadStylesheets(theme.stylesheets);
 }
 
 export function DesignLibraryRuntime() {
   useEffect(() => {
-    try {
-      const saved = window.localStorage.getItem(THEME_KEY) ?? "grad-ocean";
-      syncTheme(saved);
-    } catch {
-      syncTheme("grad-ocean");
-    }
+    const root = document.documentElement;
+    const initialTheme = root.dataset.theme || window.localStorage.getItem(THEME_KEY) || "grad-ocean";
+    syncTheme(initialTheme);
 
-    const handler = (event: StorageEvent) => {
+    const observer = new MutationObserver((records) => {
+      if (records.some((record) => record.type === "attributes" && record.attributeName === "data-theme")) {
+        syncTheme(root.dataset.theme || "grad-ocean");
+      }
+    });
+    observer.observe(root, { attributes: true, attributeFilter: ["data-theme"] });
+
+    const storageHandler = (event: StorageEvent) => {
       if (event.key === THEME_KEY && event.newValue) syncTheme(event.newValue);
     };
-    window.addEventListener("storage", handler);
-    return () => window.removeEventListener("storage", handler);
+    window.addEventListener("storage", storageHandler);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("storage", storageHandler);
+    };
   }, []);
 
   return null;
