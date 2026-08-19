@@ -821,6 +821,7 @@ export type Database = {
           is_music_channel: boolean
           is_verified: boolean
           preferred_language: string
+          social_links: Json
           subscriber_count: number
           updated_at: string
           username: string
@@ -847,6 +848,7 @@ export type Database = {
           is_music_channel?: boolean
           is_verified?: boolean
           preferred_language?: string
+          social_links?: Json
           subscriber_count?: number
           updated_at?: string
           username: string
@@ -873,6 +875,7 @@ export type Database = {
           is_music_channel?: boolean
           is_verified?: boolean
           preferred_language?: string
+          social_links?: Json
           subscriber_count?: number
           updated_at?: string
           username?: string
