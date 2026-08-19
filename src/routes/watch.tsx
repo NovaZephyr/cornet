@@ -6,24 +6,28 @@ const WatchContent = lazy(() => import("./watch-content").then((module) => ({ de
 
 const DEFAULT_EMBED_IMAGE = "https://mvwpxnszcpyayofqgtmv.supabase.co/storage/v1/object/public/media/61fe7d8d-f53f-4838-a870-4588c16e474b/announcement-7871ca44-f13f-45e5-a3c1-7908f0c348a9.png";
 
+type WatchVideo = {
+  id: string;
+  code: string;
+  user_id: string;
+  title: string;
+  description: string;
+  video_path: string;
+  thumbnail_path: string | null;
+  views: number;
+  created_at: string;
+  category: string | null;
+};
+
+type WatchChannel = {
+  username: string;
+  display_name: string;
+  avatar_path: string | null;
+};
+
 type WatchLoaderData = {
-  video: {
-    id: string;
-    code: string;
-    user_id: string;
-    title: string;
-    description: string;
-    video_path: string;
-    thumbnail_path: string | null;
-    views: number;
-    created_at: string;
-    category: string | null;
-  };
-  channel: {
-    username: string;
-    display_name: string;
-    avatar_path: string | null;
-  } | null;
+  video: WatchVideo;
+  channel: WatchChannel | null;
 } | null;
 
 function publicMediaUrl(path: string | null | undefined) {
@@ -41,23 +45,24 @@ export const Route = createFileRoute("/watch")({
     const code = new URLSearchParams(location.searchStr).get("v") ?? "";
     if (!code) return null;
 
-    const { data: video, error } = await supabase
+    const { data: rawVideo, error } = await supabase
       .from("videos")
       .select("id, code, user_id, title, description, video_path, thumbnail_path, views, created_at, category")
       .eq("code", code)
       .eq("visibility", "public")
       .maybeSingle();
 
-    if (error || !video) return null;
+    if (error || !rawVideo) return null;
 
     const { data: profile } = await supabase
       .from("profiles")
       .select("username, display_name, avatar_path")
-      .eq("id", video.user_id)
+      .eq("id", rawVideo.user_id)
       .maybeSingle();
 
+    const video = rawVideo as WatchVideo;
     return {
-      video: video as WatchLoaderData extends infer T ? Exclude<T, null> extends { video: infer V } ? V : never : never,
+      video,
       channel: profile
         ? {
             username: profile.username,
@@ -65,9 +70,9 @@ export const Route = createFileRoute("/watch")({
             avatar_path: profile.avatar_path,
           }
         : null,
-    } as WatchLoaderData;
+    };
   },
-  head: ({ loaderData, params }) => {
+  head: ({ loaderData }) => {
     const video = loaderData?.video;
     const channel = loaderData?.channel;
     const title = video?.title?.trim() || "Video en Cornet";
@@ -77,8 +82,8 @@ export const Route = createFileRoute("/watch")({
       .slice(0, 300);
     const author = channel?.display_name || channel?.username || "Cornet";
     const image = publicMediaUrl(video?.thumbnail_path) || DEFAULT_EMBED_IMAGE;
-    const code = video?.code || new URLSearchParams(params as Record<string, string>).get("v") || "";
-    const canonical = `/watch?v=${encodeURIComponent(code)}`;
+    const code = video?.code || "";
+    const canonical = code ? `/watch?v=${encodeURIComponent(code)}` : "/watch";
 
     return {
       meta: [
