@@ -1,35 +1,206 @@
-/* YouTube 2019 / Polymer — homepage only. */
-[data-theme="youtube2019"] .cn-2012-main:has(.cn-polymer-home-frame){background:#f2f2f2!important;padding:0 28px 42px!important;color:#0f0f0f!important}
+/*
+ * YouTube 2019 / Polymer — homepage layer.
+ *
+ * This file owns homepage geometry/content presentation only.
+ * The global shell is deliberately NOT redefined here.
+ */
 
-/* Polymer uses one flat filter/navigation strip for content sorting. */
-[data-theme="youtube2019"] .cn-polymer-home-tabs{height:44px;display:flex;align-items:stretch;justify-content:flex-start;gap:0;margin:0 -28px 18px;background:#fff;border-bottom:1px solid #e5e5e5;overflow-x:auto}
-[data-theme="youtube2019"] .cn-polymer-home-tabs button{min-width:116px;height:44px;display:flex;align-items:center;justify-content:center;position:relative;padding:0 18px;color:#606060!important;font:400 13px/44px Roboto,Arial,sans-serif;text-decoration:none;white-space:nowrap;border:0;border-right:1px solid #eee;border-radius:0!important;background:#fff!important;cursor:pointer}
-[data-theme="youtube2019"] .cn-polymer-home-tabs button:hover{background:#f8f8f8!important;color:#0f0f0f!important}
-[data-theme="youtube2019"] .cn-polymer-home-tabs button.is-active{color:#0f0f0f!important;font-weight:500;background:#fff!important}
-[data-theme="youtube2019"] .cn-polymer-home-tabs button.is-active::after{content:"";position:absolute;left:16px;right:16px;bottom:-1px;height:2px;background:#ff0000}
+[data-theme="youtube2019"] .cn-2012-main:has(.cn-polymer-home-frame) {
+  background: var(--polymer-bg) !important;
+  padding: 0 28px 42px !important;
+  color: var(--polymer-text) !important;
+}
 
-[data-theme="youtube2019"] .cn-polymer-home-frame{width:min(1080px,100%);margin:0 auto;background:#fff;border:1px solid #e0e0e0}
-[data-theme="youtube2019"] .cn-polymer-shelf{padding:18px 16px 16px;border-bottom:1px solid #e5e5e5}
-[data-theme="youtube2019"] .cn-polymer-shelf:last-child{border-bottom:0}
-[data-theme="youtube2019"] .cn-polymer-shelf-heading{display:flex;align-items:baseline;gap:8px;margin-bottom:11px}
-[data-theme="youtube2019"] .cn-polymer-shelf-heading h2{margin:0;color:#0f0f0f;font:500 16px/1.3 Roboto,Arial,sans-serif}
-[data-theme="youtube2019"] .cn-polymer-shelf-heading span{color:#606060;font:400 11px/1.3 Roboto,Arial,sans-serif}
-[data-theme="youtube2019"] .cn-polymer-video-grid{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;column-gap:16px!important;row-gap:18px!important}
-[data-theme="youtube2019"] .cn-polymer-video-grid > *{min-width:0}
-[data-theme="youtube2019"] .cn-polymer-video-grid .cn-video-card,[data-theme="youtube2019"] .cn-polymer-video-grid > div{background:transparent!important}
-[data-theme="youtube2019"] .cn-polymer-video-grid img{border-radius:0!important}
-[data-theme="youtube2019"] .cn-polymer-video-grid > div > div:last-child{gap:9px!important}
-[data-theme="youtube2019"] .cn-polymer-video-grid .text-sm{font-size:13px!important;line-height:18px!important;color:#0f0f0f!important;font-weight:500!important}
-[data-theme="youtube2019"] .cn-polymer-video-grid .text-xs{font-size:11px!important;line-height:16px!important;color:#606060!important}
-[data-theme="youtube2019"] .cn-polymer-video-grid .mt-1{margin-top:2px!important}
-[data-theme="youtube2019"] .cn-polymer-skeleton{min-width:0}
-[data-theme="youtube2019"] .cn-polymer-empty{padding:80px 20px;text-align:center;color:#606060}
-@media(max-width:1100px){[data-theme="youtube2019"] .cn-polymer-video-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
-@media(max-width:760px){
-  [data-theme="youtube2019"] .cn-2012-main:has(.cn-polymer-home-frame){padding:0 12px 28px!important}
-  [data-theme="youtube2019"] .cn-polymer-home-tabs{margin:0 -12px 12px}
-  [data-theme="youtube2019"] .cn-polymer-home-tabs button{min-width:105px;padding:0 12px}
-  [data-theme="youtube2019"] .cn-polymer-home-frame{width:100%;border-left:0;border-right:0}
-  [data-theme="youtube2019"] .cn-polymer-shelf{padding:14px 10px}
-  [data-theme="youtube2019"] .cn-polymer-video-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:18px 10px!important}
+[data-theme="youtube2019"] .cn-polymer-home-tabs {
+  width: 100% !important;
+  height: 44px !important;
+  display: flex !important;
+  align-items: stretch !important;
+  justify-content: flex-start !important;
+  gap: 0 !important;
+  margin: 0 0 18px !important;
+  background: var(--polymer-canvas) !important;
+  border-bottom: 1px solid var(--polymer-border) !important;
+  overflow-x: auto !important;
+}
+
+[data-theme="youtube2019"] .cn-polymer-home-tabs button,
+[data-theme="youtube2019"] .cn-polymer-home-tabs a {
+  min-width: 116px !important;
+  height: 44px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  position: relative !important;
+  padding: 0 18px !important;
+  color: var(--polymer-text-soft) !important;
+  font: 400 13px/44px Roboto, Arial, sans-serif !important;
+  text-decoration: none !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+  border-right: 1px solid var(--polymer-border) !important;
+  border-radius: 0 !important;
+  background: var(--polymer-canvas) !important;
+  cursor: pointer !important;
+}
+
+[data-theme="youtube2019"] .cn-polymer-home-tabs button:hover,
+[data-theme="youtube2019"] .cn-polymer-home-tabs a:hover {
+  background: var(--polymer-surface-hover) !important;
+  color: var(--polymer-text) !important;
+}
+
+[data-theme="youtube2019"] .cn-polymer-home-tabs button.is-active,
+[data-theme="youtube2019"] .cn-polymer-home-tabs a.is-active {
+  color: var(--polymer-text) !important;
+  font-weight: 500 !important;
+  background: var(--polymer-canvas) !important;
+}
+
+[data-theme="youtube2019"] .cn-polymer-home-tabs button.is-active::after,
+[data-theme="youtube2019"] .cn-polymer-home-tabs a.is-active::after {
+  content: "" !important;
+  position: absolute !important;
+  left: 16px !important;
+  right: 16px !important;
+  bottom: -1px !important;
+  height: 2px !important;
+  background: #ff0000 !important;
+}
+
+[data-theme="youtube2019"] .cn-polymer-home-frame {
+  width: min(1080px, 100%) !important;
+  margin: 0 auto !important;
+  background: var(--polymer-canvas) !important;
+  border: 1px solid var(--polymer-border) !important;
+  border-radius: 0 !important;
+  box-shadow: 0 1px 3px rgb(25 47 72 / 4%) !important;
+}
+
+[data-theme="youtube2019"] .cn-polymer-shelf {
+  padding: 18px 16px 16px !important;
+  background: var(--polymer-canvas) !important;
+  border-bottom: 1px solid var(--polymer-border) !important;
+}
+
+[data-theme="youtube2019"] .cn-polymer-shelf:last-child {
+  border-bottom: 0 !important;
+}
+
+[data-theme="youtube2019"] .cn-polymer-shelf-heading {
+  display: flex !important;
+  align-items: baseline !important;
+  gap: 8px !important;
+  margin: 0 0 11px !important;
+}
+
+[data-theme="youtube2019"] .cn-polymer-shelf-heading h2 {
+  margin: 0 !important;
+  color: var(--polymer-text) !important;
+  font: 500 16px/1.3 Roboto, Arial, sans-serif !important;
+}
+
+[data-theme="youtube2019"] .cn-polymer-shelf-heading span {
+  color: var(--polymer-text-muted) !important;
+  font: 400 11px/1.3 Roboto, Arial, sans-serif !important;
+}
+
+[data-theme="youtube2019"] .cn-polymer-video-grid {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  column-gap: 16px !important;
+  row-gap: 18px !important;
+}
+
+[data-theme="youtube2019"] .cn-polymer-video-grid > * {
+  min-width: 0 !important;
+}
+
+[data-theme="youtube2019"] .cn-polymer-video-grid .cn-video-card,
+[data-theme="youtube2019"] .cn-polymer-video-grid > div {
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+}
+
+[data-theme="youtube2019"] .cn-polymer-video-grid img {
+  display: block !important;
+  width: 100% !important;
+  aspect-ratio: 16 / 9 !important;
+  object-fit: cover !important;
+  border-radius: 0 !important;
+}
+
+[data-theme="youtube2019"] .cn-polymer-video-grid > div > div:last-child {
+  gap: 9px !important;
+}
+
+[data-theme="youtube2019"] .cn-polymer-video-grid .text-sm {
+  display: block !important;
+  margin-top: 7px !important;
+  color: var(--polymer-text) !important;
+  font-size: 13px !important;
+  line-height: 18px !important;
+  font-weight: 500 !important;
+}
+
+[data-theme="youtube2019"] .cn-polymer-video-grid .text-xs {
+  color: var(--polymer-text-soft) !important;
+  font-size: 11px !important;
+  line-height: 16px !important;
+}
+
+[data-theme="youtube2019"] .cn-polymer-video-grid .mt-1 {
+  margin-top: 2px !important;
+}
+
+[data-theme="youtube2019"] .cn-polymer-empty {
+  padding: 80px 20px !important;
+  text-align: center !important;
+  color: var(--polymer-text-muted) !important;
+}
+
+@media (max-width: 1100px) {
+  [data-theme="youtube2019"] .cn-polymer-video-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 760px) {
+  [data-theme="youtube2019"] .cn-2012-main:has(.cn-polymer-home-frame) {
+    padding: 0 12px 28px !important;
+  }
+
+  [data-theme="youtube2019"] .cn-polymer-home-tabs {
+    margin: 0 0 12px !important;
+  }
+
+  [data-theme="youtube2019"] .cn-polymer-home-tabs button,
+  [data-theme="youtube2019"] .cn-polymer-home-tabs a {
+    min-width: 105px !important;
+    padding: 0 12px !important;
+  }
+
+  [data-theme="youtube2019"] .cn-polymer-home-frame {
+    width: 100% !important;
+    border-left: 0 !important;
+    border-right: 0 !important;
+  }
+
+  [data-theme="youtube2019"] .cn-polymer-shelf {
+    padding: 14px 10px !important;
+  }
+
+  [data-theme="youtube2019"] .cn-polymer-video-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 18px 10px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  [data-theme="youtube2019"] .cn-polymer-video-grid {
+    grid-template-columns: 1fr !important;
+  }
 }
