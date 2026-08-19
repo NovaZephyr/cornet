@@ -2,17 +2,17 @@ import { useEffect } from "react";
 import { getChannelLayout } from "./index";
 
 const LAYOUT_LINK_ATTR = "data-cornet-channel-layout";
+const CANVAS_STYLESHEET = "/channel-layout-full-canvas.css";
 
 /**
- * Loads the stylesheets registered for a channel layout in the Design Library.
- * Layout styles are kept in a separate link namespace than theme styles so the
- * global theme runtime never removes them (and vice versa). Adding a new layout
- * only requires registering it in `src/design-library/index.ts`.
+ * Loads the layout stylesheet plus the shared channel-canvas geometry layer.
+ * The geometry layer guarantees every channel layout owns the full available
+ * shell canvas; individual layouts only control their inner composition.
  */
 export function ChannelLayoutStyles({ layoutId }: { layoutId: string }) {
   useEffect(() => {
     const layout = getChannelLayout(layoutId);
-    const desired = new Set(layout?.stylesheets ?? []);
+    const desired = new Set([...(layout?.stylesheets ?? []), CANVAS_STYLESHEET]);
 
     document.head.querySelectorAll<HTMLLinkElement>(`link[${LAYOUT_LINK_ATTR}]`).forEach((link) => {
       if (!desired.has(link.getAttribute("href") ?? "")) link.remove();
