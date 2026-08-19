@@ -1,5 +1,4 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
-import "@/custom-themes-gallery.css";
 import { readExtensions, saveExtensions } from "@/extensions";
 
 export const THEMES = [
@@ -11,8 +10,8 @@ export const THEMES = [
   { id: "midnight", label: "Medianoche", hint: "Azul noche y superficies suaves", group: "Sólidos", kind: "normal" },
   { id: "rose", label: "Rosa", hint: "Rosa oscuro con superficies cálidas", group: "Sólidos", kind: "normal" },
   { id: "retro2012", label: "YouTube 2012 / Cosmic Panda", hint: "Custom claro inspirado en Cosmic Panda", group: "Históricos", kind: "custom" },
-  { id: "feather2013", label: "Feather 2013", hint: "Minimalista y ligero", group: "Clásicos", kind: "normal" },
-  { id: "youtube2019", label: "YouTube 2019", hint: "Blanco, limpio y centrado en contenido", group: "Clásicos", kind: "normal" },
+  { id: "feather2013", label: "Feather 2013", hint: "Tema claro ligero y autónomo", group: "Clásicos", kind: "normal" },
+  { id: "youtube2019", label: "YouTube 2019", hint: "Polymer claro e independiente", group: "Clásicos", kind: "custom" },
   { id: "windowsAero", label: "Windows Aero", hint: "Vidrio azul y transparencias", group: "Retro", kind: "custom" },
   { id: "frutigerAero", label: "Frutiger Aero", hint: "Cielo, agua, naturaleza y brillo", group: "Retro", kind: "custom" },
   { id: "web2Glossy", label: "Web 2.0 Glossy", hint: "Gradientes brillantes y botones clásicos", group: "Retro", kind: "custom" },
