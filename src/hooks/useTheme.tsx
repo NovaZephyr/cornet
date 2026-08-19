@@ -1,5 +1,4 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
-import { readExtensions, saveExtensions } from "@/extensions";
 
 export const THEMES = [
   { id: "grad-ocean", label: "Océano", hint: "Azul fresco, turquesa y cristal", group: "Recomendado", kind: "normal" },
@@ -71,7 +70,7 @@ const ThemeContext = createContext<ThemeState | undefined>(undefined);
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setThemeState] = useState<ThemeId>(readInitialTheme);
   const [customTheme, setCustomThemeState] = useState<CustomTheme>(readCustomTheme);
-  useEffect(() => { apply(theme, customTheme); window.localStorage.setItem(STORAGE_KEY, theme); window.localStorage.setItem(CUSTOM_STORAGE_KEY, JSON.stringify(customTheme)); saveExtensions(readExtensions()); }, [theme, customTheme]);
+  useEffect(() => { apply(theme, customTheme); window.localStorage.setItem(STORAGE_KEY, theme); window.localStorage.setItem(CUSTOM_STORAGE_KEY, JSON.stringify(customTheme)); }, [theme, customTheme]);
   const setTheme = useCallback((next: ThemeId) => { if (VALID.includes(next)) setThemeState(next); }, []);
   const setCustomTheme = useCallback((next: CustomTheme) => { setCustomThemeState(next); setThemeState("custom"); }, []);
   const value = useMemo(() => ({ theme, customTheme, setTheme, setCustomTheme }), [theme, customTheme, setTheme, setCustomTheme]);
