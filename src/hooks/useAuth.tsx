@@ -10,6 +10,7 @@ import {
 import type { Session, User } from "@supabase/supabase-js";
 import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { rememberAccount } from "@/lib/account-switcher";
 import "@/lib/social-links-runtime";
 
 export type AppRole = "admin" | "moderator" | "partner" | "user";
@@ -19,7 +20,6 @@ export type ChannelStyle =
   | "community-profile" | "video-channel" | "music-channel" | "gaming-channel"
   | "minimal-profile" | "channel-2015" | "channel-2019";
 export type ChannelInfoLayout = "left" | "right" | "top" | "hidden";
-
 export type SocialLink = { platform: string; url: string };
 
 export type Profile = {
@@ -80,8 +80,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       supabase.from("profiles").select("*").eq("id", uid).maybeSingle(),
       supabase.from("user_roles").select("role").eq("user_id", uid),
     ]);
-    setProfile((p as Profile) ?? null);
+    const nextProfile = (p as Profile) ?? null;
+    setProfile(nextProfile);
     setRoles(((r ?? []) as { role: AppRole }[]).map((x) => x.role));
+    const currentAuthUser = (await supabase.auth.getUser()).data.user;
+    if (currentAuthUser?.email && nextProfile) {
+      rememberAccount({
+        id: currentAuthUser.id,
+        email: currentAuthUser.email,
+        username: nextProfile.username,
+        displayName: nextProfile.display_name,
+        avatarPath: nextProfile.avatar_path,
+      });
+    }
   };
 
   useEffect(() => {
@@ -94,10 +105,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setSession(newSession);
       setUser(nextUser);
       if (identityChanged) {
-        // A user switch must never reuse private queries from the previous session.
         queryClient.clear();
       } else if (nextUserId) {
-        // Session refreshes keep the cache but mark it stale so the UI revalidates.
         void queryClient.invalidateQueries();
       }
       setTimeout(() => void load(nextUserId ?? undefined), 0);
