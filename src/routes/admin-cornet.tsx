@@ -5,10 +5,9 @@ import { AppShell } from "@/components/AppShell";
 import { ChannelAvatar } from "@/components/Media";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
-import { supabase } from "@/integrations/supabase/client";
 import { rememberAccount } from "@/lib/account-switcher";
 
-const OFFICIAL_CLOUDFLARE_PROFILE_ID = "39fd9ef5-3716-4896-a555-a673abc712f4";
+const OFFICIAL_ACCOUNT_ID = "39fd9ef5-3716-4896-a555-a673abc712f4";
 
 export const Route = createFileRoute("/admin-cornet")({ component: AdminCornetPage });
 
@@ -28,7 +27,7 @@ function AdminCornetPage() {
   }
 
   const switchToOfficial = async () => {
-    if (user.id === OFFICIAL_CLOUDFLARE_PROFILE_ID) {
+    if (user.id === OFFICIAL_ACCOUNT_ID) {
       toast.info("Ya estás usando la cuenta oficial de Cornet.");
       return;
     }
@@ -44,7 +43,8 @@ function AdminCornetPage() {
     }
 
     await signOut();
-    void navigate({ to: "/auth", search: { official: "cornet" } as never });
+    toast.success("Sesión administrativa cerrada. Inicia sesión con la cuenta oficial de Cornet.");
+    void navigate({ to: "/auth" });
   };
 
   return (
