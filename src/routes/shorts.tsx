@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { Bookmark, Check, ExternalLink, Flag, Heart, Loader2, MessageCircle, MoreVertical, PlaySquare, Share2, Volume2, VolumeX } from "lucide-react";
+import { Bookmark, ExternalLink, Heart, Loader2, MessageCircle, MoreVertical, PlaySquare, Share2, Volume2, VolumeX } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
@@ -52,7 +52,7 @@ function ShortCard({ video, active, onDisabled }: { video: ShortVideo; active: b
     try { await navigator.clipboard.writeText(url); toast.success("Enlace copiado"); } catch { window.prompt("Copia este enlace", url); }
   };
 
-  return <article className="cn-shorts-card" data-active={active ? "true" : "false"}>
+  return <article className="cn-shorts-card" data-video-id={video.id} data-active={active ? "true" : "false"}>
     <div className="cn-shorts-player-wrap">
       {videoUrl ? <video ref={videoRef} className="cn-shorts-player" src={videoUrl} poster={posterUrl ?? undefined} playsInline loop preload={active ? "auto" : "metadata"} muted={muted} /> : <div className="cn-shorts-unavailable">Este Short no está disponible.</div>}
       <div className="cn-shorts-topbar"><span>Shorts</span><button type="button" onClick={() => setMuted((value) => !value)} aria-label={muted ? "Activar sonido" : "Silenciar"}>{muted ? <VolumeX /> : <Volume2 />}</button></div>
@@ -93,11 +93,13 @@ function ShortsPage() {
     const items = Array.from(root.querySelectorAll<HTMLElement>(".cn-shorts-card"));
     const observer = new IntersectionObserver((entries) => {
       const visible = entries.filter((entry) => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-      if (visible) setActiveId(visible.target.getAttribute("data-video-id"));
+      const id = visible?.target.getAttribute("data-video-id");
+      if (id) setActiveId(id);
     }, { root, threshold: [0.5, 0.75, 0.95] });
     items.forEach((item) => observer.observe(item));
+    if (!activeId && items[0]) setActiveId(items[0].getAttribute("data-video-id"));
     return () => observer.disconnect();
-  }, [query.data]);
+  }, [query.data, activeId]);
 
   const disableFromFeed = (videoId: string) => {
     qc.setQueryData<ShortVideo[]>(["shorts-feed"], (old) => (old ?? []).filter((video) => video.id !== videoId));
@@ -106,7 +108,7 @@ function ShortsPage() {
   return <AppShell hideSidebar>
     <div className="cn-shorts-page">
       <header className="cn-shorts-header"><div><span className="cn-shorts-kicker">Cornet</span><h1>Shorts</h1><p>Videos verticales y cuadrados en un feed continuo.</p></div><Link to="/upload" className="cn-shorts-upload">Crear un Short</Link></header>
-      {query.isLoading ? <div className="cn-shorts-loading"><Loader2 className="h-5 w-5 animate-spin" />Cargando Shorts…</div> : query.data && query.data.length > 0 ? <div ref={cardsRef} className="cn-shorts-feed" aria-label="Feed de Shorts">{query.data.map((video) => <div key={video.id} data-video-id={video.id}><ShortCard video={video} active={activeId === video.id} onDisabled={disableFromFeed} /></div>)}</div> : <section className="cn-shorts-empty"><PlaySquare className="h-8 w-8" /><h2>Aún no hay Shorts</h2><p>Los videos verticales o cuadrados de hasta 180 segundos aparecerán aquí, salvo que el creador los desactive.</p><Button asChild><Link to="/upload">Subir el primero</Link></Button></section>}
+      {query.isLoading ? <div className="cn-shorts-loading"><Loader2 className="h-5 w-5 animate-spin" />Cargando Shorts…</div> : query.data && query.data.length > 0 ? <div ref={cardsRef} className="cn-shorts-feed" aria-label="Feed de Shorts">{query.data.map((video) => <ShortCard key={video.id} video={video} active={activeId === video.id} onDisabled={disableFromFeed} />)}</div> : <section className="cn-shorts-empty"><PlaySquare className="h-8 w-8" /><h2>Aún no hay Shorts</h2><p>Los videos verticales o cuadrados de hasta 180 segundos aparecerán aquí, salvo que el creador los desactive.</p><Button asChild><Link to="/upload">Subir el primero</Link></Button></section>}
     </div>
   </AppShell>;
 }
