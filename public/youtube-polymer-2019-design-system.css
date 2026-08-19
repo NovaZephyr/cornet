@@ -1,101 +1,84 @@
-/*
- * Cornet Design Library — YouTube 2019 / Polymer
- *
- * Shared Polymer component primitives only.
- * The shell, tokens and global geometry live in youtube-polymer-2019.css.
- * Homepage geometry lives in youtube-polymer-2019-home.css.
- * Do not redefine .cn-2012-topbar, .cn-2012-sidebar or .cn-2012-main here.
- */
+/* Cornet Design Library — YouTube 2019 / Polymer. */
+/* Shared component primitives only. Shell and homepage geometry live elsewhere. */
 
 [data-theme="youtube2019"] .cn-polymer-surface,
-[data-theme="youtube2019"] .cn-polymer-card {
-  background: var(--polymer-surface) !important;
-  border: 1px solid var(--polymer-border) !important;
-  border-radius: 12px !important;
-  box-shadow: 0 4px 16px rgb(25 47 72 / 6%) !important;
+[data-theme="youtube2019"] .cn-polymer-card{
+  background:var(--polymer-surface)!important;
+  border:1px solid var(--polymer-border)!important;
+  border-radius:2px!important;
+  box-shadow:none!important;
 }
 
-[data-theme="youtube2019"] .cn-polymer-surface-soft {
-  background: var(--polymer-surface-soft) !important;
-  border: 1px solid var(--polymer-border) !important;
+[data-theme="youtube2019"] .cn-polymer-surface-soft{
+  background:var(--polymer-surface-soft)!important;
+  border:1px solid var(--polymer-border)!important;
+  border-radius:2px!important;
 }
 
-[data-theme="youtube2019"] .cn-polymer-divider {
-  height: 1px !important;
-  width: 100% !important;
-  background: var(--polymer-border) !important;
+[data-theme="youtube2019"] .cn-polymer-divider{
+  width:100%!important;
+  height:1px!important;
+  background:var(--polymer-border)!important;
 }
 
-[data-theme="youtube2019"] .cn-polymer-chip {
-  display: inline-flex !important;
-  align-items: center !important;
-  min-height: 30px !important;
-  padding: 0 11px !important;
-  border: 1px solid var(--polymer-border) !important;
-  border-radius: 999px !important;
-  background: var(--polymer-surface) !important;
-  color: var(--polymer-text-soft) !important;
-  font-size: 12px !important;
-  line-height: 1 !important;
-  white-space: nowrap !important;
+[data-theme="youtube2019"] .cn-polymer-chip{
+  display:inline-flex!important;
+  align-items:center!important;
+  min-height:30px!important;
+  padding:0 12px!important;
+  border:1px solid var(--polymer-border-strong)!important;
+  border-radius:2px!important;
+  background:#fff!important;
+  color:var(--polymer-text-soft)!important;
+  font-size:12px!important;
+  line-height:1!important;
+  white-space:nowrap!important;
 }
-
-[data-theme="youtube2019"] .cn-polymer-chip:hover {
-  background: var(--polymer-surface-hover) !important;
-  color: var(--polymer-text) !important;
+[data-theme="youtube2019"] .cn-polymer-chip:hover{
+  background:#f2f2f2!important;
+  color:var(--polymer-text)!important;
 }
-
 [data-theme="youtube2019"] .cn-polymer-chip[data-active="true"],
-[data-theme="youtube2019"] .cn-polymer-chip.is-active {
-  border-color: #c9ddfb !important;
-  background: var(--polymer-primary-soft) !important;
-  color: var(--polymer-primary) !important;
+[data-theme="youtube2019"] .cn-polymer-chip.is-active{
+  border-color:#c6c6c6!important;
+  background:#e5e5e5!important;
+  color:#0f0f0f!important;
 }
 
-[data-theme="youtube2019"] .cn-polymer-section-title {
-  display: flex !important;
-  align-items: baseline !important;
-  justify-content: space-between !important;
-  gap: 12px !important;
-  margin: 0 0 14px !important;
+[data-theme="youtube2019"] .cn-polymer-section-title{
+  display:flex!important;
+  align-items:baseline!important;
+  justify-content:space-between!important;
+  gap:12px!important;
+  margin:0 0 14px!important;
 }
-
-[data-theme="youtube2019"] .cn-polymer-section-title h2 {
-  margin: 0 !important;
-  color: var(--polymer-text) !important;
-  font-size: 18px !important;
-  font-weight: 650 !important;
+[data-theme="youtube2019"] .cn-polymer-section-title h2{
+  margin:0!important;
+  color:var(--polymer-text)!important;
+  font-size:18px!important;
+  font-weight:500!important;
 }
-
 [data-theme="youtube2019"] .cn-polymer-section-title span,
-[data-theme="youtube2019"] .cn-polymer-section-title small {
-  color: var(--polymer-text-muted) !important;
-  font-size: 11px !important;
+[data-theme="youtube2019"] .cn-polymer-section-title small{
+  color:var(--polymer-text-muted)!important;
+  font-size:11px!important;
 }
-
-[data-theme="youtube2019"] .cn-polymer-meta {
-  color: var(--polymer-text-soft) !important;
-  font-size: 12px !important;
-  line-height: 18px !important;
+[data-theme="youtube2019"] .cn-polymer-meta{
+  color:var(--polymer-text-soft)!important;
+  font-size:12px!important;
+  line-height:18px!important;
 }
-
-[data-theme="youtube2019"] .cn-polymer-muted {
-  color: var(--polymer-text-muted) !important;
+[data-theme="youtube2019"] .cn-polymer-muted{color:var(--polymer-text-muted)!important;}
+[data-theme="youtube2019"] .cn-polymer-link{color:var(--polymer-primary)!important;}
+[data-theme="youtube2019"] .cn-polymer-link:hover{
+  color:var(--polymer-primary-hover)!important;
+  text-decoration:underline!important;
 }
-
-[data-theme="youtube2019"] .cn-polymer-link {
-  color: var(--polymer-primary) !important;
-}
-
-[data-theme="youtube2019"] .cn-polymer-link:hover {
-  color: var(--polymer-primary-hover) !important;
-  text-decoration: underline !important;
-}
-
-[data-theme="youtube2019"] .cn-polymer-empty {
-  border: 1px dashed var(--polymer-border-strong) !important;
-  background: var(--polymer-surface-soft) !important;
-  color: var(--polymer-text-muted) !important;
-  padding: 48px 20px !important;
-  text-align: center !important;
+[data-theme="youtube2019"] .cn-polymer-empty{
+  border:1px dashed var(--polymer-border-strong)!important;
+  border-radius:2px!important;
+  background:var(--polymer-surface-soft)!important;
+  color:var(--polymer-text-muted)!important;
+  padding:48px 20px!important;
+  text-align:center!important;
 }
