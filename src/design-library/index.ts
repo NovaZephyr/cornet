@@ -36,6 +36,7 @@ export const themes: ThemeDefinition[] = [
   { id: "retro2012", name: "Cosmic Panda 2012", category: "custom", kind: "theme", description: "Experiencia clara en contenido con guía oscura y chrome propio.", stylesheets: ["/cosmic-panda-theme.css"], family: "youtube-historical", pages: ["home", "watch", "shorts", "explore", "settings"] },
   { id: "feather2013", name: "Feather 2013", category: "normal", kind: "theme", description: "Tema claro ligero y autónomo; no activa layouts históricos adicionales.", stylesheets: ["/feather-2013.css"], family: "feather-light", pages: ["home", "watch", "shorts", "explore", "settings"] },
   { id: "youtube2019", name: "YouTube 2019 / Polymer", category: "custom", kind: "theme", description: "Tema claro e independiente con CSS propio y shell aislado.", stylesheets: ["/youtube-polymer-2019.css", "/youtube-polymer-2019-design-system.css", "/youtube-polymer-2019-home.css"], family: "youtube-polymer", pages: ["home", "watch", "shorts", "channel", "community", "settings", "explore", "playlists"] },
+  { id: "liquid-glass", name: "Liquid Glass", category: "custom", kind: "theme", description: "Cristal translúcido, profundidad suave y capas inspirado en interfaces de Apple, con identidad Cornet.", stylesheets: ["/liquid-glass-theme.css"], family: "apple-inspired", pages: ["home", "watch", "shorts", "channel", "community", "settings", "explore", "playlists"] },
   { id: "windowsAero", name: "Windows Aero", category: "custom", kind: "theme", description: "Cristal, blur y chrome inspirado en Vista/7.", stylesheets: ["/custom-theme-packs.css"], family: "desktop-era", pages: ["home", "watch", "channel", "settings"] },
   { id: "frutigerAero", name: "Frutiger Aero", category: "custom", kind: "theme", description: "Naturaleza, agua, cielo y vidrio translúcido.", stylesheets: ["/custom-theme-packs.css"], family: "web-aesthetic", pages: ["home", "watch", "channel", "explore"] },
   { id: "web2Glossy", name: "Web 2.0 Glossy", category: "custom", kind: "theme", description: "Glossy, gradients, chrome y skeuomorfismo web.", stylesheets: ["/custom-theme-packs.css"], family: "web-aesthetic", pages: ["home", "watch", "channel", "explore"] },
@@ -44,14 +45,15 @@ export const themes: ThemeDefinition[] = [
   { id: "crtVhs", name: "CRT / VHS", category: "custom", kind: "theme", description: "Scanlines, fósforo, glow y estética de televisión antigua.", stylesheets: ["/custom-theme-packs.css"], family: "broadcast-era", pages: ["home", "watch"] },
 ];
 
+const channelLayoutStyles = ["/custom-channel-layouts.css"];
 const variantStyles = ["/channel-layout-variants.css"];
-const extraStyles = ["/channel-layout-extra.css"];
 
 export const channelLayouts: ChannelLayoutDefinition[] = [
-  { id: "corenetwork", name: "Classic Channel", category: "historical", kind: "layout", description: "Layout base de Cornet.", stylesheets: [] },
-  { id: "classic-2009", name: "Classic 2009", category: "historical", kind: "layout", description: "Canal compacto inspirado en 2009.", stylesheets: extraStyles },
-  { id: "standard-2012", name: "Standard 2012", category: "historical", kind: "layout", description: "Estructura general de YouTube alrededor de 2012.", stylesheets: extraStyles },
+  { id: "corenetwork", name: "Cosmephant", category: "special", kind: "layout", description: "Diseño original de Cornet.", stylesheets: [] },
+  { id: "classic-2009", name: "Classic 2009", category: "historical", kind: "layout", description: "Canal compacto inspirado en 2009.", stylesheets: variantStyles },
+  { id: "standard-2012", name: "Standard 2012", category: "historical", kind: "layout", description: "Estructura general de YouTube alrededor de 2012.", stylesheets: variantStyles },
   { id: "cosmic-panda", name: "Cosmic Panda", category: "historical", kind: "layout", description: "Layout de canal Cosmic Panda; independiente del tema global.", stylesheets: ["/cosmic-panda-channel-core.css"] },
+  { id: "liquid-glass", name: "Liquid Glass", category: "special", kind: "layout", description: "Canal translúcido con profundidad, tarjetas flotantes y estética inspirada en Apple.", stylesheets: ["/liquid-glass-layout.css"] },
   { id: "early-youtube-2005", name: "Early YouTube 2005–2006", category: "historical", kind: "layout", description: "Canal mínimo de la era temprana: tabla simple, enlaces y poco chrome.", stylesheets: variantStyles },
   { id: "star-rating-2007", name: "Star Rating 2007–2008", category: "historical", kind: "layout", description: "Canal clásico con paneles grises y referencias a la era de estrellas.", stylesheets: variantStyles },
   { id: "transition-2010", name: "Transition 2010", category: "historical", kind: "layout", description: "Etapa de transición con sidebar gris, cajas y chrome redondeado.", stylesheets: variantStyles },
@@ -60,10 +62,10 @@ export const channelLayouts: ChannelLayoutDefinition[] = [
   { id: "channel-2015", name: "2015 Channel", category: "historical", kind: "layout", description: "Intermedio entre el canal clásico y moderno.", stylesheets: variantStyles },
   { id: "channel-2019", name: "YouTube 2019 Channel", category: "historical", kind: "layout", description: "Canal con estructura de la era Polymer.", stylesheets: variantStyles },
   { id: "modern-minimal-2020", name: "Modern Minimal 2020–2023", category: "special", kind: "layout", description: "Canal amplio y minimalista con poco chrome.", stylesheets: variantStyles },
-  { id: "terminal", name: "Terminal / CLI", category: "special", kind: "layout", description: "Canal con estética de terminal y navegación monoespaciada.", stylesheets: ["/custom-channel-layouts.css"] },
-  { id: "bento-grid", name: "Bento Grid", category: "special", kind: "layout", description: "Canal modular con superficies tipo bento y jerarquía de tarjetas.", stylesheets: ["/custom-channel-layouts.css"] },
-  { id: "magazine", name: "Magazine / Editorial", category: "special", kind: "layout", description: "Canal editorial con tipografía de revista y divisores fuertes.", stylesheets: extraStyles },
-  { id: "cinephile", name: "Cinephile / Sala oscura", category: "special", kind: "layout", description: "Canal inmersivo orientado a cine y cortometrajes.", stylesheets: extraStyles },
+  { id: "terminal", name: "Terminal / CLI", category: "special", kind: "layout", description: "Canal con estética de terminal y navegación monoespaciada.", stylesheets: channelLayoutStyles },
+  { id: "bento-grid", name: "Bento Grid", category: "special", kind: "layout", description: "Canal modular con superficies tipo bento y jerarquía de tarjetas.", stylesheets: channelLayoutStyles },
+  { id: "magazine", name: "Magazine / Editorial", category: "special", kind: "layout", description: "Canal editorial con tipografía de revista y divisores fuertes.", stylesheets: variantStyles },
+  { id: "cinephile", name: "Cinephile / Sala oscura", category: "special", kind: "layout", description: "Canal inmersivo orientado a cine y cortometrajes.", stylesheets: variantStyles },
   { id: "feather-profile", name: "Feather Profile", category: "special", kind: "layout", description: "Perfil ligero y centrado en contenido.", stylesheets: variantStyles },
   { id: "creator-studio", name: "Creator Studio", category: "functional", kind: "layout", description: "Perfil orientado a creadores y estadísticas.", stylesheets: variantStyles },
   { id: "profile-card", name: "Profile Card", category: "special", kind: "layout", description: "Perfil social compacto.", stylesheets: variantStyles },
