@@ -2,16 +2,34 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState, t
 
 export const THEMES = [
   { id: "grad-ocean", label: "Océano", hint: "Azul fresco, turquesa y cristal", group: "Recomendado", kind: "normal" },
+  { id: "system", label: "Sistema", hint: "Sigue automáticamente el modo del sistema", group: "Básicos", kind: "normal" },
   { id: "dark", label: "Oscuro", hint: "El look clásico de CoreNetwork", group: "Básicos", kind: "normal" },
   { id: "light", label: "Claro", hint: "Fondo blanco, alto contraste", group: "Básicos", kind: "normal" },
-  { id: "lavanda-oscuro", label: "Lavanda Oscuro", hint: "Violeta oscuro", group: "Oscuros", kind: "normal" },
+  { id: "youtube-2009", label: "YouTube 2009", hint: "Blanco, azul y rojo clásico", group: "Históricos", kind: "custom" },
+  { id: "retro2012", label: "YouTube 2012 / Cosmic Panda", hint: "Custom claro inspirado en Cosmic Panda", group: "Históricos", kind: "custom" },
+  { id: "youtube-2013", label: "YouTube 2013", hint: "Blanco, rojo y superficies suaves", group: "Históricos", kind: "custom" },
+  { id: "youtube2019", label: "YouTube 2019 / Polymer", hint: "Polymer claro e independiente", group: "Históricos", kind: "custom" },
+  { id: "feather2013", label: "Feather 2013", hint: "Tema claro ligero y autónomo", group: "Clásicos", kind: "normal" },
+  { id: "dracula", label: "Dracula", hint: "Morado oscuro con acentos vivos", group: "Comunidad", kind: "custom" },
+  { id: "nord", label: "Nord", hint: "Azules fríos y gris nórdico", group: "Comunidad", kind: "custom" },
+  { id: "solarized-light", label: "Solarized Light", hint: "Crema cálido para lectura", group: "Comunidad", kind: "custom" },
+  { id: "solarized-dark", label: "Solarized Dark", hint: "Azul petróleo y tonos Solarized", group: "Comunidad", kind: "custom" },
+  { id: "gruvbox", label: "Gruvbox", hint: "Retro cálido y terroso", group: "Comunidad", kind: "custom" },
+  { id: "tokyo-night", label: "Tokyo Night", hint: "Azul noche con neón suave", group: "Comunidad", kind: "custom" },
+  { id: "catppuccin", label: "Catppuccin", hint: "Pasteles oscuros suaves", group: "Comunidad", kind: "custom" },
+  { id: "high-contrast", label: "Alto contraste", hint: "Máxima separación entre texto y fondo", group: "Accesibilidad", kind: "custom" },
+  { id: "sepia", label: "Sepia / Papel", hint: "Crema y marrón para lectura prolongada", group: "Accesibilidad", kind: "custom" },
+  { id: "grayscale", label: "Escala de grises", hint: "Sin color, solo contraste y tono", group: "Accesibilidad", kind: "custom" },
+  { id: "oled", label: "OLED Puro", hint: "Negro absoluto y acentos mínimos", group: "Confort", kind: "custom" },
+  { id: "night-blue", label: "Modo Noche Azul", hint: "Azul oscuro para ver de noche", group: "Confort", kind: "custom" },
   { id: "forest", label: "Bosque", hint: "Verde profundo y natural", group: "Sólidos", kind: "normal" },
   { id: "midnight", label: "Medianoche", hint: "Azul noche y superficies suaves", group: "Sólidos", kind: "normal" },
   { id: "rose", label: "Rosa", hint: "Rosa oscuro con superficies cálidas", group: "Sólidos", kind: "normal" },
-  { id: "retro2012", label: "YouTube 2012 / Cosmic Panda", hint: "Custom claro inspirado en Cosmic Panda", group: "Históricos", kind: "custom" },
-  { id: "feather2013", label: "Feather 2013", hint: "Tema claro ligero y autónomo", group: "Clásicos", kind: "normal" },
-  { id: "youtube2019", label: "YouTube 2019", hint: "Polymer claro e independiente", group: "Clásicos", kind: "custom" },
-  { id: "liquid-glass", label: "Liquid Glass", hint: "Cristal translúcido, profundidad y superficies suaves", group: "Custom", kind: "custom" },
+  { id: "lavanda-oscuro", label: "Lavanda Oscuro", hint: "Violeta oscuro", group: "Oscuros", kind: "normal" },
+  { id: "vaporwave", label: "Vaporwave / Synthwave", hint: "Magenta, cian y retrofuturo", group: "Creativos", kind: "custom" },
+  { id: "terminal-green", label: "Terminal Verde", hint: "Negro y fósforo verde", group: "Creativos", kind: "custom" },
+  { id: "apple-silhouette", label: "Apple Silhouette", hint: "Colores vivos con siluetas negras", group: "Creativos", kind: "custom" },
+  { id: "liquid-glass", label: "Liquid Glass", hint: "Cristal translúcido inspirado en Apple, con identidad Cornet", group: "Creativos", kind: "custom" },
   { id: "windowsAero", label: "Windows Aero", hint: "Vidrio azul y transparencias", group: "Retro", kind: "custom" },
   { id: "frutigerAero", label: "Frutiger Aero", hint: "Cielo, agua, naturaleza y brillo", group: "Retro", kind: "custom" },
   { id: "web2Glossy", label: "Web 2.0 Glossy", hint: "Gradientes brillantes y botones clásicos", group: "Retro", kind: "custom" },
@@ -49,7 +67,9 @@ function apply(theme: ThemeId, customTheme: CustomTheme) {
   const root = document.documentElement;
   const definition = THEMES.find((item) => item.id === theme);
   const themeKind = theme === "custom" ? "custom" : definition?.kind ?? "normal";
-  const isLightTheme = ["light", "retro2012", "feather2013", "youtube2019", "liquid-glass", "windowsAero", "frutigerAero", "web2Glossy", "xpLuna", "grad-candy"].includes(theme);
+  const isSystem = theme === "system";
+  const mediaDark = isSystem && window.matchMedia("(prefers-color-scheme: dark)").matches;
+  const isLightTheme = !mediaDark && ["light", "system", "youtube-2009", "youtube-2013", "youtube2019", "feather2013", "solarized-light", "sepia", "grayscale", "apple-silhouette", "grad-candy"].includes(theme);
   root.dataset.theme = theme;
   root.dataset.themeKind = themeKind;
   root.classList.toggle("dark", !isLightTheme);
@@ -71,7 +91,16 @@ const ThemeContext = createContext<ThemeState | undefined>(undefined);
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setThemeState] = useState<ThemeId>(readInitialTheme);
   const [customTheme, setCustomThemeState] = useState<CustomTheme>(readCustomTheme);
-  useEffect(() => { apply(theme, customTheme); window.localStorage.setItem(STORAGE_KEY, theme); window.localStorage.setItem(CUSTOM_STORAGE_KEY, JSON.stringify(customTheme)); }, [theme, customTheme]);
+  useEffect(() => {
+    apply(theme, customTheme);
+    window.localStorage.setItem(STORAGE_KEY, theme);
+    window.localStorage.setItem(CUSTOM_STORAGE_KEY, JSON.stringify(customTheme));
+    if (theme !== "system") return;
+    const media = window.matchMedia("(prefers-color-scheme: dark)");
+    const onChange = () => apply("system", customTheme);
+    media.addEventListener?.("change", onChange);
+    return () => media.removeEventListener?.("change", onChange);
+  }, [theme, customTheme]);
   const setTheme = useCallback((next: ThemeId) => { if (VALID.includes(next)) setThemeState(next); }, []);
   const setCustomTheme = useCallback((next: CustomTheme) => { setCustomThemeState(next); setThemeState("custom"); }, []);
   const value = useMemo(() => ({ theme, customTheme, setTheme, setCustomTheme }), [theme, customTheme, setTheme, setCustomTheme]);
