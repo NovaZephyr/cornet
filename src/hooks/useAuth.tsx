@@ -15,7 +15,7 @@ import "@/lib/social-links-runtime";
 
 export type AppRole = "admin" | "moderator" | "partner" | "user";
 export type ChannelStyle =
-  | "corenetwork" | "classic-2009" | "standard-2012" | "cosmic-panda"
+  | "corenetwork" | "classic-2009" | "standard-2012" | "cosmic-panda" | "liquid-glass"
   | "onechannel-2013" | "feather-profile" | "creator-studio" | "profile-card"
   | "community-profile" | "video-channel" | "music-channel" | "gaming-channel"
   | "minimal-profile" | "channel-2015" | "channel-2019"
