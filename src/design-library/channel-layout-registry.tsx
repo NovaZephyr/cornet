@@ -3,6 +3,7 @@ import { channelLayouts } from "./index";
 import type { ChannelLayoutProps } from "./channel-data";
 import { ClassicChannel, CosmicPandaChannel } from "./channel-layouts";
 import { BentoGridChannel, TerminalChannel } from "./custom-channel-layouts";
+import { LiquidGlassChannel } from "./liquid-glass-channel";
 import {
   EarlyYoutubeLayout,
   StarRatingLayout,
@@ -28,6 +29,7 @@ export type ChannelLayoutComponent = ComponentType<ChannelLayoutProps>;
 const components: Record<string, ChannelLayoutComponent> = {
   corenetwork: ClassicChannel,
   "cosmic-panda": CosmicPandaChannel,
+  "liquid-glass": LiquidGlassChannel,
   "classic-2009": Classic2009Layout,
   "standard-2012": Standard2012Layout,
   "early-youtube-2005": EarlyYoutubeLayout,
