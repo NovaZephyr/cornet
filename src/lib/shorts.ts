@@ -1,4 +1,5 @@
 import { getSignedUrl } from "@/lib/storage";
+import { fetchProfilesByIds } from "@/lib/queries";
 import { supabase } from "@/integrations/supabase/client";
 
 export type ShortVideo = {
@@ -60,12 +61,7 @@ async function enrichOrientation(video: ShortVideo): Promise<ShortVideo> {
     const dimensions = await probeDimensions(signed);
     if (!dimensions) return video;
     const { width, height } = dimensions;
-    // Best-effort persistence. The feed still works if a viewer lacks update permissions.
-    void (supabase as any)
-      .from("videos")
-      .update({ video_width: width, video_height: height })
-      .eq("id", video.id)
-      .then(() => undefined);
+    void (supabase as any).from("videos").update({ video_width: width, video_height: height }).eq("id", video.id).then(() => undefined);
     return { ...video, video_width: width, video_height: height };
   } catch {
     return video;
@@ -76,7 +72,7 @@ export async function fetchShorts(limit = 24): Promise<ShortVideo[]> {
   const candidateLimit = Math.min(Math.max(limit * 3, 48), 96);
   const { data, error } = await (supabase as any)
     .from("videos")
-    .select("id,code,user_id,title,description,video_path,thumbnail_path,duration_seconds,views,created_at,category,is_shorts_enabled,video_width,video_height,profiles:profiles!videos_user_id_fkey(username,display_name,avatar_path,is_verified)")
+    .select("id,code,user_id,title,description,video_path,thumbnail_path,duration_seconds,views,created_at,category,is_shorts_enabled,video_width,video_height")
     .eq("visibility", "public")
     .eq("is_shorts_enabled", true)
     .gt("duration_seconds", 0)
@@ -91,16 +87,15 @@ export async function fetchShorts(limit = 24): Promise<ShortVideo[]> {
     const width = Number(video.video_width ?? 0);
     const height = Number(video.video_height ?? 0);
     if (width > 0 && height > 0) return height >= width;
-    // Existing videos created before orientation metadata: keep the old <=60s behavior until probed.
     return Number(video.duration_seconds ?? 0) <= LEGACY_SHORT_DURATION;
   });
 
   const needsProbe = candidates.filter((video) => !video.video_width || !video.video_height).slice(0, Math.min(32, candidates.length));
-  const enriched = new Map<string, ShortVideo>();
-  await Promise.all(needsProbe.map(async (video) => enriched.set(video.id, await enrichOrientation(video))));
+  const enriched = await Promise.all(needsProbe.map((video) => enrichOrientation(video)));
+  const enrichedById = new Map(enriched.map((video) => [video.id, video]));
 
-  return candidates
-    .map((video) => enriched.get(video.id) ?? video)
+  const oriented = candidates
+    .map((video) => enrichedById.get(video.id) ?? video)
     .filter((video) => {
       if (video.is_shorts_enabled === false) return false;
       const width = Number(video.video_width ?? 0);
@@ -108,4 +103,7 @@ export async function fetchShorts(limit = 24): Promise<ShortVideo[]> {
       return width > 0 && height > 0 ? height >= width : Number(video.duration_seconds ?? 0) <= LEGACY_SHORT_DURATION;
     })
     .slice(0, limit);
+
+  const profiles = await fetchProfilesByIds(oriented.map((video) => video.user_id));
+  return oriented.map((video) => ({ ...video, profiles: profiles.get(video.user_id) ?? null }));
 }
