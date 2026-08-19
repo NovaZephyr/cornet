@@ -21,17 +21,18 @@ import {
   Channel2015Layout,
   Channel2019Layout,
 } from "./channel-layout-variants";
+import { Classic2009Layout, Standard2012Layout, MagazineLayout, CinephileLayout } from "./channel-layout-extra";
 
 export type ChannelLayoutComponent = ComponentType<ChannelLayoutProps>;
 
 const components: Record<string, ChannelLayoutComponent> = {
   corenetwork: ClassicChannel,
   "cosmic-panda": CosmicPandaChannel,
+  "classic-2009": Classic2009Layout,
+  "standard-2012": Standard2012Layout,
   "early-youtube-2005": EarlyYoutubeLayout,
-  "classic-2009": EarlyYoutubeLayout,
   "star-rating-2007": StarRatingLayout,
   "transition-2010": Transition2010Layout,
-  "standard-2012": Transition2010Layout,
   "onechannel-2013": OneChannel2013Layout,
   "material-lite-2015": MaterialLite2015Layout,
   "channel-2015": Channel2015Layout,
@@ -39,6 +40,8 @@ const components: Record<string, ChannelLayoutComponent> = {
   "modern-minimal-2020": ModernMinimal2020Layout,
   terminal: TerminalChannel,
   "bento-grid": BentoGridChannel,
+  magazine: MagazineLayout,
+  cinephile: CinephileLayout,
   "feather-profile": FeatherProfileLayout,
   "creator-studio": CreatorStudioLayout,
   "profile-card": ProfileCardLayout,
