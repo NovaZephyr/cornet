@@ -1,88 +1,22 @@
-import { useEffect, useRef, useState } from "react";
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { BookmarkPlus, Check, Flag, Share2, ThumbsDown, ThumbsUp, Trash2 } from "lucide-react";
-import { toast } from "sonner";
-import { supabase } from "@/integrations/supabase/client";
-import { AppShell } from "@/components/AppShell";
-import { ChannelAvatar, VerifiedBadge } from "@/components/Media";
-import { VideoCard } from "@/components/VideoCard";
-import { VideoPlayer, type PlayerCaption, type PlayerChapter } from "@/components/VideoPlayer";
-import { ReportDialog } from "@/components/ReportDialog";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { useAuth } from "@/hooks/useAuth";
-import { getSignedUrl, useSignedUrl } from "@/lib/storage";
-import { fetchProfilesByIds, fetchRelatedVideos, type ProfileLite } from "@/lib/queries";
-import { formatViews, timeAgo } from "@/lib/format";
-import { TwemojiPicker } from "@/components/TwemojiTools";
-import { ExpandableText } from "@/components/ExpandableText";
+import { lazy, Suspense } from "react";
+import { ClientOnly, createFileRoute } from "@tanstack/react-router";
+
+const WatchContent = lazy(() => import("./watch-content").then((module) => ({ default: module.WatchContent })));
 
 export const Route = createFileRoute("/watch")({
   ssr: false,
-  validateSearch: (search: Record<string, unknown>): { v: string } => ({ v: typeof search.v === "string" ? search.v : "" }),
-  component: Watch,
+  validateSearch: (search: Record<string, unknown>): { v: string } => ({
+    v: typeof search.v === "string" ? search.v : "",
+  }),
+  component: WatchRoute,
 });
-type VideoRow = { id: string; code: string; user_id: string; title: string; description: string; video_path: string; thumbnail_path: string | null; views: number; created_at: string; category: string | null };
-type PlaylistLite = { id: string; title: string; visibility: "public" | "private" };
 
-function setMeta(name: string, content: string, attribute: "name" | "property" = "name") {
-  if (!content) return;
-  let element = document.head.querySelector<HTMLMetaElement>(`meta[${attribute}="${name}"]`);
-  if (!element) { element = document.createElement("meta"); element.setAttribute("name", name); document.head.appendChild(element); }
-  element.setAttribute("content", content);
-}
-function setLink(rel: string, href: string) {
-  if (!href) return;
-  let element = document.head.querySelector<HTMLLinkElement>(`link[rel="${rel}"]`);
-  if (!element) { element = document.createElement("link"); element.setAttribute("rel", rel); document.head.appendChild(element); }
-  element.setAttribute("href", href);
-}
-
-function Watch() {
-  const { v: code } = Route.useSearch(); const { user } = useAuth(); const qc = useQueryClient();
-  const [comment, setComment] = useState(""); const [reportOpen, setReportOpen] = useState(false);
-  const countedCode = useRef<string | null>(null); const historyCode = useRef<string | null>(null);
-  const { data } = useQuery({ queryKey: ["video", code], enabled: !!code, queryFn: async () => { const { data: video, error } = await supabase.from("videos").select("id, code, user_id, title, description, video_path, thumbnail_path, views, created_at, category").eq("code", code).maybeSingle(); if (error) throw error; if (!video) return null; const profiles = await fetchProfilesByIds([(video as VideoRow).user_id]); return { video: video as VideoRow, channel: profiles.get((video as VideoRow).user_id) ?? null }; } });
-  const videoUrl = useSignedUrl(data?.video.video_path); const posterUrl = useSignedUrl(data?.video.thumbnail_path);
-
-  useEffect(() => {
-    const baseTitle = data?.video.title?.trim();
-    const creator = data?.channel?.display_name || data?.channel?.username || "Cornet";
-    const pageUrl = `${window.location.origin}/watch?v=${encodeURIComponent(code)}`;
-    if (!baseTitle) { document.title = "Cornet"; return; }
-    document.title = `${baseTitle} - Cornet`;
-    setMeta("description", `${baseTitle} — creado por ${creator}. Ver en Cornet.`);
-    setMeta("og:title", baseTitle, "property"); setMeta("og:description", `Creado por ${creator} · Cornet`, "property"); setMeta("og:type", "video.other", "property"); setMeta("og:url", pageUrl, "property"); setMeta("og:site_name", "Cornet", "property"); setMeta("twitter:card", "summary_large_image"); setMeta("twitter:title", baseTitle); setMeta("twitter:description", `Creado por ${creator} · Cornet`);
-    if (posterUrl) { setMeta("og:image", posterUrl, "property"); setMeta("twitter:image", posterUrl); setMeta("twitter:image:alt", baseTitle); }
-    setLink("canonical", pageUrl);
-    return () => { document.title = "Cornet"; [["meta", "name", "description"],["meta", "property", "og:title"],["meta", "property", "og:description"],["meta", "property", "og:type"],["meta", "property", "og:url"],["meta", "property", "og:site_name"],["meta", "name", "twitter:card"],["meta", "name", "twitter:title"],["meta", "name", "twitter:description"],["meta", "property", "og:image"],["meta", "name", "twitter:image"],["meta", "name", "twitter:image:alt"]].forEach(([tag, attr, value]) => document.head.querySelector(`${tag}[${attr}="${value}"]`)?.remove()); document.head.querySelector('link[rel="canonical"]')?.remove(); };
-  }, [code, data?.video.title, data?.channel?.display_name, data?.channel?.username, posterUrl]);
-
-  useEffect(() => { if (!data?.video.id || countedCode.current === code) return; countedCode.current = code; let cancelled = false; void (async () => { const { data: nextViews, error } = await supabase.rpc("increment_views", { _video_id: data.video.id }); if (error || cancelled) return; qc.setQueryData(["video", code], (previous: typeof data | undefined) => previous ? { ...previous, video: { ...previous.video, views: Number(nextViews ?? previous.video.views) } } : previous); void qc.invalidateQueries({ queryKey: ["videos"] }); })(); return () => { cancelled = true; }; }, [code, data?.video.id, qc]);
-  useEffect(() => { if (!user || !data?.video.id || historyCode.current === code) return; historyCode.current = code; let cancelled = false; void supabase.rpc("record_watch_history", { _video_id: data.video.id, _progress_seconds: 0, _completed: false }).then(({ error }) => { if (error && !cancelled) console.warn("[Cornet] watch history failed", error.message); }); return () => { cancelled = true; }; }, [code, data?.video.id, user?.id]);
-
-  const captionsQuery = useQuery({ queryKey: ["captions", data?.video.id], enabled: !!data?.video.id, queryFn: async () => { const { data: rows, error } = await supabase.from("video_captions").select("id, language_code, label, caption_path, is_default").eq("video_id", data!.video.id).order("created_at"); if (error) throw error; const items = await Promise.all((rows ?? []).map(async (row) => ({ src: await getSignedUrl(row.caption_path), srclang: row.language_code, label: row.label, default: row.is_default === true }))); return items.filter((item) => !!item.src) as PlayerCaption[]; } });
-  const chaptersQuery = useQuery({ queryKey: ["chapters", data?.video.id], enabled: !!data?.video.id, queryFn: async () => { const { data: rows, error } = await supabase.from("video_chapters").select("id, title, start_seconds, end_seconds, sort_order").eq("video_id", data!.video.id).order("sort_order").order("start_seconds"); if (error) throw error; return (rows ?? []).map((row) => ({ id: row.id, title: row.title, startSeconds: row.start_seconds, endSeconds: row.end_seconds })) as PlayerChapter[]; } });
-  const { data: likes } = useQuery({ queryKey: ["likes", data?.video.id], enabled: !!data?.video.id, queryFn: async () => ((await supabase.from("video_likes").select("user_id, is_like").eq("video_id", data!.video.id)).data ?? []) as { user_id: string; is_like: boolean }[] });
-  const { data: comments } = useQuery({ queryKey: ["comments", data?.video.id], enabled: !!data?.video.id, queryFn: async () => { const { data: rows } = await supabase.from("comments").select("id, user_id, content, created_at").eq("video_id", data!.video.id).order("created_at", { ascending: false }); const list = (rows ?? []) as { id: string; user_id: string; content: string; created_at: string }[]; const profiles = await fetchProfilesByIds(list.map((c) => c.user_id)); return list.map((c) => ({ ...c, author: profiles.get(c.user_id) ?? null })); } });
-  const { data: subs } = useQuery({ queryKey: ["subs", data?.video.user_id], enabled: !!data?.video.user_id, queryFn: async () => ((await supabase.from("subscriptions").select("subscriber_id").eq("channel_id", data!.video.user_id)).data ?? []) as { subscriber_id: string }[] });
-  const { data: suggestions } = useQuery({ queryKey: ["suggestions", data?.video.id, data?.video.category, data?.video.user_id], enabled: !!data?.video.id, queryFn: () => fetchRelatedVideos({ id: data!.video.id, user_id: data!.video.user_id, category: data!.video.category }, 12), staleTime: 5 * 60_000, gcTime: 10 * 60_000 });
-  const playlistsQuery = useQuery({ queryKey: ["my-playlists", user?.id, "watch"], enabled: !!user, queryFn: async () => { const { data: rows, error } = await supabase.from("playlists").select("id, title, visibility").eq("user_id", user!.id).order("updated_at", { ascending: false }); if (error) throw error; return (rows ?? []) as PlaylistLite[]; } });
-  const existingItemsQuery = useQuery({ queryKey: ["playlist-items-for-video", data?.video.id, user?.id], enabled: !!data?.video.id && !!user, queryFn: async () => { const { data: rows } = await supabase.from("playlist_items").select("playlist_id").eq("video_id", data!.video.id); return new Set((rows ?? []).map((row) => row.playlist_id)); } });
-  if (data === null) return <AppShell><p className="py-24 text-center text-muted-foreground">Este video no existe.</p></AppShell>;
-  const channel: ProfileLite | null = data?.channel ?? null; const likeCount = likes?.filter((l) => l.is_like).length ?? 0; const dislikeCount = likes?.filter((l) => !l.is_like).length ?? 0; const myLike = likes?.find((l) => l.user_id === user?.id); const isSubscribed = !!subs?.some((s) => s.subscriber_id === user?.id);
-  const react = async (isLike: boolean) => { if (!user || !data) return void toast.error("Inicia sesión para reaccionar"); if (myLike?.is_like === isLike) await supabase.from("video_likes").delete().eq("video_id", data.video.id).eq("user_id", user.id); else await supabase.from("video_likes").upsert({ video_id: data.video.id, user_id: user.id, is_like: isLike }); void qc.invalidateQueries({ queryKey: ["likes", data.video.id] }); };
-  const toggleSub = async () => { if (!user || !data) return void toast.error("Inicia sesión para suscribirte"); if (isSubscribed) await supabase.from("subscriptions").delete().eq("subscriber_id", user.id).eq("channel_id", data.video.user_id); else await supabase.from("subscriptions").insert({ subscriber_id: user.id, channel_id: data.video.user_id }); void qc.invalidateQueries({ queryKey: ["subs", data.video.user_id] }); };
-  const saveToPlaylist = async (playlist: PlaylistLite) => { if (!user || !data) return; if (existingItemsQuery.data?.has(playlist.id)) return void toast.success("El video ya está en esa lista"); const { data: maxRows } = await supabase.from("playlist_items").select("position").eq("playlist_id", playlist.id).order("position", { ascending: false }).limit(1); const position = ((maxRows?.[0]?.position as number | undefined) ?? -1) + 1; const { error } = await supabase.from("playlist_items").insert({ playlist_id: playlist.id, video_id: data.video.id, position }); if (error) return void toast.error(error.message); void qc.invalidateQueries({ queryKey: ["playlist-items-for-video", data.video.id, user.id] }); toast.success(`Añadido a ${playlist.title}`); };
-  const shareVideo = async () => {
-    if (!data?.video) return;
-    const shareUrl = new URL(`/watch?v=${encodeURIComponent(data.video.code)}`, window.location.origin).toString();
-    const shareData = { title: data.video.title, text: `Mira “${data.video.title}” en CoreNetwork`, url: shareUrl };
-    try { if (navigator.share) { await navigator.share(shareData); return; } } catch (error) { if (error instanceof DOMException && error.name === "AbortError") return; }
-    try { await navigator.clipboard.writeText(shareUrl); toast.success("Enlace del video copiado"); } catch { window.prompt("Copia este enlace para compartir el video:", shareUrl); }
-  };
-  const postComment = async (e: React.FormEvent) => { e.preventDefault(); if (!user || !data) return void toast.error("Inicia sesión para comentar"); if (!comment.trim()) return; const { error } = await supabase.from("comments").insert({ video_id: data.video.id, user_id: user.id, content: comment.trim() }); if (error) return void toast.error(error.message); setComment(""); void qc.invalidateQueries({ queryKey: ["comments", data.video.id] }); };
-  return <AppShell><div className="mx-auto flex max-w-[1600px] flex-col gap-6 lg:flex-row"><div className="min-w-0 flex-1"><div data-corenet-player><VideoPlayer src={videoUrl ?? ""} poster={posterUrl ?? undefined} autoPlay captions={captionsQuery.data ?? []} chapters={chaptersQuery.data ?? []} /></div>{chaptersQuery.data && chaptersQuery.data.length > 0 && <div className="mt-3 rounded-xl border border-border bg-surface p-3"><h2 className="mb-2 text-sm font-semibold">Secciones</h2><div className="flex flex-wrap gap-2">{chaptersQuery.data.map((chapter) => <button key={chapter.id} type="button" onClick={() => { const player = document.querySelector<HTMLVideoElement>("[data-corenet-player] video"); if (player) player.currentTime = chapter.startSeconds; }} className="rounded-lg border border-border px-3 py-2 text-left text-xs hover:bg-surface-hover"><span className="block font-medium">{chapter.title}</span><span className="text-muted-foreground">{Math.floor(chapter.startSeconds / 60)}:{String(chapter.startSeconds % 60).padStart(2, "0")}</span></button>)}</div></div>}<div className="mt-4 flex flex-wrap items-center gap-3"><Link to="/c/$username" params={{ username: channel?.username ?? "" }} className="flex items-center gap-3"><ChannelAvatar path={channel?.avatar_path} name={channel?.display_name ?? "C"} /><span><span className="flex items-center gap-1 text-sm font-medium">{channel?.display_name || channel?.username}{channel?.is_verified && <VerifiedBadge />}</span><span className="text-xs text-muted-foreground">{subs?.length ?? 0} suscriptores</span></span></Link><Button onClick={() => void toggleSub()} variant={isSubscribed ? "secondary" : "default"}>{isSubscribed ? "Suscrito" : "Suscribirse"}</Button><div className="ml-auto flex flex-wrap items-center gap-2"><Button variant={myLike?.is_like ? "default" : "secondary"} onClick={() => void react(true)}>{likeCount} Me gusta</Button><Button variant={myLike && !myLike.is_like ? "default" : "secondary"} onClick={() => void react(false)}>{dislikeCount} No me gusta</Button><Button variant="secondary" onClick={() => void shareVideo()}><Share2 className="mr-2 h-4 w-4" />Compartir</Button>{user && <DropdownMenu><DropdownMenuTrigger asChild><Button variant="secondary"><BookmarkPlus className="mr-2 h-4 w-4" />Guardar</Button></DropdownMenuTrigger><DropdownMenuContent align="end" className="w-72"><DropdownMenuLabel>Guardar en playlist</DropdownMenuLabel><DropdownMenuSeparator />{playlistsQuery.data?.map((playlist) => <DropdownMenuItem key={playlist.id} onClick={() => void saveToPlaylist(playlist)} className="gap-2"><Check className={existingItemsQuery.data?.has(playlist.id) ? "opacity-100" : "opacity-0"} />{playlist.title}</DropdownMenuItem>)}{!playlistsQuery.data?.length && <DropdownMenuItem disabled>No tienes playlists.</DropdownMenuItem>}</DropdownMenuContent></DropdownMenu>}<Button variant="secondary" onClick={() => setReportOpen(true)}><Flag className="mr-2 h-4 w-4" />Denunciar</Button></div></div><h1 className="mt-4 text-xl font-semibold tracking-tight">{data?.video.title}</h1><p className="mt-1 text-xs text-muted-foreground">{formatViews(data?.video.views ?? 0)} vistas · {timeAgo(data?.video.created_at)}</p><ExpandableText text={data?.video.description || "Sin descripción."} className="mt-4 text-sm leading-6 text-muted-foreground" /><section className="mt-8"><h2 className="mb-4 text-lg font-semibold">Comentarios</h2><form onSubmit={postComment} className="mb-6 flex gap-3"><ChannelAvatar name={user?.id ? "Tú" : "U"} size={36} /><div className="min-w-0 flex-1"><Textarea value={comment} onChange={(e) => setComment(e.target.value)} placeholder={user ? "Añade un comentario…" : "Inicia sesión para comentar"} disabled={!user} /><div className="mt-2 flex items-center justify-between gap-2"><TwemojiPicker onSelect={(emoji) => setComment((value) => value + emoji)} disabled={!user} /><Button type="submit" disabled={!user || !comment.trim()}>Comentar</Button></div></div></form><div className="space-y-5">{comments?.map((item) => <div key={item.id} className="flex gap-3"><ChannelAvatar path={item.author?.avatar_path} name={item.author?.display_name || item.author?.username || "U"} size={36} /><div className="min-w-0 flex-1"><p className="text-sm font-medium">{item.author?.display_name || item.author?.username || "Usuario"}</p><p className="mt-1 whitespace-pre-wrap text-sm text-muted-foreground">{item.content}</p><p className="mt-1 text-xs text-muted-foreground">{timeAgo(item.created_at)}</p></div></div>)}</div></section></div><aside className="w-full shrink-0 lg:w-[360px]"><h2 className="mb-3 text-sm font-semibold">Sugerencias</h2><div className="space-y-4">{suggestions?.map((video) => <VideoCard key={video.id} video={video} compact />)}</div></aside></div><ReportDialog open={reportOpen} onOpenChange={setReportOpen} targetType="video" targetId={data?.video.id ?? ""} /></AppShell>;
+function WatchRoute() {
+  return (
+    <ClientOnly fallback={<div className="flex min-h-[60vh] items-center justify-center text-sm text-muted-foreground">Cargando video…</div>}>
+      <Suspense fallback={<div className="flex min-h-[60vh] items-center justify-center text-sm text-muted-foreground">Cargando video…</div>}>
+        <WatchContent />
+      </Suspense>
+    </ClientOnly>
+  );
 }
