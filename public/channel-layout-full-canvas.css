@@ -1,0 +1,113 @@
+/* Shared channel canvas geometry. Visual layouts remain responsible for their inner composition. */
+.cn-layout-variant {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  box-sizing: border-box !important;
+  min-height: calc(100vh - 60px) !important;
+}
+
+.cn-layout-early,
+.cn-layout-star,
+.cn-layout-transition,
+.cn-layout-onechannel,
+.cn-layout-material,
+.cn-layout-modern,
+.cn-layout-feather,
+.cn-layout-studio,
+.cn-layout-profile,
+.cn-layout-community,
+.cn-layout-video,
+.cn-layout-music,
+.cn-layout-gaming,
+.cn-layout-minimal,
+.cn-layout-2015,
+.cn-layout-2019 {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  box-sizing: border-box !important;
+}
+
+/* Keep internal historical/content surfaces centered without constraining the canvas. */
+.cn-layout-early-inner,
+.cn-layout-star-header,
+.cn-layout-star-body,
+.cn-layout-transition-top,
+.cn-layout-transition-body,
+.cn-layout-onechannel-banner,
+.cn-layout-onechannel-head,
+.cn-layout-onechannel > nav,
+.cn-layout-onechannel-feature,
+.cn-layout-onechannel > .cn-layout-video-list,
+.cn-layout-material > *,
+.cn-layout-modern-main,
+.cn-layout-modern > .cn-layout-video-list,
+.cn-layout-feather > header,
+.cn-layout-feather > .cn-layout-feather-description,
+.cn-layout-feather > .cn-layout-feather-line,
+.cn-layout-feather > .cn-layout-video-list,
+.cn-layout-studio > *,
+.cn-layout-profile-card,
+.cn-layout-profile > .cn-layout-video-list,
+.cn-layout-community > header,
+.cn-layout-community-body,
+.cn-layout-video > header,
+.cn-layout-video-hero,
+.cn-layout-video > .cn-layout-video-list,
+.cn-layout-gaming-body,
+.cn-layout-2015-top,
+.cn-layout-2015 > nav,
+.cn-layout-2015-feature,
+.cn-layout-2015 > .cn-layout-video-list,
+.cn-layout-2019-banner,
+.cn-layout-2019-head,
+.cn-layout-2019 > nav,
+.cn-layout-2019-shelves {
+  max-width: min(1180px, 100%) !important;
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
+}
+
+.cn-layout-early-inner { max-width: 920px !important; }
+.cn-layout-star-header,
+.cn-layout-star-body { max-width: 1080px !important; }
+.cn-layout-transition-top,
+.cn-layout-transition-body { max-width: 1060px !important; }
+.cn-layout-onechannel-banner,
+.cn-layout-onechannel-head,
+.cn-layout-onechannel > nav,
+.cn-layout-onechannel-feature,
+.cn-layout-onechannel > .cn-layout-video-list { max-width: 1120px !important; }
+.cn-layout-material > * { max-width: 1120px !important; }
+.cn-layout-modern-main,
+.cn-layout-modern > .cn-layout-video-list { max-width: 1180px !important; }
+.cn-layout-feather > header,
+.cn-layout-feather > .cn-layout-feather-description,
+.cn-layout-feather > .cn-layout-feather-line,
+.cn-layout-feather > .cn-layout-video-list { max-width: 940px !important; }
+.cn-layout-studio > * { max-width: 1160px !important; }
+.cn-layout-profile-card { max-width: 560px !important; }
+.cn-layout-profile > .cn-layout-video-list { max-width: 960px !important; }
+.cn-layout-community > header,
+.cn-layout-community-body { max-width: 1160px !important; }
+.cn-layout-video > header,
+.cn-layout-video-hero,
+.cn-layout-video > .cn-layout-video-list { max-width: 1180px !important; }
+.cn-layout-gaming-body { max-width: 1200px !important; }
+.cn-layout-minimal > .cn-layout-identity,
+.cn-layout-minimal > .cn-layout-minimal-description,
+.cn-layout-minimal > .cn-layout-minimal-list { max-width: 800px !important; }
+.cn-layout-2015-top,
+.cn-layout-2015 > nav,
+.cn-layout-2015-feature,
+.cn-layout-2015 > .cn-layout-video-list { max-width: 1100px !important; }
+.cn-layout-2019-banner,
+.cn-layout-2019-head,
+.cn-layout-2019 > nav,
+.cn-layout-2019-shelves { max-width: 1180px !important; }
+
+@media (max-width: 600px) {
+  .cn-layout-variant { min-height: calc(100vh - 120px) !important; }
+}
