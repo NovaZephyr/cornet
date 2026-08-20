@@ -1,6 +1,6 @@
 import { createFileRoute, Link, notFound, rootRouteId } from "@tanstack/react-router";
-import { useEffect, useRef, useState } from "react";
-import { BarChart3, FileText, Image as ImageIcon, Loader2, Plus, Save, ShieldCheck, Trash2, CalendarClock, Megaphone, UploadCloud, X } from "lucide-react";
+import { useEffect, useState } from "react";
+import { BarChart3, FileText, Image as ImageIcon, Loader2, Plus, Save, ShieldCheck, Trash2, CalendarClock, Megaphone, Upload } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { AppShell } from "@/components/AppShell";
@@ -11,6 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { useAuth } from "@/hooks/useAuth";
 import { timeAgo } from "@/lib/format";
+import { uploadFile } from "@/lib/storage";
 
 type PostType = "text" | "image" | "poll";
 type Post = { id: string; author_id: string; title: string; body: string | null; image_path: string | null; post_type: PostType; created_at: string };
@@ -29,11 +30,9 @@ function AdminBlogPage() {
   const [editorType, setEditorType] = useState<PostType>("text");
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
-  const [imagePath, setImagePath] = useState("");
-  const [imagePreview, setImagePreview] = useState("");
-  const [selectedImageName, setSelectedImageName] = useState("");
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [pollOptions, setPollOptions] = useState(["", ""]);
-  const imageInputRef = useRef<HTMLInputElement | null>(null);
 
   const loadPosts = async () => {
     const { data, error } = await supabase.from("announcements").select("id,author_id,title,body,image_path,post_type,created_at").order("created_at", { ascending: false }).limit(50);
@@ -42,100 +41,83 @@ function AdminBlogPage() {
   };
 
   useEffect(() => { if (isStaff && user) void loadPosts(); }, [isStaff, user]);
-
-  useEffect(() => {
-    return () => {
-      if (imagePreview) URL.revokeObjectURL(imagePreview);
-    };
-  }, [imagePreview]);
+  useEffect(() => () => { if (imagePreview) URL.revokeObjectURL(imagePreview); }, [imagePreview]);
 
   if (loading) return <AppShell><div className="flex min-h-[60vh] items-center justify-center"><Loader2 className="h-6 w-6 animate-spin text-primary" /></div></AppShell>;
   if (!user || !isStaff) throw notFound({ routeId: rootRouteId, throw: true });
 
-  const resetImage = () => {
-    if (imagePreview) URL.revokeObjectURL(imagePreview);
-    setImagePreview("");
-    setImagePath("");
-    setSelectedImageName("");
-    if (imageInputRef.current) imageInputRef.current.value = "";
-  };
+  const resetEditor = () => { setTitle(""); setBody(""); setImageFile(null); if (imagePreview) URL.revokeObjectURL(imagePreview); setImagePreview(null); setPollOptions(["", ""]); };
 
-  const handleImageSelect = (file: File | undefined) => {
-    if (!canEdit || !file) return;
-    if (!IMAGE_TYPES.has(file.type)) return void toast.error("Selecciona una imagen JPG, PNG, WebP o GIF.");
+  const handleImageChange = (file: File | null) => {
+    if (!canEdit) return;
+    if (!file) { setImageFile(null); if (imagePreview) URL.revokeObjectURL(imagePreview); setImagePreview(null); return; }
+    if (!IMAGE_TYPES.has(file.type)) return void toast.error("La imagen debe ser JPG, PNG, WebP o GIF.");
     if (file.size > MAX_IMAGE_SIZE) return void toast.error("La imagen no puede superar 10 MB.");
     if (imagePreview) URL.revokeObjectURL(imagePreview);
+    setImageFile(file);
     setImagePreview(URL.createObjectURL(file));
-    setSelectedImageName(file.name);
-    setImagePath("");
   };
-
-  const resetEditor = () => { resetImage(); setTitle(""); setBody(""); setPollOptions(["", ""]); };
 
   const submit = async () => {
     if (!canEdit) return void toast.error("Solo los administradores pueden publicar en el Blog.");
     if (!title.trim()) return void toast.error("El post necesita un título.");
+    if (editorType === "image" && !imageFile) return void toast.error("Selecciona una imagen desde tu computadora.");
     const validPollOptions = pollOptions.map((item) => item.trim()).filter(Boolean);
-    if (editorType === "image" && !imageInputRef.current?.files?.[0] && !imagePath) return void toast.error("Selecciona una imagen.");
     if (editorType === "poll" && validPollOptions.length < 2) return void toast.error("Una encuesta necesita al menos 2 opciones.");
-
     setBusy(true);
     let uploadedPath: string | null = null;
-
-    if (editorType === "image") {
-      const file = imageInputRef.current?.files?.[0];
-      if (!file) { setBusy(false); return void toast.error("Selecciona una imagen."); }
-      const extension = file.name.split(".").pop()?.toLowerCase() || "jpg";
-      const safeName = `${crypto.randomUUID()}.${extension}`;
-      const path = `blog/${user.id}/${safeName}`;
-      const { error: uploadError } = await supabase.storage.from("media").upload(path, file, { contentType: file.type, upsert: false, cacheControl: "31536000" });
-      if (uploadError) { setBusy(false); return void toast.error(uploadError.message); }
-      uploadedPath = path;
-    }
-
-    const { data, error } = await supabase.from("announcements").insert({ author_id: user.id, title: title.trim(), body: body.trim() || null, image_path: uploadedPath, post_type: editorType }).select("id").single();
-    if (error || !data) {
-      if (uploadedPath) await supabase.storage.from("media").remove([uploadedPath]);
-      setBusy(false);
-      return void toast.error(error?.message || "No se pudo crear el post.");
-    }
-
-    if (editorType === "poll") {
-      const { error: pollError } = await supabase.from("announcement_poll_options").insert(validPollOptions.map((label, position) => ({ announcement_id: data.id, label, position })));
-      if (pollError) {
-        await supabase.from("announcements").delete().eq("id", data.id);
-        setBusy(false);
-        return void toast.error(pollError.message);
+    try {
+      if (editorType === "image" && imageFile) {
+        uploadedPath = await uploadFile("media", user.id, imageFile, "blog/");
       }
+      const { data, error } = await supabase.from("announcements").insert({ author_id: user.id, title: title.trim(), body: body.trim() || null, image_path: uploadedPath, post_type: editorType }).select("id").single();
+      if (error || !data) {
+        if (uploadedPath) {
+          const storageKey = uploadedPath.startsWith("media/") ? uploadedPath.slice("media/".length) : null;
+          if (storageKey) await supabase.storage.from("media").remove([storageKey]).catch(() => undefined);
+        }
+        throw new Error(error?.message || "No se pudo crear el post.");
+      }
+      if (editorType === "poll") {
+        const { error: pollError } = await supabase.from("announcement_poll_options").insert(validPollOptions.map((label, position) => ({ announcement_id: data.id, label, position })));
+        if (pollError) {
+          await supabase.from("announcements").delete().eq("id", data.id);
+          throw pollError;
+        }
+      }
+      resetEditor();
+      await loadPosts();
+      toast.success("Publicación creada");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "No se pudo publicar el anuncio.");
+    } finally {
+      setBusy(false);
     }
-
-    setBusy(false);
-    resetEditor();
-    await loadPosts();
-    toast.success("Publicación creada");
   };
 
   const remove = async (id: string) => {
     if (!canEdit) return void toast.error("Solo los administradores pueden eliminar publicaciones.");
     if (!window.confirm("¿Eliminar esta publicación?")) return;
+    const { data: post } = await supabase.from("announcements").select("image_path").eq("id", id).maybeSingle();
     const { error } = await supabase.from("announcements").delete().eq("id", id);
     if (error) return void toast.error(error.message);
-    setPosts((current) => current.filter((post) => post.id !== id));
+    if (post?.image_path?.startsWith("media/")) await supabase.storage.from("media").remove([post.image_path.slice("media/".length)]).catch(() => undefined);
+    setPosts((current) => current.filter((postItem) => postItem.id !== id));
     toast.success("Publicación eliminada");
   };
 
   const editor = <div className="mt-5 space-y-4">
     <div className="space-y-2"><Label>Título</Label><Input value={title} onChange={(event) => setTitle(event.target.value)} maxLength={160} placeholder="Cornet se ha actualizado!" disabled={!canEdit}/></div>
     <div className="space-y-2"><Label>{editorType === "poll" ? "Pregunta" : "Texto"}</Label><Textarea value={body} onChange={(event) => setBody(event.target.value)} rows={6} maxLength={5000} placeholder={editorType === "poll" ? "¿Qué función te gustaría ver después?" : "Escribe el anuncio oficial…"} disabled={!canEdit}/></div>
-    {editorType === "image" && <div className="space-y-3"><Label>Imagen</Label><input ref={imageInputRef} type="file" accept="image/jpeg,image/png,image/webp,image/gif" className="hidden" onChange={(event) => handleImageSelect(event.target.files?.[0])} disabled={!canEdit}/><div className="flex flex-wrap items-center gap-3"><Button type="button" variant="outline" onClick={() => imageInputRef.current?.click()} disabled={!canEdit}><UploadCloud className="mr-2 h-4 w-4"/>Seleccionar archivo</Button>{selectedImageName && <span className="text-sm text-muted-foreground">{selectedImageName}</span>}{selectedImageName && <Button type="button" variant="ghost" size="icon" onClick={resetImage} aria-label="Quitar imagen"><X className="h-4 w-4"/></Button>}</div>{imagePreview && <div className="overflow-hidden rounded-xl border border-border bg-background"><img src={imagePreview} alt="Vista previa" className="max-h-80 w-full object-contain"/></div>}<p className="text-xs text-muted-foreground">JPG, PNG, WebP o GIF · máximo 10 MB. Cornet almacenará el archivo en Supabase.</p></div>}
+    {editorType === "image" && <div className="space-y-3"><Label>Imagen</Label><label className="flex cursor-pointer items-center justify-center gap-2 rounded-xl border border-dashed border-border bg-background/60 px-4 py-6 text-sm hover:bg-muted"><Upload className="h-5 w-5"/><span>{imageFile ? imageFile.name : "Seleccionar una imagen desde tu computadora"}</span><input type="file" accept="image/jpeg,image/png,image/webp,image/gif" className="sr-only" onChange={(event) => handleImageChange(event.target.files?.[0] ?? null)} disabled={!canEdit}/></label>{imagePreview && <img src={imagePreview} alt="Vista previa" className="max-h-72 w-full rounded-xl object-contain border border-border bg-background"/>}<p className="text-xs text-muted-foreground">JPG, PNG, WebP o GIF · máximo 10 MB. Cornet la almacena automáticamente en Supabase.</p></div>}
     {editorType === "poll" && <div className="space-y-2"><Label>Opciones</Label>{pollOptions.map((option, index) => <div key={index} className="flex gap-2"><Input value={option} onChange={(event) => setPollOptions((current) => current.map((item, itemIndex) => itemIndex === index ? event.target.value : item))} placeholder={`Opción ${index + 1}`} disabled={!canEdit}/>{canEdit && pollOptions.length > 2 && <Button type="button" variant="ghost" size="icon" onClick={() => setPollOptions((current) => current.filter((_, itemIndex) => itemIndex !== index))}><Trash2 className="h-4 w-4"/></Button>}</div>)}{canEdit && <Button type="button" variant="outline" onClick={() => setPollOptions((current) => [...current, ""])}><Plus className="mr-2 h-4 w-4"/>Añadir opción</Button>}</div>}
-    {canEdit ? <div className="flex flex-wrap gap-3"><Button onClick={() => void submit()} disabled={busy}><Save className="mr-2 h-4 w-4"/>{busy ? "Publicando…" : "Publicar"}</Button><Button variant="outline" onClick={resetEditor} disabled={busy}>Limpiar</Button></div> : <p className="rounded-xl border border-dashed border-border p-4 text-sm text-muted-foreground">Tu rol de moderador permite revisar el Blog, pero no publicar ni eliminar entradas.</p>}
+    {canEdit ? <div className="flex flex-wrap gap-3"><Button onClick={() => void submit()} disabled={busy}><Save className="mr-2 h-4 w-4"/>{busy ? "Publicando…" : "Publicar"}</Button><Button variant="outline" onClick={resetEditor}>Limpiar</Button></div> : <p className="rounded-xl border border-dashed border-border p-4 text-sm text-muted-foreground">Tu rol de moderador permite revisar el Blog, pero no publicar ni eliminar entradas.</p>}
   </div>;
 
   return <AppShell><div className="mx-auto max-w-5xl space-y-6 pb-16">
     <div><p className="text-sm font-semibold uppercase tracking-[0.16em] text-primary">Administración</p><h1 className="mt-2 text-3xl font-bold tracking-tight">Blog / Anuncios</h1><p className="mt-2 text-sm text-muted-foreground">El Blog es editorial: Texto, Imagen y Poll. Los eventos y la publicidad viven en Campañas.</p></div>
     <div className="grid gap-3 md:grid-cols-2"><Link to="/admin-blog" className="rounded-2xl border border-primary/30 bg-primary/5 p-5 hover:bg-primary/10"><div className="flex items-center gap-3"><Megaphone className="h-5 w-5 text-primary"/><div><p className="font-semibold">Nuevo anuncio</p><p className="text-sm text-muted-foreground">Publica una novedad oficial de Cornet.</p></div></div></Link><Link to="/admin-campaigns" className="rounded-2xl border border-border bg-surface p-5 hover:bg-muted"><div className="flex items-center gap-3"><CalendarClock className="h-5 w-5 text-primary"/><div><p className="font-semibold">Nuevo evento</p><p className="text-sm text-muted-foreground">Gestiona eventos por separado dentro de Campañas.</p></div></div></Link></div>
-    <section className="rounded-2xl border border-border bg-surface p-6 shadow-sm"><div className="mb-5 flex items-center gap-2"><Plus className="h-5 w-5 text-primary"/><h2 className="font-semibold">Nuevo anuncio</h2><span className="ml-auto text-xs text-muted-foreground">{canEdit ? "Administrador" : "Solo lectura"}</span></div><Tabs value={editorType} onValueChange={(value) => { setEditorType(value as PostType); if (value !== "image") resetImage(); }}><TabsList><TabsTrigger value="text"><FileText className="mr-1.5 h-4 w-4"/>Texto</TabsTrigger><TabsTrigger value="image"><ImageIcon className="mr-1.5 h-4 w-4"/>Imagen</TabsTrigger><TabsTrigger value="poll"><BarChart3 className="mr-1.5 h-4 w-4"/>Poll</TabsTrigger></TabsList><TabsContent value="text">{editor}</TabsContent><TabsContent value="image">{editor}</TabsContent><TabsContent value="poll">{editor}</TabsContent></Tabs></section>
+    <section className="rounded-2xl border border-border bg-surface p-6 shadow-sm"><div className="mb-5 flex items-center gap-2"><Plus className="h-5 w-5 text-primary"/><h2 className="font-semibold">Nuevo anuncio</h2><span className="ml-auto text-xs text-muted-foreground">{canEdit ? "Administrador" : "Solo lectura"}</span></div><Tabs value={editorType} onValueChange={(value) => setEditorType(value as PostType)}><TabsList><TabsTrigger value="text"><FileText className="mr-1.5 h-4 w-4"/>Texto</TabsTrigger><TabsTrigger value="image"><ImageIcon className="mr-1.5 h-4 w-4"/>Imagen</TabsTrigger><TabsTrigger value="poll"><BarChart3 className="mr-1.5 h-4 w-4"/>Poll</TabsTrigger></TabsList><TabsContent value="text">{editor}</TabsContent><TabsContent value="image">{editor}</TabsContent><TabsContent value="poll">{editor}</TabsContent></Tabs></section>
     <section className="rounded-2xl border border-border bg-surface p-6 shadow-sm"><div className="mb-5 flex items-center gap-2"><ShieldCheck className="h-5 w-5 text-primary"/><h2 className="font-semibold">Publicaciones recientes</h2></div><div className="space-y-2">{posts.map((post) => <article key={post.id} className="flex items-start gap-4 rounded-xl border border-border bg-background p-4"><div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">{post.post_type === "image" ? <ImageIcon className="h-5 w-5"/> : post.post_type === "poll" ? <BarChart3 className="h-5 w-5"/> : <FileText className="h-5 w-5"/>}</div><div className="min-w-0 flex-1"><strong className="block truncate">{post.title}</strong><p className="mt-1 text-xs text-muted-foreground">{post.post_type === "poll" ? "Poll" : post.post_type === "image" ? "Imagen" : "Texto"} · {timeAgo(post.created_at)}</p></div>{canEdit && <Button variant="ghost" size="icon" onClick={() => void remove(post.id)} aria-label="Eliminar publicación"><Trash2 className="h-4 w-4"/></Button>}</article>)}{posts.length === 0 && <p className="py-10 text-center text-sm text-muted-foreground">Todavía no hay publicaciones.</p>}</div></section>
     <div><Button variant="outline" asChild><Link to="/admin">Volver al panel</Link></Button></div>
   </div></AppShell>;
