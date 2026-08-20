@@ -47,26 +47,27 @@ export const themes: ThemeDefinition[] = [
 
 const channelLayoutStyles = ["/custom-channel-layouts.css"];
 const variantStyles = ["/channel-layout-variants.css"];
+const historicalStyles = [...variantStyles, "/youtube-historical-layouts.css"];
 
 export const channelLayouts: ChannelLayoutDefinition[] = [
   { id: "corenetwork", name: "Cosmephant", category: "special", kind: "layout", description: "Diseño original de Cornet.", stylesheets: [] },
-  { id: "classic-2009", name: "Classic 2009", category: "historical", kind: "layout", description: "Canal compacto inspirado en 2009.", stylesheets: variantStyles },
+  { id: "classic-2009", name: "Classic 2009", category: "historical", kind: "layout", description: "Canal compacto inspirado en la interfaz de YouTube de 2009.", stylesheets: historicalStyles },
   { id: "standard-2012", name: "Standard 2012", category: "historical", kind: "layout", description: "Estructura general de YouTube alrededor de 2012.", stylesheets: variantStyles },
-  { id: "cosmic-panda", name: "Cosmic Panda", category: "historical", kind: "layout", description: "Layout de canal Cosmic Panda; independiente del tema global.", stylesheets: ["/cosmic-panda-channel-core.css"] },
+  { id: "cosmic-panda", name: "Cosmic Panda", category: "historical", kind: "layout", description: "Layout de canal Cosmic Panda; independiente del tema global.", stylesheets: ["/cosmic-panda-channel-core.css", "/youtube-historical-layouts.css"] },
   { id: "liquid-glass", name: "Liquid Glass", category: "special", kind: "layout", description: "Canal translúcido con profundidad, tarjetas flotantes y estética inspirada en Apple.", stylesheets: ["/liquid-glass-layout.css"] },
   { id: "early-youtube-2005", name: "Early YouTube 2005–2006", category: "historical", kind: "layout", description: "Canal mínimo de la era temprana: tabla simple, enlaces y poco chrome.", stylesheets: variantStyles },
   { id: "star-rating-2007", name: "Star Rating 2007–2008", category: "historical", kind: "layout", description: "Canal clásico con paneles grises y referencias a la era de estrellas.", stylesheets: variantStyles },
   { id: "transition-2010", name: "Transition 2010", category: "historical", kind: "layout", description: "Etapa de transición con sidebar gris, cajas y chrome redondeado.", stylesheets: variantStyles },
-  { id: "onechannel-2013", name: "One Channel 2013", category: "historical", kind: "layout", description: "Portada de canal centrada en banner y navegación por pestañas.", stylesheets: variantStyles },
+  { id: "onechannel-2013", name: "One Channel 2013", category: "historical", kind: "layout", description: "Portada de canal de 2013 con banner, navegación blanca y tarjetas compactas.", stylesheets: historicalStyles },
   { id: "material-lite-2015", name: "Material Lite 2015–2016", category: "historical", kind: "layout", description: "Tarjetas limpias, sombras suaves y superficies planas.", stylesheets: variantStyles },
   { id: "channel-2015", name: "2015 Channel", category: "historical", kind: "layout", description: "Intermedio entre el canal clásico y moderno.", stylesheets: variantStyles },
-  { id: "channel-2019", name: "YouTube 2019 Channel", category: "historical", kind: "layout", description: "Canal con estructura de la era Polymer.", stylesheets: variantStyles },
+  { id: "channel-2019", name: "YouTube 2019 Channel", category: "historical", kind: "layout", description: "Canal compacto de la era Polymer con Material Design y poco radio.", stylesheets: historicalStyles },
   { id: "modern-minimal-2020", name: "Modern Minimal 2020–2023", category: "special", kind: "layout", description: "Canal amplio y minimalista con poco chrome.", stylesheets: variantStyles },
   { id: "terminal", name: "Terminal / CLI", category: "special", kind: "layout", description: "Canal con estética de terminal y navegación monoespaciada.", stylesheets: channelLayoutStyles },
   { id: "bento-grid", name: "Bento Grid", category: "special", kind: "layout", description: "Canal modular con superficies tipo bento y jerarquía de tarjetas.", stylesheets: channelLayoutStyles },
   { id: "magazine", name: "Magazine / Editorial", category: "special", kind: "layout", description: "Canal editorial con tipografía de revista y divisores fuertes.", stylesheets: variantStyles },
   { id: "cinephile", name: "Cinephile / Sala oscura", category: "special", kind: "layout", description: "Canal inmersivo orientado a cine y cortometrajes.", stylesheets: variantStyles },
-  { id: "feather-profile", name: "Feather Profile", category: "special", kind: "layout", description: "Perfil ligero y centrado en contenido.", stylesheets: variantStyles },
+  { id: "feather-profile", name: "Feather Profile", category: "special", kind: "layout", description: "Perfil ligero, monocromo y centrado en contenido.", stylesheets: historicalStyles },
   { id: "creator-studio", name: "Creator Studio", category: "functional", kind: "layout", description: "Perfil orientado a creadores y estadísticas.", stylesheets: variantStyles },
   { id: "profile-card", name: "Profile Card", category: "special", kind: "layout", description: "Perfil social compacto.", stylesheets: variantStyles },
   { id: "community-profile", name: "Community Profile", category: "functional", kind: "layout", description: "Perfil centrado en publicaciones y actividad.", stylesheets: variantStyles },
