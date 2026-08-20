@@ -2,6 +2,7 @@
   "routesDirectory": "./src/routes",
   "generatedRouteTree": "./src/routeTree.gen.ts",
   "routeFileIgnorePrefix": "-",
+  "routeFileIgnorePattern": "watch-content\\.tsx$",
   "quoteStyle": "single",
   "target": "react"
 }
