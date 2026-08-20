@@ -11,11 +11,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { useAuth } from "@/hooks/useAuth";
 import { timeAgo } from "@/lib/format";
-import { uploadFile } from "@/lib/storage";
 
 type PostType = "text" | "image" | "poll";
 type Post = { id: string; author_id: string; title: string; body: string | null; image_path: string | null; post_type: PostType; created_at: string };
-
 const MAX_IMAGE_SIZE = 10 * 1024 * 1024;
 const IMAGE_TYPES = new Set(["image/jpeg", "image/png", "image/webp", "image/gif"]);
 
@@ -68,14 +66,20 @@ function AdminBlogPage() {
     let uploadedPath: string | null = null;
     try {
       if (editorType === "image" && imageFile) {
-        uploadedPath = await uploadFile("media", user.id, imageFile, "blog/");
+        const ext = imageFile.name.split(".").pop()?.toLowerCase() || "img";
+        const key = `${user.id}/blog/${crypto.randomUUID()}.${ext}`;
+        const { error: uploadError } = await supabase.storage.from("media").upload(key, imageFile, {
+          contentType: imageFile.type,
+          cacheControl: "31536000",
+          upsert: false,
+        });
+        if (uploadError) throw new Error(`No se pudo subir la imagen: ${uploadError.message}`);
+        uploadedPath = `media/${key}`;
       }
+
       const { data, error } = await supabase.from("announcements").insert({ author_id: user.id, title: title.trim(), body: body.trim() || null, image_path: uploadedPath, post_type: editorType }).select("id").single();
       if (error || !data) {
-        if (uploadedPath) {
-          const storageKey = uploadedPath.startsWith("media/") ? uploadedPath.slice("media/".length) : null;
-          if (storageKey) await supabase.storage.from("media").remove([storageKey]).catch(() => undefined);
-        }
+        if (uploadedPath) await supabase.storage.from("media").remove([uploadedPath.slice("media/".length)]).catch(() => undefined);
         throw new Error(error?.message || "No se pudo crear el post.");
       }
       if (editorType === "poll") {
@@ -114,11 +118,5 @@ function AdminBlogPage() {
     {canEdit ? <div className="flex flex-wrap gap-3"><Button onClick={() => void submit()} disabled={busy}><Save className="mr-2 h-4 w-4"/>{busy ? "Publicando…" : "Publicar"}</Button><Button variant="outline" onClick={resetEditor}>Limpiar</Button></div> : <p className="rounded-xl border border-dashed border-border p-4 text-sm text-muted-foreground">Tu rol de moderador permite revisar el Blog, pero no publicar ni eliminar entradas.</p>}
   </div>;
 
-  return <AppShell><div className="mx-auto max-w-5xl space-y-6 pb-16">
-    <div><p className="text-sm font-semibold uppercase tracking-[0.16em] text-primary">Administración</p><h1 className="mt-2 text-3xl font-bold tracking-tight">Blog / Anuncios</h1><p className="mt-2 text-sm text-muted-foreground">El Blog es editorial: Texto, Imagen y Poll. Los eventos y la publicidad viven en Campañas.</p></div>
-    <div className="grid gap-3 md:grid-cols-2"><Link to="/admin-blog" className="rounded-2xl border border-primary/30 bg-primary/5 p-5 hover:bg-primary/10"><div className="flex items-center gap-3"><Megaphone className="h-5 w-5 text-primary"/><div><p className="font-semibold">Nuevo anuncio</p><p className="text-sm text-muted-foreground">Publica una novedad oficial de Cornet.</p></div></div></Link><Link to="/admin-campaigns" className="rounded-2xl border border-border bg-surface p-5 hover:bg-muted"><div className="flex items-center gap-3"><CalendarClock className="h-5 w-5 text-primary"/><div><p className="font-semibold">Nuevo evento</p><p className="text-sm text-muted-foreground">Gestiona eventos por separado dentro de Campañas.</p></div></div></Link></div>
-    <section className="rounded-2xl border border-border bg-surface p-6 shadow-sm"><div className="mb-5 flex items-center gap-2"><Plus className="h-5 w-5 text-primary"/><h2 className="font-semibold">Nuevo anuncio</h2><span className="ml-auto text-xs text-muted-foreground">{canEdit ? "Administrador" : "Solo lectura"}</span></div><Tabs value={editorType} onValueChange={(value) => setEditorType(value as PostType)}><TabsList><TabsTrigger value="text"><FileText className="mr-1.5 h-4 w-4"/>Texto</TabsTrigger><TabsTrigger value="image"><ImageIcon className="mr-1.5 h-4 w-4"/>Imagen</TabsTrigger><TabsTrigger value="poll"><BarChart3 className="mr-1.5 h-4 w-4"/>Poll</TabsTrigger></TabsList><TabsContent value="text">{editor}</TabsContent><TabsContent value="image">{editor}</TabsContent><TabsContent value="poll">{editor}</TabsContent></Tabs></section>
-    <section className="rounded-2xl border border-border bg-surface p-6 shadow-sm"><div className="mb-5 flex items-center gap-2"><ShieldCheck className="h-5 w-5 text-primary"/><h2 className="font-semibold">Publicaciones recientes</h2></div><div className="space-y-2">{posts.map((post) => <article key={post.id} className="flex items-start gap-4 rounded-xl border border-border bg-background p-4"><div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">{post.post_type === "image" ? <ImageIcon className="h-5 w-5"/> : post.post_type === "poll" ? <BarChart3 className="h-5 w-5"/> : <FileText className="h-5 w-5"/>}</div><div className="min-w-0 flex-1"><strong className="block truncate">{post.title}</strong><p className="mt-1 text-xs text-muted-foreground">{post.post_type === "poll" ? "Poll" : post.post_type === "image" ? "Imagen" : "Texto"} · {timeAgo(post.created_at)}</p></div>{canEdit && <Button variant="ghost" size="icon" onClick={() => void remove(post.id)} aria-label="Eliminar publicación"><Trash2 className="h-4 w-4"/></Button>}</article>)}{posts.length === 0 && <p className="py-10 text-center text-sm text-muted-foreground">Todavía no hay publicaciones.</p>}</div></section>
-    <div><Button variant="outline" asChild><Link to="/admin">Volver al panel</Link></Button></div>
-  </div></AppShell>;
+  return <AppShell><div className="mx-auto max-w-5xl space-y-6 pb-16"><div><p className="text-sm font-semibold uppercase tracking-[0.16em] text-primary">Administración</p><h1 className="mt-2 text-3xl font-bold tracking-tight">Blog / Anuncios</h1><p className="mt-2 text-sm text-muted-foreground">El Blog es editorial: Texto, Imagen y Poll. Los eventos y la publicidad viven en Campañas.</p></div><div className="grid gap-3 md:grid-cols-2"><Link to="/admin-blog" className="rounded-2xl border border-primary/30 bg-primary/5 p-5 hover:bg-primary/10"><div className="flex items-center gap-3"><Megaphone className="h-5 w-5 text-primary"/><div><p className="font-semibold">Nuevo anuncio</p><p className="text-sm text-muted-foreground">Publica una novedad oficial de Cornet.</p></div></div></Link><Link to="/admin-campaigns" className="rounded-2xl border border-border bg-surface p-5 hover:bg-muted"><div className="flex items-center gap-3"><CalendarClock className="h-5 w-5 text-primary"/><div><p className="font-semibold">Nuevo evento</p><p className="text-sm text-muted-foreground">Gestiona eventos por separado dentro de Campañas.</p></div></Link></div><section className="rounded-2xl border border-border bg-surface p-6 shadow-sm"><div className="mb-5 flex items-center gap-2"><Plus className="h-5 w-5 text-primary"/><h2 className="font-semibold">Nuevo anuncio</h2><span className="ml-auto text-xs text-muted-foreground">{canEdit ? "Administrador" : "Solo lectura"}</span></div><Tabs value={editorType} onValueChange={(value) => setEditorType(value as PostType)}><TabsList><TabsTrigger value="text"><FileText className="mr-1.5 h-4 w-4"/>Texto</TabsTrigger><TabsTrigger value="image"><ImageIcon className="mr-1.5 h-4 w-4"/>Imagen</TabsTrigger><TabsTrigger value="poll"><BarChart3 className="mr-1.5 h-4 w-4"/>Poll</TabsTrigger></TabsList><TabsContent value="text">{editor}</TabsContent><TabsContent value="image">{editor}</TabsContent><TabsContent value="poll">{editor}</TabsContent></Tabs></section><section className="rounded-2xl border border-border bg-surface p-6 shadow-sm"><div className="mb-5 flex items-center gap-2"><ShieldCheck className="h-5 w-5 text-primary"/><h2 className="font-semibold">Publicaciones recientes</h2></div><div className="space-y-2">{posts.map((post) => <article key={post.id} className="flex items-start gap-4 rounded-xl border border-border bg-background p-4"><div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">{post.post_type === "image" ? <ImageIcon className="h-5 w-5"/> : post.post_type === "poll" ? <BarChart3 className="h-5 w-5"/> : <FileText className="h-5 w-5"/>}</div><div className="min-w-0 flex-1"><strong className="block truncate">{post.title}</strong><p className="mt-1 text-xs text-muted-foreground">{post.post_type === "poll" ? "Poll" : post.post_type === "image" ? "Imagen" : "Texto"} · {timeAgo(post.created_at)}</p></div>{canEdit && <Button variant="ghost" size="icon" onClick={() => void remove(post.id)} aria-label="Eliminar publicación"><Trash2 className="h-4 w-4"/></Button>}</article>)}{posts.length === 0 && <p className="py-10 text-center text-sm text-muted-foreground">Todavía no hay publicaciones.</p>}</div></section><div><Button variant="outline" asChild><Link to="/admin">Volver al panel</Link></Button></div></div></AppShell>;
 }
