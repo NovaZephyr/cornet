@@ -1,0 +1,90 @@
+/* Historical YouTube channel fidelity overrides. These styles are layout-owned, never theme-owned. */
+
+/* YouTube 2009: compact, blue/gray, list-first channel. */
+.cn-extra-classic2009{width:100%;max-width:960px;margin:0 auto;background:#fff;color:#333;border:1px solid #c9c9c9;font-family:Arial,Helvetica,sans-serif;box-shadow:none;border-radius:0}
+.cn-extra-classic2009 header{min-height:50px;padding:8px 10px;background:linear-gradient(#fff,#ececec);border-bottom:1px solid #c5c5c5;box-shadow:none}
+.cn-extra-classic2009 .cn-extra-brand{font-size:20px;line-height:1;color:#c00;letter-spacing:-.05em}
+.cn-extra-classic2009 .cn-extra-tabs{background:#f3f3f3;border-top:1px solid #fff;border-bottom:1px solid #c7c7c7}
+.cn-extra-classic2009 .cn-extra-tabs span{padding:8px 14px;color:#164f8a;border-right:1px solid #d3d3d3;font-size:11px;font-weight:700}
+.cn-extra-classic2009 .cn-extra-tabs .active{color:#222;border-bottom:3px solid #164f8a;background:#fff}
+.cn-extra-classic2009 main{grid-template-columns:155px minmax(0,1fr);gap:12px;padding:10px;background:#fafafa}
+.cn-extra-classic2009 aside{background:#efefef;border:1px solid #d0d0d0;padding:10px;border-radius:0}
+.cn-extra-classic2009 aside h2,.cn-extra-classic2009 aside h3{color:#444;font-size:12px}
+.cn-extra-classic2009 section>h2{margin:0;padding:7px 0;border-bottom:1px solid #d2d2d2;font-size:14px;color:#333}
+.cn-extra-classic2009 .cn-extra-classic-grid{display:flex;flex-direction:column;gap:0}
+.cn-extra-classic2009 .cn-extra-classic-grid>*{display:grid!important;grid-template-columns:150px minmax(0,1fr)!important;gap:10px!important;padding:10px 0!important;border-bottom:1px solid #ddd!important;min-width:0!important;background:#fff!important}
+.cn-extra-classic2009 .cn-extra-classic-grid>* > a{width:150px!important;height:88px!important;aspect-ratio:auto!important;border-radius:0!important;overflow:hidden!important;background:#eee!important}
+.cn-extra-classic2009 .cn-extra-classic-grid>* > a img{border-radius:0!important}
+.cn-extra-classic2009 .cn-extra-classic-grid>* > div{min-width:0!important;display:block!important}
+.cn-extra-classic2009 .cn-extra-classic-grid>* > div > a:first-child{font-size:13px!important;line-height:1.3!important;font-weight:700!important;color:#0645ad!important}
+.cn-extra-classic2009 .cn-extra-classic-grid>* > div p{font-size:10px!important;color:#777!important;margin-top:3px!important}
+.cn-extra-classic2009 .cn-extra-classic-grid>* > div > a:nth-child(2){font-size:10px!important;margin-top:5px!important;color:#555!important}
+.cn-extra-classic2009 .cn-extra-actions button{border-radius:2px!important;box-shadow:none!important}
+.cn-extra-classic2009 img,.cn-extra-classic2009 video{border-radius:0!important}
+
+/* Cosmic Panda 2011-2012: compact grid, light sidebar, squared media, red accents. */
+.cn-cosmic-channel{background-color:#f1f1f1!important;font-family:Arial,Helvetica,sans-serif!important}
+.cn-cosmic-channel-inner{background:#e8e8e8!important;box-shadow:none!important;border:1px solid #bcbcbc!important;width:min(1000px,100%)!important;max-width:1000px!important}
+.cn-cosmic-topbar{background:#f8f8f8!important;color:#444!important;text-shadow:none!important;border-bottom:1px solid #c6c6c6!important}
+.cn-cosmic-topbar-right{color:#777!important}
+.cn-cosmic-banner-wrap{background:#f1f1f1!important}
+.cn-cosmic-title-strip{background:#fafafa!important}
+.cn-cosmic-tabs{background:#3f3f3f!important}
+.cn-cosmic-columns{grid-template-columns:minmax(0,1fr) 250px!important;background:#dedede!important}
+.cn-cosmic-left{display:flex!important;flex-direction:column!important;gap:10px!important;min-width:0!important}
+.cn-cosmic-center{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:10px!important}
+.cn-cosmic-right{background:#efefef!important;padding:8px!important;border-left:1px solid #c0c0c0!important}
+.cn-cosmic-panel{background:#fff!important;border:1px solid #c1c1c1!important;border-radius:0!important;box-shadow:none!important}
+.cn-cosmic-featured{max-width:none!important}
+.cn-cosmic-center #uploads > .grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:10px!important}
+.cn-cosmic-center #uploads .rounded-xl,.cn-cosmic-center #uploads .rounded-lg{border-radius:0!important}
+.cn-cosmic-right .cn-cosmic-panel .rounded-xl,.cn-cosmic-right .cn-cosmic-panel .rounded-lg{border-radius:0!important}
+.cn-cosmic-right .cn-cosmic-panel .flex.flex-col{gap:6px!important}
+.cn-cosmic-right .cn-cosmic-panel .aspect-video{border-radius:0!important}
+.cn-cosmic-channel .cn-2012-retro-button{background:#cc0000!important;border-color:#a60000!important;color:#fff!important;box-shadow:none!important;border-radius:2px!important}
+.cn-cosmic-channel .cn-2012-retro-button:hover{background:#b80000!important}
+
+/* YouTube 2013 / One Channel: white sidebar, Roboto-like hierarchy, restrained elevation. */
+.cn-layout-onechannel{background:#fff!important;border:1px solid #d8d8d8!important;box-shadow:0 1px 3px rgba(0,0,0,.08)!important;border-radius:0!important;font-family:Roboto,Arial,Helvetica,sans-serif!important}
+.cn-layout-onechannel-banner{height:205px!important;background:#f2f2f2!important;border-radius:0!important}
+.cn-layout-onechannel-head{background:#fff!important;box-shadow:0 1px 2px rgba(0,0,0,.08)!important}
+.cn-layout-onechannel nav{background:#fff!important;border-bottom:1px solid #d6d6d6!important}
+.cn-layout-onechannel nav span{padding:11px 18px!important;color:#555!important}
+.cn-layout-onechannel nav .active{color:#c00!important;border-bottom:3px solid #cc0000!important}
+.cn-layout-onechannel-feature{background:#fff!important;padding:18px!important;gap:18px!important}
+.cn-layout-onechannel-feature > div:first-child .rounded-xl,.cn-layout-onechannel-feature > div:first-child .rounded-lg{border-radius:0!important}
+.cn-layout-onechannel-feature h2{font-size:22px!important;margin-top:8px!important}
+.cn-layout-onechannel-feature p{font-size:13px!important;color:#666!important}
+.cn-layout-onechannel .cn-layout-video-list{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:14px!important}
+.cn-layout-onechannel .cn-layout-video-list>div> a{border-radius:0!important}
+
+/* Polymer 2019: Material-like, compact cards, small radius, lots of white space. */
+.cn-layout-2019{background:#fff!important;border:0!important;box-shadow:none!important;font-family:Roboto,Arial,Helvetica,sans-serif!important;max-width:1200px!important}
+.cn-layout-2019-banner{height:175px!important;background:#f5f5f5!important}
+.cn-layout-2019-head{padding:14px 18px!important;border-bottom:1px solid #e6e6e6!important}
+.cn-layout-2019 nav{background:#fff!important}
+.cn-layout-2019 nav span{padding:11px 18px!important;color:#606060!important}
+.cn-layout-2019 nav .active{color:#212121!important;border-bottom:2px solid #cc0000!important}
+.cn-layout-2019-shelves{padding:18px!important}
+.cn-layout-2019-shelves>.featured{gap:18px!important;padding-bottom:20px!important}
+.cn-layout-2019-shelves>.featured h2{font-size:20px!important;font-weight:500!important}
+.cn-layout-2019-shelves>.featured .rounded-xl,.cn-layout-2019-shelves>.featured .rounded-lg{border-radius:6px!important}
+.cn-layout-2019-shelves section>h2{font-size:16px!important;font-weight:500!important}
+.cn-layout-2019-shelves section .cn-layout-video-list{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:16px!important}
+.cn-layout-2019 .shadow,.cn-layout-2019 .shadow-sm{box-shadow:0 1px 3px rgba(0,0,0,.08)!important}
+
+/* Feather: intentionally austere, monochrome and compact. */
+.cn-layout-feather{background:#fff!important;max-width:980px!important;color:#333!important;font-family:Arial,Helvetica,sans-serif!important;padding:24px 0!important}
+.cn-layout-feather header{padding-bottom:12px!important;border-bottom:1px solid #ddd!important}
+.cn-layout-feather .cn-layout-actions button{border-radius:0!important;background:#fff!important;color:#333!important;border:1px solid #aaa!important;box-shadow:none!important}
+.cn-layout-feather-description{max-width:none!important;font-size:12px!important;color:#666!important;line-height:1.55!important}
+.cn-layout-feather .cn-layout-video-list,.cn-layout-feather .cn-layout-video-list.compact{display:flex!important;flex-direction:column!important;gap:0!important;padding:0!important}
+.cn-layout-feather .cn-layout-video-list>div{display:grid!important;grid-template-columns:140px minmax(0,1fr)!important;gap:10px!important;padding:9px 0!important;border-bottom:1px solid #ddd!important}
+.cn-layout-feather .cn-layout-video-list>div>a{width:140px!important;height:82px!important;aspect-ratio:auto!important;border-radius:0!important}
+.cn-layout-feather .cn-layout-video-list>div>a img{border-radius:0!important}
+.cn-layout-feather .cn-layout-video-list>div>div{display:block!important}
+
+/* Shared historical cleanup. */
+.cn-extra-classic2009 .rounded-xl,.cn-extra-classic2009 .rounded-lg,
+.cn-layout-onechannel .rounded-xl,.cn-layout-onechannel .rounded-lg,
+.cn-layout-2019 .rounded-xl{border-radius:0!important}
