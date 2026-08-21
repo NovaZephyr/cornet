@@ -3,6 +3,7 @@ const UPLOAD_PRESET = "corenetwork_media";
 const MAX_BYTES = 100 * 1024 * 1024;
 
 export type CloudinaryResourceType = "image" | "video";
+export type CloudinaryUploadOptions = { publicId?: string; overwrite?: boolean };
 
 const VIDEO_EXTENSIONS = new Set([
   ".mp4", ".m4v", ".mov", ".webm", ".mkv", ".avi", ".wmv", ".flv", ".mpeg", ".mpg", ".3gp", ".ts", ".m2ts",
@@ -59,6 +60,7 @@ export async function uploadToCloudinary(
   file: File,
   userId: string,
   resourceType: CloudinaryResourceType,
+  options: CloudinaryUploadOptions = {},
 ): Promise<string> {
   assertValidMediaFile(file, resourceType);
 
@@ -66,11 +68,15 @@ export async function uploadToCloudinary(
   body.append("file", file);
   body.append("upload_preset", UPLOAD_PRESET);
   body.append("context", `user_id=${userId}`);
+  if (options.publicId) {
+    body.append("public_id", options.publicId);
+    body.append("unique_filename", "false");
+    body.append("overwrite", String(options.overwrite ?? true));
+  }
 
   const response = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/${resourceType}/upload`, { method: "POST", body });
   const payload = (await response.json()) as { secure_url?: string; error?: { message?: string } };
   if (!response.ok || !payload.secure_url) throw new Error(payload.error?.message ?? "Cloudinary rechazó la subida.");
 
-  // Cloudinary sirve la salida convertida como MP4/H.264/AAC para que el player tenga un formato estable.
   return resourceType === "video" ? toPlayableCloudinaryVideoUrl(payload.secure_url) : payload.secure_url;
 }
