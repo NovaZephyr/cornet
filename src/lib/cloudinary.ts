@@ -1,3 +1,5 @@
+import { createCloudinaryUploadSignature } from "@/lib/admin.functions";
+
 const CLOUD_NAME = "dzoqpouj";
 const UPLOAD_PRESET = "corenetwork_media";
 const MAX_BYTES = 100 * 1024 * 1024;
@@ -64,15 +66,30 @@ export async function uploadToCloudinary(
 ): Promise<string> {
   assertValidMediaFile(file, resourceType);
 
+  if (options.publicId) {
+    const signed = await createCloudinaryUploadSignature({
+      data: { publicId: options.publicId, resourceType },
+    });
+    const body = new FormData();
+    body.append("file", file);
+    body.append("api_key", signed.apiKey);
+    body.append("timestamp", String(signed.timestamp));
+    body.append("signature", signed.signature);
+    body.append("public_id", signed.publicId);
+    body.append("context", signed.context);
+    body.append("overwrite", String(options.overwrite ?? true));
+    body.append("invalidate", "true");
+
+    const response = await fetch(`https://api.cloudinary.com/v1_1/${signed.cloudName}/${resourceType}/upload`, { method: "POST", body });
+    const payload = (await response.json()) as { secure_url?: string; error?: { message?: string } };
+    if (!response.ok || !payload.secure_url) throw new Error(payload.error?.message ?? "Cloudinary rechazó la subida firmada.");
+    return resourceType === "video" ? toPlayableCloudinaryVideoUrl(payload.secure_url) : payload.secure_url;
+  }
+
   const body = new FormData();
   body.append("file", file);
   body.append("upload_preset", UPLOAD_PRESET);
   body.append("context", `user_id=${userId}`);
-  if (options.publicId) {
-    body.append("public_id", options.publicId);
-    body.append("unique_filename", "false");
-    body.append("overwrite", String(options.overwrite ?? true));
-  }
 
   const response = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/${resourceType}/upload`, { method: "POST", body });
   const payload = (await response.json()) as { secure_url?: string; error?: { message?: string } };
