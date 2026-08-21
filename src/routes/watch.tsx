@@ -1,9 +1,9 @@
 import { lazy, Suspense, useEffect, useState } from "react";
 import { ClientOnly, createFileRoute } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
+import { AppShell } from "@/components/AppShell";
 
 const WatchContent = lazy(() => import("./watch-content").then((module) => ({ default: module.WatchContent })));
-
 const DEFAULT_EMBED_IMAGE = "https://mvwpxnszcpyayofqgtmv.supabase.co/storage/v1/object/public/media/61fe7d8d-f53f-4838-a870-4588c16e474b/announcement-7871ca44-f13f-45e5-a3c1-7908f0c348a9.png";
 const SITE_ORIGIN = "https://corenetwork.lovable.app";
 
@@ -49,10 +49,8 @@ function WatchRoute() {
   const videoId = loaderData?.video.id ?? "";
   const [approved, setApproved] = useState(false);
   useEffect(() => { if (!videoId || !loaderData?.video.age_restricted) { setApproved(true); return; } try { setApproved(sessionStorage.getItem(`cornet-age18:${videoId}`) === "yes"); } catch { setApproved(false); } }, [videoId, loaderData?.video.age_restricted]);
-
   const confirmAge = () => { try { sessionStorage.setItem(`cornet-age18:${videoId}`, "yes"); } catch { /* sessionStorage may be unavailable */ } setApproved(true); };
-
-  return <ClientOnly fallback={<div className="flex min-h-[60vh] items-center justify-center text-sm text-muted-foreground">Cargando video…</div>}><Suspense fallback={<div className="flex min-h-[60vh] items-center justify-center text-sm text-muted-foreground">Cargando video…</div>}>{loaderData?.video.age_restricted && !approved ? <AppAgeGate title={loaderData.video.title} onConfirm={confirmAge} /> : <WatchContent initialVideo={loaderData} />}</Suspense></ClientOnly>;
+  return <ClientOnly fallback={<AppShell><div className="flex min-h-[60vh] items-center justify-center text-sm text-muted-foreground">Cargando video…</div></AppShell>}><Suspense fallback={<AppShell><div className="flex min-h-[60vh] items-center justify-center text-sm text-muted-foreground">Cargando video…</div></AppShell>}>{loaderData?.video.age_restricted && !approved ? <AppShell><AppAgeGate title={loaderData.video.title} onConfirm={confirmAge} /></AppShell> : <WatchContent initialVideo={loaderData} />}</Suspense></ClientOnly>;
 }
 
 function AppAgeGate({ title, onConfirm }: { title: string; onConfirm: () => void }) {
