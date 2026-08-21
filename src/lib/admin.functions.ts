@@ -21,10 +21,19 @@ export const deleteUserAccount = createServerFn({ method: "POST" })
     });
     if (roleError) throw new Error(roleError.message);
     if (!isAdmin) throw new Error("Solo los administradores pueden eliminar cuentas");
-    if (data.userId === context.userId) throw new Error("No puedes eliminar tu propia cuenta");
+    if (data.userId === context.userId) throw new Error("No puedes eliminar tu propia cuenta desde el panel");
 
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { error } = await supabaseAdmin.auth.admin.deleteUser(data.userId);
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  });
+
+export const deleteOwnAccount = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { error } = await supabaseAdmin.auth.admin.deleteUser(context.userId);
     if (error) throw new Error(error.message);
     return { ok: true };
   });
@@ -58,18 +67,15 @@ export const deleteVideoAsAdmin = createServerFn({ method: "POST" })
     if (lookupError) throw new Error(lookupError.message);
     if (!video) throw new Error("El video no existe o ya fue eliminado");
 
-    // Best-effort cleanup for media paths that belong to Supabase Storage.
-    const storagePaths = [video.video_path, video.thumbnail_path]
-      .filter((path): path is string => typeof path === "string" && path.length > 0)
-      .filter((path) => !/^https?:\/\//i.test(path))
-      .map((path) => path.replace(/^\/?(videos|media)\//, ""));
-
-    if (storagePaths.length) {
-      const { error: storageError } = await supabaseAdmin.storage.from("videos").remove(storagePaths);
-      if (storageError) {
-        // Thumbnails can live in media; don't prevent the DB deletion if the old object is external.
-        await supabaseAdmin.storage.from("media").remove(storagePaths).catch(() => undefined);
-      }
+    const storageTargets: Array<{ bucket: "videos" | "media"; key: string }> = [];
+    for (const path of [video.video_path, video.thumbnail_path]) {
+      if (typeof path !== "string" || !path || /^https?:\/\//i.test(path)) continue;
+      if (path.startsWith("videos/")) storageTargets.push({ bucket: "videos", key: path.slice("videos/".length) });
+      else if (path.startsWith("media/")) storageTargets.push({ bucket: "media", key: path.slice("media/".length) });
+    }
+    for (const target of storageTargets) {
+      const { error: storageError } = await supabaseAdmin.storage.from(target.bucket).remove([target.key]);
+      if (storageError) console.warn("[Cornet] media cleanup failed", target.bucket, target.key, storageError.message);
     }
 
     const { error } = await supabaseAdmin.from("videos").delete().eq("id", data.videoId);
