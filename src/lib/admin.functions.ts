@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
@@ -10,6 +11,40 @@ const requireAdmin = async (context: { supabase: typeof import("@/integrations/s
   if (error) throw new Error(error.message);
   if (!isAdmin) throw new Error("Solo los administradores pueden moderar videos");
 };
+
+export const createCloudinaryUploadSignature = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((data: unknown) => z.object({
+    publicId: z.string().min(1).max(255),
+    resourceType: z.enum(["image", "video"]),
+  }).parse(data))
+  .handler(async ({ data, context }) => {
+    if (!data.publicId.startsWith(`profiles/${context.userId}/`)) {
+      throw new Error("Public ID de Cloudinary no permitido");
+    }
+
+    const apiKey = process.env.CLOUDINARY_API_KEY;
+    const apiSecret = process.env.CLOUDINARY_API_SECRET;
+    const cloudName = process.env.CLOUDINARY_CLOUD_NAME ?? "dzoqpouj";
+    if (!apiKey || !apiSecret) {
+      throw new Error("Cloudinary seguro no está configurado en el servidor");
+    }
+
+    const timestamp = Math.floor(Date.now() / 1000);
+    const contextValue = `user_id=${context.userId}`;
+    const paramsToSign = `context=${contextValue}&invalidate=true&overwrite=true&public_id=${data.publicId}&timestamp=${timestamp}`;
+    const signature = createHash("sha1").update(`${paramsToSign}${apiSecret}`).digest("hex");
+
+    return {
+      cloudName,
+      apiKey,
+      timestamp,
+      signature,
+      publicId: data.publicId,
+      context: contextValue,
+      resourceType: data.resourceType,
+    };
+  });
 
 export const deleteUserAccount = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
