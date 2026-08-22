@@ -4,7 +4,9 @@ alter table public.videos
 alter table public.videos
   add column if not exists video_storage_key text;
 
-drop constraint if exists videos_video_storage_provider_check;
+alter table public.videos
+  drop constraint if exists videos_video_storage_provider_check;
+
 alter table public.videos
   add constraint videos_video_storage_provider_check
   check (video_storage_provider in ('supabase', 'backblaze', 'cloudinary'));
