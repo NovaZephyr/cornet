@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toPlayableCloudinaryVideoUrl } from "@/lib/cloudinary";
-import { createB2DownloadUrl, uploadToB2 } from "@/lib/b2";
+import { createB2DownloadUrl, createB2UploadUrl } from "@/lib/b2";
 
 const cache = new Map<string, { url: string; expires: number }>();
 const inflight = new Map<string, Promise<string | null>>();
@@ -103,11 +103,27 @@ export async function uploadFile(
   prefix = "",
 ): Promise<string> {
   const ext = file.name.split(".").pop() ?? "bin";
+
+  // Videos are now stored in B2. Existing Supabase Storage videos remain
+  // readable through the compatibility branch in getSignedUrl().
+  if (bucket === "videos") {
+    const key = `videos/${userId}/${prefix}${crypto.randomUUID()}.${ext}`;
+    const { url } = await createB2UploadUrl(key, file.type || "application/octet-stream");
+    const response = await fetch(url, {
+      method: "PUT",
+      headers: { "Content-Type": file.type || "application/octet-stream" },
+      body: file,
+    });
+    if (!response.ok) {
+      throw new Error(`Backblaze upload failed (${response.status})`);
+    }
+    return `b2/${key}`;
+  }
+
   const key = `${userId}/${prefix}${crypto.randomUUID()}.${ext}`;
 
   if (STORAGE_PROVIDER === "b2") {
-    await uploadToB2(key, file);
-    return `b2/${key}`;
+    throw new Error("B2 storage provider is only supported for video uploads");
   }
 
   const { error } = await supabase.storage.from(bucket).upload(key, file, {
