@@ -54,7 +54,12 @@ function validKey(value: unknown, userId: string) {
   if (typeof value !== "string" || !value || value.startsWith("/") || value.includes("..") || value.length > 1024) {
     throw new Error("Invalid object key");
   }
-  const allowedPrefixes = [`files/${userId}/`, `temp/${userId}/`, `community/${userId}/`];
+  const allowedPrefixes = [
+    `videos/${userId}/`,
+    `files/${userId}/`,
+    `temp/${userId}/`,
+    `community/${userId}/`,
+  ];
   if (!allowedPrefixes.some((prefix) => value.startsWith(prefix))) throw new Error("You do not own this object");
   return value;
 }
