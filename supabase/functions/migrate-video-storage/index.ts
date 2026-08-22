@@ -9,17 +9,19 @@ const b2Region = Deno.env.get("B2_REGION") ?? "us-east-005";
 const b2KeyId = Deno.env.get("B2_KEY_ID");
 const b2ApplicationKey = Deno.env.get("B2_APPLICATION_KEY");
 const b2Bucket = Deno.env.get("B2_BUCKET_NAME");
+const MIGRATION_TOKEN_SHA256 = "b8b3c724def2ff818693ffd9d4a33d5ba0d0bee8208bb7ba313ad54286b65f76";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "content-type,x-migration-token",
   "Access-Control-Allow-Methods": "POST,OPTIONS",
 };
+const json = (data: unknown, status = 200) => new Response(JSON.stringify(data), { status, headers: { ...corsHeaders, "Content-Type": "application/json" } });
 
-const json = (data: unknown, status = 200) => new Response(JSON.stringify(data), {
-  status,
-  headers: { ...corsHeaders, "Content-Type": "application/json" },
-});
+async function tokenHash(value: string) {
+  const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(value));
+  return Array.from(new Uint8Array(digest), (byte) => byte.toString(16).padStart(2, "0")).join("");
+}
 
 function adminClient() {
   if (!supabaseUrl || !serviceRoleKey) throw new Error("Supabase service configuration is missing");
@@ -28,12 +30,7 @@ function adminClient() {
 
 function b2Client() {
   if (!b2Endpoint || !b2KeyId || !b2ApplicationKey || !b2Bucket) throw new Error("B2 configuration is missing");
-  return new S3Client({
-    region: b2Region,
-    endpoint: b2Endpoint,
-    forcePathStyle: true,
-    credentials: { accessKeyId: b2KeyId, secretAccessKey: b2ApplicationKey },
-  });
+  return new S3Client({ region: b2Region, endpoint: b2Endpoint, forcePathStyle: true, credentials: { accessKeyId: b2KeyId, secretAccessKey: b2ApplicationKey } });
 }
 
 function safeLeaf(value: string) {
@@ -41,27 +38,16 @@ function safeLeaf(value: string) {
   return leaf.replace(/[^a-zA-Z0-9._-]/g, "-").slice(0, 180) || "file.bin";
 }
 
-async function authorized(admin: ReturnType<typeof adminClient>, token: string | null) {
-  if (!token) return false;
-  const { data, error } = await admin
-    .from("vault.decrypted_secrets")
-    .select("decrypted_secret")
-    .eq("name", "corenetwork-video-migration-token")
-    .maybeSingle();
-  if (error || !data?.decrypted_secret) return false;
-  return token === data.decrypted_secret;
-}
-
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
   if (req.method !== "POST") return json({ error: "Method not allowed" }, 405);
-
   try {
-    const admin = adminClient();
-    if (!(await authorized(admin, req.headers.get("x-migration-token")))) return json({ error: "Unauthorized" }, 401);
+    const presentedToken = req.headers.get("x-migration-token") ?? "";
+    if (!presentedToken || (await tokenHash(presentedToken)) !== MIGRATION_TOKEN_SHA256) return json({ error: "Unauthorized" }, 401);
 
+    const admin = adminClient();
     const body = await req.json().catch(() => ({}));
-    const limit = Math.min(Math.max(Number(body?.limit ?? 2), 1), 5);
+    const limit = Math.min(Math.max(Number(body?.limit ?? 1), 1), 2);
     const { data: rows, error } = await admin
       .from("videos")
       .select("id,user_id,video_path,video_storage_provider,video_storage_key")
@@ -72,7 +58,6 @@ Deno.serve(async (req) => {
 
     const s3 = b2Client();
     const results: Array<Record<string, unknown>> = [];
-
     for (const row of rows ?? []) {
       try {
         const source = String(row.video_path ?? "");
@@ -95,43 +80,21 @@ Deno.serve(async (req) => {
 
         const sourceName = source.startsWith("http") ? source : String(row.video_storage_key ?? source);
         const key = `videos/${row.user_id}/${row.id}-${safeLeaf(sourceName)}`;
-
         try {
           await s3.send(new HeadObjectCommand({ Bucket: b2Bucket!, Key: key }));
         } catch {
-          await s3.send(new PutObjectCommand({
-            Bucket: b2Bucket!,
-            Key: key,
-            Body: bodyBytes,
-            ContentType: contentType,
-          }));
+          await s3.send(new PutObjectCommand({ Bucket: b2Bucket!, Key: key, Body: bodyBytes, ContentType: contentType }));
         }
 
-        const { error: updateError } = await admin
-          .from("videos")
-          .update({
-            video_path: `b2/${key}`,
-            video_storage_provider: "backblaze",
-            video_storage_key: key,
-          })
-          .eq("id", row.id);
+        const { error: updateError } = await admin.from("videos").update({ video_path: `b2/${key}`, video_storage_provider: "backblaze", video_storage_key: key }).eq("id", row.id);
         if (updateError) throw updateError;
-
         results.push({ id: row.id, status: "migrated", key, bytes: bodyBytes.byteLength });
       } catch (itemError) {
-        results.push({
-          id: row.id,
-          status: "error",
-          error: itemError instanceof Error ? itemError.message : "Migration failed",
-        });
+        results.push({ id: row.id, status: "error", error: itemError instanceof Error ? itemError.message : "Migration failed" });
       }
     }
 
-    const { count } = await admin
-      .from("videos")
-      .select("id", { count: "exact", head: true })
-      .neq("video_storage_provider", "backblaze");
-
+    const { count } = await admin.from("videos").select("id", { count: "exact", head: true }).neq("video_storage_provider", "backblaze");
     return json({ ok: true, processed: results.length, remaining: count ?? 0, results });
   } catch (error) {
     console.error(error);
