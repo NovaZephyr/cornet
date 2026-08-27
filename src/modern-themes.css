@@ -246,8 +246,8 @@ html[data-theme="yt-2019"] .cn-shell{
   /* 3D Transform support */
   transform-style: preserve-3d;
   /* Size will be set via CSS variable */
-  width: var(--size, 20px);
-  height: var(--size, 20px);
+  width: var(--size, 30px);
+  height: var(--size, 30px);
   /* Position will be set via CSS variables */
   left: 50%;
   top: 50%;
@@ -256,19 +256,21 @@ html[data-theme="yt-2019"] .cn-shell{
   animation: float 6s ease-in-out infinite;
   animation-delay: var(--delay, 0s);
   /* Background color with HSLA for easy color variation */
-  background: hsla(var(--hue, 0), 70%, 60%, 0.4);
-  border: 2px solid hsla(var(--hue, 0), 70%, 60%, 0.8);
+  background: hsla(var(--hue, 0), 70%, 50%, 0.5);
+  border: 2px solid hsla(var(--hue, 0), 70%, 50%, 0.7);
   /* Inner circle */
   display: flex;
   align-items: center;
   justify-content: center;
+  /* Add subtle shadow for depth */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .circle > div {
-  width: 60%;
-  height: 60%;
+  width: 70%;
+  height: 70%;
   border-radius: 50%;
-  background: hsla(var(--hue, 0), 70%, 60%, 0.2);
+  background: hsla(var(--hue, 0), 70%, 50%, 0.3);
   /* Subtle pulse animation */
   animation: pulse 3s ease-in-out infinite;
   animation-delay: calc(var(--delay, 0s) * 0.5);
@@ -279,7 +281,7 @@ html[data-theme="yt-2019"] .cn-shell{
     transform: translate3d(var(--tx, 0), var(--ty, 0), var(--tz, 0)) translate(-50%, -50%) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
   }
   50% {
-    transform: translate3d(var(--tx, 0), calc(var(--ty, 0) - 20px), var(--tz, 0)) translate(-50%, -50%) rotateX(180deg) rotateY(180deg) rotateZ(180deg);
+    transform: translate3d(var(--tx, 0), calc(var(--ty, 0) - 30px), var(--tz, 0)) translate(-50%, -50%) rotateX(180deg) rotateY(180deg) rotateZ(180deg);
   }
   100% {
     transform: translate3d(var(--tx, 0), var(--ty, 0), var(--tz, 0)) translate(-50%, -50%) rotateX(360deg) rotateY(360deg) rotateZ(360deg);

@@ -20,20 +20,21 @@ function MaintenanceScreen({ message }: { message: string }) {
   // Generate 3D circles for the maintenance screen
   const generate3DCircles = () => {
     const circles = [];
-    const circleCount = 30; // Number of circles to generate
+    const circleCount = 40; // Number of circles to generate
 
     for (let i = 0; i < circleCount; i++) {
       // Distribute points on a sphere using the Fibonacci spiral method
       const phi = Math.acos(1 - 2 * (i + 0.5) / circleCount);
       const theta = Math.PI * (1 + Math.sqrt(5)) * i;
 
-      const radius = 150; // Sphere radius
+      const radius = 100; // Sphere radius - reduced for tighter formation
       const x = radius * Math.sin(phi) * Math.cos(theta);
       const y = radius * Math.sin(phi) * Math.sin(theta);
       const z = radius * Math.cos(phi);
 
       // Size based on distance (closer = larger)
-      const size = Math.max(20, 80 - Math.abs(z) * 0.3);
+// Scale factor increased for better visibility
+      const size = Math.max(25, 60 - Math.abs(z) * 0.2);
 
       // Animation delay for variety
       const delay = i * 0.1;
