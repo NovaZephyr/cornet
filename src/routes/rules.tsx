@@ -18,12 +18,12 @@ import {
 export const Route = createFileRoute("/rules")({
   head: () => ({
     meta: [
-      { title: "Normas de la comunidad — CoreNetwork" },
+      { title: "Normas de la comunidad — Cornet" },
       {
         name: "description",
-        content: "Las reglas que mantienen a CoreNetwork un lugar seguro y divertido para todos.",
+        content: "Las reglas que mantienen a Cornet un lugar seguro y divertido para todos.",
       },
-      { property: "og:title", content: "Normas de la comunidad — CoreNetwork" },
+      { property: "og:title", content: "Normas de la comunidad — Cornet" },
       { property: "og:description", content: "Conoce las normas antes de subir tu primer video." },
     ],
   }),
@@ -47,7 +47,7 @@ const rules: Rule[] = [
     icon: ShieldOff,
     title: "No compartir contenido inapropiado",
     description:
-      "Contenido sexual, explícito o pensado para adultos no tiene lugar acá. CoreNetwork es para creadores y audiencias de todas las edades permitidas.",
+      "Contenido sexual, explícito o pensado para adultos no tiene lugar acá. Cornet es para creadores y audiencias de todas las edades permitidas.",
   },
   {
     icon: Cake,
@@ -95,7 +95,7 @@ const rules: Rule[] = [
     icon: KeyRound,
     title: "No compartas tus datos con nadie",
     description:
-      "Nunca des tu contraseña, correo ni códigos de verificación a otra persona, ni siquiera a alguien que diga ser del equipo de CoreNetwork.",
+      "Nunca des tu contraseña, correo ni códigos de verificación a otra persona, ni siquiera a alguien que diga ser del equipo de Cornet.",
   },
   {
     icon: Eye,
@@ -105,7 +105,7 @@ const rules: Rule[] = [
   },
   {
     icon: PartyPopper,
-    title: "¡Diviértete en CoreNetwork!",
+    title: "¡Diviértete en Cornet!",
     description:
       "Al final del día, esto es para pasarla bien: crea, comparte y disfruta la comunidad respetando a los demás.",
   },
@@ -121,14 +121,14 @@ function RulesPage() {
               <span className="ml-0.5 h-0 w-0 border-y-[5px] border-l-[8px] border-y-transparent border-l-primary" />
             </span>
             <span className="text-xl font-bold tracking-tighter text-primary-foreground">
-              CoreNetwork
+              Cornet
             </span>
           </Link>
           <h1 className="text-3xl font-extrabold tracking-tight text-primary-foreground sm:text-4xl">
             Normas de la comunidad
           </h1>
           <p className="mx-auto mt-3 max-w-xl text-sm text-primary-foreground/80">
-            {rules.length} reglas simples para que CoreNetwork siga siendo un lugar seguro,
+            {rules.length} reglas simples para que Cornet siga siendo un lugar seguro,
             justo y divertido para todos los creadores.
           </p>
         </div>

@@ -90,7 +90,7 @@ function Home() {
   })();
 
   return <AppShell>
-    <h1 className="sr-only">Videos y canales en CoreNetwork</h1>
+    <h1 className="sr-only">Videos y canales en Cornet</h1>
     {isPolymerHome ? <>
       <nav className="cn-polymer-home-tabs" aria-label="Filtros de inicio">
         {polymerFilters.map((filter) => <button key={filter.value} type="button" onClick={() => setSort(filter.value)} className={sort === filter.value ? "is-active" : ""}>{filter.label}</button>)}

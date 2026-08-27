@@ -1,4 +1,4 @@
--- CoreNetwork platform upgrades: persistent playlists, captions, chapters, channel styles and subscriber counts.
+-- Cornet platform upgrades: persistent playlists, captions, chapters, channel styles and subscriber counts.
 
 ALTER TABLE public.profiles
   ADD COLUMN IF NOT EXISTS channel_style text NOT NULL DEFAULT 'corenetwork',

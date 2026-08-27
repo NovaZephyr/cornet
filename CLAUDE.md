@@ -62,7 +62,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 #### Cosmic Panda Mode
 - Isolated YouTube 2012 experience activated by `retro2012` theme
 - Includes classic channel layouts, category-heavy Explore page, retro visual shell
-- Modern themes keep current CoreNetwork presentation when not selected
+- Modern themes keep current Cornet presentation when not selected
 
 #### Video Features
 - Video uploads with categories, thumbnails, public/private visibility
@@ -72,7 +72,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 #### Search & Discovery
 - Search across videos and channels with sorting by subscribers, views and date
-- Channel-era layouts: CoreNetwork, Channel 1.0, Channel 2.0 and Cosmic Panda
+- Channel-era layouts: Cornet, Channel 1.0, Channel 2.0 and Cosmic Panda
 
 #### Live Streaming
 - Live studio and viewer interfaces (`src/routes/live.*`)
@@ -135,4 +135,4 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 3. Run `bun run dev` to start development server
 4. Visit `http://localhost:5173` (or port shown in terminal)
 
-This should provide sufficient context to understand and work effectively with the CoreNetwork codebase.
+This should provide sufficient context to understand and work effectively with the Cornet codebase.

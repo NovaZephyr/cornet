@@ -1,4 +1,4 @@
--- CoreNetwork Live: stream sessions and creator metadata.
+-- Cornet Live: stream sessions and creator metadata.
 CREATE TABLE IF NOT EXISTS public.live_streams (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id uuid NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,

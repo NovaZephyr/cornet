@@ -5,8 +5,8 @@ export const THEMES = [
   { id: "system", label: "Sistema", hint: "Sigue automáticamente el modo del sistema", group: "Básicos", kind: "normal" },
   { id: "dark", label: "Oscuro", hint: "El look clásico de CoreNetwork", group: "Básicos", kind: "normal" },
   { id: "light", label: "Claro", hint: "Fondo blanco, alto contraste", group: "Básicos", kind: "normal" },
-  { id: "youtube-2009", label: "YouTube 2009", hint: "Blanco, azul y rojo clásico", group: "Históricos", kind: "custom" },
-  { id: "retro2012", label: "YouTube 2012 / Cosmic Panda", hint: "Custom claro inspirado en Cosmic Panda", group: "Históricos", kind: "custom" },
+  { id: "cornet-2009", label: "Cornet 2009", hint: "Blanco, azul y rojo clásico", group: "Históricos", kind: "custom" },
+  { id: "retro2012", label: "Cornet 2012 / Cosmic Panda", hint: "Custom claro inspirado en Cosmic Panda", group: "Históricos", kind: "custom" },
   { id: "youtube-2013", label: "YouTube 2013", hint: "Blanco, rojo y superficies suaves", group: "Históricos", kind: "custom" },
   { id: "youtube2019", label: "YouTube 2019 / Polymer", hint: "Polymer claro e independiente", group: "Históricos", kind: "custom" },
   { id: "feather2013", label: "Feather 2013", hint: "Tema claro ligero y autónomo", group: "Clásicos", kind: "normal" },
@@ -43,10 +43,10 @@ export const THEMES = [
   { id: "cyberpunk", label: "Cyberpunk", hint: "Fondo oscuro con acentos cian y magenta", group: "Creativos", kind: "normal" },
   { id: "neon-pink", label: "Neón Rosa", hint: "Fondo negro con acentos rosa neón", group: "Creativos", kind: "normal" },
   { id: "crt-vhs", label: "CRT / VHS", hint: "Scanlines, curvatura y colores desvaídos", group: "Experimental", kind: "normal" },
-  { id: "yt-2009", label: "YouTube 2009", hint: "Blanco, azul y rojo clásico", group: "Históricos", kind: "normal" },
-  { id: "yt-2012", label: "YouTube 2012 / Cosmic Panda", hint: "Claro inspirado en Cosmic Panda", group: "Históricos", kind: "normal" },
-  { id: "yt-2013", label: "YouTube 2013", hint: "Blanco, rojo y superficies suaves", group: "Históricos", kind: "normal" },
-  { id: "yt-2019", label: "YouTube 2019 / Polymer", hint: "Polymer claro e independiente", group: "Históricos", kind: "normal" },
+  { id: "yt-2009", label: "Cornet 2009", hint: "Blanco, azul y rojo clásico", group: "Históricos", kind: "normal" },
+  { id: "yt-2012", label: "Cornet 2012 / Cosmic Panda", hint: "Claro inspirado en Cosmic Panda", group: "Históricos", kind: "normal" },
+  { id: "yt-2013", label: "Cornet 2013", hint: "Blanco, rojo y superficies suaves", group: "Históricos", kind: "normal" },
+  { id: "yt-2019", label: "Cornet 2019 / Polymer", hint: "Polymer claro e independiente", group: "Históricos", kind: "normal" },
 ] as const;
 
 export type PresetThemeId = (typeof THEMES)[number]["id"];

@@ -1,4 +1,4 @@
--- CoreNetwork community post comments + upload storage hardening.
+-- Cornet community post comments + upload storage hardening.
 CREATE TABLE IF NOT EXISTS public.community_post_comments (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   post_id uuid NOT NULL REFERENCES public.community_posts(id) ON DELETE CASCADE,
