@@ -204,7 +204,7 @@ function AuthPage() {
   return (
     <div className="grid min-h-screen lg:grid-cols-2">
       {/* Panel promocional — oculto en mobile */}
-      <div className="relative hidden overflow-hidden bg-primary lg:flex lg:flex-col lg:justify-between lg:p-12">
+      <div className="relative hidden overflow-hidden bg-gradient-to-b from-primary/90 to-primary lg:flex lg:flex-col lg:justify-between lg:p-12">
         <div
           className="pointer-events-none absolute inset-0 opacity-90"
           style={{
@@ -213,45 +213,71 @@ function AuthPage() {
           }}
         />
         <div className="relative">
-          <Link to="/" className="flex items-center gap-1.5">
-            <span className="flex h-6 w-9 items-center justify-center rounded-md bg-primary-foreground">
-              <span className="ml-0.5 h-0 w-0 border-y-[5px] border-l-[8px] border-y-transparent border-l-primary" />
-            </span>
-            <span className="text-xl font-bold tracking-tighter text-primary-foreground">
+          <Link to="/" className="flex items-center gap-2">
+            <div className="flex h-8 w-11 items-center justify-center rounded-lg bg-primary-foreground/90 backdrop-blur-sm">
+              <span className="ml-0.5 h-0 w-0 border-y-[5px] border-l-[9px] border-y-transparent border-l-primary" />
+            </div>
+            <span className="text-2xl font-bold tracking-tighter text-primary-foreground">
               CoreNetwork
             </span>
           </Link>
         </div>
 
-        <div className="relative max-w-md">
-          <p className="text-4xl font-extrabold leading-[1.1] tracking-tight text-primary-foreground">
-            No te pierdas lo que otros postean
+        <div className="relative flex-1 flex-col justify-center p-8 max-w-xl">
+          <h1 className="mb-4 text-5xl font-bold tracking-tighter text-primary-foreground leading-[1.1]">
+            Descubre lo que importa
+          </h1>
+          <p className="mb-6 text-lg text-primary-foreground/90">
+            Plataforma para creadores y comunidades. Sube videos, conecta con tu audiencia y crece tu canal.
           </p>
-          <p className="mt-4 text-sm text-primary-foreground/80">
-            Sube tus videos, sigue a tus creadores favoritos y arma tu canal a tu manera.
-          </p>
+
+          <div className="space-y-4">
+            <div className="flex items-center gap-3 text-sm text-primary-foreground/80">
+              <div className="flex h-8 w-8 items-center justify-center bg-primary/20 rounded-lg">
+                <span className="text-primary">▶</span>
+              </div>
+              <span>Subir y compartir videos fácilmente</span>
+            </div>
+            <div className="flex items-center gap-3 text-sm text-primary-foreground/80">
+              <div className="flex h-8 w-8 items-center justify-center bg-primary/20 rounded-lg">
+                <span className="text-primary">👥</span>
+              </div>
+              <span>Conectar con creadores y comunidades</span>
+            </div>
+            <div className="flex items-center gap-3 text-sm text-primary-foreground/80">
+              <div className="flex h-8 w-8 items-center justify-center bg-primary/20 rounded-lg">
+                <span className="text-primary">📊</span>
+              </div>
+              <span>Personalizar tu experiencia</span>
+            </div>
+          </div>
         </div>
 
-        <div className="relative flex items-center gap-2 text-xs text-primary-foreground/70">
+        <div className="relative flex items-center gap-2 text-xs text-primary-foreground/60">
           <span>© {new Date().getFullYear()} CoreNetwork</span>
         </div>
       </div>
 
       {/* Panel de formulario */}
-      <div className="flex items-center justify-center px-4 py-12">
-        <div className="w-full max-w-sm">
-          <Link to="/" className="mb-8 flex items-center justify-center gap-1.5 lg:hidden">
-            <span className="flex h-6 w-9 items-center justify-center rounded-md bg-primary">
-              <span className="ml-0.5 h-0 w-0 border-y-[5px] border-l-[8px] border-y-transparent border-l-primary-foreground" />
-            </span>
-            <span className="text-xl font-bold tracking-tighter">CoreNetwork</span>
+      <div className="flex items-center justify-center px-4 py-12 bg-background/50">
+        <div className="w-full max-w-md space-y-8">
+          <Link to="/" className="mb-6 flex items-center justify-center gap-2 lg:hidden">
+            <div className="flex h-8 w-11 items-center justify-center rounded-lg bg-primary/90 backdrop-blur-sm">
+              <span className="ml-0.5 h-0 w-0 border-y-[5px] border-l-[9px] border-y-transparent border-l-primary-foreground" />
+            </div>
+            <span className="text-2xl font-bold tracking-tighter">CoreNetwork</span>
           </Link>
 
           {sent ? (
             <div className="text-center">
-              <h1 className="text-lg font-semibold">Revisa tu correo</h1>
-              <p className="mt-2 text-sm text-muted-foreground">
-                Te enviamos un enlace de confirmación a {email}. Confírmalo para entrar.
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/20 mb-4">
+                <span className="text-primary">✓</span>
+              </div>
+              <h1 className="text-xl font-semibold text-foreground mb-2">
+                Revisa tu correo
+              </h1>
+              <p className="text-sm text-muted-foreground">
+                Te enviamos un enlace de confirmación a <span className="font-medium">{email}</span>. Confírmalo para entrar.
               </p>
             </div>
           ) : (
@@ -261,121 +287,163 @@ function AuthPage() {
                 setTab(v as "signin" | "signup");
                 setCaptchaToken("");
               }}
+              className="w-full"
             >
-              <h1 className="mb-6 text-center text-2xl font-bold tracking-tight">
+              <h1 className="mb-4 text-center text-2xl font-bold tracking-titter text-foreground">
                 Inicia sesión
               </h1>
 
-              <TabsList className="mb-2 grid w-full grid-cols-2">
-                <TabsTrigger value="signin">Iniciar sesión</TabsTrigger>
-                <TabsTrigger value="signup">Crear cuenta</TabsTrigger>
+              <TabsList className="mb-4 grid w-full grid-cols-2 text-sm font-medium">
+                <TabsTrigger value="signin" className="px-4 py-2 rounded-full transition-all hover:bg-primary/10 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+                  Iniciar sesión
+                </TabsTrigger>
+                <TabsTrigger value="signup" className="px-4 py-2 rounded-full transition-all hover:bg-primary/10 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+                  Crear cuenta
+                </TabsTrigger>
               </TabsList>
 
               <TabsContent value="signin">
-                <form onSubmit={signIn} className="space-y-4 pt-4">
-                  <div className="space-y-2">
+                <form onSubmit={signIn} className="space-y-5">
+                  <div className="space-y-3">
                     <Label htmlFor="email" className="sr-only">Correo</Label>
-                    <Input
-                      id="email"
-                      type="email"
-                      required
-                      placeholder="Correo electrónico"
-                      className="h-12 rounded-full bg-muted px-5"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                    />
+                    <div className="relative">
+                      <Input
+                        id="email"
+                        type="email"
+                        required
+                        placeholder="Correo electrónico"
+                        className="h-12 w-full pl-12 pr-4 rounded-xl bg-muted/80 backdrop-blur-sm border border-muted/40 focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all duration-200"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                      />
+                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/50">
+                        📧
+                      </span>
+                    </div>
                   </div>
-                  <div className="space-y-2">
+                  <div className="space-y-3">
                     <Label htmlFor="password" className="sr-only">Contraseña</Label>
-                    <Input
-                      id="password"
-                      type="password"
-                      required
-                      placeholder="Contraseña"
-                      className="h-12 rounded-full bg-muted px-5"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                    />
+                    <div className="relative">
+                      <Input
+                        id="password"
+                        type="password"
+                        required
+                        placeholder="Contraseña"
+                        className="h-12 w-full pl-12 pr-4 rounded-xl bg-muted/80 backdrop-blur-sm border border-muted/40 focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all duration-200"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                      />
+                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/50">
+                        🔒
+                      </span>
+                    </div>
                   </div>
-                  <div className="text-right">
+                  <div className="flex items-center justify-between text-xs">
                     <button
                       type="button"
-                      className="text-xs text-primary hover:underline"
+                      className="text-primary/80 hover:text-primary hover:underline transition-colors"
                       onClick={() => toast.info("Escríbenos a soporte para recuperar tu cuenta.")}
                     >
                       ¿Olvidaste la contraseña?
                     </button>
                   </div>
 
-                  <div ref={signinCaptchaRef} className="flex justify-center" />
+                  <div ref={signinCaptchaRef} className="mt-4 flex justify-center" />
 
-                  <Button type="submit" disabled={busy} className="h-12 w-full rounded-full text-base font-semibold">
+                  <Button
+                    type="submit"
+                    disabled={busy}
+                    className="h-12 w-full rounded-xl text-base font-semibold flex items-center justify-center gap-2 transition-all duration-200 hover:bg-primary/90"
+                  >
                     Inicia sesión
                   </Button>
                 </form>
               </TabsContent>
 
               <TabsContent value="signup">
-                <form onSubmit={signUp} className="space-y-4 pt-4">
-                  <div className="space-y-2">
+                <form onSubmit={signUp} className="space-y-5">
+                  <div className="space-y-3">
                     <Label htmlFor="username" className="sr-only">Nombre de canal</Label>
-                    <Input
-                      id="username"
-                      required
-                      placeholder="Nombre de canal"
-                      className="h-12 rounded-full bg-muted px-5"
-                      value={username}
-                      onChange={(e) => setUsername(e.target.value)}
-                    />
+                    <div className="relative">
+                      <Input
+                        id="username"
+                        required
+                        placeholder="Nombre de canal"
+                        className="h-12 w-full pl-12 pr-4 rounded-xl bg-muted/80 backdrop-blur-sm border border-muted/40 focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all duration-200"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                      />
+                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/50">
+                        🏷
+                      </span>
+                    </div>
                   </div>
-                  <div className="space-y-2">
+                  <div className="space-y-3">
                     <Label htmlFor="email2" className="sr-only">Correo</Label>
-                    <Input
-                      id="email2"
-                      type="email"
-                      required
-                      placeholder="Correo electrónico"
-                      className="h-12 rounded-full bg-muted px-5"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                    />
+                    <div className="relative">
+                      <Input
+                        id="email2"
+                        type="email"
+                        required
+                        placeholder="Correo electrónico"
+                        className="h-12 w-full pl-12 pr-4 rounded-xl bg-muted/80 backdrop-blur-sm border border-muted/40 focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all duration-200"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                      />
+                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/50">
+                        📧
+                      </span>
+                    </div>
                   </div>
-                  <div className="space-y-2">
+                  <div className="space-y-3">
                     <Label htmlFor="password2" className="sr-only">Contraseña</Label>
-                    <Input
-                      id="password2"
-                      type="password"
-                      required
-                      minLength={6}
-                      placeholder="Contraseña"
-                      className="h-12 rounded-full bg-muted px-5"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                    />
+                    <div className="relative">
+                      <Input
+                        id="password2"
+                        type="password"
+                        required
+                        minLength={6}
+                        placeholder="Contraseña"
+                        className="h-12 w-full pl-12 pr-4 rounded-xl bg-muted/80 backdrop-blur-sm border border-muted/40 focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all duration-200"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                      />
+                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/50">
+                        🔒
+                      </span>
+                    </div>
                   </div>
 
-                  <div className="flex items-start gap-2 px-1">
+                  <div className="flex items-start gap-3 pt-2">
                     <Checkbox
                       id="accept-rules"
                       checked={acceptedRules}
                       onCheckedChange={(v) => setAcceptedRules(v === true)}
-                      className="mt-0.5"
+                      className="h-4 w-4 text-primary transition-all duration-200 focus:border-primary focus:ring-2 focus:ring-primary/50"
                     />
-                    <Label htmlFor="accept-rules" className="text-xs font-normal leading-snug text-muted-foreground">
-                      He leído y acepto las{" "}
-                      <Link to="/rules" target="_blank" className="text-primary hover:underline">
+                    <div className="flex flex-col">
+                      <Label htmlFor="accept-rules" className="text-sm font-normal text-muted-foreground">
+                        He leído y acepto las{" "}
+                      </Label>
+                      <Link
+                        to="/rules"
+                        target="_blank"
+                        className="text-primary hover:underline transition-colors duration-200"
+                      >
                         Normas de la comunidad
-                      </Link>{" "}
-                      de CoreNetwork.
-                    </Label>
+                      </Link>
+                      <span className="text-sm font-normal text-muted-foreground">
+                        de CoreNetwork.
+                      </span>
+                    </div>
                   </div>
 
-                  <div ref={signupCaptchaRef} className="flex justify-center" />
+                  <div ref={signupCaptchaRef} className="mt-4 flex justify-center" />
 
                   <Button
                     type="submit"
                     disabled={busy || !acceptedRules}
-                    className="h-12 w-full rounded-full text-base font-semibold"
+                    className="h-12 w-full rounded-xl text-base font-semibold flex items-center justify-center gap-2 transition-all duration-200 hover:bg-primary/90"
                   >
                     Registrarse
                   </Button>
@@ -386,15 +454,18 @@ function AuthPage() {
 
           {!sent && (
             <>
-              <div className="my-6 flex items-center gap-3 text-xs text-muted-foreground">
-                <span className="h-px flex-1 bg-border" /> o <span className="h-px flex-1 bg-border" />
+              <div className="my-8 flex items-center gap-4 text-sm text-muted-foreground">
+                <div className="h-0.5 w-full bg-gradient-to-r from-transparent via-border to-transparent" />
+                <span>o</span>
+                <div className="h-0.5 w-full bg-gradient-to-r from-transparent via-border to-transparent" />
               </div>
               <Button
                 variant="outline"
-                className="h-12 w-full rounded-full"
+                className="h-12 w-full rounded-xl border border-muted/60 hover:border-primary/80 hover:bg-primary/5 transition-all duration-200 flex items-center justify-center gap-3"
                 onClick={() => void google()}
               >
-                Continuar con Google
+                <span className="text-primary">G</span>
+                <span>Continuar con Google</span>
               </Button>
             </>
           )}
