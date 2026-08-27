@@ -253,8 +253,8 @@ html[data-theme="yt-2019"] .cn-shell{
   height: 120px;
   left: 10%;
   top: 20%;
-  background: rgba(255, 99, 132, 0.2);
-  border: 2px solid rgba(255, 99, 132, 0.6);
+  background: rgba(255, 99, 132, 0.4);
+  border: 2px solid rgba(255, 99, 132, 0.8);
   animation-delay: 0s;
 }
 
@@ -264,8 +264,8 @@ html[data-theme="yt-2019"] .cn-shell{
   height: 80px;
   left: 60%;
   top: 40%;
-  background: rgba(54, 162, 235, 0.2);
-  border: 2px solid rgba(54, 162, 235, 0.6);
+  background: rgba(54, 162, 235, 0.4);
+  border: 2px solid rgba(54, 162, 235, 0.8);
   animation-delay: 2s;
 }
 
@@ -275,8 +275,8 @@ html[data-theme="yt-2019"] .cn-shell{
   height: 150px;
   left: 30%;
   top: 60%;
-  background: rgba(255, 206, 86, 0.2);
-  border: 2px solid rgba(255, 206, 86, 0.6);
+  background: rgba(255, 206, 86, 0.4);
+  border: 2px solid rgba(255, 206, 86, 0.8);
   animation-delay: 4s;
 }
 
@@ -286,8 +286,8 @@ html[data-theme="yt-2019"] .cn-shell{
   height: 60px;
   left: 80%;
   top: 10%;
-  background: rgba(153, 102, 255, 0.2);
-  border: 2px solid rgba(153, 102, 255, 0.6);
+  background: rgba(153, 102, 255, 0.4);
+  border: 2px solid rgba(153, 102, 255, 0.8);
   animation-delay: 1s;
 }
 
@@ -297,8 +297,8 @@ html[data-theme="yt-2019"] .cn-shell{
   height: 100px;
   left: 20%;
   top: 80%;
-  background: rgba(75, 192, 192, 0.2);
-  border: 2px solid rgba(75, 192, 192, 0.6);
+  background: rgba(75, 192, 192, 0.4);
+  border: 2px solid rgba(75, 192, 192, 0.8);
   animation-delay: 3s;
 }
 
