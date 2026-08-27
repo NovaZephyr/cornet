@@ -23,6 +23,7 @@ function MaintenanceAwareContent() {
   const { isAdmin, loading } = useAuth();
   const location = useLocation();
   const isAuthRoute = location.pathname === "/auth";
+  const forceMaintenance = location.search.includes('forceMaintenance=true');
   const [settingsLoading, setSettingsLoading] = useState(false);
   const [maintenance, setMaintenance] = useState<{ enabled: boolean; message: string } | null>(null);
   useEffect(() => {
@@ -45,7 +46,8 @@ function MaintenanceAwareContent() {
   }, [isAuthRoute]);
   if (isAuthRoute) return <Outlet />;
   if (loading || settingsLoading || maintenance === null) return <AuthLoadingScreen />;
-  if (maintenance.enabled && !isAdmin) return <MaintenanceScreen message={maintenance.message} />;
+  // Show maintenance if enabled from Supabase OR forced via query param (and user is not admin)
+  if ((maintenance.enabled || forceMaintenance) && !isAdmin) return <MaintenanceScreen message={maintenance?.message ?? ""} />;
   return <Outlet />;
 }
 
