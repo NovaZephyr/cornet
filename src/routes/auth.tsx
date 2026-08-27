@@ -8,17 +8,18 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { PlayCircle, Users, BarChart2, Mail, Lock, Tag } from "lucide-react";
 
 export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
-      { title: "Entrar o crear cuenta — CoreNetwork" },
+      { title: "Entrar o crear cuenta — Cornet" },
       {
         name: "description",
         content: "Inicia sesión o crea tu cuenta para subir videos y personalizar tu canal.",
       },
-      { property: "og:title", content: "Entrar o crear cuenta — CoreNetwork" },
-      { property: "og:description", content: "Accede a tu canal en CoreNetwork." },
+      { property: "og:title", content: "Entrar o crear cuenta — Cornet" },
+      { property: "og:description", content: "Accede a tu canal en Cornet." },
     ],
   }),
   component: AuthPage,
@@ -204,7 +205,7 @@ function AuthPage() {
   return (
     <div className="grid min-h-screen lg:grid-cols-2">
       {/* Panel promocional — oculto en mobile */}
-      <div className="relative hidden overflow-hidden bg-gradient-to-b from-primary/90 to-primary lg:flex lg:flex-col lg:justify-between lg:p-12">
+      <div className="relative hidden overflow-hidden bg-gradient-to-b from-primary/90 to-primary lg:flex lg:flex-col lg:justify-between lg:p-12 animate-gradient">
         <div
           className="pointer-events-none absolute inset-0 opacity-90"
           style={{
@@ -218,7 +219,7 @@ function AuthPage() {
               <span className="ml-0.5 h-0 w-0 border-y-[5px] border-l-[9px] border-y-transparent border-l-primary" />
             </div>
             <span className="text-2xl font-bold tracking-tighter text-primary-foreground">
-              CoreNetwork
+              Cornet
             </span>
           </Link>
         </div>
@@ -234,19 +235,19 @@ function AuthPage() {
           <div className="space-y-4">
             <div className="flex items-center gap-3 text-sm text-primary-foreground/80">
               <div className="flex h-8 w-8 items-center justify-center bg-primary/20 rounded-lg">
-                <span className="text-primary">▶</span>
+                <PlayCircle className="h-4 w-4 text-primary" />
               </div>
               <span>Subir y compartir videos fácilmente</span>
             </div>
             <div className="flex items-center gap-3 text-sm text-primary-foreground/80">
               <div className="flex h-8 w-8 items-center justify-center bg-primary/20 rounded-lg">
-                <span className="text-primary">👥</span>
+                <Users className="h-4 w-4 text-primary" />
               </div>
               <span>Conectar con creadores y comunidades</span>
             </div>
             <div className="flex items-center gap-3 text-sm text-primary-foreground/80">
               <div className="flex h-8 w-8 items-center justify-center bg-primary/20 rounded-lg">
-                <span className="text-primary">📊</span>
+                <BarChart2 className="h-4 w-4 text-primary" />
               </div>
               <span>Personalizar tu experiencia</span>
             </div>
@@ -254,7 +255,7 @@ function AuthPage() {
         </div>
 
         <div className="relative flex items-center gap-2 text-xs text-primary-foreground/60">
-          <span>© {new Date().getFullYear()} CoreNetwork</span>
+          <span>© {new Date().getFullYear()} Cornet</span>
         </div>
       </div>
 
@@ -265,7 +266,7 @@ function AuthPage() {
             <div className="flex h-8 w-11 items-center justify-center rounded-lg bg-primary/90 backdrop-blur-sm">
               <span className="ml-0.5 h-0 w-0 border-y-[5px] border-l-[9px] border-y-transparent border-l-primary-foreground" />
             </div>
-            <span className="text-2xl font-bold tracking-tighter">CoreNetwork</span>
+            <span className="text-2xl font-bold tracking-tighter">Cornet</span>
           </Link>
 
           {sent ? (
@@ -302,7 +303,7 @@ function AuthPage() {
                 </TabsTrigger>
               </TabsList>
 
-              <TabsContent value="signin">
+              <TabsContent value="signin" className="animate-tab-content">
                 <form onSubmit={signIn} className="space-y-5">
                   <div className="space-y-3">
                     <Label htmlFor="email" className="sr-only">Correo</Label>
@@ -317,7 +318,7 @@ function AuthPage() {
                         onChange={(e) => setEmail(e.target.value)}
                       />
                       <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/50">
-                        📧
+                        <Mail className="h-4 w-4" />
                       </span>
                     </div>
                   </div>
@@ -334,7 +335,7 @@ function AuthPage() {
                         onChange={(e) => setPassword(e.target.value)}
                       />
                       <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/50">
-                        🔒
+                        <Lock className="h-4 w-4" />
                       </span>
                     </div>
                   </div>
@@ -374,7 +375,7 @@ function AuthPage() {
                         onChange={(e) => setUsername(e.target.value)}
                       />
                       <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/50">
-                        🏷
+                        <Tag className="h-4 w-4" />
                       </span>
                     </div>
                   </div>
@@ -391,7 +392,7 @@ function AuthPage() {
                         onChange={(e) => setEmail(e.target.value)}
                       />
                       <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/50">
-                        📧
+                        <Mail className="h-4 w-4" />
                       </span>
                     </div>
                   </div>
@@ -409,7 +410,7 @@ function AuthPage() {
                         onChange={(e) => setPassword(e.target.value)}
                       />
                       <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/50">
-                        🔒
+                        <Lock className="h-4 w-4" />
                       </span>
                     </div>
                   </div>
@@ -433,7 +434,7 @@ function AuthPage() {
                         Normas de la comunidad
                       </Link>
                       <span className="text-sm font-normal text-muted-foreground">
-                        de CoreNetwork.
+                        de Cornet.
                       </span>
                     </div>
                   </div>
