@@ -235,86 +235,81 @@ html[data-theme="yt-2019"] .cn-shell{
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: #000;
+  background: #000;   /* fondo negro total */
   perspective: 1000px;
   overflow: visible;
 }
 
-.cube {
+.circle {
   position: absolute;
-  width: 100%;
-  height: 100%;
-  transform-style: preserve-3d;
-  animation: rotateCube 12s infinite ease-in-out;
+  border-radius: 50%;
+  /* Different sizes and animations */
+  animation: float 6s ease-in-out infinite;
 }
 
-.cube div {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  border: 3px solid rgba(255, 255, 255, 0.6);
-  background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(5px);
-  box-sizing: border-box;
+/* Circle 1 */
+.maintenance-3d-scene .circle:nth-child(1) {
+  width: 120px;
+  height: 120px;
+  left: 10%;
+  top: 20%;
+  background: rgba(255, 99, 132, 0.2);
+  border: 2px solid rgba(255, 99, 132, 0.6);
+  animation-delay: 0s;
 }
 
-/* Front */
-.cube div:nth-child(1) {
-  transform: translateZ(80px);
+/* Circle 2 */
+.maintenance-3d-scene .circle:nth-child(2) {
+  width: 80px;
+  height: 80px;
+  left: 60%;
+  top: 40%;
+  background: rgba(54, 162, 235, 0.2);
+  border: 2px solid rgba(54, 162, 235, 0.6);
+  animation-delay: 2s;
 }
 
-/* Back */
-.cube div:nth-child(2) {
-  transform: rotateY(180deg) translateZ(80px);
+/* Circle 3 */
+.maintenance-3d-scene .circle:nth-child(3) {
+  width: 150px;
+  height: 150px;
+  left: 30%;
+  top: 60%;
+  background: rgba(255, 206, 86, 0.2);
+  border: 2px solid rgba(255, 206, 86, 0.6);
+  animation-delay: 4s;
 }
 
-/* Right */
-.cube div:nth-child(3) {
-  transform: rotateY(90deg) translateZ(80px);
+/* Circle 4 */
+.maintenance-3d-scene .circle:nth-child(4) {
+  width: 60px;
+  height: 60px;
+  left: 80%;
+  top: 10%;
+  background: rgba(153, 102, 255, 0.2);
+  border: 2px solid rgba(153, 102, 255, 0.6);
+  animation-delay: 1s;
 }
 
-/* Left */
-.cube div:nth-child(4) {
-  transform: rotateY(-90deg) translateZ(80px);
+/* Circle 5 */
+.maintenance-3d-scene .circle:nth-child(5) {
+  width: 100px;
+  height: 100px;
+  left: 20%;
+  top: 80%;
+  background: rgba(75, 192, 192, 0.2);
+  border: 2px solid rgba(75, 192, 192, 0.6);
+  animation-delay: 3s;
 }
 
-/* Top */
-.cube div:nth-child(5) {
-  transform: rotateX(90deg) translateZ(80px);
-}
-
-/* Bottom */
-.cube div:nth-child(6) {
-  transform: rotateX(-90deg) translateZ(80px);
-}
-
-/* Different colors for each cube */
-.maintenance-3d-scene .cube:nth-child(1) div {
-  border-color: rgba(255, 99, 132, 0.8);
-  background: rgba(255, 99, 132, 0.3);
-}
-
-.maintenance-3d-scene .cube:nth-child(2) div {
-  border-color: rgba(54, 162, 235, 0.8);
-  background: rgba(54, 162, 235, 0.3);
-}
-
-.maintenance-3d-scene .cube:nth-child(3) div {
-  border-color: rgba(255, 206, 86, 0.8);
-  background: rgba(255, 206, 86, 0.3);
-}
-
-@keyframes rotateCube {
-  0%, 100% {
-    transform: rotateX(0deg) rotateY(0deg);
-  }
-  25% {
-    transform: rotateX(90deg) rotateY(0deg);
+@keyframes float {
+  0% {
+    transform: translateY(0px) rotate(0deg);
   }
   50% {
-    transform: rotateX(180deg) rotateY(0deg);
+    transform: translateY(-20px) rotate(180deg);
   }
-  75% {
-    transform: rotateX(270deg) rotateY(180deg);
+  100% {
+    transform: translateY(0px) rotate(360deg);
   }
 }
