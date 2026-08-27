@@ -229,3 +229,90 @@ html[data-theme="yt-2019"] .cn-shell-avatar-button:hover{
 html[data-theme="yt-2019"] .cn-shell{
   --accent:#1a73e8;
 }
+
+/* Maintenance 3D Effect */
+.maintenance-3d-scene {
+  perspective: 1000px;
+  margin: 0 auto 2rem;
+  width: 200px;
+  height: 200px;
+  position: relative;
+}
+
+.cube {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  animation: rotateCube 12s infinite ease-in-out;
+}
+
+.cube div {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(5px);
+}
+
+/* Front */
+.cube div:nth-child(1) {
+  transform: translateZ(50px);
+}
+
+/* Back */
+.cube div:nth-child(2) {
+  transform: rotateY(180deg) translateZ(50px);
+}
+
+/* Right */
+.cube div:nth-child(3) {
+  transform: rotateY(90deg) translateZ(50px);
+}
+
+/* Left */
+.cube div:nth-child(4) {
+  transform: rotateY(-90deg) translateZ(50px);
+}
+
+/* Top */
+.cube div:nth-child(5) {
+  transform: rotateX(90deg) translateZ(50px);
+}
+
+/* Bottom */
+.cube div:nth-child(6) {
+  transform: rotateX(-90deg) translateZ(50px);
+}
+
+/* Different colors for each cube */
+.maintenance-3d-scene .cube:nth-child(1) div {
+  border-color: rgba(255, 99, 132, 0.3);
+  background: rgba(255, 99, 132, 0.1);
+}
+
+.maintenance-3d-scene .cube:nth-child(2) div {
+  border-color: rgba(54, 162, 235, 0.3);
+  background: rgba(54, 162, 235, 0.1);
+}
+
+.maintenance-3d-scene .cube:nth-child(3) div {
+  border-color: rgba(255, 206, 86, 0.3);
+  background: rgba(255, 206, 86, 0.1);
+}
+
+@keyframes rotateCube {
+  0%, 100% {
+    transform: rotateX(0deg) rotateY(0deg);
+  }
+  25% {
+    transform: rotateX(90deg) rotateY(0deg);
+  }
+  50% {
+    transform: rotateX(180deg) rotateY(0deg);
+  }
+  75% {
+    transform: rotateX(270deg) rotateY(180deg);
+  }
+}
