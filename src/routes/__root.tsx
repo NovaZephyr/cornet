@@ -16,7 +16,53 @@ const DEFAULT_SITE_EMBED_IMAGE = "https://mvwpxnszcpyayofqgtmv.supabase.co/stora
 
 function NotFoundComponent() { return <div className="flex min-h-screen items-center justify-center bg-background px-4"><div className="max-w-md text-center"><h1 className="text-7xl font-bold text-foreground">404</h1><h2 className="mt-4 text-xl font-semibold text-foreground">Esta página no existe</h2><p className="mt-2 text-sm text-muted-foreground">Puede que el enlace haya cambiado o ya no esté disponible.</p><div className="mt-6"><Link to="/" className="inline-flex items-center justify-center rounded-full bg-primary px-4 py-2 text-sm font-medium text-primary-foreground">Volver a Cornet</Link></div></div></div>; }
 function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) { console.error(error); const router = useRouter(); useEffect(() => { reportLovableError(error, { boundary: "tanstack_root_error_component" }); }, [error]); return <div className="flex min-h-screen items-center justify-center bg-background px-4"><div className="max-w-md text-center"><h1 className="text-xl font-semibold tracking-tight text-foreground">No pudimos cargar esta página</h1><p className="mt-2 text-sm leading-6 text-muted-foreground">Algo salió mal. Puedes intentarlo de nuevo o volver al inicio.</p><div className="mt-6 flex flex-wrap justify-center gap-2"><button onClick={() => { router.invalidate(); reset(); }} className="inline-flex items-center justify-center rounded-full bg-primary px-4 py-2 text-sm font-medium text-primary-foreground">Intentar de nuevo</button><a href="/" className="inline-flex items-center justify-center rounded-full border border-input bg-background px-4 py-2 text-sm text-foreground">Ir al inicio</a></div></div></div>; }
-function MaintenanceScreen({ message }: { message: string }) { return (<div className="flex min-h-screen items-center justify-center bg-background px-4 relative"><div className="maintenance-3d-scene absolute inset-0" aria-hidden="true">{[1,2,3,4,5].map(i => (<div key={i} className="circle"><div></div></div>))}</div><div className="relative z-10 flex flex-col items-center text-center px-4"><div className="mt-8"><img src="/favicon.png" alt="Cornet logo" className="h-12 w-12 mx-auto" /></div><p className="mt-6 text-sm font-semibold uppercase tracking-[0.2em] text-primary">Cornet</p><h1 className="mt-3 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">Estamos trabajando para ti</h1><p className="mt-4 max-w-md text-sm leading-6 text-muted-foreground mx-auto">{message}</p><div className="mt-7 rounded-2xl border border-border bg-background/70 p-4 text-left"><div className="flex items-start gap-3"><ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-primary" /><div><p className="font-semibold text-foreground">Acceso temporalmente limitado</p><p className="mt-1 text-xs leading-5 text-muted-foreground">Los administradores mantienen acceso completo mientras terminamos las mejoras.</p></div></div></div><a href="/auth" className="mt-7 inline-flex items-center justify-center rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition hover:opacity-90">Entrar como administrador</a></div></div>); }
+function MaintenanceScreen({ message }: { message: string }) {
+  // Generate 3D circles for the maintenance screen
+  const generate3DCircles = () => {
+    const circles = [];
+    const circleCount = 30; // Number of circles to generate
+
+    for (let i = 0; i < circleCount; i++) {
+      // Distribute points on a sphere using the Fibonacci spiral method
+      const phi = Math.acos(1 - 2 * (i + 0.5) / circleCount);
+      const theta = Math.PI * (1 + Math.sqrt(5)) * i;
+
+      const radius = 150; // Sphere radius
+      const x = radius * Math.sin(phi) * Math.cos(theta);
+      const y = radius * Math.sin(phi) * Math.sin(theta);
+      const z = radius * Math.cos(phi);
+
+      // Size based on distance (closer = larger)
+      const size = Math.max(20, 80 - Math.abs(z) * 0.3);
+
+      // Animation delay for variety
+      const delay = i * 0.1;
+
+      // Color variation based on position
+      const hue = (i * 137.5) % 360; // Golden angle for nice distribution
+
+      circles.push(
+        <div
+          key={i}
+          className="circle"
+          style={{
+            '--tx': `${x}px`,
+            '--ty': `${y}px`,
+            '--tz': `${z}px`,
+            '--size': `${size}px`,
+            '--delay': `${delay}s`,
+            '--hue': `${hue}deg`
+          } as React.CSSProperties}
+        >
+          <div></div>
+        </div>
+      );
+    }
+
+    return circles;
+  };
+
+  return (<div className="flex min-h-screen items-center justify-center bg-background px-4 relative"><div className="maintenance-3d-scene absolute inset-0" aria-hidden="true">{generate3DCircles()}</div><div className="relative z-10 flex flex-col items-center text-center px-4"><div className="mt-8"><img src="/favicon.png" alt="Cornet logo" className="h-12 w-12 mx-auto" /></div><p className="mt-6 text-sm font-semibold uppercase tracking-[0.2em] text-primary">Cornet</p><h1 className="mt-3 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">Estamos trabajando para ti</h1><p className="mt-4 max-w-md text-sm leading-6 text-muted-foreground mx-auto">{message}</p><div className="mt-7 rounded-2xl border border-border bg-background/70 p-4 text-left"><div className="flex items-start gap-3"><ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-primary" /><div><p className="font-semibold text-foreground">Acceso temporalmente limitado</p><p className="mt-1 text-xs leading-5 text-muted-foreground">Los administradores mantienen acceso completo mientras terminamos las mejoras.</p></div></div></div><a href="/auth" className="mt-7 inline-flex items-center justify-center rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition hover:opacity-90">Entrar como administrador</a></div></div>); }
 function AuthLoadingScreen() { return <div className="flex min-h-screen items-center justify-center bg-background"><div className="flex items-center gap-3 rounded-2xl border border-border bg-surface px-5 py-4 text-sm text-muted-foreground"><Loader2 className="h-5 w-5 animate-spin text-primary" />Cargando....</div></div>; }
 
 function MaintenanceAwareContent() {

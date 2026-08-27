@@ -243,73 +243,54 @@ html[data-theme="yt-2019"] .cn-shell{
 .circle {
   position: absolute;
   border-radius: 50%;
-  /* Different sizes and animations */
+  /* 3D Transform support */
+  transform-style: preserve-3d;
+  /* Size will be set via CSS variable */
+  width: var(--size, 20px);
+  height: var(--size, 20px);
+  /* Position will be set via CSS variables */
+  left: 50%;
+  top: 50%;
+  transform: translate3d(var(--tx, 0), var(--ty, 0), var(--tz, 0)) translate(-50%, -50%);
+  /* Animation */
   animation: float 6s ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+  /* Background color with HSLA for easy color variation */
+  background: hsla(var(--hue, 0), 70%, 60%, 0.4);
+  border: 2px solid hsla(var(--hue, 0), 70%, 60%, 0.8);
+  /* Inner circle */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* Circle 1 */
-.maintenance-3d-scene .circle:nth-child(1) {
-  width: 120px;
-  height: 120px;
-  left: 10%;
-  top: 20%;
-  background: rgba(255, 99, 132, 0.4);
-  border: 2px solid rgba(255, 99, 132, 0.8);
-  animation-delay: 0s;
-}
-
-/* Circle 2 */
-.maintenance-3d-scene .circle:nth-child(2) {
-  width: 80px;
-  height: 80px;
-  left: 60%;
-  top: 40%;
-  background: rgba(54, 162, 235, 0.4);
-  border: 2px solid rgba(54, 162, 235, 0.8);
-  animation-delay: 2s;
-}
-
-/* Circle 3 */
-.maintenance-3d-scene .circle:nth-child(3) {
-  width: 150px;
-  height: 150px;
-  left: 30%;
-  top: 60%;
-  background: rgba(255, 206, 86, 0.4);
-  border: 2px solid rgba(255, 206, 86, 0.8);
-  animation-delay: 4s;
-}
-
-/* Circle 4 */
-.maintenance-3d-scene .circle:nth-child(4) {
-  width: 60px;
-  height: 60px;
-  left: 80%;
-  top: 10%;
-  background: rgba(153, 102, 255, 0.4);
-  border: 2px solid rgba(153, 102, 255, 0.8);
-  animation-delay: 1s;
-}
-
-/* Circle 5 */
-.maintenance-3d-scene .circle:nth-child(5) {
-  width: 100px;
-  height: 100px;
-  left: 20%;
-  top: 80%;
-  background: rgba(75, 192, 192, 0.4);
-  border: 2px solid rgba(75, 192, 192, 0.8);
-  animation-delay: 3s;
+.circle > div {
+  width: 60%;
+  height: 60%;
+  border-radius: 50%;
+  background: hsla(var(--hue, 0), 70%, 60%, 0.2);
+  /* Subtle pulse animation */
+  animation: pulse 3s ease-in-out infinite;
+  animation-delay: calc(var(--delay, 0s) * 0.5);
 }
 
 @keyframes float {
   0% {
-    transform: translateY(0px) rotate(0deg);
+    transform: translate3d(var(--tx, 0), var(--ty, 0), var(--tz, 0)) translate(-50%, -50%) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
   }
   50% {
-    transform: translateY(-20px) rotate(180deg);
+    transform: translate3d(var(--tx, 0), calc(var(--ty, 0) - 20px), var(--tz, 0)) translate(-50%, -50%) rotateX(180deg) rotateY(180deg) rotateZ(180deg);
   }
   100% {
-    transform: translateY(0px) rotate(360deg);
+    transform: translate3d(var(--tx, 0), var(--ty, 0), var(--tz, 0)) translate(-50%, -50%) rotateX(360deg) rotateY(360deg) rotateZ(360deg);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
   }
 }
