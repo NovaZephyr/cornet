@@ -232,12 +232,11 @@ html[data-theme="yt-2019"] .cn-shell{
 
 /* Maintenance 3D Effect */
 .maintenance-3d-scene {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: #000;
   perspective: 1000px;
-  margin: 0 auto 2rem;
-  width: 280px;
-  height: 280px;
-  position: relative;
-  background: rgba(0,0,0,0.2);
   overflow: visible;
 }
 
