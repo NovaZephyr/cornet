@@ -17,7 +17,7 @@ export const Route = createFileRoute("/")({
     ...(typeof search.q === "string" && search.q.trim() ? { q: search.q } : {}),
     ...(search.sort === "recommended" || search.sort === "subscribers" || search.sort === "views" || search.sort === "recent" || search.sort === "oldest" ? { sort: search.sort } : {}),
   }),
-  head: () => ({ meta: [{ title: "CoreNetwork — Free Yourself" }] }),
+  head: () => ({ meta: [{ title: "Cornet — Free Yourself" }] }),
   component: Home,
 });
 
