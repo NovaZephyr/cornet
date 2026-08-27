@@ -21,7 +21,7 @@ function AdminMaintenancePage() {
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    if (!isAdmin || loaded) return;
+    if (!isAdmin) return;
     void supabase
       .from("site_settings")
       .select("maintenance_mode, maintenance_message")
@@ -38,7 +38,7 @@ function AdminMaintenancePage() {
         }
         setLoaded(true);
       });
-  }, [isAdmin, loaded, message]);
+  }, [isAdmin]);
 
   const save = async () => {
     if (!isAdmin) return;
