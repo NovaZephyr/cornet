@@ -23,7 +23,7 @@ function MaintenanceAwareContent() {
   const { isAdmin, loading } = useAuth();
   const location = useLocation();
   const isAuthRoute = location.pathname === "/auth";
-  const forceMaintenance = location.search.toString().includes('forceMaintenance=true');
+  const forceMaintenance = String(location.search).includes('forceMaintenance=true');
   const [settingsLoading, setSettingsLoading] = useState(false);
   const [maintenance, setMaintenance] = useState<{ enabled: boolean; message: string } | null>(null);
   useEffect(() => {
