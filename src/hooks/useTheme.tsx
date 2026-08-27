@@ -40,6 +40,8 @@ export const THEMES = [
   { id: "grad-sunset", label: "Atardecer", hint: "Naranja y magenta", group: "Degradados", kind: "normal" },
   { id: "grad-neon", label: "Neón", hint: "Verde y cian eléctrico", group: "Degradados", kind: "normal" },
   { id: "grad-candy", label: "Candy", hint: "Rosa suave y lavanda", group: "Degradados", kind: "normal" },
+  { id: "cyberpunk", label: "Cyberpunk", hint: "Fondo oscuro con acentos cian y magenta", group: "Creativos", kind: "normal" },
+  { id: "neon-pink", label: "Neón Rosa", hint: "Fondo negro con acentos rosa neón", group: "Creativos", kind: "normal" },
 ] as const;
 
 export type PresetThemeId = (typeof THEMES)[number]["id"];
