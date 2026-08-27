@@ -68,9 +68,164 @@ html[data-theme="cyberpunk"] .cn-shell-icon-button:hover,
 html[data-theme="cyberpunk"] .cn-shell-avatar-button:hover{
   box-shadow:0 0 16px rgb(0 255 255 / .4);
 }
-/* Optional gradient background */
+/* Enhanced gradient background */
 html[data-theme="cyberpunk"] .cn-shell{
-  background:radial-gradient(800px 400px at 20% 0,rgb(0 255 255 / .1),transparent 60%),
-             radial-gradient(600px 300px at 80% 100%,rgb(255 0 255 / .1),transparent 60%),
+  background:radial-gradient(800px 400px at 20% 0,rgb(0 255 255 / .15),transparent 60%),
+             radial-gradient(600px 300px at 80% 100%,rgb(255 0 255 / .15),transparent 60%),
+             repeating-linear-gradient(45deg, #00ffff1a, #00ffff1a 1px, transparent 1px, transparent 10px),
              #0a0a0a;
+}
+
+/* CRT / VHS theme */
+html[data-theme="crt-vhs"] .cn-shell{
+  background:#111;
+  color:#0f0;
+  font-family:'Courier New',Courier,monospace;
+}
+html[data-theme="crt-vhs"] .cn-shell-header{
+  background:#000;
+  border-color:#0f0;
+  box-shadow:0 0 8px rgb(0 255 0 / .4);
+}
+html[data-theme="crt-vhs"] .cn-shell-sidebar{
+  background:#000;
+  border-color:#0f0;
+}
+html[data-theme="crt-vhs"] .cn-shell-sidebar nav a[data-active="true"]{
+  background:color-mix(in oklab,#0f0 10%,#000);
+  color:#0f0;
+}
+html[data-theme="crt-vhs"] .cn-shell-icon-button:hover,
+html[data-theme="crt-vhs"] .cn-shell-avatar-button:hover{
+  box-shadow:0 0 12px rgb(0 255 0 / .3);
+}
+/* Scanlines overlay */
+html[data-theme="crt-vhs"] .cn-shell::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(0deg, transparent, rgba(0,0,0,0.1) 50%, transparent 50%),
+             repeating-linear-gradient(0deg, rgba(0,0,0,0.2) 0px, rgba(0,0,0,0.2) 1px, transparent 1px, transparent 2px);
+  pointer-events:none;
+  z-index:1;
+}
+/* Optional curvature effect (subtle) */
+html[data-theme="crt-vhs"] .cn-shell{
+  filter:brightness(1.05) contrast(1.1);
+}
+
+/* YouTube 2009 theme */
+html[data-theme="yt-2009"] .cn-shell{
+  background:#fff;
+  color:#000;
+  font-family:'Arial',Helvetica,sans-serif;
+}
+html[data-theme="yt-2009"] .cn-shell-header{
+  background:#fff;
+  border-color:#ccc;
+  box-shadow:0 1px 3px rgba(0,0,0,.1);
+}
+html[data-theme="yt-2009"] .cn-shell-sidebar{
+  background:#f8f8f8;
+  border-color:#ddd;
+}
+html[data-theme="yt-2009"] .cn-shell-sidebar nav a[data-active="true"]{
+  background:#e8e8e8;
+  color:#000;
+}
+html[data-theme="yt-2009"] .cn-shell-icon-button:hover,
+html[data-theme="yt-2009"] .cn-shell-avatar-button:hover{
+  background:#f0f0f0;
+  box-shadow:0 0 4px rgba(0,0,0,.15);
+}
+/* YouTube red accent */
+html[data-theme="yt-2009"] .cn-shell{
+  --accent:#cc0000;
+}
+
+/* YouTube 2012 / Cosmic Panda theme */
+html[data-theme="yt-2012"] .cn-shell{
+  background:#e7e7e7;
+  color:#333;
+  font-family:'Arial',Helvetica,sans-serif;
+}
+html[data-theme="yt-2012"] .cn-shell-header{
+  background:#fff;
+  border-color:#ddd;
+  box-shadow:0 1px 2px rgba(0,0,0,.1);
+}
+html[data-theme="yt-2012"] .cn-shell-sidebar{
+  background:#f0f0f0;
+  border-color:#ddd;
+}
+html[data-theme="yt-2012"] .cn-shell-sidebar nav a[data-active="true"]{
+  background:#e0e0e0;
+  color:#333;
+}
+html[data-theme="yt-2012"] .cn-shell-icon-button:hover,
+html[data-theme="yt-2012"] .cn-shell-avatar-button:hover{
+  background:#d8d8d8;
+  box-shadow:0 0 4px rgba(0,0,0,.1);
+}
+/* Cosmic Panda blue accent */
+html[data-theme="yt-2012"] .cn-shell{
+  --accent:#6ea7d7;
+}
+
+/* YouTube 2013 theme */
+html[data-theme="yt-2013"] .cn-shell{
+  background:#fff;
+  color:#333;
+  font-family:'Arial',Helvetica,sans-serif;
+}
+html[data-theme="yt-2013"] .cn-shell-header{
+  background:#fff;
+  border-color:#ddd;
+  box-shadow:0 1px 2px rgba(0,0,0,.1);
+}
+html[data-theme="yt-2013"] .cn-shell-sidebar{
+  background:#fafafa;
+  border-color:#eee;
+}
+html[data-theme="yt-2013"] .cn-shell-sidebar nav a[data-active="true"]{
+  background:#f0f0f0;
+  color:#333;
+}
+html[data-theme="yt-2013"] .cn-shell-icon-button:hover,
+html[data-theme="yt-2013"] .cn-shell-avatar-button:hover{
+  background:#f5f5f5;
+  box-shadow:0 0 4px rgba(0,0,0,.1);
+}
+/* YouTube red accent */
+html[data-theme="yt-2013"] .cn-shell{
+  --accent:#cc0000;
+}
+
+/* YouTube 2019 / Polymer theme */
+html[data-theme="yt-2019"] .cn-shell{
+  background:#fff;
+  color:#202124;
+  font-family:'Roboto',Arial,sans-serif;
+}
+html[data-theme="yt-2019"] .cn-shell-header{
+  background:#fff;
+  border-color:#dadce0;
+  box-shadow:0 1px 2px rgba(0,0,0,.08);
+}
+html[data-theme="yt-2019"] .cn-shell-sidebar{
+  background:#f8f9fa;
+  border-color:#dadce0;
+}
+html[data-theme="yt-2019"] .cn-shell-sidebar nav a[data-active="true"]{
+  background:#e8f0fe;
+  color:#1a73e8;
+}
+html[data-theme="yt-2019"] .cn-shell-icon-button:hover,
+html[data-theme="yt-2019"] .cn-shell-avatar-button:hover{
+  background:#e8f0fe;
+  box-shadow:0 0 4px rgba(0,0,0,.1);
+}
+/* Google blue accent */
+html[data-theme="yt-2019"] .cn-shell{
+  --accent:#1a73e8;
 }
