@@ -10,7 +10,35 @@ const TTL = 60 * 60;
 const IMMUTABLE_CACHE_CONTROL = "31536000";
 const STORAGE_PROVIDER = String(import.meta.env.VITE_STORAGE_PROVIDER ?? "supabase").toLowerCase();
 
-/** Paths are stored as "bucket/path/to/file", "b2/path/to/file", or external HTTPS URLs. */
+async function getB2Url(fullPath: string, key: string): Promise<string | null> {
+  const hit = cache.get(fullPath);
+  if (hit && hit.expires > Date.now()) return hit.url;
+  const existing = inflight.get(fullPath);
+  if (existing) return existing;
+
+  const promise = createB2DownloadUrl(key, undefined, TTL)
+    .then(({ url }) => {
+      cache.set(fullPath, { url, expires: Date.now() + (TTL - 60) * 1000 });
+      inflight.delete(fullPath);
+      return url;
+    })
+    .catch(() => {
+      inflight.delete(fullPath);
+      return null;
+    });
+  inflight.set(fullPath, promise);
+  return promise;
+}
+
+/**
+ * Resolve a stored media path without forcing callers to know which storage
+ * provider owns it. Paths may be "bucket/path", "b2/path", or HTTPS URLs.
+ *
+ * Videos are currently written to B2, while older rows may still contain the
+ * historical Supabase "videos/..." path. If that legacy object no longer
+ * exists in Supabase because it was migrated, consult the video's storage
+ * metadata and transparently resolve the B2 key instead.
+ */
 export async function getSignedUrl(fullPath?: string | null): Promise<string | null> {
   if (!fullPath) return null;
   if (/^https?:\/\//i.test(fullPath)) {
@@ -22,22 +50,7 @@ export async function getSignedUrl(fullPath?: string | null): Promise<string | n
   const bucket = fullPath.slice(0, slash);
   const key = fullPath.slice(slash + 1);
 
-  if (bucket === "b2") {
-    const hit = cache.get(fullPath);
-    if (hit && hit.expires > Date.now()) return hit.url;
-    const existing = inflight.get(fullPath);
-    if (existing) return existing;
-    const promise = createB2DownloadUrl(key, undefined, TTL).then(({ url }) => {
-      cache.set(fullPath, { url, expires: Date.now() + (TTL - 60) * 1000 });
-      inflight.delete(fullPath);
-      return url;
-    }).catch(() => {
-      inflight.delete(fullPath);
-      return null;
-    });
-    inflight.set(fullPath, promise);
-    return promise;
-  }
+  if (bucket === "b2") return getB2Url(fullPath, key);
 
   if (bucket === "media") {
     const { data } = supabase.storage.from("media").getPublicUrl(key);
@@ -52,15 +65,59 @@ export async function getSignedUrl(fullPath?: string | null): Promise<string | n
   const promise = supabase.storage
     .from(bucket)
     .createSignedUrl(key, TTL)
-    .then(({ data }) => {
+    .then(async ({ data, error }) => {
       const url = data?.signedUrl ?? null;
-      if (url) cache.set(fullPath, { url, expires: Date.now() + (TTL - 60) * 1000 });
-      inflight.delete(fullPath);
-      return url;
-    })
-    .catch(() => {
+      if (url) {
+        cache.set(fullPath, { url, expires: Date.now() + (TTL - 60) * 1000 });
+        inflight.delete(fullPath);
+        return url;
+      }
+
+      // Compatibility path: a legacy videos/... row may already have been
+      // migrated to B2 while its old path is still present in the client.
+      if (bucket === "videos") {
+        try {
+          const { data: metadata } = await (supabase as any)
+            .from("videos")
+            .select("video_storage_provider,video_storage_key,video_path")
+            .eq("video_path", fullPath)
+            .maybeSingle();
+
+          if (metadata?.video_storage_provider === "backblaze" && metadata.video_storage_key) {
+            const b2Url = await getB2Url(fullPath, String(metadata.video_storage_key));
+            inflight.delete(fullPath);
+            return b2Url;
+          }
+        } catch {
+          // Keep the original Supabase failure semantics for unrelated callers.
+        }
+      }
+
+      void error;
       inflight.delete(fullPath);
       return null;
+    })
+    .catch(async () => {
+      // Some Supabase versions return the failure through the rejected promise
+      // (including HTTP 400). Retry the same metadata compatibility lookup.
+      if (bucket === "videos") {
+        try {
+          const { data: metadata } = await (supabase as any)
+            .from("videos")
+            .select("video_storage_provider,video_storage_key,video_path")
+            .eq("video_path", fullPath)
+            .maybeSingle();
+          if (metadata?.video_storage_provider === "backblaze" && metadata.video_storage_key) {
+            return await getB2Url(fullPath, String(metadata.video_storage_key));
+          }
+        } catch {
+          // Fall through to null for a genuinely unavailable legacy object.
+        }
+      }
+      return null;
+    })
+    .finally(() => {
+      inflight.delete(fullPath);
     });
 
   inflight.set(fullPath, promise);
