@@ -1,0 +1,4 @@
+/* Sepia — accessibility/comfort visual skin. Layout is never modified. */
+[data-theme="sepia"]{color-scheme:light;--theme-bg:#f4ecd8;--theme-surface:#fff8e8;--theme-border:#d6c6a5;--theme-text:#3f3428;--theme-muted:#6f604e;--theme-accent:#8b5e34}
+[data-theme="sepia"] body{background:var(--theme-bg);color:var(--theme-text)}
+[data-theme="sepia"] :is(.card,[data-surface],[role="dialog"]){background:var(--theme-surface);border-color:var(--theme-border)}

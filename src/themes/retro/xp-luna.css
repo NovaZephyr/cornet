@@ -1,0 +1,4 @@
+/* Windows XP Luna — retro visual skin. Appearance only; never changes user/channel layout. */
+[data-theme="windows-xp-luna"]{color-scheme:light;--theme-bg:#6fa9e8;--theme-surface:rgba(236,245,255,.96);--theme-border:#6b91bd;--theme-text:#173b63;--theme-muted:#55718f;--theme-accent:#316ac5}
+[data-theme="windows-xp-luna"] body{background:linear-gradient(180deg,#5aa0e8 0%,#bde3ff 52%,#72b45c 100%);color:var(--theme-text)}
+[data-theme="windows-xp-luna"] :is(.card,[data-surface],[role="dialog"]){background:var(--theme-surface);border-color:var(--theme-border);box-shadow:inset 0 1px rgba(255,255,255,.9),0 5px 16px rgba(31,75,119,.2)}

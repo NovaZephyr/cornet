@@ -1,0 +1,4 @@
+/* Neon Gradient — appearance only. Never alter user/channel layout. */
+[data-theme="grad-neon"]{color-scheme:dark;--theme-bg:#090014;--theme-surface:rgba(25,8,45,.78);--theme-border:rgba(238,88,255,.3);--theme-text:#fff3ff;--theme-muted:#c5a9ca;--theme-accent:#ee58ff}
+[data-theme="grad-neon"] body{background:linear-gradient(135deg,#090014 0%,#2b0750 50%,#071f4d 100%);color:var(--theme-text)}
+[data-theme="grad-neon"] :is(.card,[data-surface],[role="dialog"]){background:var(--theme-surface);border-color:var(--theme-border);backdrop-filter:blur(12px);box-shadow:0 0 28px rgba(238,88,255,.12)}

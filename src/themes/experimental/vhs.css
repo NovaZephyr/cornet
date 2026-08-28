@@ -1,0 +1,5 @@
+/* VHS — experimental visual skin. Appearance/effects only; never changes user/channel layout. */
+[data-theme="vhs"]{color-scheme:dark;--theme-bg:#140b16;--theme-surface:rgba(34,18,38,.88);--theme-border:rgba(255,107,177,.28);--theme-text:#ffeaf5;--theme-muted:#c89fb6;--theme-accent:#ff6bb1}
+[data-theme="vhs"] body{background:linear-gradient(145deg,#140b16,#32152f 55%,#101a32);color:var(--theme-text);filter:saturate(.9)}
+[data-theme="vhs"] body::after{content:"";position:fixed;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(255,255,255,.018) 0 2px,transparent 2px 4px);opacity:.5}
+[data-theme="vhs"] :is(.card,[data-surface],[role="dialog"]){background:var(--theme-surface);border-color:var(--theme-border);box-shadow:4px 0 rgba(80,180,255,.04),-4px 0 rgba(255,80,160,.04)}

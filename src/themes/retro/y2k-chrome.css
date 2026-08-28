@@ -1,0 +1,4 @@
+/* Y2K Chrome — retro visual skin. Appearance only; never changes user/channel layout. */
+[data-theme="y2k-chrome"]{color-scheme:dark;--theme-bg:#090b10;--theme-surface:rgba(36,41,52,.84);--theme-border:rgba(205,215,230,.35);--theme-text:#f2f5f9;--theme-muted:#aeb8c6;--theme-accent:#b8c7db}
+[data-theme="y2k-chrome"] body{background:radial-gradient(circle at 50% -10%,#68758a,transparent 32%),linear-gradient(145deg,#07090d,#1c222d 52%,#080a0f);color:var(--theme-text)}
+[data-theme="y2k-chrome"] :is(.card,[data-surface],[role="dialog"]){background:linear-gradient(145deg,rgba(100,110,125,.28),rgba(20,24,32,.9));border-color:var(--theme-border);backdrop-filter:blur(8px);box-shadow:inset 0 1px rgba(255,255,255,.16),0 10px 24px rgba(0,0,0,.35)}

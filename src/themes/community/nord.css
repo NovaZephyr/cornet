@@ -1,0 +1,4 @@
+/* Nord — community visual skin. Appearance only; never changes user/channel layout. */
+[data-theme="nord"]{color-scheme:dark;--theme-bg:#2e3440;--theme-surface:#3b4252;--theme-border:#4c566a;--theme-text:#eceff4;--theme-muted:#d8dee9;--theme-accent:#88c0d0}
+[data-theme="nord"] body{background:var(--theme-bg);color:var(--theme-text)}
+[data-theme="nord"] :is(.card,[data-surface],[role="dialog"]){background:var(--theme-surface);border-color:var(--theme-border)}

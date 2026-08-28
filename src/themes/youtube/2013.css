@@ -1,16 +1,9 @@
-/* YouTube 2013 — historical visual skin.
- * Visual skin only. User-selected channel layout is never overridden. */
-[data-theme="yt-2013"] {
-  color-scheme: light;
-  --theme-bg:#fff;
-  --theme-surface:#f8f8f8;
-  --theme-border:#e5e5e5;
-  --theme-text:#333;
-  --theme-muted:#777;
-  --theme-accent:#e62117;
-  --theme-link:#167ac6;
-}
-[data-theme="yt-2013"] body { background:var(--theme-bg); color:var(--theme-text); }
-[data-theme="yt-2013"] :is(button,input,textarea,select) { border-color:var(--theme-border); border-radius:2px; }
-[data-theme="yt-2013"] button { background:#f8f8f8; color:#333; box-shadow:0 1px 1px rgba(0,0,0,.08); }
-[data-theme="yt-2013"] :is(.card,[data-surface],[role="dialog"]) { background:var(--theme-surface); border-color:var(--theme-border); }
+/* YouTube 2013 — historical visual skin. Appearance only; user-selected layout is never overridden. */
+[data-theme="yt-2013"]{color-scheme:light;--theme-bg:#fff;--theme-surface:#f8f8f8;--theme-surface-2:#eee;--theme-border:#ddd;--theme-text:#333;--theme-muted:#777;--theme-accent:#e62117;--theme-link:#167ac6}
+[data-theme="yt-2013"] body{background:#fff;color:var(--theme-text)}
+[data-theme="yt-2013"] a{color:var(--theme-link)}
+[data-theme="yt-2013"] :is(button,input,textarea,select){border-color:var(--theme-border);border-radius:2px}
+[data-theme="yt-2013"] button{background:linear-gradient(#fff,#f1f1f1);color:#333;box-shadow:0 1px 1px rgba(0,0,0,.12)}
+[data-theme="yt-2013"] button:hover{background:linear-gradient(#fff,#e5e5e5)}
+[data-theme="yt-2013"] :is(.card,[data-surface],[role="dialog"]){background:var(--theme-surface);border-color:var(--theme-border);box-shadow:0 1px 2px rgba(0,0,0,.08)}
+[data-theme="yt-2013"] ::selection{background:rgba(230,33,23,.16)}

@@ -1,0 +1,6 @@
+/* Solarized — community visual skin. Appearance only; never changes user/channel layout. */
+[data-theme="solarized-light"]{color-scheme:light;--theme-bg:#fdf6e3;--theme-surface:#eee8d5;--theme-border:#d6cbb4;--theme-text:#657b83;--theme-muted:#839496;--theme-accent:#268bd2}
+[data-theme="solarized-dark"]{color-scheme:dark;--theme-bg:#002b36;--theme-surface:#073642;--theme-border:#586e75;--theme-text:#839496;--theme-muted:#657b83;--theme-accent:#2aa198}
+[data-theme="solarized-light"] body{background:var(--theme-bg);color:var(--theme-text)}
+[data-theme="solarized-dark"] body{background:var(--theme-bg);color:var(--theme-text)}
+[data-theme="solarized-light"] :is(.card,[data-surface],[role="dialog"]),[data-theme="solarized-dark"] :is(.card,[data-surface],[role="dialog"]){background:var(--theme-surface);border-color:var(--theme-border)}

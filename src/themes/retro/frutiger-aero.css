@@ -1,0 +1,4 @@
+/* Frutiger Aero — retro visual skin. Appearance only; never changes user/channel layout. */
+[data-theme="frutiger-aero"]{color-scheme:light;--theme-bg:#cceeff;--theme-surface:rgba(255,255,255,.68);--theme-border:rgba(40,145,190,.32);--theme-text:#12364a;--theme-muted:#477287;--theme-accent:#16a5d8}
+[data-theme="frutiger-aero"] body{background:radial-gradient(circle at 25% 15%,rgba(255,255,255,.95),transparent 25%),linear-gradient(160deg,#8de0f4,#dff8ff 52%,#79cbb7);color:var(--theme-text)}
+[data-theme="frutiger-aero"] :is(.card,[data-surface],[role="dialog"]){background:var(--theme-surface);border-color:var(--theme-border);backdrop-filter:blur(10px);box-shadow:0 10px 26px rgba(25,105,120,.16)}

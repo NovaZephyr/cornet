@@ -1,0 +1,15 @@
+/* Ocean Gradient — appearance only. Never alter user/channel layout. */
+[data-theme="grad-ocean"] {
+  color-scheme: dark;
+  --theme-bg: #071a2b;
+  --theme-surface: rgba(10,39,61,.78);
+  --theme-border: rgba(102,199,255,.25);
+  --theme-text: #effaff;
+  --theme-muted: #a8c5d8;
+  --theme-accent: #42b8ff;
+}
+[data-theme="grad-ocean"] body {
+  background: linear-gradient(135deg,#071a2b 0%,#0b4260 52%,#10204d 100%);
+  color:var(--theme-text);
+}
+[data-theme="grad-ocean"] :is(.card,[data-surface],[role="dialog"]){background:var(--theme-surface);border-color:var(--theme-border);backdrop-filter:blur(12px)}

@@ -1,0 +1,4 @@
+/* Web 2.0 Glossy — retro visual skin. Appearance only; never changes user/channel layout. */
+[data-theme="web2-glossy"]{color-scheme:light;--theme-bg:#e9eef5;--theme-surface:rgba(255,255,255,.94);--theme-border:#b7c3d2;--theme-text:#24364a;--theme-muted:#647487;--theme-accent:#2d8cff}
+[data-theme="web2-glossy"] body{background:linear-gradient(#fff,#dfe7f0);color:var(--theme-text)}
+[data-theme="web2-glossy"] :is(.card,[data-surface],[role="dialog"]){background:linear-gradient(180deg,#fff 0%,#edf2f7 48%,#dce5ee 100%);border-color:var(--theme-border);box-shadow:inset 0 1px rgba(255,255,255,.95),0 4px 12px rgba(31,52,75,.16)}

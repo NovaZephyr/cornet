@@ -1,45 +1,38 @@
-/* Cosmic Panda — Cornet custom theme
- * Inspired by the YouTube 2012/Cosmic Panda visual language.
- * This file is an appearance skin only: it MUST NOT alter user-selected
- * channel layouts, channel_info_layout, routing, or component structure. */
+/* Cosmic Panda — Cornet custom theme.
+ * Visual language: YouTube 2012 / Cosmic Panda.
+ * Appearance only. MUST NOT alter channel/user-selected layout,
+ * channel_info_layout, routing, or component structure. */
 [data-theme="cosmic-panda"] {
   color-scheme: dark;
-  --theme-bg: #0b1020;
-  --theme-surface: rgba(24, 31, 55, .78);
-  --theme-surface-solid: #171f38;
-  --theme-border: rgba(123, 151, 210, .24);
-  --theme-text: #eef4ff;
-  --theme-muted: #9ba9c6;
-  --theme-accent: #58a6ff;
-  --theme-accent-2: #9b7cff;
-  --theme-glow: rgba(88, 166, 255, .22);
+  --theme-bg:#101114;
+  --theme-surface:#1b1d22;
+  --theme-surface-2:#23262c;
+  --theme-border:rgba(255,255,255,.10);
+  --theme-text:#f1f1f1;
+  --theme-muted:#aaaeb5;
+  --theme-accent:#e62117;
+  --theme-accent-2:#cc181e;
+  --theme-glow:rgba(0,0,0,.28);
 }
-
 [data-theme="cosmic-panda"] body {
-  background:
-    radial-gradient(circle at 15% 0%, rgba(88,166,255,.18), transparent 34%),
-    radial-gradient(circle at 85% 15%, rgba(155,124,255,.16), transparent 32%),
-    linear-gradient(180deg, #0d1326 0%, #090d19 100%);
-  color: var(--theme-text);
+  background:linear-gradient(180deg,#202226 0,#15171a 44%,#0f1012 100%);
+  color:var(--theme-text);
 }
-
-[data-theme="cosmic-panda"] :is(.card, [data-surface], [role="dialog"]) {
-  background: var(--theme-surface);
-  border-color: var(--theme-border);
-  box-shadow: 0 12px 36px rgba(0,0,0,.22), 0 0 28px var(--theme-glow);
-  backdrop-filter: blur(14px);
+[data-theme="cosmic-panda"] :is(.card,[data-surface],[role="dialog"]) {
+  background:linear-gradient(180deg,var(--theme-surface-2),var(--theme-surface));
+  border:1px solid var(--theme-border);
+  box-shadow:0 2px 8px var(--theme-glow),inset 0 1px rgba(255,255,255,.035);
 }
-
-[data-theme="cosmic-panda"] :is(button, input, textarea, select) {
-  border-color: var(--theme-border);
-  border-radius: 4px;
+[data-theme="cosmic-panda"] :is(button,input,textarea,select) {
+  border-color:var(--theme-border);
+  border-radius:2px;
 }
-
 [data-theme="cosmic-panda"] button {
-  background: linear-gradient(180deg, rgba(50,66,105,.9), rgba(25,34,60,.9));
-  color: var(--theme-text);
-  box-shadow: inset 0 1px rgba(255,255,255,.08), 0 4px 16px rgba(0,0,0,.18);
+  background:linear-gradient(180deg,#3a3d42,#292b2f);
+  color:var(--theme-text);
+  box-shadow:inset 0 1px rgba(255,255,255,.09),0 1px 2px rgba(0,0,0,.35);
 }
-
-[data-theme="cosmic-panda"] a { color: #79b7ff; }
-[data-theme="cosmic-panda"] ::selection { background: rgba(88,166,255,.35); }
+[data-theme="cosmic-panda"] button:hover {background:linear-gradient(180deg,#46494e,#303338)}
+[data-theme="cosmic-panda"] a {color:#2793e6}
+[data-theme="cosmic-panda"] ::selection {background:rgba(230,33,23,.35)}
+/* No grid/flex/position/width/height rules belong here: layout is external. */

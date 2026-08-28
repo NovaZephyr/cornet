@@ -1,0 +1,4 @@
+/* Dracula — community visual skin. Appearance only; never changes user/channel layout. */
+[data-theme="dracula"]{color-scheme:dark;--theme-bg:#282a36;--theme-surface:#44475a;--theme-border:#6272a4;--theme-text:#f8f8f2;--theme-muted:#bdc0c9;--theme-accent:#bd93f9}
+[data-theme="dracula"] body{background:var(--theme-bg);color:var(--theme-text)}
+[data-theme="dracula"] :is(.card,[data-surface],[role="dialog"]){background:var(--theme-surface);border-color:var(--theme-border)}

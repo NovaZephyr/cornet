@@ -1,0 +1,6 @@
+/* Modern community dark skins — appearance only; never changes user/channel layout. */
+[data-theme="gruvbox"]{color-scheme:dark;--theme-bg:#282828;--theme-surface:#3c3836;--theme-border:#665c54;--theme-text:#ebdbb2;--theme-muted:#a89984;--theme-accent:#fabd2f}
+[data-theme="tokyo-night"]{color-scheme:dark;--theme-bg:#1a1b26;--theme-surface:#24283b;--theme-border:#414868;--theme-text:#c0caf5;--theme-muted:#a9b1d6;--theme-accent:#7aa2f7}
+[data-theme="catppuccin"]{color-scheme:dark;--theme-bg:#1e1e2e;--theme-surface:#313244;--theme-border:#45475a;--theme-text:#cdd6f4;--theme-muted:#a6adc8;--theme-accent:#cba6f7}
+[data-theme="gruvbox"] body,[data-theme="tokyo-night"] body,[data-theme="catppuccin"] body{background:var(--theme-bg);color:var(--theme-text)}
+[data-theme="gruvbox"] :is(.card,[data-surface],[role="dialog"]),[data-theme="tokyo-night"] :is(.card,[data-surface],[role="dialog"]),[data-theme="catppuccin"] :is(.card,[data-surface],[role="dialog"]){background:var(--theme-surface);border-color:var(--theme-border)}
