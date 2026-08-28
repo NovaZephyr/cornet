@@ -1,9 +1,20 @@
-/* YouTube 2019 — historical visual skin. Appearance only; user-selected layout is never overridden. */
+/* YouTube 2019 — historical visual skin. Visual only; user-selected channel layout is never overridden. */
 [data-theme="yt-2019"]{color-scheme:light;--theme-bg:#fff;--theme-surface:#f9f9f9;--theme-border:#e5e5e5;--theme-text:#0f0f0f;--theme-muted:#606060;--theme-accent:#f00;--theme-link:#065fd4}
-[data-theme="yt-2019"] body{background:var(--theme-bg);color:var(--theme-text)}
-[data-theme="yt-2019"] a{color:var(--theme-link)}
-[data-theme="yt-2019"] :is(button,input,textarea,select){border-color:var(--theme-border);border-radius:2px}
-[data-theme="yt-2019"] button{background:var(--theme-surface);color:var(--theme-text);box-shadow:none}
+[data-theme="yt-2019"] body{background:#fff;color:#0f0f0f;font-family:Roboto,Arial,Helvetica,sans-serif}
+[data-theme="yt-2019"] .cn-shell-header{background:#fff;border-bottom:1px solid #e5e5e5;color:#0f0f0f;box-shadow:none}
+[data-theme="yt-2019"] .cn-shell-logo strong{color:#0f0f0f}.cn-shell-logo small{color:#606060}
+[data-theme="yt-2019"] .cn-shell-header a,[data-theme="yt-2019"] .cn-shell-icon-button,[data-theme="yt-2019"] .cn-shell-avatar-button{color:#0f0f0f;border-radius:50%}
+[data-theme="yt-2019"] .cn-shell-header a:hover,[data-theme="yt-2019"] .cn-shell-icon-button:hover,[data-theme="yt-2019"] .cn-shell-avatar-button:hover{background:#f2f2f2;border-color:transparent}
+[data-theme="yt-2019"] .cn-shell-search input{border:1px solid #ccc;border-radius:2px;background:#fff;color:#0f0f0f;box-shadow:none}
+[data-theme="yt-2019"] .cn-shell-search button{border:1px solid #ccc;border-radius:0 2px 2px 0;background:#f8f8f8;color:#606060;box-shadow:none}
+[data-theme="yt-2019"] .cn-shell-sidebar{background:#fff;border-right:1px solid #e5e5e5;color:#0f0f0f}
+[data-theme="yt-2019"] .cn-shell-account{border-bottom-color:#e5e5e5}
+[data-theme="yt-2019"] .cn-shell-sidebar nav a{border-radius:8px;color:#0f0f0f}
+[data-theme="yt-2019"] .cn-shell-sidebar nav a:hover{background:#f2f2f2}
+[data-theme="yt-2019"] .cn-shell-sidebar nav a[data-active="true"]{background:#eee;color:#0f0f0f;box-shadow:none}
+[data-theme="yt-2019"] .cn-shell-main{background:#fff;color:#0f0f0f}
+[data-theme="yt-2019"] :is(.card,[data-surface],[role="dialog"]){background:#f9f9f9;border:1px solid #e5e5e5;border-radius:2px;box-shadow:none}
+[data-theme="yt-2019"] a{color:#065fd4}
+[data-theme="yt-2019"] button{background:#f9f9f9;border:1px solid #e5e5e5;border-radius:2px;color:#0f0f0f;box-shadow:none}
 [data-theme="yt-2019"] button:hover{background:#eee}
-[data-theme="yt-2019"] :is(.card,[data-surface],[role="dialog"]){background:var(--theme-surface);border-color:var(--theme-border)}
 [data-theme="yt-2019"] ::selection{background:rgba(255,0,0,.12)}
