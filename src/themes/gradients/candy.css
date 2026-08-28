@@ -1,0 +1,4 @@
+/* Candy Gradient — appearance only. Never alter user/channel layout. */
+[data-theme="grad-candy"]{color-scheme:dark;--theme-bg:#210b25;--theme-surface:rgba(58,20,61,.76);--theme-border:rgba(255,170,224,.28);--theme-text:#fff4fc;--theme-muted:#d7b5cd;--theme-accent:#ff8bd8}
+[data-theme="grad-candy"] body{background:linear-gradient(135deg,#210b25 0%,#702d68 50%,#3e4e9a 100%);color:var(--theme-text)}
+[data-theme="grad-candy"] :is(.card,[data-surface],[role="dialog"]){background:var(--theme-surface);border-color:var(--theme-border);backdrop-filter:blur(12px);box-shadow:0 0 28px rgba(255,139,216,.1)}
