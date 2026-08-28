@@ -1,0 +1,4 @@
+- [Added YouTube 2009 historical theme](public/youtube2009.css) — New theme with accurate 2009 YouTube red/blue branding and era-specific styling
+- [Enhanced Feather 2013 to YouTube 2013 historical theme](public/feather-2013-enhanced.css) — Updated to reflect 2013 YouTube aesthetics with darker sidebar and refined components, moved to youtube-historical family
+- [Refined YouTube 2019 Polymer theme](public/custom-themes-gallery.css) — Enhanced with more distinct Polymer/Material Design characteristics and responsive improvements
+- [Updated theme definitions](src/design-library/index.ts) — Added youtube2009 theme, updated feather2013 to youtube-historical family, and adjusted descriptions for historical accuracy

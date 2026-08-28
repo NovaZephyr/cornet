@@ -1,0 +1,376 @@
+/* YouTube 2009 — historical light scheme with red branding and blue accents. */
+[data-theme="youtube2009"]{
+  color-scheme:light;
+  --background:#fafafa;
+  --foreground:#222;
+  --surface:#fff;
+  --surface-hover:#f0f0f0;
+  --card:#fff;
+  --card-foreground:#222;
+  --popover:#fff;
+  --popover-foreground:#222;
+  --primary:#c00; /* YouTube red */
+  --primary-foreground:#fff;
+  --secondary:#e6e6e6;
+  --secondary-foreground:#222;
+  --muted:#e6e6e6;
+  --muted-foreground:#666;
+  --accent:#164f8a; /* YouTube blue */
+  --accent-foreground:#fff;
+  --border:#dcdcdc;
+  --input:#fff;
+  --ring:#c00;
+  font-family:Arial,Helvetica,sans-serif!important;
+}
+html[data-theme="youtube2009"] body{
+  background:#fafafa!important;
+  color:#222!important;
+  font-family:Arial,Helvetica,sans-serif!important;
+}
+html[data-theme="youtube2009"] .cn-shell{
+  background:#fafafa!important;
+  color:#222!important;
+}
+html[data-theme="youtube2009"] .cn-shell-header{
+  height:48px!important;
+  min-height:48px!important;
+  padding:0 12px!important;
+  background:linear-gradient(#fff,#ececec)!important;
+  border-bottom:1px solid #c6c6c6!important;
+  box-shadow:0 1px 2px rgb(0 0 0 / .08)!important;
+  color:#222!important;
+}
+html[data-theme="youtube2009"] .cn-shell-logo img{
+  width:36px!important;
+  height:36px!important;
+}
+html[data-theme="youtube2009"] .cn-shell-logo strong{
+  font-size:16px!important;
+  font-weight:700!important;
+  color:#c00!important;
+  letter-spacing:-.05em!important;
+}
+html[data-theme="youtube2009"] .cn-shell-search input{
+  height:28px!important;
+  border:1px solid #bdbdbd!important;
+  border-radius:2px!important;
+  background:#fff!important;
+  color:#222!important;
+  box-shadow:inset 0 1px 2px rgb(0 0 0 / .06)!important;
+  font-size:13px!important;
+}
+html[data-theme="youtube2009"] .cn-shell-search button{
+  height:28px!important;
+  width:42px!important;
+  border:1px solid #bdbdbd!important;
+  border-left:0!important;
+  border-radius:0 2px 2px 0!important;
+  background:linear-gradient(#fafafa,#e4e4e4)!important;
+  box-shadow:none!important;
+}
+html[data-theme="youtube2009"] .cn-shell-icon-button{
+  border-radius:2px!important;
+  box-shadow:none!important;
+}
+html[data-theme="youtube2009"] .cn-shell-sidebar{
+  width:180px!important;
+  min-width:180px!important;
+  background:#f0f0f0!important;
+  border-right:1px solid #dbdbdb!important;
+  box-shadow:none!important;
+  padding:8px 12px!important;
+}
+html[data-theme="youtube2009"] .cn-shell-sidebar nav a{
+  min-height:28px!important;
+  padding:0 10px!important;
+  border-radius:1px!important;
+  color:#555!important;
+  font-size:12px!important;
+}
+html[data-theme="youtube2009"] .cn-shell-sidebar nav a:hover{
+  background:#e6e6e6!important;
+  color:#222!important;
+}
+html[data-theme="youtube2009"] .cn-shell-sidebar nav a[data-active="true"]{
+  background:#fff!important;
+  color:#c00!important;
+  font-weight:700!important;
+}
+html[data-theme="youtube2009"] .cn-shell-account{
+  padding:8px 10px!important;
+  margin-bottom:6px!important;
+  border-bottom:1px solid #dbdbdb!important;
+}
+html[data-theme="youtube2009"] .cn-shell-account strong{
+  color:#c00!important;
+  font-size:12px!important;
+}
+html[data-theme="youtube2009"] .cn-shell-account span{
+  color:#666!important;
+  font-size:10px!important;
+}
+html[data-theme="youtube2009"] .cn-shell-main{
+  min-width:0!important;
+  background:#fafafa!important;
+}
+html[data-theme="youtube2009"] .cn-shell-footer{
+  background:#f0f0f0!important;
+  border-top:1px solid #dbdbdb!important;
+}
+html[data-theme="youtube2009"] .cn-shorts-page{
+  background:#fafafa!important;
+}
+html[data-theme="youtube2009"] .cn-shorts-card,
+html[data-theme="youtube2009"] .cn-shorts-header,
+html[data-theme="youtube2009"] .cn-shorts-empty{
+  border-radius:2px!important;
+  box-shadow:none!important;
+}
+html[data-theme="youtube2009"] .cn-shorts-header,
+html[data-theme="youtube2009"] .cn-shorts-empty{
+  background:#fff!important;
+  border:1px solid #dbdbdb!important;
+}
+html[data-theme="youtube2009"] .cn-shorts-kicker{
+  color:#c00!important;
+  font-weight:700!important;
+}
+
+/* Enhanced YouTube 2009 specific components - following Cosmic Panda pattern */
+
+/* 2009-era chrome: slightly thicker borders, specific red branding */
+html[data-theme="youtube2009"] .cn-shell-logo{
+  padding:8px 0!important;
+}
+html[data-theme="youtube2009"] .cn-shell-logo strong{
+  font-size:18px!important;
+}
+
+/* 2009 search bar with specific styling */
+html[data-theme="youtube2009"] .cn-shell-search{
+  max-width:500px!important;
+  margin-top:8px!important;
+}
+html[data-theme="youtube2009"] .cn-shell-search input{
+  height:30px!important;
+  border:1px solid #bdbdbd!important;
+  background:#fff!important;
+  color:#222!important;
+  box-shadow:inset 0 1px 1px rgb(0 0 0 / .1)!important;
+}
+html[data-theme="youtube2009"] .cn-shell-search button{
+  height:30px!important;
+  width:45px!important;
+  background:#e0e0e0!important;
+  border:1px solid #bdbdbd!important;
+  color:#666!important;
+}
+
+/* 2009 sidebar with proper spacing and hover effects */
+html[data-theme="youtube2009"] .cn-shell-sidebar{
+  width:190px!important;
+  background:#f5f5f5!important;
+  border-right:1px solid #e0e0e0!important;
+}
+html[data-theme="youtube2009"] .cn-shell-sidebar nav a{
+  color:#666!important;
+  font-weight:normal!important;
+}
+html[data-theme="youtube2009"] .cn-shell-sidebar nav a:hover{
+  background:#e0e0e0!important;
+  color:#333!important;
+}
+html[data-theme="youtube2009"] .cn-shell-sidebar nav a[data-active="true"]{
+  background:#fff!important;
+  color:#c00!important;
+  font-weight:bold!important;
+}
+
+/* 2009 account section styling */
+html[data-theme="youtube2009"] .cn-shell-account{
+  padding:10px!important;
+  margin:10px 0!important;
+  border-bottom:1px solid #e0e0e0!important;
+}
+html[data-theme="youtube2009"] .cn-shell-account strong{
+  display:block!important;
+  margin-bottom:2px!important;
+}
+html[data-theme="youtube2009"] .cn-shell-account span{
+  display:block!important;
+}
+
+/* 2009 main content area */
+html[data-theme="youtube2009"] .cn-shell-main{
+  padding:20px!important;
+  background:#fafafa!important;
+}
+
+/* 2009 video card styling - more pronounced borders */
+html[data-theme="youtube2009"] .cn-video-card{
+  border:1px solid #e0e0e0!important;
+  background:#fff!important;
+  border-radius:3px!important;
+  box-shadow:0 1px 1px rgb(0 0 0 / .1)!important;
+}
+html[data-theme="youtube2009"] .cn-video-card:hover{
+  box-shadow:0 1px 2px rgb(0 0 0 / .15)!important;
+}
+
+/* 2009 explore section */
+html[data-theme="youtube2009"] .cn-explore-section{
+  border:1px solid #e0e0e0!important;
+  background:#fff!important;
+  border-radius:3px!important;
+}
+
+/* 2009 sidebar */
+html[data-theme="youtube2009"] .cn-2012-sidebar{
+  background:#fff!important;
+  border-right:1px solid #e0e0e0!important;
+}
+
+/* 2009 main area */
+html[data-theme="youtube2009"] .cn-2012-main{
+  background:#fafafa!important;
+}
+
+/* Home page specific styling */
+html[data-theme="youtube2009"] .cn-cosmic-home{
+  width:100%!important;
+  max-width:1080px!important;
+  margin:0 auto!important;
+  background:#fff!important;
+  border:1px solid #dbdbdb!important;
+  box-shadow:0 1px 2px rgb(0 0 0 / .05)!important;
+}
+html[data-theme="youtube2009"] .cn-cosmic-home-tabs{
+  display:flex!important;
+  align-items:stretch!important;
+  gap:0!important;
+  padding:0 12px!important;
+  min-height:36px!important;
+  background:#f0f0f0!important;
+  border-bottom:1px solid #dbdbdb!important;
+}
+html[data-theme="youtube2009"] .cn-cosmic-home-tabs button{
+  min-height:36px!important;
+  padding:0 12px!important;
+  border:0!important;
+  border-bottom:2px solid transparent!important;
+  background:transparent!important;
+  color:#666!important;
+  font-size:11px!important;
+  font-weight:700!important;
+  text-transform:uppercase!important
+}
+html[data-theme="youtube2009"] .cn-cosmic-home-tabs button:hover{
+  background:#e6e6e6!important;
+  color:#222!important;
+}
+html[data-theme="youtube2009"] .cn-cosmic-home-tabs button.is-active{
+  color:#c00!important;
+  border-bottom-color:#c00!important;
+}
+html[data-theme="youtube2009"] .cn-cosmic-grid{
+  display:grid!important;
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  gap:12px!important;
+}
+html[data-theme="youtube2009"] .cn-cosmic-home .cn-cosmic-grid > *{
+  min-width:0!important;
+}
+html[data-theme="youtube2009"] .cn-cosmic-home .cn-video-card,
+html[data-theme="youtube2009"] .cn-cosmic-home article{
+  border-radius:2px!important;
+  box-shadow:none!important;
+}
+html[data-theme="youtube2009"] .cn-cosmic-home a{
+  color:inherit;
+}
+html[data-theme="youtube2009"] .cn-cosmic-home .cn-cosmic-grid a.line-clamp-2{
+  font-size:12px!important;
+  line-height:1.35!important;
+}
+html[data-theme="youtube2009"] .cn-cosmic-home .cn-cosmic-grid p,
+html[data-theme="youtube2009"] .cn-cosmic-home .cn-cosmic-grid a.text-xs{
+  font-size:10px!important;
+}
+
+/* Watch page styling */
+html[data-theme="youtube2009"] [data-corenet-player]{
+  background:#111!important;
+  border:1px solid #111!important;
+  padding:8px!important;
+  box-shadow:none!important;
+}
+html[data-theme="youtube2009"] [data-corenet-player] video{
+  border-radius:0!important;
+}
+html[data-theme="youtube2009"] .cn-shell-main > div{
+  color:#222!important;
+}
+html[data-theme="youtube2009"] .cn-shell-main .bg-black{
+  background:#111!important;
+}
+
+/* Shorts styling */
+html[data-theme="youtube2009"] .cn-shorts-page{
+  background:#fafafa!important;
+}
+html[data-theme="youtube2009"] .cn-shorts-card,
+html[data-theme="youtube2009"] .cn-shorts-header,
+html[data-theme="youtube2009"] .cn-shorts-empty{
+  border-radius:2px!important;
+  box-shadow:none!important;
+}
+html[data-theme="youtube2009"] .cn-shorts-header,
+html[data-theme="youtube2009"] .cn-shorts-empty{
+  background:#fff!important;
+  border:1px solid #dbdbdb!important;
+}
+html[data-theme="youtube2009"] .cn-shorts-kicker{
+  color:#c00!important;
+  font-weight:700!important;
+}
+
+/* Responsive */
+@media (max-width:900px){
+  html[data-theme="youtube2009"] .cn-cosmic-feature{
+    grid-template-columns:1fr!important;
+  }
+  html[data-theme="youtube2009"] .cn-cosmic-feature-main{
+    border-right:0!important;
+    border-bottom:1px solid #dbdbdb!important;
+  }
+  html[data-theme="youtube2009"] .cn-cosmic-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+}
+@media (max-width:600px){
+  html[data-theme="youtube2009"] .cn-shell-main{
+    padding:10px!important;
+  }
+  html[data-theme="youtube2009"] .cn-cosmic-home{
+    border-left:0!important;
+    border-right:0!important;
+  }
+  html[data-theme="youtube2009"] .cn-cosmic-grid{
+    grid-template-columns:1fr!important;
+  }
+}
+
+/* Additional YouTube 2009 specific enhancements */
+html[data-theme="youtube2009"] .cn-shell-sidebar{
+  width:200px!important;
+  background:#f8f8f8!important;
+}
+html[data-theme="youtube2009"] .cn-shell-sidebar nav a{
+  padding:6px 12px!important;
+}
+html[data-theme="youtube2009"] .cn-shell-sidebar nav a[data-active="true"]{
+  background:#fff!important;
+  color:#c00!important;
+  font-weight:bold!important;
+  border-left:3px solid #c00!important;
+}
