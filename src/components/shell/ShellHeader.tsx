@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { Menu, X } from "lucide-react";
 import { Link } from "@tanstack/react-router";
+import corenetworkMark from "@/assets/corenetwork-mark.png";
 import { ShellSearch } from "./ShellSearch";
 
 type ShellHeaderProps = {
@@ -28,7 +29,7 @@ export function ShellHeader({ mobileOpen, onMenuClick, logo, actions }: ShellHea
 export function ShellLogo() {
   return (
     <Link to="/" className="cn-shell-logo" aria-label="Cornet — inicio">
-      <img src="/corenetwork-mark.png" alt="" width={34} height={34} />
+      <img src={corenetworkMark} alt="Cornet" width={34} height={34} />
       <span><strong>Cornet</strong><small>video · comunidad · compartir</small></span>
     </Link>
   );
