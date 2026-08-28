@@ -7,6 +7,7 @@ import { useShellUser } from "@/hooks/useShellUser";
 import { SiteBanner } from "@/components/SiteBanner";
 import { UploadSafetyBridge } from "@/components/UploadSafetyBridge";
 import { cn } from "@/lib/utils";
+import { ShellErrorBoundary } from "./shell/ShellErrorBoundary";
 import { ShellFooter } from "./shell/ShellFooter";
 import { ShellHeader, ShellLogo } from "./shell/ShellHeader";
 import { ShellMobileNav } from "./shell/ShellMobileNav";
@@ -44,19 +45,21 @@ export function AppShell({ children, hideSidebar = false, fullscreen = false }: 
       )}
       data-theme-id={theme}
     >
-      <ShellHeader
-        mobileOpen={mobileOpen}
-        onMenuClick={handleMenuClick}
-        logo={<ShellLogo />}
-        actions={
-          <ShellUserMenu
-            user={user}
-            profile={profile}
-            username={username}
-            signOut={signOut}
-          />
-        }
-      />
+      <ShellErrorBoundary label="header">
+        <ShellHeader
+          mobileOpen={mobileOpen}
+          onMenuClick={handleMenuClick}
+          logo={<ShellLogo />}
+          actions={
+            <ShellUserMenu
+              user={user}
+              profile={profile}
+              username={username}
+              signOut={signOut}
+            />
+          }
+        />
+      </ShellErrorBoundary>
 
       <div
         className={cn(
@@ -66,14 +69,16 @@ export function AppShell({ children, hideSidebar = false, fullscreen = false }: 
         data-sidebar-hidden={hideSidebar ? "true" : "false"}
       >
         {!hideSidebar && (
-          <ShellSidebar
-            user={user}
-            profile={profile}
-            username={username}
-            items={items}
-            sidebarOpen={sidebarOpen}
-            active={active}
-          />
+          <ShellErrorBoundary label="sidebar">
+            <ShellSidebar
+              user={user}
+              profile={profile}
+              username={username}
+              items={items}
+              sidebarOpen={sidebarOpen}
+              active={active}
+            />
+          </ShellErrorBoundary>
         )}
 
         <main
@@ -84,22 +89,32 @@ export function AppShell({ children, hideSidebar = false, fullscreen = false }: 
         >
           {!fullscreen && (
             <>
-              <SiteBanner />
-              <UploadSafetyBridge />
+              <ShellErrorBoundary label="site banner">
+                <SiteBanner />
+              </ShellErrorBoundary>
+              <ShellErrorBoundary label="upload safety bridge">
+                <UploadSafetyBridge />
+              </ShellErrorBoundary>
             </>
           )}
           {children}
-          {!fullscreen && <ShellFooter />}
+          {!fullscreen && (
+            <ShellErrorBoundary label="footer">
+              <ShellFooter />
+            </ShellErrorBoundary>
+          )}
         </main>
       </div>
 
       {!fullscreen && (
-        <ShellMobileNav
-          user={user}
-          username={username}
-          active={active}
-          shortsEnabled={shortsEnabled}
-        />
+        <ShellErrorBoundary label="mobile navigation">
+          <ShellMobileNav
+            user={user}
+            username={username}
+            active={active}
+            shortsEnabled={shortsEnabled}
+          />
+        </ShellErrorBoundary>
       )}
     </div>
   );
