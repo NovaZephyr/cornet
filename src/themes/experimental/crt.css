@@ -1,0 +1,5 @@
+/* CRT — experimental visual skin. Appearance/effects only; never changes user/channel layout. */
+[data-theme="crt"]{color-scheme:dark;--theme-bg:#050807;--theme-surface:rgba(7,18,13,.9);--theme-border:rgba(126,255,174,.28);--theme-text:#baffca;--theme-muted:#78a985;--theme-accent:#75ff9b}
+[data-theme="crt"] body{background:#050807;color:var(--theme-text)}
+[data-theme="crt"] body::after{content:"";position:fixed;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(255,255,255,.025) 0 1px,transparent 1px 3px);mix-blend-mode:screen;opacity:.45}
+[data-theme="crt"] :is(.card,[data-surface],[role="dialog"]){background:var(--theme-surface);border-color:var(--theme-border);box-shadow:0 0 24px rgba(117,255,155,.08)}
