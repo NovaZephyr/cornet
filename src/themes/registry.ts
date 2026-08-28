@@ -7,6 +7,10 @@ import "./youtube/2012.css";
 import "./youtube/2013.css";
 import "./youtube/2019.css";
 import "./custom/cosmic-panda.css";
+import "./gradients/ocean.css";
+import "./gradients/sunset.css";
+import "./gradients/neon.css";
+import "./gradients/candy.css";
 
 /**
  * Cornet theme registry.
@@ -23,6 +27,10 @@ export const THEME_REGISTRY = {
   "yt-2013": { group: "youtube", label: "YouTube 2013" },
   "yt-2019": { group: "youtube", label: "YouTube 2019" },
   "cosmic-panda": { group: "custom", label: "Cosmic Panda" },
+  "grad-ocean": { group: "gradients", label: "Ocean" },
+  "grad-sunset": { group: "gradients", label: "Sunset" },
+  "grad-neon": { group: "gradients", label: "Neon" },
+  "grad-candy": { group: "gradients", label: "Candy" },
 } as const;
 
 export type ThemeId = keyof typeof THEME_REGISTRY;
