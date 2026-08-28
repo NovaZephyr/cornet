@@ -17,7 +17,7 @@
 @import "./community/nord.css";
 @import "./community/solarized.css";
 @import "./community/modern-dark.css";
-@import "./community/high-contrast.css";
+@import "./accessibility/high-contrast.css";
 @import "./accessibility/sepia.css";
 @import "./accessibility/grayscale.css";
 @import "./retro/windows-aero.css";
