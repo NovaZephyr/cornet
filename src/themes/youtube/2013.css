@@ -1,9 +1,20 @@
-/* YouTube 2013 — historical visual skin. Appearance only; user-selected layout is never overridden. */
+/* YouTube 2013 — historical visual skin. Visual only; user-selected channel layout is never overridden. */
 [data-theme="yt-2013"]{color-scheme:light;--theme-bg:#fff;--theme-surface:#f8f8f8;--theme-surface-2:#eee;--theme-border:#ddd;--theme-text:#333;--theme-muted:#777;--theme-accent:#e62117;--theme-link:#167ac6}
-[data-theme="yt-2013"] body{background:#fff;color:var(--theme-text)}
+[data-theme="yt-2013"] body{background:#fff;color:#333;font-family:Arial,Helvetica,sans-serif}
+[data-theme="yt-2013"] .cn-shell-header{background:#fff;border-bottom:1px solid #ddd;color:#333;box-shadow:0 1px 2px rgba(0,0,0,.08)}
+[data-theme="yt-2013"] .cn-shell-logo strong{color:#222}.cn-shell-logo small{color:#888}
+[data-theme="yt-2013"] .cn-shell-header a,[data-theme="yt-2013"] .cn-shell-icon-button,[data-theme="yt-2013"] .cn-shell-avatar-button{color:#555;border-radius:2px}
+[data-theme="yt-2013"] .cn-shell-header a:hover,[data-theme="yt-2013"] .cn-shell-icon-button:hover,[data-theme="yt-2013"] .cn-shell-avatar-button:hover{background:#f1f1f1;border-color:#ddd;color:#222}
+[data-theme="yt-2013"] .cn-shell-search input{border:1px solid #ccc;border-radius:2px;background:#fff;color:#222;box-shadow:inset 0 1px 2px rgba(0,0,0,.06)}
+[data-theme="yt-2013"] .cn-shell-search button{border:1px solid #ccc;border-radius:0 2px 2px 0;background:linear-gradient(#fff,#f1f1f1);color:#555;box-shadow:inset 0 1px #fff}
+[data-theme="yt-2013"] .cn-shell-sidebar{background:#f5f5f5;border-right:1px solid #ddd;color:#555}
+[data-theme="yt-2013"] .cn-shell-account{border-bottom-color:#ddd}
+[data-theme="yt-2013"] .cn-shell-sidebar nav a{border-radius:2px;color:#555}
+[data-theme="yt-2013"] .cn-shell-sidebar nav a:hover{background:#e9e9e9;color:#222}
+[data-theme="yt-2013"] .cn-shell-sidebar nav a[data-active="true"]{background:#e5e5e5;color:#222;box-shadow:inset 3px 0 var(--theme-accent)}
+[data-theme="yt-2013"] .cn-shell-main{background:#fff;color:#333}
+[data-theme="yt-2013"] :is(.card,[data-surface],[role="dialog"]){background:#f8f8f8;border:1px solid #ddd;border-radius:2px;box-shadow:0 1px 2px rgba(0,0,0,.08)}
 [data-theme="yt-2013"] a{color:var(--theme-link)}
-[data-theme="yt-2013"] :is(button,input,textarea,select){border-color:var(--theme-border);border-radius:2px}
-[data-theme="yt-2013"] button{background:linear-gradient(#fff,#f1f1f1);color:#333;box-shadow:0 1px 1px rgba(0,0,0,.12)}
+[data-theme="yt-2013"] button{background:linear-gradient(#fff,#f1f1f1);border:1px solid #ccc;border-radius:2px;color:#444;box-shadow:0 1px 1px rgba(0,0,0,.12)}
 [data-theme="yt-2013"] button:hover{background:linear-gradient(#fff,#e5e5e5)}
-[data-theme="yt-2013"] :is(.card,[data-surface],[role="dialog"]){background:var(--theme-surface);border-color:var(--theme-border);box-shadow:0 1px 2px rgba(0,0,0,.08)}
 [data-theme="yt-2013"] ::selection{background:rgba(230,33,23,.16)}
