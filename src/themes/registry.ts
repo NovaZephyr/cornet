@@ -35,6 +35,23 @@ export const THEME_REGISTRY = {
 
 export type ThemeId = keyof typeof THEME_REGISTRY;
 
-export function isThemeId(value: string): value is ThemeId {
-  return value in THEME_REGISTRY;
+/** IDs retained for users with an older theme saved locally. */
+export const LEGACY_THEME_ALIASES = {
+  "cornet-2009": "yt-2009",
+  retro2012: "cosmic-panda",
+  "youtube-2013": "yt-2013",
+  youtube2019: "yt-2019",
+} as const;
+
+export type LegacyThemeId = keyof typeof LEGACY_THEME_ALIASES;
+export type ResolvableThemeId = ThemeId | LegacyThemeId;
+
+export function resolveThemeId(value: string): ThemeId | undefined {
+  if (value in THEME_REGISTRY) return value as ThemeId;
+  if (value in LEGACY_THEME_ALIASES) return LEGACY_THEME_ALIASES[value as LegacyThemeId];
+  return undefined;
+}
+
+export function isThemeId(value: string): value is ResolvableThemeId {
+  return Boolean(resolveThemeId(value));
 }
