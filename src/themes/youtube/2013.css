@@ -2,7 +2,8 @@
 [data-theme="yt-2013"]{color-scheme:light;--theme-bg:#fff;--theme-surface:#f8f8f8;--theme-surface-2:#eee;--theme-border:#ddd;--theme-text:#333;--theme-muted:#777;--theme-accent:#e62117;--theme-link:#167ac6}
 [data-theme="yt-2013"] body{background:#fff;color:#333;font-family:Arial,Helvetica,sans-serif}
 [data-theme="yt-2013"] .cn-shell-header{background:#fff;border-bottom:1px solid #ddd;color:#333;box-shadow:0 1px 2px rgba(0,0,0,.08)}
-[data-theme="yt-2013"] .cn-shell-logo strong{color:#222}.cn-shell-logo small{color:#888}
+[data-theme="yt-2013"] .cn-shell-logo strong{color:#222}
+[data-theme="yt-2013"] .cn-shell-logo small{color:#888}
 [data-theme="yt-2013"] .cn-shell-header a,[data-theme="yt-2013"] .cn-shell-icon-button,[data-theme="yt-2013"] .cn-shell-avatar-button{color:#555;border-radius:2px}
 [data-theme="yt-2013"] .cn-shell-header a:hover,[data-theme="yt-2013"] .cn-shell-icon-button:hover,[data-theme="yt-2013"] .cn-shell-avatar-button:hover{background:#f1f1f1;border-color:#ddd;color:#222}
 [data-theme="yt-2013"] .cn-shell-search input{border:1px solid #ccc;border-radius:2px;background:#fff;color:#222;box-shadow:inset 0 1px 2px rgba(0,0,0,.06)}
