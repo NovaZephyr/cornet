@@ -1,42 +1,82 @@
-import { useEffect, useState, type FormEvent, type ReactNode } from "react";
-import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
-import { Home, Compass, PlaySquare, Users, MessageCircle, History, Upload, ListVideo, Settings, Shield, Info, Sparkles, Menu, X, Search, Palette, LogOut, User as UserIcon, UserRoundPlus, FlaskConical } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { ChannelAvatar } from "@/components/Media";
+import { Compass, History, Home, Info, ListVideo, MessageCircle, PlaySquare, Settings, Shield, Sparkles, Upload, Users } from "lucide-react";
+import { useEffect, useState, type ReactNode } from "react";
+import { useRouterState } from "@tanstack/react-router";
 import { useAuth } from "@/hooks/useAuth";
-import { THEMES, useTheme, type ThemeId } from "@/hooks/useTheme";
+import { useTheme } from "@/hooks/useTheme";
 import { SiteBanner } from "@/components/SiteBanner";
 import { UploadSafetyBridge } from "@/components/UploadSafetyBridge";
-import logoMark from "@/assets/corenetwork-mark.png";
 import { cn } from "@/lib/utils";
 import { readExperiments } from "@/lib/experiments";
+import { ShellFooter } from "./shell/ShellFooter";
+import { ShellHeader, ShellLogo } from "./shell/ShellHeader";
+import { ShellMobileNav } from "./shell/ShellMobileNav";
+import { ShellSidebar } from "./shell/ShellSidebar";
+import { ShellUserMenu } from "./shell/ShellUserMenu";
 import "./app-shell.css";
 
 type NavItem = { to: string; label: string; icon: typeof Home };
-const THEME_GROUPS = [...new Set(THEMES.map((theme) => theme.group))];
 
-function ThemeMenu() {
-  const { theme, setTheme } = useTheme();
-  return <DropdownMenu><DropdownMenuTrigger asChild><Button variant="ghost" size="icon" className="cn-shell-icon-button" aria-label="Cambiar tema"><Palette className="h-4 w-4" /></Button></DropdownMenuTrigger><DropdownMenuContent align="end" className="w-72">{THEME_GROUPS.map((group,index)=><div key={group}>{index>0&&<DropdownMenuSeparator/>}<DropdownMenuLabel className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">{group}</DropdownMenuLabel>{THEMES.filter(item=>item.group===group).map(item=><DropdownMenuItem key={item.id} onClick={()=>setTheme(item.id as ThemeId)} className="gap-3 py-2.5"><span className="flex-1"><span className="block text-sm">{item.label}</span><span className="block text-xs text-muted-foreground">{item.hint}</span></span>{theme===item.id&&<span aria-hidden="true">✓</span>}</DropdownMenuItem>)}</div>)}</DropdownMenuContent></DropdownMenu>;
-}
+type AppShellProps = {
+  children: ReactNode;
+  hideSidebar?: boolean;
+  fullscreen?: boolean;
+};
 
-function Logo(){return <Link to="/" className="cn-shell-logo" aria-label="Cornet — inicio"><img src={logoMark} alt="" width={34} height={34}/><span><strong>Cornet</strong><small>video · comunidad · compartir</small></span></Link>;}
-function SiteFooter(){return <footer className="cn-shell-footer"><div><Link to="/about">Información</Link><Link to="/community">Comunidad</Link><Link to="/partner">Partners</Link><Link to="/playlists">Playlists</Link><Link to="/terms">Términos</Link><Link to="/privacy">Privacidad</Link><Link to="/settings">Configuración</Link><a href="https://discord.gg/gYFW8Tbrqw" target="_blank" rel="noopener noreferrer">Discord</a></div><p>© {new Date().getFullYear()} Cornet.</p></footer>;}
+export function AppShell({ children, hideSidebar = false, fullscreen = false }: AppShellProps) {
+  const { user, profile, roles, isAdmin, signOut } = useAuth();
+  const { theme } = useTheme();
+  const pathname = useRouterState({ select: (state) => state.location.pathname });
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [shortsEnabled, setShortsEnabled] = useState(false);
 
-export function AppShell({children,hideSidebar=false,fullscreen=false}:{children:ReactNode;hideSidebar?:boolean;fullscreen?:boolean}){
- const {user,profile,roles,isAdmin,signOut}=useAuth();
- const {theme}=useTheme(); const navigate=useNavigate(); const pathname=useRouterState({select:s=>s.location.pathname});
- const [query,setQuery]=useState(""); const [sidebarOpen,setSidebarOpen]=useState(true); const [mobileOpen,setMobileOpen]=useState(false); const [shortsEnabled,setShortsEnabled]=useState(false);
- useEffect(()=>setMobileOpen(false),[pathname]);
- useEffect(()=>{const sync=()=>setShortsEnabled(readExperiments().shorts); sync(); const onChange=()=>sync(); window.addEventListener("corenetwork-experiments-change",onChange); window.addEventListener("storage",onChange); return()=>{window.removeEventListener("corenetwork-experiments-change",onChange);window.removeEventListener("storage",onChange);};},[]);
- const username=profile?.username??""; const isStaff=isAdmin||roles.includes("moderator");
- const items:NavItem[]=[{to:"/",label:"Inicio",icon:Home},{to:"/explore",label:"Explorar",icon:Compass},...(shortsEnabled?[{to:"/shorts",label:"Shorts",icon:PlaySquare} as NavItem]:[]),{to:"/series",label:"Series",icon:PlaySquare},{to:"/community",label:"Comunidad",icon:Users},{to:"/history",label:"Historial",icon:History},{to:"/playlists",label:"Playlists",icon:ListVideo},...(user?[{to:"/messages",label:"Mensajes",icon:MessageCircle} as NavItem,{to:"/upload",label:"Subir video",icon:Upload}]:[]),{to:"/partner",label:"Partners",icon:Sparkles},{to:"/settings",label:"Configuración",icon:Settings},{to:"/about",label:"Información",icon:Info},...(isStaff?[{to:"/admin",label:"Administración",icon:Shield}]:[])];
- const handleSearch=(event:FormEvent)=>{event.preventDefault();void navigate({to:"/",search:query.trim()?{q:query.trim()}:{} });}; const active=(to:string)=>to==="/"?pathname==="/":pathname===to||pathname.startsWith(`${to}/`);
- return <div className={cn("cn-shell",mobileOpen&&"cn-shell-mobile-open",fullscreen&&"cn-shell--fullscreen")} data-theme-id={theme}>
-  <header className="cn-shell-header"><div className="cn-shell-header-left"><button type="button" className="cn-shell-icon-button" aria-label="Mostrar navegación" onClick={()=>{if(window.innerWidth<900)setMobileOpen(v=>!v);else setSidebarOpen(v=>!v);}}>{mobileOpen?<X className="h-5 w-5"/>:<Menu className="h-5 w-5"/>}</button><Logo/></div><form className="cn-shell-search" onSubmit={handleSearch}><Search className="h-4 w-4" aria-hidden="true"/><Input value={query} onChange={event=>setQuery(event.target.value)} placeholder="Buscar en Cornet" aria-label="Buscar"/><Button type="submit" variant="ghost" size="icon" aria-label="Buscar"><Search className="h-4 w-4"/></Button></form><div className="cn-shell-actions"><ThemeMenu/>{user?<DropdownMenu><DropdownMenuTrigger asChild><button className="cn-shell-avatar-button" aria-label="Abrir menú de usuario"><ChannelAvatar path={profile?.avatar_path} name={profile?.display_name||profile?.username||"U"} size={34}/></button></DropdownMenuTrigger><DropdownMenuContent align="end" className="w-64"><DropdownMenuLabel>@{username||"usuario"}</DropdownMenuLabel><DropdownMenuItem asChild><Link to="/c/$username" params={{username}}><UserIcon className="mr-2 h-4 w-4"/>Mi canal</Link></DropdownMenuItem><DropdownMenuItem asChild><Link to="/notifications">Notificaciones</Link></DropdownMenuItem><DropdownMenuItem asChild><Link to="/settings">Configuración</Link></DropdownMenuItem><DropdownMenuItem asChild><Link to="/account-security"><UserRoundPlus className="mr-2 h-4 w-4"/>Cambiar / agregar cuenta</Link></DropdownMenuItem><DropdownMenuItem asChild><Link to="/experiments"><FlaskConical className="mr-2 h-4 w-4"/>Experimentos</Link></DropdownMenuItem><DropdownMenuSeparator/><DropdownMenuItem onClick={()=>void signOut()}><LogOut className="mr-2 h-4 w-4"/>Cerrar sesión</DropdownMenuItem></DropdownMenuContent></DropdownMenu>:<Button asChild size="sm"><Link to="/auth">Iniciar sesión</Link></Button>}</div></header>
-  <div className={cn("cn-shell-layout",hideSidebar&&"cn-shell-layout--no-sidebar")} data-sidebar-hidden={hideSidebar?"true":"false"}>{!hideSidebar&&<aside className={cn("cn-shell-sidebar",!sidebarOpen&&"cn-shell-sidebar-collapsed")}>{user&&sidebarOpen&&<div className="cn-shell-account"><ChannelAvatar path={profile?.avatar_path} name={profile?.display_name||profile?.username||"U"} size={42}/><div><strong>{profile?.display_name||profile?.username||"Tu canal"}</strong><span>@{username}</span></div></div>}<nav aria-label="Navegación principal">{items.map(({to,label,icon:Icon})=><Link key={to} to={to} data-active={active(to)?"true":"false"} title={!sidebarOpen?label:undefined}><Icon className="h-4 w-4"/><span>{sidebarOpen&&label}</span></Link>)}</nav></aside>}<main className={cn("cn-shell-main",fullscreen&&"cn-shell-main--fullscreen")}>{!fullscreen&&<><SiteBanner/><UploadSafetyBridge/></>}{children}{!fullscreen&&<SiteFooter/>}</main></div>
-  {!fullscreen&&<nav className="cn-shell-mobile-nav" aria-label="Navegación móvil"><Link to="/" data-active={active("/")?"true":"false"}><Home className="h-5 w-5"/><span>Inicio</span></Link>{shortsEnabled&&<Link to="/shorts" data-active={active("/shorts")?"true":"false"}><PlaySquare className="h-5 w-5"/><span>Shorts</span></Link>}<Link to="/explore" data-active={active("/explore")?"true":"false"}><Compass className="h-5 w-5"/><span>Explorar</span></Link><Link to={user?"/upload":"/auth"} data-active={active("/upload")?"true":"false"}><Upload className="h-5 w-5"/><span>Subir</span></Link>{user?<Link to="/c/$username" params={{username}} data-active={active(`/c/${username}`)}><ChannelAvatar path={profile?.avatar_path} name={profile?.display_name||profile?.username||"Tú"} size={26}/><span>Tú</span></Link>:<Link to="/auth" data-active={false}><ChannelAvatar name="Tú" size={26}/><span>Tú</span></Link>}</nav>
- </nav>}</div>;
+  useEffect(() => setMobileOpen(false), [pathname]);
+  useEffect(() => {
+    const sync = () => setShortsEnabled(readExperiments().shorts);
+    sync();
+    window.addEventListener("corenetwork-experiments-change", sync);
+    window.addEventListener("storage", sync);
+    return () => {
+      window.removeEventListener("corenetwork-experiments-change", sync);
+      window.removeEventListener("storage", sync);
+    };
+  }, []);
+
+  const username = profile?.username ?? "";
+  const isStaff = isAdmin || roles.includes("moderator");
+  const items: NavItem[] = [
+    { to: "/", label: "Inicio", icon: Home },
+    { to: "/explore", label: "Explorar", icon: Compass },
+    ...(shortsEnabled ? [{ to: "/shorts", label: "Shorts", icon: PlaySquare } as NavItem] : []),
+    { to: "/series", label: "Series", icon: PlaySquare },
+    { to: "/community", label: "Comunidad", icon: Users },
+    { to: "/history", label: "Historial", icon: History },
+    { to: "/playlists", label: "Playlists", icon: ListVideo },
+    ...(user ? ([{ to: "/messages", label: "Mensajes", icon: MessageCircle }, { to: "/upload", label: "Subir video", icon: Upload }] as NavItem[]) : []),
+    { to: "/partner", label: "Partners", icon: Sparkles },
+    { to: "/settings", label: "Configuración", icon: Settings },
+    { to: "/about", label: "Información", icon: Info },
+    ...(isStaff ? [{ to: "/admin", label: "Administración", icon: Shield } as NavItem] : []),
+  ];
+
+  const active = (to: string) => to === "/" ? pathname === "/" : pathname === to || pathname.startsWith(`${to}/`);
+  const handleMenuClick = () => {
+    if (typeof window !== "undefined" && window.innerWidth < 900) setMobileOpen((value) => !value);
+    else setSidebarOpen((value) => !value);
+  };
+
+  return (
+    <div className={cn("cn-shell", mobileOpen && "cn-shell-mobile-open", fullscreen && "cn-shell--fullscreen")} data-theme-id={theme}>
+      <ShellHeader mobileOpen={mobileOpen} onMenuClick={handleMenuClick} logo={<ShellLogo />} actions={<ShellUserMenu user={user} profile={profile} username={username} signOut={signOut} />} />
+      <div className={cn("cn-shell-layout", hideSidebar && "cn-shell-layout--no-sidebar")} data-sidebar-hidden={hideSidebar ? "true" : "false"}>
+        {!hideSidebar && <ShellSidebar user={user} profile={profile} username={username} items={items} sidebarOpen={sidebarOpen} active={active} />}
+        <main className={cn("cn-shell-main", fullscreen && "cn-shell-main--fullscreen")}>
+          {!fullscreen && <><SiteBanner /><UploadSafetyBridge /></>}
+          {children}
+          {!fullscreen && <ShellFooter />}
+        </main>
+      </div>
+      {!fullscreen && <ShellMobileNav user={user} username={username} active={active} shortsEnabled={shortsEnabled} />}
+    </div>
+  );
 }
