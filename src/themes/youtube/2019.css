@@ -1,0 +1,17 @@
+/* YouTube 2019 — historical visual skin.
+ * Visual skin only. User-selected channel layout is never overridden. */
+[data-theme="yt-2019"] {
+  color-scheme: light;
+  --theme-bg:#fff;
+  --theme-surface:#f9f9f9;
+  --theme-border:#e5e5e5;
+  --theme-text:#0f0f0f;
+  --theme-muted:#606060;
+  --theme-accent:#ff0000;
+  --theme-link:#065fd4;
+}
+[data-theme="yt-2019"] body { background:var(--theme-bg); color:var(--theme-text); }
+[data-theme="yt-2019"] a { color:var(--theme-link); }
+[data-theme="yt-2019"] :is(button,input,textarea,select) { border-color:var(--theme-border); border-radius:2px; }
+[data-theme="yt-2019"] button { background:var(--theme-surface); color:var(--theme-text); }
+[data-theme="yt-2019"] :is(.card,[data-surface],[role="dialog"]) { background:var(--theme-surface); border-color:var(--theme-border); }
