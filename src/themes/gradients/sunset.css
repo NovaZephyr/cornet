@@ -1,0 +1,12 @@
+/* Sunset Gradient — appearance only. Never alter user/channel layout. */
+[data-theme="grad-sunset"] {
+  color-scheme: dark;
+  --theme-bg: #241126;
+  --theme-surface: rgba(61,25,52,.76);
+  --theme-border: rgba(255,151,126,.25);
+  --theme-text: #fff5f1;
+  --theme-muted: #d5b4ae;
+  --theme-accent: #ff8066;
+}
+[data-theme="grad-sunset"] body {background:linear-gradient(135deg,#241126 0%,#6b2d52 48%,#e36b55 100%);color:var(--theme-text)}
+[data-theme="grad-sunset"] :is(.card,[data-surface],[role="dialog"]){background:var(--theme-surface);border-color:var(--theme-border);backdrop-filter:blur(12px)}
