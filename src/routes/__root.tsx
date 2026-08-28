@@ -25,10 +25,6 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   return <div className="flex min-h-screen items-center justify-center bg-background px-4"><div className="max-w-md text-center"><h1 className="text-xl font-semibold tracking-tight text-foreground">No pudimos cargar esta página</h1><p className="mt-2 text-sm leading-6 text-muted-foreground">Algo salió mal. Puedes intentarlo de nuevo o volver al inicio.</p><div className="mt-6 flex flex-wrap justify-center gap-2"><button onClick={() => { router.invalidate(); reset(); }} className="inline-flex items-center justify-center rounded-full bg-primary px-4 py-2 text-sm font-medium text-primary-foreground">Intentar de nuevo</button><a href="/" className="inline-flex items-center justify-center rounded-full border border-input bg-background px-4 py-2 text-sm text-foreground">Ir al inicio</a></div></div></div>;
 }
 
-function AuthLoadingScreen() {
-  return <div className="flex min-h-screen items-center justify-center bg-background"><div className="flex items-center gap-3 rounded-2xl border border-border bg-surface px-5 py-4 text-sm text-muted-foreground">Cargando....</div></div>;
-}
-
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   head: () => ({
     meta: [
@@ -56,5 +52,5 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
-  return <QueryClientProvider client={queryClient}><ThemeProvider><AuthProvider><DesignLibraryRuntime /><ShellErrorBoundary label="maintenance gate"><MaintenanceGate /></ShellErrorBoundary><ShellErrorBoundary label="mobile navigation"><GlobalMobileBottomBar /></ShellErrorBoundary><Toaster position="bottom-center" /><Outlet /></AuthProvider></ThemeProvider></QueryClientProvider>;
+  return <QueryClientProvider client={queryClient}><ThemeProvider><AuthProvider><DesignLibraryRuntime /><ShellErrorBoundary label="maintenance gate"><MaintenanceGate /></ShellErrorBoundary><ShellErrorBoundary label="mobile navigation"><GlobalMobileBottomBar /></ShellErrorBoundary><Toaster position="bottom-center" /></AuthProvider></ThemeProvider></QueryClientProvider>;
 }
