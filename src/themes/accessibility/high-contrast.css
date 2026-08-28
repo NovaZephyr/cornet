@@ -1,0 +1,5 @@
+/* High Contrast — accessibility visual skin. Layout is never modified. */
+[data-theme="high-contrast"]{color-scheme:dark;--theme-bg:#000;--theme-surface:#0a0a0a;--theme-border:#fff;--theme-text:#fff;--theme-muted:#fff;--theme-accent:#ffff00}
+[data-theme="high-contrast"] body{background:#000;color:#fff}
+[data-theme="high-contrast"] :is(.card,[data-surface],[role="dialog"]){background:#000;border:2px solid #fff;color:#fff}
+[data-theme="high-contrast"] a{color:#00ffff;text-decoration:underline}
