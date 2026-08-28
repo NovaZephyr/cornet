@@ -14,7 +14,7 @@ export function ShellHeader({ mobileOpen, onMenuClick, logo, actions }: ShellHea
   return (
     <header className="cn-shell-header">
       <div className="cn-shell-header-left">
-        <button type="button" className="cn-shell-icon-button" aria-label="Mostrar navegación" onClick={onMenuClick}>
+        <button type="button" className="cn-shell-icon-button" aria-label={mobileOpen ? "Cerrar navegación" : "Mostrar navegación"} onClick={onMenuClick}>
           {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
         {logo}
