@@ -1,3 +1,4 @@
+import "./core/theme-bridge.css";
 import "./core/dark.css";
 import "./core/light.css";
 import "./youtube/2005.css";
@@ -47,7 +48,7 @@ export const THEME_REGISTRY = {
 } as const;
 
 export type ThemeId=keyof typeof THEME_REGISTRY;
-export const LEGACY_THEME_ALIASES={"cornet-2009":"yt-2009",retro2012:"cosmic-panda","youtube-2013":"yt-2013",youtube2019:"yt-2019"} as const;
+export const LEGACY_THEME_ALIASES={"cornet-2009":"yt-2009","youtube-2013":"yt-2013",youtube2019:"yt-2019"} as const;
 export type LegacyThemeId=keyof typeof LEGACY_THEME_ALIASES;
 export type ResolvableThemeId=ThemeId|LegacyThemeId;
 export function resolveThemeId(value:string):ThemeId|undefined{return value in THEME_REGISTRY?value as ThemeId:value in LEGACY_THEME_ALIASES?LEGACY_THEME_ALIASES[value as LegacyThemeId]:undefined;}
