@@ -1,5 +1,5 @@
+import { Compass, History, Home, Info, ListVideo, MessageCircle, PlaySquare, Settings, Shield, Sparkles, Upload, Users } from "lucide-react";
 import { useEffect, useState, type ReactNode } from "react";
-import { Compass, History, Info, ListVideo, MessageCircle, PlaySquare, Settings, Shield, Sparkles, Upload, Users } from "lucide-react";
 import { useRouterState } from "@tanstack/react-router";
 import { useAuth } from "@/hooks/useAuth";
 import { useTheme } from "@/hooks/useTheme";
@@ -14,7 +14,7 @@ import { ShellSidebar } from "./shell/ShellSidebar";
 import { ShellUserMenu } from "./shell/ShellUserMenu";
 import "./app-shell.css";
 
-type NavItem = { to: string; label: string; icon: typeof Compass };
+type NavItem = { to: string; label: string; icon: typeof Home };
 
 type AppShellProps = {
   children: ReactNode;
@@ -45,14 +45,14 @@ export function AppShell({ children, hideSidebar = false, fullscreen = false }: 
   const username = profile?.username ?? "";
   const isStaff = isAdmin || roles.includes("moderator");
   const items: NavItem[] = [
-    { to: "/", label: "Inicio", icon: Compass },
+    { to: "/", label: "Inicio", icon: Home },
     { to: "/explore", label: "Explorar", icon: Compass },
     ...(shortsEnabled ? [{ to: "/shorts", label: "Shorts", icon: PlaySquare } as NavItem] : []),
     { to: "/series", label: "Series", icon: PlaySquare },
     { to: "/community", label: "Comunidad", icon: Users },
     { to: "/history", label: "Historial", icon: History },
     { to: "/playlists", label: "Playlists", icon: ListVideo },
-    ...(user ? [{ to: "/messages", label: "Mensajes", icon: MessageCircle }, { to: "/upload", label: "Subir video", icon: Upload }] as NavItem[] : []),
+    ...(user ? ([{ to: "/messages", label: "Mensajes", icon: MessageCircle }, { to: "/upload", label: "Subir video", icon: Upload }] as NavItem[]) : []),
     { to: "/partner", label: "Partners", icon: Sparkles },
     { to: "/settings", label: "Configuración", icon: Settings },
     { to: "/about", label: "Información", icon: Info },
@@ -76,7 +76,7 @@ export function AppShell({ children, hideSidebar = false, fullscreen = false }: 
           {!fullscreen && <ShellFooter />}
         </main>
       </div>
-      {!fullscreen && <ShellMobileNav user={user} username={username} active={active} />}
+      {!fullscreen && <ShellMobileNav user={user} username={username} active={active} shortsEnabled={shortsEnabled} />}
     </div>
   );
 }
