@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { ShieldCheck } from "lucide-react";
-import { useLocation } from "@tanstack/react-router";
+import { Outlet, useLocation } from "@tanstack/react-router";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -25,10 +25,15 @@ function MaintenanceScreen({ message }: { message: string }) {
   );
 }
 
+function LoadingScreen() {
+  return <div className="flex min-h-screen items-center justify-center bg-background" role="status" aria-label="Cargando" />;
+}
+
 export function MaintenanceGate() {
   const { isAdmin, loading } = useAuth();
   const location = useLocation();
   const isAuthRoute = location.pathname === "/auth";
+  const forceMaintenance = typeof window !== "undefined" && window.location.search.includes("forceMaintenance=true");
   const [settingsLoading, setSettingsLoading] = useState(false);
   const [maintenance, setMaintenance] = useState<{ enabled: boolean; message: string } | null>(null);
 
@@ -38,11 +43,7 @@ export function MaintenanceGate() {
     setSettingsLoading(true);
     void (async () => {
       try {
-        const { data, error } = await supabase
-          .from("site_settings")
-          .select("maintenance_mode, maintenance_message")
-          .eq("id", true)
-          .maybeSingle();
+        const { data, error } = await supabase.from("site_settings").select("maintenance_mode, maintenance_message").eq("id", true).maybeSingle();
         if (cancelled) return;
         if (error) {
           console.error("[Cornet] maintenance settings failed", error);
@@ -61,10 +62,8 @@ export function MaintenanceGate() {
     return () => { cancelled = true; };
   }, [isAuthRoute]);
 
-  if (isAuthRoute) return null;
-  if (loading || settingsLoading || maintenance === null) {
-    return <div className="flex min-h-screen items-center justify-center bg-background" role="status" aria-label="Cargando" />;
-  }
-  if (maintenance.enabled && !isAdmin) return <MaintenanceScreen message={maintenance.message} />;
-  return null;
+  if (isAuthRoute) return <Outlet />;
+  if (loading || settingsLoading || maintenance === null) return <LoadingScreen />;
+  if ((maintenance.enabled || forceMaintenance) && !isAdmin) return <MaintenanceScreen message={maintenance.message} />;
+  return <Outlet />;
 }
