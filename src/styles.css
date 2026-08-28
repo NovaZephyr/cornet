@@ -1,7 +1,7 @@
 @import "tailwindcss" source(none);
 @source "../src";
 @import "tw-animate-css";
-@import "./themes/registry";
+@import "./themes/index.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -112,10 +112,6 @@
   --sidebar-ring: oklch(0.72 0 0);
 }
 
-/* Remaining legacy/shared theme tokens stay here temporarily.
- * Historical/custom visual skins are isolated under src/themes and are loaded
- * by the theme registry. Do not put channel/page layout rules in theme CSS. */
-
 [data-theme="lavanda-oscuro"] {
   --background: #241d30;
   --foreground: #f7f3fb;
@@ -147,5 +143,3 @@
 }
 
 [data-theme="lavanda-oscuro"] body { background: #241d30; color: #f7f3fb; }
-
-/* Existing application/shared component styles continue below. */

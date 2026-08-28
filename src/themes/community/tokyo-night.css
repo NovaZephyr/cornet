@@ -1,0 +1,8 @@
+/* Tokyo Night community theme — appearance only; never changes layout. */
+[data-theme="tokyo-night"]{color-scheme:dark;--theme-bg:#1a1b26;--theme-surface:#24283b;--theme-border:#3b4261;--theme-text:#c0caf5;--theme-muted:#7982a9;--theme-accent:#7aa2f7;--theme-link:#73daca}
+[data-theme="tokyo-night"] body{background:#1a1b26;color:var(--theme-text)}
+[data-theme="tokyo-night"] a{color:var(--theme-link)}
+[data-theme="tokyo-night"] :is(button,input,textarea,select){border-color:var(--theme-border);border-radius:4px}
+[data-theme="tokyo-night"] button{background:#24283b;color:var(--theme-text);box-shadow:0 1px 3px rgba(0,0,0,.25)}
+[data-theme="tokyo-night"] button:hover{background:#2f354f}
+[data-theme="tokyo-night"] :is(.card,[data-surface],[role="dialog"]){background:var(--theme-surface);border-color:var(--theme-border)}

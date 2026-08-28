@@ -1,0 +1,8 @@
+/* Catppuccin community theme — appearance only; never changes layout. */
+[data-theme="catppuccin"]{color-scheme:dark;--theme-bg:#1e1e2e;--theme-surface:#313244;--theme-border:#45475a;--theme-text:#cdd6f4;--theme-muted:#a6adc8;--theme-accent:#cba6f7;--theme-link:#89b4fa}
+[data-theme="catppuccin"] body{background:#1e1e2e;color:var(--theme-text)}
+[data-theme="catppuccin"] a{color:var(--theme-link)}
+[data-theme="catppuccin"] :is(button,input,textarea,select){border-color:var(--theme-border);border-radius:5px}
+[data-theme="catppuccin"] button{background:#313244;color:var(--theme-text);box-shadow:0 1px 3px rgba(0,0,0,.22)}
+[data-theme="catppuccin"] button:hover{background:#45475a}
+[data-theme="catppuccin"] :is(.card,[data-surface],[role="dialog"]){background:var(--theme-surface);border-color:var(--theme-border)}
