@@ -1,9 +1,9 @@
 import { useRouterState } from "@tanstack/react-router";
-import { useAuth } from "@/hooks/useAuth";
 import { useTheme } from "@/hooks/useTheme";
 import { useShellExperiments } from "@/hooks/useShellExperiments";
 import { useShellNavigation } from "@/hooks/useShellNavigation";
 import { useShellState } from "@/hooks/useShellState";
+import { useShellUser } from "@/hooks/useShellUser";
 import { SiteBanner } from "@/components/SiteBanner";
 import { UploadSafetyBridge } from "@/components/UploadSafetyBridge";
 import { cn } from "@/lib/utils";
@@ -22,14 +22,12 @@ type AppShellProps = {
 };
 
 export function AppShell({ children, hideSidebar = false, fullscreen = false }: AppShellProps) {
-  const { user, profile, roles, isAdmin, signOut } = useAuth();
+  const { user, profile, username, isStaff, signOut } = useShellUser();
   const { theme } = useTheme();
   const pathname = useRouterState({ select: (state) => state.location.pathname });
   const { sidebarOpen, mobileOpen, handleMenuClick } = useShellState(pathname);
   const { shortsEnabled } = useShellExperiments();
 
-  const username = profile?.username ?? "";
-  const isStaff = isAdmin || roles.includes("moderator");
   const { items, active } = useShellNavigation({
     pathname,
     authenticated: Boolean(user),
