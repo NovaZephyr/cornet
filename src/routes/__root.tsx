@@ -73,8 +73,13 @@ function MaintenanceAwareContent() {
 function GlobalMobileBottomBar() {
   const { user } = useAuth();
   const location = useLocation();
-  if (location.pathname === "/shorts") return null;
+  // All hooks must run on every render. The old early return happened before
+  // useRouterState(), which caused React's "Rendered fewer hooks" crash when
+  // navigating into Shorts. Compute the route state first, then conditionally
+  // render nothing for the fullscreen Shorts experience.
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  if (location.pathname === "/shorts") return null;
+
   const items = [
     { to: "/", label: "Inicio", icon: Home },
     { to: "/explore", label: "Explorar", icon: Compass },
