@@ -72,6 +72,8 @@ function MaintenanceAwareContent() {
 
 function GlobalMobileBottomBar() {
   const { user } = useAuth();
+  const location = useLocation();
+  if (location.pathname === "/shorts") return null;
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const items = [
     { to: "/", label: "Inicio", icon: Home },
