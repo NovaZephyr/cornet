@@ -11,6 +11,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { ShellErrorBoundary } from "@/components/shell/ShellErrorBoundary";
 import { MaintenanceGate } from "@/components/root/MaintenanceGate";
 import { GlobalMobileBottomBar } from "@/components/root/GlobalMobileBottomBar";
+import { RouteContentBoundary } from "@/components/root/RouteContentBoundary";
 
 const DEFAULT_SITE_EMBED_IMAGE = "https://mvwpxnszcpyayofqgtmv.supabase.co/storage/v1/object/public/media/61fe7d8d-f53f-4838-a870-4588c16e474b/announcement-7871ca44-f13f-45e5-a3c1-7908f0c348a9.png";
 
@@ -52,5 +53,5 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
-  return <QueryClientProvider client={queryClient}><ThemeProvider><AuthProvider><DesignLibraryRuntime /><ShellErrorBoundary label="maintenance gate"><MaintenanceGate /></ShellErrorBoundary><ShellErrorBoundary label="mobile navigation"><GlobalMobileBottomBar /></ShellErrorBoundary><Toaster position="bottom-center" /></AuthProvider></ThemeProvider></QueryClientProvider>;
+  return <QueryClientProvider client={queryClient}><ThemeProvider><AuthProvider><DesignLibraryRuntime /><ShellErrorBoundary label="maintenance gate"><MaintenanceGate /></ShellErrorBoundary><ShellErrorBoundary label="mobile navigation"><GlobalMobileBottomBar /></ShellErrorBoundary><Toaster position="bottom-center" /><RouteContentBoundary><Outlet /></RouteContentBoundary></AuthProvider></ThemeProvider></QueryClientProvider>;
 }
