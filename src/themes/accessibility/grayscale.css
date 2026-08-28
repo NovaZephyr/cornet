@@ -1,0 +1,4 @@
+/* Grayscale — accessibility visual skin. Layout is never modified. */
+[data-theme="grayscale"]{color-scheme:light;--theme-bg:#f5f5f5;--theme-surface:#fff;--theme-border:#bdbdbd;--theme-text:#222;--theme-muted:#666;--theme-accent:#333}
+[data-theme="grayscale"] body{background:var(--theme-bg);color:var(--theme-text);filter:grayscale(1)}
+[data-theme="grayscale"] :is(.card,[data-surface],[role="dialog"]){background:var(--theme-surface);border-color:var(--theme-border)}
