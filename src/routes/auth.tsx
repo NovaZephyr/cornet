@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { PlayCircle, Users, BarChart2, Mail, Lock, Tag } from "lucide-react";
+import { PlayCircle, Users, BarChart2, Mail, Lock, Tag, ArrowLeft, Sparkles } from "lucide-react";
 
 export const Route = createFileRoute("/auth")({
   head: () => ({
@@ -203,9 +203,9 @@ function AuthPage() {
   };
 
   return (
-    <div className="grid min-h-screen lg:grid-cols-2">
+    <div className="relative min-h-screen overflow-hidden bg-background lg:grid lg:grid-cols-2">
       {/* Panel promocional — oculto en mobile */}
-      <div className="relative hidden overflow-hidden bg-gradient-to-b from-primary/90 to-primary lg:flex lg:flex-col lg:justify-between lg:p-12 animate-gradient">
+      <div className="relative hidden overflow-hidden border-r border-border bg-[radial-gradient(circle_at_20%_20%,hsl(var(--primary)/0.28),transparent_42%),radial-gradient(circle_at_80%_75%,hsl(var(--primary)/0.16),transparent_45%)] lg:flex lg:flex-col lg:justify-between lg:p-12">
         <div
           className="pointer-events-none absolute inset-0 opacity-90"
           style={{
@@ -224,7 +224,7 @@ function AuthPage() {
           </Link>
         </div>
 
-        <div className="relative flex-1 flex-col justify-center p-8 max-w-xl">
+        <div className="relative flex flex-1 flex-col justify-center p-8 max-w-xl">
           <h1 className="mb-4 text-5xl font-bold tracking-tighter text-primary-foreground leading-[1.1]">
             Descubre lo que importa
           </h1>
@@ -260,9 +260,9 @@ function AuthPage() {
       </div>
 
       {/* Panel de formulario */}
-      <div className="flex items-center justify-center px-4 py-12 bg-background/50">
-        <div className="w-full max-w-md space-y-8">
-          <Link to="/" className="mb-6 flex items-center justify-center gap-2 lg:hidden">
+      <div className="relative flex items-center justify-center px-5 py-10 sm:px-8">
+        <div className="w-full max-w-md space-y-7 rounded-3xl border border-border/80 bg-card/70 p-6 shadow-2xl backdrop-blur-xl sm:p-8">
+          <Link to="/" className="mb-2 flex items-center gap-2 text-sm text-muted-foreground transition hover:text-foreground lg:hidden"><ArrowLeft className="h-4 w-4" /> Volver a Cornet</Link><Link to="/" className="mb-6 flex items-center justify-center gap-2 lg:hidden">
             <div className="flex h-8 w-11 items-center justify-center rounded-lg bg-primary/90 backdrop-blur-sm">
               <span className="ml-0.5 h-0 w-0 border-y-[5px] border-l-[9px] border-y-transparent border-l-primary-foreground" />
             </div>
@@ -271,7 +271,7 @@ function AuthPage() {
 
           {sent ? (
             <div className="text-center">
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/20 mb-4">
+              <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-primary/15 mb-4">
                 <span className="text-primary">✓</span>
               </div>
               <h1 className="text-xl font-semibold text-foreground mb-2">
@@ -313,7 +313,7 @@ function AuthPage() {
                         type="email"
                         required
                         placeholder="Correo electrónico"
-                        className="h-12 w-full pl-12 pr-4 rounded-xl bg-muted/80 backdrop-blur-sm border border-muted/40 focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all duration-200"
+                        className="h-12 w-full pl-12 pr-4 rounded-xl bg-background/70 border border-border/80 focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all duration-200"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                       />
@@ -354,7 +354,7 @@ function AuthPage() {
                   <Button
                     type="submit"
                     disabled={busy}
-                    className="h-12 w-full rounded-xl text-base font-semibold flex items-center justify-center gap-2 transition-all duration-200 hover:bg-primary/90"
+                    className="h-12 w-full rounded-xl text-base font-semibold shadow-lg shadow-primary/20 flex items-center justify-center gap-2 transition-all duration-200 hover:bg-primary/90"
                   >
                     Inicia sesión
                   </Button>
