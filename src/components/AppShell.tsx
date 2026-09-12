@@ -30,7 +30,7 @@ export function AppShell({ children, hideSidebar = false, fullscreen = false }: 
   if (useContext(AppShellContext)) return <>{children}</>;
 
   return (
-    <AppShellContext.Provider value>
+    <AppShellContext.Provider value={true}>
       <AppShellFrame hideSidebar={hideSidebar} fullscreen={fullscreen}>
         {children}
       </AppShellFrame>
