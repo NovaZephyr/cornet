@@ -98,13 +98,14 @@ export function AppShell({ children, hideSidebar = false, fullscreen = false }: 
             </>
           )}
           {children}
-          {!fullscreen && (
-            <ShellErrorBoundary label="footer">
-              <ShellFooter />
-            </ShellErrorBoundary>
-          )}
         </main>
       </div>
+
+      {!fullscreen && (
+        <ShellErrorBoundary label="footer">
+          <ShellFooter />
+        </ShellErrorBoundary>
+      )}
 
       {!fullscreen && (
         <ShellErrorBoundary label="mobile navigation">
