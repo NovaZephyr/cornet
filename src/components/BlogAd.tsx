@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { ExternalLink, Megaphone } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
+import { untypedDb } from "@/lib/untyped-db";
 import { SignedImage } from "@/components/Media";
 import { Button } from "@/components/ui/button";
 
@@ -11,7 +11,7 @@ export function BlogAd({ slot = "article-top" }: { slot?: BlogAd["slot"] }) {
   const { data: ads } = useQuery({
     queryKey: ["blog-ads", slot],
     queryFn: async () => {
-      const { data, error } = await supabase
+      const { data, error } = await untypedDb
         .from("blog_ads")
         .select("id,title,body,image_path,target_url,slot")
         .eq("slot", slot)
@@ -21,7 +21,7 @@ export function BlogAd({ slot = "article-top" }: { slot?: BlogAd["slot"] }) {
         .order("created_at", { ascending: false })
         .limit(1);
       if (error) throw error;
-      return (data ?? []) as BlogAd[];
+      return (data ?? []) as unknown as BlogAd[];
     },
     staleTime: 60_000,
   });
@@ -29,11 +29,11 @@ export function BlogAd({ slot = "article-top" }: { slot?: BlogAd["slot"] }) {
   const ad = ads?.[0];
   useEffect(() => {
     if (!ad) return;
-    void supabase.rpc("record_blog_ad_impression", { _ad_id: ad.id });
+    void untypedDb.rpc("record_blog_ad_impression", { _ad_id: ad.id });
   }, [ad]);
 
   if (!ad) return null;
-  const click = () => { void supabase.rpc("record_blog_ad_click", { _ad_id: ad.id }); };
+  const click = () => { void untypedDb.rpc("record_blog_ad_click", { _ad_id: ad.id }); };
 
   return (
     <aside className="rounded-2xl border border-border bg-surface/80 p-4 shadow-sm" aria-label="Publicidad">

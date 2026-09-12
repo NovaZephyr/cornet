@@ -1,7 +1,11 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import { THEME_REGISTRY, resolveThemeId, type ThemeId } from "@/themes/registry";
 
-export const THEMES = Object.entries(THEME_REGISTRY).map(([id, definition]) => ({ id, label: definition.label, group: definition.group, kind: definition.group === "custom" ? "custom" : "normal" })) as ReadonlyArray<{ id: ThemeId; label: string; group: string; kind: string }>;
+export type { ThemeId };
+
+const THEME_GROUP_HINTS: Record<string, string> = { core: "Tema base de Cornet.", youtube: "Recreación histórica de YouTube.", custom: "Experiencia completa personalizada.", gradients: "Fondos con degradados animados.", community: "Paletas creadas por la comunidad.", accessibility: "Pensado para mayor legibilidad.", retro: "Estética retro de escritorio.", experimental: "Efectos visuales experimentales." };
+
+export const THEMES = Object.entries(THEME_REGISTRY).map(([id, definition]) => ({ id, label: definition.label, group: definition.group, hint: THEME_GROUP_HINTS[definition.group] ?? definition.label, kind: definition.group === "custom" ? "custom" : "normal" })) as ReadonlyArray<{ id: ThemeId; label: string; group: string; hint: string; kind: string }>;
 export type PresetThemeId = ThemeId | "system";
 export type CustomTheme = { background: string; foreground: string; surface: string; surfaceHover: string; card: string; primary: string; secondary: string; accent: string; border: string; sidebar: string; gradientEnabled: boolean; gradientFrom: string; gradientTo: string; gradientAngle: number };
 export const DEFAULT_CUSTOM_THEME: CustomTheme = { background: "#10131a", foreground: "#f5f7fb", surface: "#181d27", surfaceHover: "#222938", card: "#151a23", primary: "#5b8cff", secondary: "#2c3850", accent: "#7aa2ff", border: "#30394b", sidebar: "#0c0f15", gradientEnabled: false, gradientFrom: "#5b8cff", gradientTo: "#9b6cff", gradientAngle: 135 };

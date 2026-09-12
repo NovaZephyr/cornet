@@ -1,8 +1,8 @@
-import type { LucideIcon } from "lucide-react";
+import type { ComponentType } from "react";
 import { Link } from "@tanstack/react-router";
 import { ChannelAvatar } from "@/components/Media";
 
-type NavItem = { to: string; label: string; icon: LucideIcon };
+type NavItem = { to: string; label: string; icon: ComponentType<{ className?: string }> };
 
 type ShellSidebarProps = {
   user: unknown;
@@ -16,7 +16,7 @@ type ShellSidebarProps = {
 export function ShellSidebar({ user, profile, username, items, sidebarOpen, active }: ShellSidebarProps) {
   return (
     <aside className={`cn-shell-sidebar${sidebarOpen ? "" : " cn-shell-sidebar-collapsed"}`}>
-      {user && sidebarOpen && (
+      {Boolean(user) && sidebarOpen && (
         <div className="cn-shell-account">
           <ChannelAvatar path={profile?.avatar_path} name={profile?.display_name || profile?.username || "U"} size={42} />
           <div>

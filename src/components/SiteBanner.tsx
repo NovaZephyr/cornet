@@ -28,7 +28,7 @@ function CosmicWatchEnhancer() {
   const search = useRouterState({ select: (s) => s.location.search as Record<string, unknown> });
   const { theme } = useTheme();
   useEffect(() => {
-    if (theme !== "retro2012" || pathname !== "/watch") return;
+    if (theme !== "cosmic-panda" || pathname !== "/watch") return;
     const code = typeof search.v === "string" ? search.v : "";
     let disposed = false; let observer: MutationObserver | null = null; let cleanupPlayer: (() => void) | null = null;
     const setup = async () => {
