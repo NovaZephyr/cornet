@@ -60,7 +60,7 @@ function DownloadsPage() {
   useEffect(() => {
     let cancelled = false;
 
-    fetch("https://api.github.com/repos/NovaZephyr/cornet/releases/latest", {
+    fetch("https://api.github.com/repos/NovaZephyr/cornet-downloads/releases/latest", {
       headers: { Accept: "application/vnd.github+json" },
     })
       .then(async (response) => {
@@ -85,11 +85,11 @@ function DownloadsPage() {
   const assets = useMemo(() => {
     const available = release?.assets ?? [];
     return {
-      windows: findAsset(available, [/\\.exe$/i, /\\.msi$/i]),
-      windowsMsi: findAsset(available, [/\\.msi$/i]),
-      linuxAppImage: findAsset(available, [/\\.AppImage$/i]),
-      linuxDeb: findAsset(available, [/\\.deb$/i]),
-      android: findAsset(available, [/\\.apk$/i]),
+      windows: findAsset(available, [/\.exe$/i, /\.msi$/i]),
+      windowsMsi: findAsset(available, [/\.msi$/i]),
+      linuxAppImage: findAsset(available, [/\.AppImage$/i]),
+      linuxDeb: findAsset(available, [/\.deb$/i]),
+      android: findAsset(available, [/\.apk$/i]),
     };
   }, [release]);
 
@@ -187,7 +187,7 @@ function DownloadsPage() {
               </p>
             </div>
             <a
-              href={release?.html_url ?? "https://github.com/NovaZephyr/cornet/releases"}
+              href={release?.html_url ?? "https://github.com/NovaZephyr/cornet-downloads/releases"}
               target="_blank"
               rel="noreferrer"
               className="inline-flex h-10 items-center justify-center gap-2 rounded-lg border border-border px-4 text-sm font-semibold transition hover:bg-muted"
