@@ -27,7 +27,11 @@ import "./retro/xp-luna.css";
 import "./experimental/crt.css";
 import "./experimental/vhs.css";
 
-/** Visual theme registry. Themes never own structural/channel layout. */
+/**
+ * Theme registry.
+ * Historical themes reproduce a site's visual era; custom themes may recompose
+ * the global Cornet shell. No theme may replace or alter a user's channel layout.
+ */
 export const THEME_REGISTRY = {
   dark:{group:"core",label:"Cornet Dark"}, light:{group:"core",label:"Cornet Light"},
   "yt-2005":{group:"youtube",label:"YouTube 2005"}, "yt-2007":{group:"youtube",label:"YouTube 2007"},
@@ -48,7 +52,14 @@ export const THEME_REGISTRY = {
 } as const;
 
 export type ThemeId=keyof typeof THEME_REGISTRY;
-export const LEGACY_THEME_ALIASES={"cornet-2009":"yt-2009","youtube-2013":"yt-2013",youtube2019:"yt-2019"} as const;
+
+/** Legacy IDs resolve to their modern replacement and are never registered as active themes. */
+export const LEGACY_THEME_ALIASES={
+  "cornet-2009":"yt-2009",
+  "youtube-2013":"yt-2013",
+  youtube2019:"yt-2019",
+  retro2012:"cosmic-panda",
+} as const;
 export type LegacyThemeId=keyof typeof LEGACY_THEME_ALIASES;
 export type ResolvableThemeId=ThemeId|LegacyThemeId;
 export function resolveThemeId(value:string):ThemeId|undefined{return value in THEME_REGISTRY?value as ThemeId:value in LEGACY_THEME_ALIASES?LEGACY_THEME_ALIASES[value as LegacyThemeId]:undefined;}
