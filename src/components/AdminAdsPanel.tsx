@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { CalendarClock, Eye, MousePointerClick, Pencil, Plus, Pause, Play, Trash2, Megaphone } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { untypedDb } from "@/lib/untyped-db";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -19,19 +20,19 @@ export function AdminAdsPanel() {
   const qc = useQueryClient();
   const [form, setForm] = useState<FormState>(EMPTY);
   const [editing, setEditing] = useState<string | null>(null);
-  const { data: ads, isLoading } = useQuery({ queryKey: ["admin-campaigns"], queryFn: async () => { const { data, error } = await supabase.from("blog_ads").select("*").order("created_at", { ascending: false }); if (error) throw error; return (data ?? []) as Ad[]; } });
+  const { data: ads, isLoading } = useQuery({ queryKey: ["admin-campaigns"], queryFn: async () => { const { data, error } = await untypedDb.from("blog_ads").select("*").order("created_at", { ascending: false }); if (error) throw error; return (data ?? []) as unknown as Ad[]; } });
   const save = useMutation({
     mutationFn: async () => {
       const payload = { title: form.title.trim(), body: form.body.trim() || null, image_path: form.image_path.trim() || null, target_url: form.target_url.trim(), slot: form.slot, starts_at: toIso(form.starts_at), ends_at: toIso(form.ends_at), campaign_type: form.campaign_type };
       if (!payload.title || !payload.target_url) throw new Error("Título y URL de destino son obligatorios.");
-      if (editing) { const { error } = await supabase.from("blog_ads").update(payload).eq("id", editing); if (error) throw error; }
-      else { const { data: { user } } = await supabase.auth.getUser(); if (!user) throw new Error("Debes iniciar sesión."); const { error } = await supabase.from("blog_ads").insert({ ...payload, created_by: user.id, status: "draft" }); if (error) throw error; }
+      if (editing) { const { error } = await untypedDb.from("blog_ads").update(payload).eq("id", editing); if (error) throw error; }
+      else { const { data: { user } } = await supabase.auth.getUser(); if (!user) throw new Error("Debes iniciar sesión."); const { error } = await untypedDb.from("blog_ads").insert({ ...payload, created_by: user.id, status: "draft" }); if (error) throw error; }
     },
     onSuccess: () => { toast.success(editing ? "Campaña actualizada" : form.campaign_type === "event" ? "Evento creado como borrador" : "Anuncio creado como borrador"); setForm(EMPTY); setEditing(null); void qc.invalidateQueries({ queryKey: ["admin-campaigns"] }); },
     onError: (error) => toast.error(error instanceof Error ? error.message : "No se pudo guardar la campaña"),
   });
-  const statusChange = useMutation({ mutationFn: async ({ id, status }: { id: string; status: string }) => { const { error } = await supabase.from("blog_ads").update({ status }).eq("id", id); if (error) throw error; }, onSuccess: () => void qc.invalidateQueries({ queryKey: ["admin-campaigns"] }), onError: (error) => toast.error(error instanceof Error ? error.message : "No se pudo actualizar la campaña") });
-  const remove = useMutation({ mutationFn: async (id: string) => { const { error } = await supabase.from("blog_ads").delete().eq("id", id); if (error) throw error; }, onSuccess: () => { toast.success("Campaña eliminada"); void qc.invalidateQueries({ queryKey: ["admin-campaigns"] }); }, onError: (error) => toast.error(error instanceof Error ? error.message : "No se pudo eliminar la campaña") });
+  const statusChange = useMutation({ mutationFn: async ({ id, status }: { id: string; status: string }) => { const { error } = await untypedDb.from("blog_ads").update({ status }).eq("id", id); if (error) throw error; }, onSuccess: () => void qc.invalidateQueries({ queryKey: ["admin-campaigns"] }), onError: (error) => toast.error(error instanceof Error ? error.message : "No se pudo actualizar la campaña") });
+  const remove = useMutation({ mutationFn: async (id: string) => { const { error } = await untypedDb.from("blog_ads").delete().eq("id", id); if (error) throw error; }, onSuccess: () => { toast.success("Campaña eliminada"); void qc.invalidateQueries({ queryKey: ["admin-campaigns"] }); }, onError: (error) => toast.error(error instanceof Error ? error.message : "No se pudo eliminar la campaña") });
   const edit = (ad: Ad) => { setEditing(ad.id); setForm({ title: ad.title, body: ad.body ?? "", image_path: ad.image_path ?? "", target_url: ad.target_url, slot: ad.slot, starts_at: ad.starts_at ? ad.starts_at.slice(0,16) : "", ends_at: ad.ends_at ? ad.ends_at.slice(0,16) : "", campaign_type: ad.campaign_type ?? "advertisement" }); };
   const filtered = ads ?? [];
   return <div className="space-y-4">
