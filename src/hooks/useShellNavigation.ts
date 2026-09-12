@@ -1,4 +1,4 @@
-import { Compass, History, Home, Info, ListVideo, MessageCircle, PlaySquare, Settings, Shield, Sparkles, Upload, Users } from "lucide-react";
+import { Compass, History, Home, Info, ListVideo, MessageCircle, PlaySquare, Settings, Shield, Sparkles, Upload, Users, Download } from "lucide-react";
 import type { ComponentType } from "react";
 
 export type ShellNavItem = {
@@ -28,6 +28,7 @@ export function useShellNavigation({ pathname, authenticated, staff, shortsEnabl
       { to: "/upload", label: "Subir video", icon: Upload },
     ] : []),
     { to: "/partner", label: "Partners", icon: Sparkles },
+    { to: "/downloads", label: "Descargas", icon: Download },
     { to: "/settings", label: "Configuración", icon: Settings },
     { to: "/about", label: "Información", icon: Info },
     ...(staff ? [{ to: "/admin", label: "Administración", icon: Shield }] : []),
