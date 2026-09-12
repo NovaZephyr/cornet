@@ -14,7 +14,7 @@ import { ShellMobileNav } from "./shell/ShellMobileNav";
 import { ShellSidebar } from "./shell/ShellSidebar";
 import { ShellUserMenu } from "./shell/ShellUserMenu";
 import "./app-shell.css";
-import type { ReactNode } from "react";
+import { createContext, useContext, type ReactNode } from "react";
 
 type AppShellProps = {
   children: ReactNode;
@@ -22,7 +22,23 @@ type AppShellProps = {
   fullscreen?: boolean;
 };
 
+// Only one complete shell is allowed in a rendered subtree. This prevents
+// nested route/content components from cloning the header/sidebar/footer.
+const AppShellContext = createContext(false);
+
 export function AppShell({ children, hideSidebar = false, fullscreen = false }: AppShellProps) {
+  if (useContext(AppShellContext)) return <>{children}</>;
+
+  return (
+    <AppShellContext.Provider value>
+      <AppShellFrame hideSidebar={hideSidebar} fullscreen={fullscreen}>
+        {children}
+      </AppShellFrame>
+    </AppShellContext.Provider>
+  );
+}
+
+function AppShellFrame({ children, hideSidebar = false, fullscreen = false }: AppShellProps) {
   const { user, profile, username, isStaff, signOut } = useShellUser();
   const { theme } = useTheme();
   const pathname = useRouterState({ select: (state) => state.location.pathname });
