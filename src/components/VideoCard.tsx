@@ -30,7 +30,7 @@ const NO_THUMBNAIL = "/no-thumbnail.svg";
 
 function FeaturedPlayer({ video, posterPath }: { video: VideoWithChannel; posterPath: string | null }) {
   const videoUrl = useSignedUrl(video.video_path);
-  const posterUrl = useSignedUrl(posterPath);
+  const posterUrl = useSignedUrl(posterPath, { width: 640, height: 360, quality: 70, resize: "cover" });
   if (!videoUrl) return <img src={NO_THUMBNAIL} alt="Sin miniatura" className="h-full w-full object-cover" />;
   return <video className="block h-full w-full object-contain" controls playsInline preload="metadata" poster={posterUrl ?? undefined} src={videoUrl} />;
 }
@@ -62,7 +62,7 @@ export function VideoCard({ video, compact = false }: { video: VideoWithChannel;
           className={compact ? "relative aspect-video w-40 shrink-0 overflow-hidden rounded-lg bg-surface" : "relative aspect-video w-full overflow-hidden rounded-xl bg-surface"}
         >
           {video.thumbnail_path ? (
-            <SignedImage path={video.thumbnail_path} alt={video.title} className="h-full w-full object-cover" fallback={<img src={NO_THUMBNAIL} alt="" aria-hidden="true" className="h-full w-full object-cover" />} />
+            <SignedImage width={640} path={video.thumbnail_path} alt={video.title} className="h-full w-full object-cover" fallback={<img src={NO_THUMBNAIL} alt="" aria-hidden="true" className="h-full w-full object-cover" />} />
           ) : (
             <img src={NO_THUMBNAIL} alt="Sin miniatura" className="h-full w-full object-cover" />
           )}
