@@ -1,7 +1,7 @@
 /* Cosmic Panda — Cornet custom theme
  * Visual direction: YouTube 2012 / Cosmic Panda.
- * IMPORTANT: this file owns visual styling only. It MUST NOT change channel/user-selected
- * layout, routing, component structure, grid/flex geometry, widths or heights.
+ * Custom themes may recompose the global Cornet shell, but they MUST NOT replace,
+ * resize, reposition, or otherwise alter a user's selected channel layout.
  */
 [data-theme="cosmic-panda"] {
   color-scheme: light;
@@ -34,7 +34,52 @@
   border-radius:2px;
 }
 
-/* Cornet topbar — Cosmic Panda chrome, without changing its geometry. */
+/*
+ * Cosmic Panda shell composition.
+ * This intentionally changes the SITE shell only: the user's channel layout remains
+ * outside this selector and is never given grid/flex/position/size rules here.
+ */
+@media (min-width:901px) {
+  [data-theme="cosmic-panda"] .cn-shell-header {
+    position:relative;
+    min-height:44px;
+    height:44px;
+    padding:0 14px;
+    gap:10px;
+    background:linear-gradient(#333,#202020);
+    border-bottom:1px solid #111;
+    box-shadow:0 1px 2px rgba(0,0,0,.3);
+  }
+  [data-theme="cosmic-panda"] .cn-shell-logo img {width:28px;height:28px}
+  [data-theme="cosmic-panda"] .cn-shell-logo strong {font-size:16px}
+  [data-theme="cosmic-panda"] .cn-shell-logo small {display:none}
+  [data-theme="cosmic-panda"] .cn-shell-search {width:min(500px,100%)}
+  [data-theme="cosmic-panda"] .cn-shell-layout {
+    grid-template-columns:170px minmax(0,980px);
+    justify-content:center;
+    min-height:calc(100vh - 44px);
+    background:#d8d8d8;
+  }
+  [data-theme="cosmic-panda"] .cn-shell-sidebar {
+    position:sticky;
+    top:44px;
+    height:calc(100vh - 44px);
+    padding:10px 7px;
+    background:linear-gradient(180deg,#202020 0%,#111 70%,#1b1b1b 100%);
+    border-right:1px solid #000;
+    box-shadow:1px 0 4px rgba(0,0,0,.22);
+  }
+  [data-theme="cosmic-panda"] .cn-shell-main {
+    width:980px;
+    max-width:980px;
+    min-height:calc(100vh - 44px);
+    background:#fff;
+    border-left:1px solid #c6c6c6;
+    border-right:1px solid #c6c6c6;
+  }
+}
+
+/* Cornet topbar — Cosmic Panda chrome. */
 [data-theme="cosmic-panda"] .cn-shell-header {
   background:linear-gradient(#333,#202020);
   border-bottom-color:#070707;
@@ -88,9 +133,7 @@
   box-shadow:1px 0 4px rgba(0,0,0,.25);
   color:#cfcfcf;
 }
-[data-theme="cosmic-panda"] .cn-shell-account {
-  border-bottom-color:#292929;
-}
+[data-theme="cosmic-panda"] .cn-shell-account {border-bottom-color:#292929}
 [data-theme="cosmic-panda"] .cn-shell-account strong {color:#fff}
 [data-theme="cosmic-panda"] .cn-shell-account span {color:#777}
 [data-theme="cosmic-panda"] .cn-shell-sidebar nav a {
@@ -98,10 +141,7 @@
   border-radius:1px;
   color:#c8c8c8;
 }
-[data-theme="cosmic-panda"] .cn-shell-sidebar nav a:hover {
-  background:#252525;
-  color:#fff;
-}
+[data-theme="cosmic-panda"] .cn-shell-sidebar nav a:hover {background:#252525;color:#fff}
 [data-theme="cosmic-panda"] .cn-shell-sidebar nav a[data-active="true"] {
   background:linear-gradient(90deg,#353535,#252525);
   color:#fff;
@@ -111,9 +151,9 @@
 [data-theme="cosmic-panda"] .cn-shell-sidebar nav a[data-active="true"] svg {color:#fff}
 
 /* Main canvas and footer */
-[data-theme="cosmic-panda"] .cn-shell-main {
-  background:#d8d8d8;
-  color:#333;
+[data-theme="cosmic-panda"] .cn-shell-main {background:#d8d8d8;color:#333}
+@media (min-width:901px) {
+  [data-theme="cosmic-panda"] .cn-shell-main {background:#fff}
 }
 [data-theme="cosmic-panda"] .cn-shell-footer {
   background:#202020;
@@ -148,9 +188,7 @@
   box-shadow:inset 0 1px rgba(255,255,255,.18),0 1px 2px rgba(0,0,0,.14);
   text-shadow:0 1px rgba(0,0,0,.35);
 }
-[data-theme="cosmic-panda"] button:hover {
-  background:linear-gradient(#858585,#585858);
-}
+[data-theme="cosmic-panda"] button:hover {background:linear-gradient(#858585,#585858)}
 [data-theme="cosmic-panda"] input,
 [data-theme="cosmic-panda"] textarea,
 [data-theme="cosmic-panda"] select {
@@ -173,18 +211,14 @@
   color:#222;
 }
 [data-theme="cosmic-panda"] [data-radix-menu-content] [role="menuitem"],
-[data-theme="cosmic-panda"] [data-radix-select-item] {
-  border-radius:1px;
-  color:#303030;
-}
+[data-theme="cosmic-panda"] [data-radix-select-item] {border-radius:1px;color:#303030}
 [data-theme="cosmic-panda"] [data-radix-menu-content] [role="menuitem"][data-highlighted],
 [data-theme="cosmic-panda"] [data-radix-select-item][data-highlighted] {
   background:#dfe5e8;
   color:#1b2d38;
 }
 
-/* Custom-theme channel decoration: only if the existing channel component opts into it.
- * No layout/grid/flex/position/size rules are defined here. */
+/* Channel decoration is opt-in only. No channel layout/grid/position/size rules live here. */
 [data-theme="cosmic-panda"] [data-theme-channel="cosmic-panda"] {
   background:#292c2f;
   color:#333;
@@ -197,17 +231,15 @@
   background:#1c1d1f;
   border-color:#303235;
 }
-[data-theme="cosmic-panda"] [data-theme-channel="cosmic-panda"] [data-channel-tabs] :is(a,button) {
-  color:#c8c8c8;
-  border-radius:0;
-}
-[data-theme="cosmic-panda"] [data-theme-channel="cosmic-panda"] [data-channel-tabs] :is(a,button):hover {
-  background:#2a2b2d;
-  color:#fff;
-}
+[data-theme="cosmic-panda"] [data-theme-channel="cosmic-panda"] [data-channel-tabs] :is(a,button) {color:#c8c8c8;border-radius:0}
+[data-theme="cosmic-panda"] [data-theme-channel="cosmic-panda"] [data-channel-tabs] :is(a,button):hover {background:#2a2b2d;color:#fff}
 [data-theme="cosmic-panda"] [data-theme-channel="cosmic-panda"] [data-channel-tabs] [aria-current="page"] {
   color:#fff;
   box-shadow:inset 0 -3px var(--theme-accent);
 }
 
-/* Explicitly do not define grid/flex/position/width/height/layout/channel_info_layout rules. */
+/* Mobile keeps the functional responsive shell and only changes its visual personality. */
+@media (max-width:900px) {
+  [data-theme="cosmic-panda"] .cn-shell-header {min-height:60px;height:60px}
+  [data-theme="cosmic-panda"] .cn-shell-main {background:#d8d8d8}
+}
