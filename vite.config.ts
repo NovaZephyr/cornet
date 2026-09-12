@@ -19,5 +19,8 @@ export default defineConfig({
   },
   optimizeDeps: {
     exclude: ["vite"],
+    esbuildOptions: {
+      resolveExtensions: [".ts", ".tsx", ".js", ".jsx"],
+    },
   },
 });
