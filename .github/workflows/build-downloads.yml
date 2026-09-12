@@ -9,6 +9,9 @@ on:
 permissions:
   contents: write
 
+env:
+  RELEASE_REPO: NovaZephyr/cornet-downloads
+
 jobs:
   windows:
     name: Windows
@@ -147,13 +150,16 @@ jobs:
           name: cornet-android
           path: release-assets/android
 
-      - name: Publish GitHub Release
-        uses: softprops/action-gh-release@v2
-        with:
-          generate_release_notes: true
-          files: |
-            release-assets/windows/*.exe
-            release-assets/windows/*.msi
-            release-assets/linux/*.AppImage
-            release-assets/linux/*.deb
+      - name: Publish GitHub Release to cornet-downloads
+        env:
+          GH_TOKEN: ${{ secrets.CROSS_REPO_TOKEN }}
+        run: |
+          gh release create "${GITHUB_REF_NAME}" \
+            --repo "${RELEASE_REPO}" \
+            --title "Cornet ${GITHUB_REF_NAME}" \
+            --generate-notes \
+            release-assets/windows/*.exe \
+            release-assets/windows/*.msi \
+            release-assets/linux/*.AppImage \
+            release-assets/linux/*.deb \
             release-assets/android/*.apk
