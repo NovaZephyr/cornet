@@ -1,13 +1,13 @@
 [package]
-name = "corenetwork"
+name = "cornet"
 version = "0.1.0"
-description = "CoreNetwork desktop application"
+description = "Cornet desktop application"
 authors = ["NovaZephyr"]
 edition = "2021"
 rust-version = "1.77.2"
 
 [lib]
-name = "corenetwork_lib"
+name = "cornet_lib"
 crate-type = ["staticlib", "cdylib", "rlib"]
 
 [build-dependencies]
