@@ -6,7 +6,7 @@
   "build": {
     "beforeDevCommand": "bun run dev",
     "devUrl": "http://localhost:8080",
-    "frontendDist": "https://corenetwork.lovable.app"
+    "frontendDist": "https://cornet.lovable.app"
   },
   "app": {
     "withGlobalTauri": false,
