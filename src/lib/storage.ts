@@ -10,6 +10,26 @@ const TTL = 60 * 60;
 const IMMUTABLE_CACHE_CONTROL = "31536000";
 const STORAGE_PROVIDER = String(import.meta.env.VITE_STORAGE_PROVIDER ?? "supabase").toLowerCase();
 
+export type MediaTransformOptions = {
+  width?: number;
+  height?: number;
+  quality?: number;
+  resize?: "cover" | "contain" | "fill";
+};
+
+const normalizeTransform = (options?: MediaTransformOptions) => {
+  if (!options) return undefined;
+  const width = options.width ? Math.max(1, Math.min(2500, Math.round(options.width))) : undefined;
+  const height = options.height ? Math.max(1, Math.min(2500, Math.round(options.height))) : undefined;
+  const quality = options.quality ? Math.max(20, Math.min(100, Math.round(options.quality))) : 70;
+  return { width, height, quality, resize: options.resize ?? "cover" as const };
+};
+
+function cacheKey(fullPath: string, transform?: MediaTransformOptions) {
+  const normalized = normalizeTransform(transform);
+  return normalized ? `${fullPath}::${JSON.stringify(normalized)}` : fullPath;
+}
+
 async function getB2Url(fullPath: string, key: string): Promise<string | null> {
   const hit = cache.get(fullPath);
   if (hit && hit.expires > Date.now()) return hit.url;
@@ -34,12 +54,11 @@ async function getB2Url(fullPath: string, key: string): Promise<string | null> {
  * Resolve a stored media path without forcing callers to know which storage
  * provider owns it. Paths may be "bucket/path", "b2/path", or HTTPS URLs.
  *
- * Videos are currently written to B2, while older rows may still contain the
- * historical Supabase "videos/..." path. If that legacy object no longer
- * exists in Supabase because it was migrated, consult the video's storage
- * metadata and transparently resolve the B2 key instead.
+ * Images in the Supabase media bucket can be delivered through Storage's image
+ * transformation API. This keeps the original object untouched while sending
+ * a correctly sized, optimized WebP-compatible response to the client.
  */
-export async function getSignedUrl(fullPath?: string | null): Promise<string | null> {
+export async function getSignedUrl(fullPath?: string | null, transform?: MediaTransformOptions): Promise<string | null> {
   if (!fullPath) return null;
   if (/^https?:\/\//i.test(fullPath)) {
     return /\/video\/upload\//i.test(fullPath) ? toPlayableCloudinaryVideoUrl(fullPath) : fullPath;
@@ -52,9 +71,20 @@ export async function getSignedUrl(fullPath?: string | null): Promise<string | n
 
   if (bucket === "b2") return getB2Url(fullPath, key);
 
+  const requestKey = bucket === "media" ? cacheKey(fullPath, transform) : fullPath;
   if (bucket === "media") {
-    const { data } = supabase.storage.from("media").getPublicUrl(key);
-    return data.publicUrl || null;
+    const hit = cache.get(requestKey);
+    if (hit && hit.expires > Date.now()) return hit.url;
+    const existing = inflight.get(requestKey);
+    if (existing) return existing;
+
+    const normalized = normalizeTransform(transform) ?? { width: 800, quality: 70, resize: "cover" as const };
+    const { data } = supabase.storage.from("media").getPublicUrl(key, {
+      transform: normalized,
+    });
+    const url = data.publicUrl || null;
+    if (url) cache.set(requestKey, { url, expires: Date.now() + 24 * 60 * 60 * 1000 });
+    return url;
   }
 
   const hit = cache.get(fullPath);
@@ -124,15 +154,17 @@ export async function getSignedUrl(fullPath?: string | null): Promise<string | n
   return promise;
 }
 
-export function useSignedUrl(fullPath?: string | null) {
+export function useSignedUrl(fullPath?: string | null, transform?: MediaTransformOptions) {
+  const requestKey = fullPath ? cacheKey(fullPath, transform) : "";
   const [url, setUrl] = useState<string | null>(() => {
     if (!fullPath) return null;
     if (/^https?:\/\//i.test(fullPath)) return /\/video\/upload\//i.test(fullPath) ? toPlayableCloudinaryVideoUrl(fullPath) : fullPath;
     if (fullPath.startsWith("media/")) {
       const key = fullPath.slice("media/".length);
-      return supabase.storage.from("media").getPublicUrl(key).data.publicUrl || null;
+      const normalized = normalizeTransform(transform) ?? { width: 800, quality: 70, resize: "cover" as const };
+      return supabase.storage.from("media").getPublicUrl(key, { transform: normalized }).data.publicUrl || null;
     }
-    const hit = cache.get(fullPath);
+    const hit = cache.get(requestKey);
     return hit && hit.expires > Date.now() ? hit.url : null;
   });
 
@@ -142,13 +174,13 @@ export function useSignedUrl(fullPath?: string | null) {
       setUrl(null);
       return;
     }
-    getSignedUrl(fullPath).then((u) => {
+    getSignedUrl(fullPath, transform).then((u) => {
       if (active) setUrl(u);
     });
     return () => {
       active = false;
     };
-  }, [fullPath]);
+  }, [fullPath, requestKey]);
 
   return url;
 }
