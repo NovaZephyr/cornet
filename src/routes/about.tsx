@@ -21,7 +21,7 @@ const sections = [
 
 function AboutPage() {
   const { theme } = useTheme();
-  const retro = theme === "retro2012";
+  const retro = theme === "cosmic-panda";
 
   if (retro) {
     return (

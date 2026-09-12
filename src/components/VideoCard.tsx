@@ -44,7 +44,7 @@ export function VideoCard({ video, compact = false }: { video: VideoWithChannel;
     if (!node) return;
     setIsFeaturedContext(Boolean(node.closest(".cn-2012-feature-main, .cn-2012-feature--channel-2, .cn-2012-feature--cosmic")));
   }, []);
-  const showFeaturedPlayer = compact && theme === "retro2012" && isFeaturedContext;
+  const showFeaturedPlayer = compact && theme === "cosmic-panda" && isFeaturedContext;
 
   return (
     <div ref={setRoot} className={compact ? "flex gap-2" : "flex flex-col gap-3"}>

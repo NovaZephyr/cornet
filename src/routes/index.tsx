@@ -41,8 +41,8 @@ function Home() {
   const navigate = Route.useNavigate();
   const { theme } = useTheme();
   const isRecommended = !q && sort === "recommended";
-  const isPolymerHome = theme === "youtube2019" && !q;
-  const isCosmicHome = theme === "retro2012" && !q;
+  const isPolymerHome = theme === "yt-2019" && !q;
+  const isCosmicHome = theme === "cosmic-panda" && !q;
   const videoSort: VideoSort = sort === "subscribers" || sort === "views" || sort === "recent" || sort === "oldest" ? sort : "recent";
   const videosQuery = useQuery({
     queryKey: ["home-feed", q ?? null, sort],
