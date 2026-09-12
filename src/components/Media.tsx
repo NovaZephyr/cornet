@@ -7,13 +7,15 @@ export function SignedImage({
   alt,
   className,
   fallback,
+  width = 800,
 }: {
   path?: string | null | undefined;
   alt: string;
   className?: string | undefined;
   fallback?: React.ReactNode;
+  width?: number | undefined;
 }) {
-  const url = useSignedUrl(path);
+  const url = useSignedUrl(path, { width, quality: 70, resize: "cover" });
   if (!url) return <div className={cn("bg-surface", className)}>{fallback}</div>;
   return <img src={url} alt={alt} loading="lazy" className={cn("object-cover", className)} />;
 }
@@ -29,7 +31,7 @@ export function ChannelAvatar({
   size?: number | undefined;
   className?: string | undefined;
 }) {
-  const url = useSignedUrl(path);
+  const url = useSignedUrl(path, { width: Math.max(64, size * 2), height: Math.max(64, size * 2), quality: 65, resize: "cover" });
   return (
     <span
       style={{ width: size, height: size }}
@@ -39,7 +41,7 @@ export function ChannelAvatar({
       )}
     >
       {url ? (
-        <img src={url} alt={name} className="h-full w-full object-cover" />
+        <img src={url} alt={name} loading="lazy" className="h-full w-full object-cover" />
       ) : (
         <span style={{ fontSize: size * 0.4 }} className="font-medium uppercase">
           {name.slice(0, 1)}
