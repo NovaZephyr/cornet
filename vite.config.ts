@@ -9,4 +9,7 @@ export default defineConfig({
       projects: ["./tsconfig.json"],
     }),
   ],
+  ssr: {
+    external: ["vite/internal"],
+  },
 });
