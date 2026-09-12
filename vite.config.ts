@@ -9,7 +9,15 @@ export default defineConfig({
       projects: ["./tsconfig.json"],
     }),
   ],
+  resolve: {
+    alias: {
+      "vite/internal": "vite",
+    },
+  },
   ssr: {
-    external: ["vite/internal"],
+    noExternal: ["@vitejs/plugin-react"],
+  },
+  optimizeDeps: {
+    exclude: ["vite"],
   },
 });
