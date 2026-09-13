@@ -1,4 +1,6 @@
 import { createRootRoute, Outlet } from "@tanstack/react-router";
+import { AppShell } from "@/components/AppShell";
+import { CornetCore } from "@/core";
 
 export const Route = createRootRoute({
   head: () => ({
@@ -11,5 +13,11 @@ export const Route = createRootRoute({
 });
 
 function RootLayout() {
-  return <Outlet />;
+  return (
+    <CornetCore>
+      <AppShell>
+        <Outlet />
+      </AppShell>
+    </CornetCore>
+  );
 }
