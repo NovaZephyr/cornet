@@ -104,7 +104,7 @@ function DownloadsPage() {
 
   return (
     <AppShell>
-      <main className="mx-auto w-full max-w-6xl px-4 pb-16 pt-6 sm:px-6 lg:px-8">
+      <div className="mx-auto w-full max-w-6xl px-4 pb-16 pt-6 sm:px-6 lg:px-8">
         <section className="relative overflow-hidden rounded-3xl border border-border bg-surface px-6 py-12 shadow-sm sm:px-10 sm:py-16">
           <div className="pointer-events-none absolute -right-24 -top-24 h-64 w-64 rounded-full bg-primary/10 blur-3xl" />
           <div className="pointer-events-none absolute -bottom-28 -left-20 h-64 w-64 rounded-full bg-primary/5 blur-3xl" />
@@ -204,7 +204,7 @@ function DownloadsPage() {
             GitHub no respondió correctamente. Puedes consultar los releases directamente desde el enlace anterior.
           </p>
         )}
-      </main>
+      </div>
     </AppShell>
   );
 }
