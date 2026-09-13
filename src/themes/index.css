@@ -1,5 +1,6 @@
 /* CSS entrypoint for the visual theme system. Keep metadata/types in registry.ts. */
 @import "./core/theme-bridge.css";
+@import "./core/normal.css";
 @import "./core/dark.css";
 @import "./core/light.css";
 @import "./youtube/2005.css";
