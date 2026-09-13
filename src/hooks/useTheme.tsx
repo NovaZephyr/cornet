@@ -11,7 +11,7 @@ export type CustomTheme = { background: string; foreground: string; surface: str
 export const DEFAULT_CUSTOM_THEME: CustomTheme = { background: "#10131a", foreground: "#f5f7fb", surface: "#181d27", surfaceHover: "#222938", card: "#151a23", primary: "#5b8cff", secondary: "#2c3850", accent: "#7aa2ff", border: "#30394b", sidebar: "#0c0f15", gradientEnabled: false, gradientFrom: "#5b8cff", gradientTo: "#9b6cff", gradientAngle: 135 };
 const STORAGE_KEY = "corenetwork-theme-v3";
 const CUSTOM_STORAGE_KEY = "corenetwork-custom-theme-v1";
-const DEFAULT_THEME: PresetThemeId = "grad-ocean";
+const DEFAULT_THEME: PresetThemeId = "light";
 const VALID: string[] = ["system", ...Object.keys(THEME_REGISTRY)];
 
 function readInitialTheme(): PresetThemeId | "custom" {
@@ -19,6 +19,8 @@ function readInitialTheme(): PresetThemeId | "custom" {
   const stored = window.localStorage.getItem(STORAGE_KEY) || window.localStorage.getItem("corenetwork-theme-v2") || window.localStorage.getItem("corenetwork-theme");
   if (stored === "custom") return "custom";
   const resolved = stored ? resolveThemeId(stored) : undefined;
+  // grad-ocean was the previous default; migrate that stale default to the new Normal/Claro skin.
+  if (resolved === "grad-ocean") return DEFAULT_THEME;
   return resolved || (stored === "system" ? "system" : DEFAULT_THEME);
 }
 function readCustomTheme(): CustomTheme {
