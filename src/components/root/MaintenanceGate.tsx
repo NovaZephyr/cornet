@@ -62,8 +62,8 @@ export function MaintenanceGate({ children }: { children?: ReactNode }) {
     return () => { cancelled = true; };
   }, [isAuthRoute]);
 
-  if (isAuthRoute) return <Outlet />;
+  if (isAuthRoute) return <>{children ?? <Outlet />}</>;
   if (loading || settingsLoading || maintenance === null) return <LoadingScreen />;
   if ((maintenance.enabled || forceMaintenance) && !isAdmin) return <MaintenanceScreen message={maintenance.message} />;
-  return <Outlet />;
+  return <>{children ?? <Outlet />}</>;
 }
