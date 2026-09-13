@@ -6,10 +6,13 @@ import { brokeredPreviewStorage } from './previewAuthStorage';
 const SUPABASE_URL = "https://mvwpxnszcpyayofqgtmv.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im12d3B4bnN6Y3B5YXlvZnFndG12Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY4MzY1OTAsImV4cCI6MjEwMjQxMjU5MH0.Y0OHmFWR4jl8IRzLIzKlIMNwu8iS4HRveXFjSOpHqyM";
 
+const isBrowser = typeof window !== 'undefined';
+
 export const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
   auth: {
-    storage: brokeredPreviewStorage(),
-    persistSession: true,
-    autoRefreshToken: true,
+    storage: isBrowser ? brokeredPreviewStorage() : undefined,
+    persistSession: isBrowser,
+    autoRefreshToken: isBrowser,
+    detectSessionInUrl: isBrowser,
   }
 });
