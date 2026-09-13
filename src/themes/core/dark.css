@@ -1,5 +1,57 @@
-/* Cornet Core — Dark
- * Visual skin only. Do not alter user/page layout. */
+/* Cornet Dark — visual skin for the canonical Cornet interface. */
 [data-theme="dark"] {
   color-scheme: dark;
+
+  --theme-bg: #241d30;
+  --theme-text: #f7f3ff;
+  --theme-surface: #2b2338;
+  --theme-surface-2: #3a2f4b;
+  --theme-sidebar: #251e32;
+  --theme-border: #4b3d5c;
+  --theme-muted: #b9aec7;
+  --theme-accent: #ff5a45;
+}
+
+/* Original Cornet Dark shell personality; structure remains owned by AppShell. */
+[data-theme="dark"] .cn-shell {
+  background: #241d30;
+}
+
+[data-theme="dark"] .cn-shell-header {
+  background: #211a2c;
+  border-bottom-color: #40344f;
+}
+
+[data-theme="dark"] .cn-shell-sidebar {
+  background: #251e32;
+  border-right-color: #493b59;
+}
+
+[data-theme="dark"] .cn-shell-sidebar nav a[data-active="true"] {
+  background: #40334f;
+  color: #ffffff;
+}
+
+[data-theme="dark"] .cn-shell-sidebar nav a:hover {
+  background: #342a43;
+}
+
+[data-theme="dark"] .cn-shell-main {
+  background: #241d30;
+}
+
+[data-theme="dark"] .cn-shell-search input {
+  background: #282034;
+  border-color: #4a3b5b;
+}
+
+[data-theme="dark"] .cn-shell-search button {
+  background: #3c304c;
+}
+
+@media (max-width: 900px) {
+  [data-theme="dark"] .cn-shell-mobile-nav {
+    background: #211a2c;
+    border-top-color: #40344f;
+  }
 }
