@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { ShieldCheck } from "lucide-react";
 import { Outlet, useLocation } from "@tanstack/react-router";
 import { useAuth } from "@/hooks/useAuth";
@@ -29,7 +29,7 @@ function LoadingScreen() {
   return <div className="flex min-h-screen items-center justify-center bg-background" role="status" aria-label="Cargando" />;
 }
 
-export function MaintenanceGate() {
+export function MaintenanceGate({ children }: { children?: ReactNode }) {
   const { isAdmin, loading } = useAuth();
   const location = useLocation();
   const isAuthRoute = location.pathname === "/auth";
@@ -62,8 +62,8 @@ export function MaintenanceGate() {
     return () => { cancelled = true; };
   }, [isAuthRoute]);
 
-  if (isAuthRoute) return <Outlet />;
+  if (isAuthRoute) return <>{children ?? <Outlet />}</>;
   if (loading || settingsLoading || maintenance === null) return <LoadingScreen />;
   if ((maintenance.enabled || forceMaintenance) && !isAdmin) return <MaintenanceScreen message={maintenance.message} />;
-  return <Outlet />;
+  return <>{children ?? <Outlet />}</>;
 }

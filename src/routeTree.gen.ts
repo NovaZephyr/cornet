@@ -21,6 +21,7 @@ import { Route as AdminMaintenanceRouteImport } from './routes/admin-maintenance
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as BlogRouteImport } from './routes/blog'
 import { Route as CommunityRouteImport } from './routes/community'
+import { Route as DownloadsRouteImport } from './routes/downloads'
 import { Route as ExperimentsRouteImport } from './routes/experiments'
 import { Route as ExploreRouteImport } from './routes/explore'
 import { Route as HistoryRouteImport } from './routes/history'
@@ -107,6 +108,11 @@ const BlogRoute = BlogRouteImport.update({
 const CommunityRoute = CommunityRouteImport.update({
   id: '/community',
   path: '/community',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DownloadsRoute = DownloadsRouteImport.update({
+  id: '/downloads',
+  path: '/downloads',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ExperimentsRoute = ExperimentsRouteImport.update({
@@ -258,6 +264,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRoute
   '/community': typeof CommunityRoute
+  '/downloads': typeof DownloadsRoute
   '/experiments': typeof ExperimentsRoute
   '/explore': typeof ExploreRoute
   '/history': typeof HistoryRoute
@@ -299,6 +306,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRoute
   '/community': typeof CommunityRoute
+  '/downloads': typeof DownloadsRoute
   '/experiments': typeof ExperimentsRoute
   '/explore': typeof ExploreRoute
   '/history': typeof HistoryRoute
@@ -340,6 +348,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRoute
   '/community': typeof CommunityRoute
+  '/downloads': typeof DownloadsRoute
   '/experiments': typeof ExperimentsRoute
   '/explore': typeof ExploreRoute
   '/history': typeof HistoryRoute
@@ -383,6 +392,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/blog'
     | '/community'
+    | '/downloads'
     | '/experiments'
     | '/explore'
     | '/history'
@@ -424,6 +434,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/blog'
     | '/community'
+    | '/downloads'
     | '/experiments'
     | '/explore'
     | '/history'
@@ -464,6 +475,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/blog'
     | '/community'
+    | '/downloads'
     | '/experiments'
     | '/explore'
     | '/history'
@@ -506,6 +518,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   BlogRoute: typeof BlogRoute
   CommunityRoute: typeof CommunityRoute
+  DownloadsRoute: typeof DownloadsRoute
   ExperimentsRoute: typeof ExperimentsRoute
   ExploreRoute: typeof ExploreRoute
   HistoryRoute: typeof HistoryRoute
@@ -613,6 +626,13 @@ declare module '@tanstack/react-router' {
       path: '/community'
       fullPath: '/community'
       preLoaderRoute: typeof CommunityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/downloads': {
+      id: '/downloads'
+      path: '/downloads'
+      fullPath: '/downloads'
+      preLoaderRoute: typeof DownloadsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/experiments': {
@@ -856,6 +876,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   BlogRoute: BlogRoute,
   CommunityRoute: CommunityRoute,
+  DownloadsRoute: DownloadsRoute,
   ExperimentsRoute: ExperimentsRoute,
   ExploreRoute: ExploreRoute,
   HistoryRoute: HistoryRoute,
