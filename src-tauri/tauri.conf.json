@@ -1,0 +1,62 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Cornet",
+  "version": "0.1.0",
+  "identifier": "io.cornet.desktop",
+  "build": {
+    "beforeDevCommand": "bun run dev",
+    "devUrl": "http://localhost:8080",
+    "frontendDist": "https://cornet.lovable.app"
+  },
+  "app": {
+    "withGlobalTauri": false,
+    "windows": [
+      {
+        "title": "Cornet",
+        "label": "main",
+        "width": 1280,
+        "height": 800,
+        "minWidth": 960,
+        "minHeight": 640,
+        "resizable": true,
+        "fullscreen": false,
+        "center": true,
+        "decorations": true,
+        "dragDropEnabled": false
+      }
+    ],
+    "security": {
+      "csp": null,
+      "capabilities": ["default"]
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": ["nsis", "msi"],
+    "publisher": "NovaZephyr",
+    "copyright": "© Cornet",
+    "shortDescription": "Cornet desktop",
+    "longDescription": "Cornet desktop application for Windows.",
+    "category": "SocialNetworking",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.ico"
+    ],
+    "windows": {
+      "webviewInstallMode": {
+        "type": "downloadBootstrapper"
+      },
+      "allowDowngrades": true,
+      "nsis": {
+        "installMode": "currentUser",
+        "displayLanguageSelector": false,
+        "languages": ["English", "Spanish"]
+      },
+      "wix": {
+        "language": "en-US"
+      }
+    }
+  }
+}

@@ -1,0 +1,36 @@
+name: Diagnose Vite dependency tree
+
+on:
+  workflow_dispatch:
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Inspect Vite dependency versions
+        run: |
+          echo '=== Direct package.json versions ==='
+          node -e "const p=require('./package.json'); console.log('vite:', p.devDependencies?.vite); console.log('@tailwindcss/vite:', p.dependencies?.['@tailwindcss/vite']); console.log('@lovable.dev/vite-tanstack-config:', p.devDependencies?.['@lovable.dev/vite-tanstack-config']); console.log('@vitejs/plugin-react:', p.devDependencies?.['@vitejs/plugin-react'] ?? p.dependencies?.['@vitejs/plugin-react'] ?? '(not direct)')"
+          echo
+          echo '=== Installed package versions ==='
+          bun pm ls vite @vitejs/plugin-react @tailwindcss/vite @tailwindcss/node @lovable.dev/vite-tanstack-config || true
+          echo
+          echo '=== package.json files in installed packages ==='
+          node -e "for (const p of ['vite','@vitejs/plugin-react','@tailwindcss/vite','@tailwindcss/node','@lovable.dev/vite-tanstack-config']) { try { const j=require('./node_modules/'+p+'/package.json'); console.log(p, j.version, 'dependencies=', j.dependencies, 'peerDependencies=', j.peerDependencies) } catch(e) { console.log(p, 'NOT INSTALLED') } }"
+          echo
+          echo '=== Why plugin-react is installed ==='
+          bun pm why @vitejs/plugin-react || true
+          echo
+          echo '=== Why Vite is installed ==='
+          bun pm why vite || true

@@ -15,17 +15,17 @@ export class ShellErrorBoundary extends Component<
   ShellErrorBoundaryProps,
   ShellErrorBoundaryState
 > {
-  state: ShellErrorBoundaryState = { hasError: false };
+  override state: ShellErrorBoundaryState = { hasError: false };
 
   static getDerivedStateFromError(): ShellErrorBoundaryState {
     return { hasError: true };
   }
 
-  componentDidCatch(error: Error, info: ErrorInfo) {
+  override componentDidCatch(error: Error, info: ErrorInfo) {
     console.error(`[ShellErrorBoundary] ${this.props.label ?? "Shell section"}`, error, info);
   }
 
-  render() {
+  override render() {
     if (!this.state.hasError) return this.props.children;
 
     return (
