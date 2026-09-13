@@ -57,18 +57,24 @@ const platformInfo = [
     description: "La aplicación de escritorio de Cornet para Windows 10 y Windows 11.",
     detail: "Windows 10/11 · 64-bit",
     icon: WindowsIcon,
+    glow: "border-sky-400/50 shadow-[0_0_28px_rgba(56,189,248,0.18)] hover:border-sky-300/80 hover:shadow-[0_0_38px_rgba(56,189,248,0.28)]",
+    iconGlow: "text-sky-300 shadow-[0_0_22px_rgba(56,189,248,0.24)]",
   },
   {
     name: "Linux",
     description: "Una versión de Cornet para distribuciones Linux compatibles.",
     detail: "Linux · AppImage / .deb",
     icon: LinuxIcon,
+    glow: "border-orange-400/50 shadow-[0_0_28px_rgba(251,146,60,0.16)] hover:border-orange-300/80 hover:shadow-[0_0_38px_rgba(251,146,60,0.25)]",
+    iconGlow: "text-orange-300 shadow-[0_0_22px_rgba(251,146,60,0.22)]",
   },
   {
     name: "Android",
     description: "Lleva Cornet contigo con la aplicación móvil para Android.",
     detail: "Android · APK",
     icon: AndroidIcon,
+    glow: "border-emerald-400/50 shadow-[0_0_28px_rgba(52,211,153,0.16)] hover:border-emerald-300/80 hover:shadow-[0_0_38px_rgba(52,211,153,0.25)]",
+    iconGlow: "text-emerald-300 shadow-[0_0_22px_rgba(52,211,153,0.22)]",
   },
 ];
 
@@ -149,7 +155,7 @@ function DownloadsPage() {
           </div>
 
           <div className="grid gap-5 md:grid-cols-3">
-            {platformInfo.map(({ name, description, detail, icon: Icon }) => {
+            {platformInfo.map(({ name, description, detail, icon: Icon, glow, iconGlow }) => {
               const asset =
                 name === "Windows"
                   ? assets.windows
@@ -160,14 +166,15 @@ function DownloadsPage() {
               return (
                 <article
                   key={name}
-                  className="group relative z-10 flex min-h-[300px] flex-col rounded-2xl border border-border bg-surface/95 p-6 shadow-sm backdrop-blur transition hover:-translate-y-1 hover:shadow-md"
+                  className={`group relative z-10 flex min-h-[300px] flex-col overflow-hidden rounded-2xl border bg-surface/95 p-6 backdrop-blur transition duration-300 hover:-translate-y-1 ${glow}`}
                 >
-                  <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-xl border border-border bg-background">
+                  <div className="pointer-events-none absolute -right-10 -top-10 h-28 w-28 rounded-full bg-current opacity-[0.06] blur-3xl transition-opacity duration-300 group-hover:opacity-[0.11]" aria-hidden="true" />
+                  <div className={`relative mb-6 flex h-12 w-12 items-center justify-center rounded-xl border border-current/20 bg-background/80 shadow-sm ${iconGlow}`}>
                     <Icon />
                   </div>
-                  <h2 className="text-2xl font-semibold">{name}</h2>
-                  <p className="mt-3 flex-1 text-sm leading-6 text-muted-foreground">{description}</p>
-                  <p className="mb-4 text-xs font-medium text-muted-foreground">{detail}</p>
+                  <h2 className="relative text-2xl font-semibold">{name}</h2>
+                  <p className="relative mt-3 flex-1 text-sm leading-6 text-muted-foreground">{description}</p>
+                  <p className="relative mb-4 text-xs font-medium text-muted-foreground">{detail}</p>
 
                   {loading ? (
                     <div className="inline-flex h-10 items-center justify-center rounded-lg border border-border bg-muted px-4 text-sm font-semibold text-muted-foreground">
