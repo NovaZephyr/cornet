@@ -2,11 +2,8 @@
  * Visual direction: YouTube 2012 / Cosmic Panda.
  * IMPORTANT: this file owns visual styling only. It MUST NOT change channel/user-selected
  * layout, routing, component structure, grid/flex geometry, widths or heights.
- *
- * The global theme keeps retro2012 as its internal compatibility ID. Cosmic Panda and
- * Retro 2012 are therefore one theme, not two competing global themes.
  */
-[data-theme="retro2012"] {
+[data-theme="cosmic-panda"] {
   color-scheme: light;
   --theme-bg:#d8d8d8;
   --theme-surface:#fff;
@@ -25,53 +22,53 @@
 }
 
 /* Global 2012 canvas */
-[data-theme="retro2012"] body {
+[data-theme="cosmic-panda"] body {
   background:#d8d8d8;
   color:#333;
   font-family:Arial,Helvetica,sans-serif;
 }
-[data-theme="retro2012"] a {color:var(--theme-link)}
-[data-theme="retro2012"] :is(h1,h2,h3,h4) {color:#333}
-[data-theme="retro2012"] :is(button,input,textarea,select) {
+[data-theme="cosmic-panda"] a {color:var(--theme-link)}
+[data-theme="cosmic-panda"] :is(h1,h2,h3,h4) {color:#333}
+[data-theme="cosmic-panda"] :is(button,input,textarea,select) {
   font-family:Arial,Helvetica,sans-serif;
   border-radius:2px;
 }
 
 /* Cornet topbar — Cosmic Panda chrome, without changing its geometry. */
-[data-theme="retro2012"] .cn-shell-header {
+[data-theme="cosmic-panda"] .cn-shell-header {
   background:linear-gradient(#333,#202020);
   border-bottom-color:#070707;
   box-shadow:0 1px 0 rgba(255,255,255,.09),0 2px 7px rgba(0,0,0,.35);
   color:#eee;
 }
-[data-theme="retro2012"] .cn-shell-header a,
-[data-theme="retro2012"] .cn-shell-header button,
-[data-theme="retro2012"] .cn-shell-icon-button,
-[data-theme="retro2012"] .cn-shell-avatar-button {
+[data-theme="cosmic-panda"] .cn-shell-header a,
+[data-theme="cosmic-panda"] .cn-shell-header button,
+[data-theme="cosmic-panda"] .cn-shell-icon-button,
+[data-theme="cosmic-panda"] .cn-shell-avatar-button {
   color:#ccc;
   border-color:transparent;
   border-radius:2px;
   background:transparent;
 }
-[data-theme="retro2012"] .cn-shell-header a:hover,
-[data-theme="retro2012"] .cn-shell-header button:hover,
-[data-theme="retro2012"] .cn-shell-icon-button:hover,
-[data-theme="retro2012"] .cn-shell-avatar-button:hover {
+[data-theme="cosmic-panda"] .cn-shell-header a:hover,
+[data-theme="cosmic-panda"] .cn-shell-header button:hover,
+[data-theme="cosmic-panda"] .cn-shell-icon-button:hover,
+[data-theme="cosmic-panda"] .cn-shell-avatar-button:hover {
   background:#3a3a3a;
   border-color:#4a4a4a;
   color:#fff;
 }
-[data-theme="retro2012"] .cn-shell-logo strong {color:#fff}
-[data-theme="retro2012"] .cn-shell-logo small {color:#8d8d8d}
-[data-theme="retro2012"] .cn-shell-logo img {border-radius:0}
-[data-theme="retro2012"] .cn-shell-search input {
+[data-theme="cosmic-panda"] .cn-shell-logo strong {color:#fff}
+[data-theme="cosmic-panda"] .cn-shell-logo small {color:#8d8d8d}
+[data-theme="cosmic-panda"] .cn-shell-logo img {border-radius:0}
+[data-theme="cosmic-panda"] .cn-shell-search input {
   border-color:#111;
   border-radius:2px;
   background:#fff;
   color:#222;
   box-shadow:inset 0 1px 2px rgba(0,0,0,.2);
 }
-[data-theme="retro2012"] .cn-shell-search button {
+[data-theme="cosmic-panda"] .cn-shell-search button {
   border-color:#111;
   border-radius:0 2px 2px 0;
   background:linear-gradient(#f4f4f4,#d7d7d7);
@@ -79,85 +76,95 @@
   box-shadow:inset 0 1px #fff;
   text-shadow:0 1px #fff;
 }
-[data-theme="retro2012"] .cn-shell-search button:hover {
+[data-theme="cosmic-panda"] .cn-shell-search button:hover {
   background:linear-gradient(#fff,#ccc);
   color:#222;
 }
 
 /* Cosmic Panda guide/sidebar. Appearance changes only; existing shell layout remains authoritative. */
-[data-theme="retro2012"] .cn-shell-sidebar {
+[data-theme="cosmic-panda"] .cn-shell-sidebar {
   background:linear-gradient(180deg,#161616 0%,#090909 73%,#151515 100%);
   border-right-color:#000;
   box-shadow:1px 0 4px rgba(0,0,0,.25);
   color:#cfcfcf;
 }
-[data-theme="retro2012"] .cn-shell-account {border-bottom-color:#292929}
-[data-theme="retro2012"] .cn-shell-account strong {color:#fff}
-[data-theme="retro2012"] .cn-shell-account span {color:#777}
-[data-theme="retro2012"] .cn-shell-sidebar nav a {
+[data-theme="cosmic-panda"] .cn-shell-account {
+  border-bottom-color:#292929;
+}
+[data-theme="cosmic-panda"] .cn-shell-account strong {color:#fff}
+[data-theme="cosmic-panda"] .cn-shell-account span {color:#777}
+[data-theme="cosmic-panda"] .cn-shell-sidebar nav a {
   border-color:transparent;
   border-radius:1px;
   color:#c8c8c8;
 }
-[data-theme="retro2012"] .cn-shell-sidebar nav a:hover {background:#252525;color:#fff}
-[data-theme="retro2012"] .cn-shell-sidebar nav a[data-active="true"] {
+[data-theme="cosmic-panda"] .cn-shell-sidebar nav a:hover {
+  background:#252525;
+  color:#fff;
+}
+[data-theme="cosmic-panda"] .cn-shell-sidebar nav a[data-active="true"] {
   background:linear-gradient(90deg,#353535,#252525);
   color:#fff;
   box-shadow:inset 3px 0 var(--theme-accent);
 }
-[data-theme="retro2012"] .cn-shell-sidebar svg {color:#cfcfcf}
-[data-theme="retro2012"] .cn-shell-sidebar nav a[data-active="true"] svg {color:#fff}
+[data-theme="cosmic-panda"] .cn-shell-sidebar svg {color:#cfcfcf}
+[data-theme="cosmic-panda"] .cn-shell-sidebar nav a[data-active="true"] svg {color:#fff}
 
 /* Main canvas and footer */
-[data-theme="retro2012"] .cn-shell-main {background:#d8d8d8;color:#333}
-[data-theme="retro2012"] .cn-shell-footer {
+[data-theme="cosmic-panda"] .cn-shell-main {
+  background:#d8d8d8;
+  color:#333;
+}
+[data-theme="cosmic-panda"] .cn-shell-footer {
   background:#202020;
   border-top-color:#0a0a0a;
   color:#999;
 }
-[data-theme="retro2012"] .cn-shell-footer a {color:#999}
-[data-theme="retro2012"] .cn-shell-footer a:hover {color:#ddd}
-[data-theme="retro2012"] .cn-shell-mobile-nav {
+[data-theme="cosmic-panda"] .cn-shell-footer a {color:#999}
+[data-theme="cosmic-panda"] .cn-shell-footer a:hover {color:#ddd}
+[data-theme="cosmic-panda"] .cn-shell-mobile-nav {
   background:#171717;
   border-top-color:#000;
 }
-[data-theme="retro2012"] .cn-shell-mobile-nav a {color:#aaa}
-[data-theme="retro2012"] .cn-shell-mobile-nav a[data-active="true"] {
+[data-theme="cosmic-panda"] .cn-shell-mobile-nav a {color:#aaa}
+[data-theme="cosmic-panda"] .cn-shell-mobile-nav a[data-active="true"] {
   color:#fff;
   background:#292929;
   box-shadow:inset 0 2px var(--theme-accent);
 }
 
 /* Period-appropriate Cornet surfaces. */
-[data-theme="retro2012"] :is(.card,[data-surface],[role="dialog"]) {
+[data-theme="cosmic-panda"] :is(.card,[data-surface],[role="dialog"]) {
   background:linear-gradient(180deg,#fff,#f8f8f8);
   border:1px solid var(--theme-border);
   border-radius:2px;
   box-shadow:0 1px 3px var(--theme-glow),inset 0 1px rgba(255,255,255,.7);
   color:#333;
 }
-[data-theme="retro2012"] button {
+[data-theme="cosmic-panda"] button {
   background:linear-gradient(#777,#4d4d4d);
   border:1px solid #333;
   color:#fff;
   box-shadow:inset 0 1px rgba(255,255,255,.18),0 1px 2px rgba(0,0,0,.14);
   text-shadow:0 1px rgba(0,0,0,.35);
 }
-[data-theme="retro2012"] button:hover {background:linear-gradient(#858585,#585858)}
-[data-theme="retro2012"] input,
-[data-theme="retro2012"] textarea,
-[data-theme="retro2012"] select {
+[data-theme="cosmic-panda"] button:hover {
+  background:linear-gradient(#858585,#585858);
+}
+[data-theme="cosmic-panda"] input,
+[data-theme="cosmic-panda"] textarea,
+[data-theme="cosmic-panda"] select {
   background:#fff;
   border-color:#aaa;
   color:#333;
   box-shadow:inset 0 1px 2px rgba(0,0,0,.1);
 }
-[data-theme="retro2012"] hr {border-color:#c6c6c6}
-[data-theme="retro2012"] ::selection {background:rgba(217,35,22,.22)}
+[data-theme="cosmic-panda"] hr {border-color:#c6c6c6}
+[data-theme="cosmic-panda"] ::selection {background:rgba(217,35,22,.22)}
 
 /* Retro menus/dialogs without altering their placement. */
-[data-theme="retro2012"] [data-radix-menu-content],
-[data-theme="retro2012"] [data-radix-select-content] {
+[data-theme="cosmic-panda"] [data-radix-menu-content],
+[data-theme="cosmic-panda"] [data-radix-select-content] {
   font-family:Arial,Helvetica,sans-serif;
   background:linear-gradient(#fafafa,#e9e9e9);
   border:1px solid #a7a7a7;
@@ -165,39 +172,40 @@
   box-shadow:0 3px 12px rgba(0,0,0,.32);
   color:#222;
 }
-[data-theme="retro2012"] [data-radix-menu-content] [role="menuitem"],
-[data-theme="retro2012"] [data-radix-select-item] {
+[data-theme="cosmic-panda"] [data-radix-menu-content] [role="menuitem"],
+[data-theme="cosmic-panda"] [data-radix-select-item] {
   border-radius:1px;
   color:#303030;
 }
-[data-theme="retro2012"] [data-radix-menu-content] [role="menuitem"][data-highlighted],
-[data-theme="retro2012"] [data-radix-select-item][data-highlighted] {
+[data-theme="cosmic-panda"] [data-radix-menu-content] [role="menuitem"][data-highlighted],
+[data-theme="cosmic-panda"] [data-radix-select-item][data-highlighted] {
   background:#dfe5e8;
   color:#1b2d38;
 }
 
-/* Channel decoration remains opt-in through the independent Cosmic Panda channel layout. */
-[data-theme="retro2012"] [data-theme-channel="cosmic-panda"] {
+/* Custom-theme channel decoration: only if the existing channel component opts into it.
+ * No layout/grid/flex/position/size rules are defined here. */
+[data-theme="cosmic-panda"] [data-theme-channel="cosmic-panda"] {
   background:#292c2f;
   color:#333;
 }
-[data-theme="retro2012"] [data-theme-channel="cosmic-panda"] [data-channel-header] {
+[data-theme="cosmic-panda"] [data-theme-channel="cosmic-panda"] [data-channel-header] {
   background:#fff;
   border-bottom:1px solid #c9c9c9;
 }
-[data-theme="retro2012"] [data-theme-channel="cosmic-panda"] [data-channel-tabs] {
+[data-theme="cosmic-panda"] [data-theme-channel="cosmic-panda"] [data-channel-tabs] {
   background:#1c1d1f;
   border-color:#303235;
 }
-[data-theme="retro2012"] [data-theme-channel="cosmic-panda"] [data-channel-tabs] :is(a,button) {
+[data-theme="cosmic-panda"] [data-theme-channel="cosmic-panda"] [data-channel-tabs] :is(a,button) {
   color:#c8c8c8;
   border-radius:0;
 }
-[data-theme="retro2012"] [data-theme-channel="cosmic-panda"] [data-channel-tabs] :is(a,button):hover {
+[data-theme="cosmic-panda"] [data-theme-channel="cosmic-panda"] [data-channel-tabs] :is(a,button):hover {
   background:#2a2b2d;
   color:#fff;
 }
-[data-theme="retro2012"] [data-theme-channel="cosmic-panda"] [data-channel-tabs] [aria-current="page"] {
+[data-theme="cosmic-panda"] [data-theme-channel="cosmic-panda"] [data-channel-tabs] [aria-current="page"] {
   color:#fff;
   box-shadow:inset 0 -3px var(--theme-accent);
 }
