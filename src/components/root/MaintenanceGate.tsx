@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { ShieldCheck } from "lucide-react";
 import { Outlet, useLocation } from "@tanstack/react-router";
 import { useAuth } from "@/hooks/useAuth";
@@ -62,8 +62,9 @@ export function MaintenanceGate({ children }: { children?: ReactNode }) {
     return () => { cancelled = true; };
   }, [isAuthRoute]);
 
-  if (isAuthRoute) return <Outlet />;
+  const content = children ?? <Outlet />;
+  if (isAuthRoute) return <>{content}</>;
   if (loading || settingsLoading || maintenance === null) return <LoadingScreen />;
   if ((maintenance.enabled || forceMaintenance) && !isAdmin) return <MaintenanceScreen message={maintenance.message} />;
-  return <Outlet />;
+  return <>{content}</>;
 }
