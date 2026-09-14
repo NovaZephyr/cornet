@@ -53,5 +53,5 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
-  return <QueryClientProvider client={queryClient}><ThemeProvider><AuthProvider><DesignLibraryRuntime /><ShellErrorBoundary label="maintenance gate"><MaintenanceGate /></ShellErrorBoundary><ShellErrorBoundary label="mobile navigation"><GlobalMobileBottomBar /></ShellErrorBoundary><Toaster position="bottom-center" /><RouteContentBoundary><Outlet /></RouteContentBoundary></AuthProvider></ThemeProvider></QueryClientProvider>;
+  return <QueryClientProvider client={queryClient}><ThemeProvider><AuthProvider><DesignLibraryRuntime /><ShellErrorBoundary label="maintenance gate"><MaintenanceGate><RouteContentBoundary><Outlet /></RouteContentBoundary></MaintenanceGate></ShellErrorBoundary><ShellErrorBoundary label="mobile navigation"><GlobalMobileBottomBar /></ShellErrorBoundary><Toaster position="bottom-center" /></AuthProvider></ThemeProvider></QueryClientProvider>;
 }
