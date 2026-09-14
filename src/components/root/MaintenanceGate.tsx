@@ -29,7 +29,7 @@ function LoadingScreen() {
   return <div className="flex min-h-screen items-center justify-center bg-background" role="status" aria-label="Cargando" />;
 }
 
-export function MaintenanceGate() {
+export function MaintenanceGate({ children }: { children?: ReactNode }) {
   const { isAdmin, loading } = useAuth();
   const location = useLocation();
   const isAuthRoute = location.pathname === "/auth";
