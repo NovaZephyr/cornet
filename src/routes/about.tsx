@@ -13,6 +13,7 @@ import {
   Handshake,
   BookOpenText,
 } from "lucide-react";
+import "./about.css";
 import { AppShell } from "@/components/AppShell";
 import { useTheme } from "@/hooks/useTheme";
 import corenetworkMark from "@/assets/corenetwork-mark.png";
@@ -115,14 +116,17 @@ function AboutPage() {
                   {title}
                 </a>
               ))}
-              <Link to="/" className="mt-2 block border-t border-[#e1e1e1] pt-2 font-semibold">
+              <Link to="/" className="cn-2012-about-back">
                 Volver a Cornet
               </Link>
             </nav>
             <div className="cn-2012-about-content">
-              {sections.map(({ title, body }) => (
+              {sections.map(({ title, body, icon: Icon }) => (
                 <section key={title} id={title.toLowerCase().replace(/[^a-z0-9]+/g, "-")} className="cn-2012-about-card">
-                  <h2>{title}</h2>
+                  <div className="cn-2012-about-card-heading">
+                    <span className="cn-2012-about-card-icon"><Icon size={17} /></span>
+                    <h2>{title}</h2>
+                  </div>
                   <p>{body}</p>
                 </section>
               ))}
