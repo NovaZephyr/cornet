@@ -68,6 +68,9 @@ html[data-theme="cosmic-panda"] .cn-shell-logo strong {
   font-size: 18px !important;
   font-weight: 700 !important;
   letter-spacing: -0.4px !important;
+  color: #1a1a1a !important;
+  background: none !important;
+  -webkit-text-fill-color: #1a1a1a !important;
 }
 html[data-theme="cosmic-panda"] .cn-shell-logo small {
   display: none !important;
