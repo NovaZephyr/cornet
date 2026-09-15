@@ -1,0 +1,147 @@
+.cn-2012-about-page {
+  width: min(1120px, 100%);
+  margin: 0 auto;
+  padding: 24px 20px 48px;
+  color: #222;
+}
+
+.cn-2012-about-hero {
+  margin-bottom: 18px;
+  padding: 22px 24px;
+  border: 1px solid #cfcfcf;
+  border-radius: 4px;
+  background: linear-gradient(#fff, #eeeeee);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+}
+
+.cn-2012-about-hero h1 {
+  margin: 0;
+  color: #222;
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+.cn-2012-about-hero p {
+  margin: 7px 0 0;
+  color: #666;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.cn-2012-about-grid {
+  display: grid;
+  grid-template-columns: 210px minmax(0, 1fr);
+  align-items: start;
+  gap: 18px;
+}
+
+.cn-2012-about-nav {
+  position: sticky;
+  top: 18px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid #d2d2d2;
+  border-radius: 3px;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+}
+
+.cn-2012-about-nav a {
+  display: block;
+  padding: 9px 12px;
+  border-bottom: 1px solid #e5e5e5;
+  color: #444;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.3;
+  text-decoration: none;
+  transition: background-color 120ms ease, color 120ms ease;
+}
+
+.cn-2012-about-nav a:hover,
+.cn-2012-about-nav a:focus-visible {
+  background: #f3f3f3;
+  color: #d92316;
+  outline: none;
+}
+
+.cn-2012-about-nav .cn-2012-about-back {
+  border-top: 1px solid #dcdcdc;
+  border-bottom: 0;
+  background: #f7f7f7;
+  color: #222;
+}
+
+.cn-2012-about-content {
+  display: grid;
+  min-width: 0;
+  gap: 12px;
+}
+
+.cn-2012-about-card {
+  min-width: 0;
+  padding: 17px 19px;
+  border: 1px solid #d3d3d3;
+  border-radius: 3px;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.07);
+}
+
+.cn-2012-about-card-heading {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+}
+
+.cn-2012-about-card-icon {
+  display: grid;
+  flex: 0 0 auto;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border: 1px solid #d0d0d0;
+  border-radius: 3px;
+  background: #f3f3f3;
+  color: #d92316;
+}
+
+.cn-2012-about-card h2 {
+  margin: 0;
+  color: #222;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.cn-2012-about-card p {
+  margin: 10px 0 0;
+  color: #555;
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+@media (max-width: 760px) {
+  .cn-2012-about-page {
+    padding: 16px 12px 32px;
+  }
+
+  .cn-2012-about-hero {
+    padding: 18px;
+  }
+
+  .cn-2012-about-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .cn-2012-about-nav {
+    position: static;
+  }
+
+  .cn-2012-about-nav a {
+    padding: 10px 12px;
+  }
+}
