@@ -1,5 +1,5 @@
 /* Cosmic Panda guide correction: light-theme page + period-correct black guide. */
-[data-theme="retro2012"] {
+[data-theme="cosmic-panda"] {
   color-scheme: light !important;
   --background:#d9dadb !important;
   --foreground:#333 !important;
@@ -29,20 +29,20 @@
   --sidebar-border:#2a2a2a !important;
 }
 
-[data-theme="retro2012"] body,
-[data-theme="retro2012"] .cn-2012-app,
-[data-theme="retro2012"] .cn-2012-shell-body,
-[data-theme="retro2012"] .cn-2012-main {
+[data-theme="cosmic-panda"] body,
+[data-theme="cosmic-panda"] .cn-2012-app,
+[data-theme="cosmic-panda"] .cn-2012-shell-body,
+[data-theme="cosmic-panda"] .cn-2012-main {
   color-scheme:light !important;
 }
 
 /* The guide must behave like one ordered column. */
-[data-theme="retro2012"] .cn-2012-shell-body {
+[data-theme="cosmic-panda"] .cn-2012-shell-body {
   display:grid !important;
   grid-template-columns:200px minmax(0,1fr) !important;
   align-items:stretch !important;
 }
-[data-theme="retro2012"] .cn-2012-sidebar {
+[data-theme="cosmic-panda"] .cn-2012-sidebar {
   position:sticky !important;
   top:56px !important;
   align-self:start !important;
@@ -59,9 +59,9 @@
   border-right:1px solid #000 !important;
   box-shadow:1px 0 4px rgba(0,0,0,.28) !important;
 }
-[data-theme="retro2012"] .cn-2012-sidebar.is-open { width:200px !important; }
-[data-theme="retro2012"] .cn-2012-sidebar.is-collapsed { width:60px !important; }
-[data-theme="retro2012"] .cn-2012-sidebar-inner {
+[data-theme="cosmic-panda"] .cn-2012-sidebar.is-open { width:200px !important; }
+[data-theme="cosmic-panda"] .cn-2012-sidebar.is-collapsed { width:60px !important; }
+[data-theme="cosmic-panda"] .cn-2012-sidebar-inner {
   display:block !important;
   width:100% !important;
   min-height:100% !important;
@@ -69,16 +69,16 @@
 }
 
 /* One consistent rhythm for all guide controls. */
-[data-theme="retro2012"] .cn-2012-sidebar nav {
+[data-theme="cosmic-panda"] .cn-2012-sidebar nav {
   display:flex !important;
   flex-direction:column !important;
   width:100% !important;
   gap:1px !important;
   padding:0 7px !important;
 }
-[data-theme="retro2012"] .cn-2012-sidebar-link,
-[data-theme="retro2012"] .cn-2012-sidebar-subscription,
-[data-theme="retro2012"] .cn-2012-sidebar-icon {
+[data-theme="cosmic-panda"] .cn-2012-sidebar-link,
+[data-theme="cosmic-panda"] .cn-2012-sidebar-subscription,
+[data-theme="cosmic-panda"] .cn-2012-sidebar-icon {
   display:flex !important;
   width:100% !important;
   min-height:31px !important;
@@ -95,29 +95,29 @@
   text-decoration:none !important;
   box-sizing:border-box !important;
 }
-[data-theme="retro2012"] .cn-2012-sidebar-link svg,
-[data-theme="retro2012"] .cn-2012-sidebar-subscription svg {
+[data-theme="cosmic-panda"] .cn-2012-sidebar-link svg,
+[data-theme="cosmic-panda"] .cn-2012-sidebar-subscription svg {
   flex:0 0 16px !important;
   width:16px !important;
   height:16px !important;
   color:#aaa !important;
 }
-[data-theme="retro2012"] .cn-2012-sidebar-link:hover,
-[data-theme="retro2012"] .cn-2012-sidebar-subscription:hover,
-[data-theme="retro2012"] .cn-2012-sidebar-icon:hover {
+[data-theme="cosmic-panda"] .cn-2012-sidebar-link:hover,
+[data-theme="cosmic-panda"] .cn-2012-sidebar-subscription:hover,
+[data-theme="cosmic-panda"] .cn-2012-sidebar-icon:hover {
   background:#262626 !important;
   color:#fff !important;
 }
-[data-theme="retro2012"] .cn-2012-sidebar-link:hover svg { color:#fff !important; }
-[data-theme="retro2012"] .cn-2012-sidebar-link.bg-surface,
-[data-theme="retro2012"] .cn-2012-sidebar-link[aria-current="page"] {
+[data-theme="cosmic-panda"] .cn-2012-sidebar-link:hover svg { color:#fff !important; }
+[data-theme="cosmic-panda"] .cn-2012-sidebar-link.bg-surface,
+[data-theme="cosmic-panda"] .cn-2012-sidebar-link[aria-current="page"] {
   background:#303030 !important;
   color:#fff !important;
   box-shadow:inset 3px 0 #d92316 !important;
 }
 
 /* Account + subscriptions are separate blocks, not mixed into the primary buttons. */
-[data-theme="retro2012"] .cn-2012-sidebar-account {
+[data-theme="cosmic-panda"] .cn-2012-sidebar-account {
   display:flex !important;
   align-items:center !important;
   gap:8px !important;
@@ -125,21 +125,21 @@
   padding:8px 7px 9px !important;
   border-bottom:1px solid #292929 !important;
 }
-[data-theme="retro2012"] .cn-2012-sidebar-account p:first-child {
+[data-theme="cosmic-panda"] .cn-2012-sidebar-account p:first-child {
   color:#fff !important;
   font:700 12px/1.2 Arial,Helvetica,sans-serif !important;
 }
-[data-theme="retro2012"] .cn-2012-sidebar-account p:last-child {
+[data-theme="cosmic-panda"] .cn-2012-sidebar-account p:last-child {
   color:#777 !important;
   font:400 10px/1.2 Arial,Helvetica,sans-serif !important;
 }
-[data-theme="retro2012"] .cn-2012-sidebar-divider {
+[data-theme="cosmic-panda"] .cn-2012-sidebar-divider {
   display:block !important;
   height:1px !important;
   margin:8px 12px !important;
   background:#292929 !important;
 }
-[data-theme="retro2012"] .cn-2012-sidebar-section-title {
+[data-theme="cosmic-panda"] .cn-2012-sidebar-section-title {
   display:block !important;
   padding:8px 14px 5px !important;
   color:#777 !important;
@@ -147,7 +147,7 @@
   letter-spacing:.08em !important;
   text-transform:uppercase !important;
 }
-[data-theme="retro2012"] .cn-2012-sidebar-add {
+[data-theme="cosmic-panda"] .cn-2012-sidebar-add {
   display:flex !important;
   width:calc(100% - 16px) !important;
   min-height:30px !important;
@@ -162,30 +162,30 @@
   font:400 11px/30px Arial,Helvetica,sans-serif !important;
   box-sizing:border-box !important;
 }
-[data-theme="retro2012"] .cn-2012-sidebar-add:hover {
+[data-theme="cosmic-panda"] .cn-2012-sidebar-add:hover {
   background:#3b3b3b !important;
   color:#fff !important;
 }
-[data-theme="retro2012"] .cn-2012-sidebar-subscription {
+[data-theme="cosmic-panda"] .cn-2012-sidebar-subscription {
   min-height:29px !important;
   height:29px !important;
   padding:0 8px !important;
 }
-[data-theme="retro2012"] .cn-2012-sidebar-subscription img {
+[data-theme="cosmic-panda"] .cn-2012-sidebar-subscription img {
   width:24px !important;
   height:24px !important;
   border-radius:1px !important;
 }
-[data-theme="retro2012"] .cn-2012-sidebar-muted,
-[data-theme="retro2012"] .cn-2012-sidebar-guest span {
+[data-theme="cosmic-panda"] .cn-2012-sidebar-muted,
+[data-theme="cosmic-panda"] .cn-2012-sidebar-guest span {
   color:#777 !important;
   font:400 11px/1.35 Arial,Helvetica,sans-serif !important;
 }
 
 /* Collapsed guide: only compact square controls, never full-width labels. */
-[data-theme="retro2012"] .cn-2012-sidebar.is-collapsed .cn-2012-sidebar-inner { padding-top:8px !important; }
-[data-theme="retro2012"] .cn-2012-sidebar.is-collapsed nav { padding:0 5px !important; }
-[data-theme="retro2012"] .cn-2012-sidebar.is-collapsed .cn-2012-sidebar-icon {
+[data-theme="cosmic-panda"] .cn-2012-sidebar.is-collapsed .cn-2012-sidebar-inner { padding-top:8px !important; }
+[data-theme="cosmic-panda"] .cn-2012-sidebar.is-collapsed nav { padding:0 5px !important; }
+[data-theme="cosmic-panda"] .cn-2012-sidebar.is-collapsed .cn-2012-sidebar-icon {
   width:50px !important;
   min-height:40px !important;
   height:40px !important;
@@ -196,10 +196,10 @@
 }
 
 /* The mobile bar also belongs to the light theme, while retaining the historic dark guide color. */
-[data-theme="retro2012"] .cn-global-mobile-bar {
+[data-theme="cosmic-panda"] .cn-global-mobile-bar {
   background:#111 !important;
   border-top:1px solid #000 !important;
   color:#ddd !important;
 }
-[data-theme="retro2012"] .cn-global-mobile-bar a { color:#aaa !important; }
-[data-theme="retro2012"] .cn-global-mobile-bar a[data-active="true"] { color:#fff !important; background:#292929 !important; }
+[data-theme="cosmic-panda"] .cn-global-mobile-bar a { color:#aaa !important; }
+[data-theme="cosmic-panda"] .cn-global-mobile-bar a[data-active="true"] { color:#fff !important; background:#292929 !important; }

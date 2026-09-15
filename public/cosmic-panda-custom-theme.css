@@ -1,7 +1,7 @@
 /* Cosmic Panda 2012 — Custom Theme foundation.
    Global shell only. Channel/profile layouts remain an independent layer. */
 
-[data-theme="retro2012"] {
+[data-theme="cosmic-panda"] {
   --cp-bg:#d7d9dc;
   --cp-bg-deep:#c7c9cc;
   --cp-surface:#ffffff;
@@ -20,12 +20,12 @@
 }
 
 /* Whole-page identity: light site, dark chrome, subtle historical overlay. */
-[data-theme="retro2012"] body{
+[data-theme="cosmic-panda"] body{
   background:var(--cp-bg)!important;
   color:var(--cp-text)!important;
   font-family:Arial,Helvetica,sans-serif!important;
 }
-[data-theme="retro2012"] body::before{
+[data-theme="cosmic-panda"] body::before{
   content:"";
   position:fixed;
   inset:0;
@@ -33,10 +33,10 @@
   pointer-events:none;
   background:linear-gradient(180deg,rgba(255,255,255,.18),transparent 150px),radial-gradient(900px 420px at 50% -140px,rgba(255,255,255,.5),transparent 68%);
 }
-[data-theme="retro2012"] #root{position:relative;z-index:1}
+[data-theme="cosmic-panda"] #root{position:relative;z-index:1}
 
 /* Topbar: dark Cosmic Panda chrome, clearly distinct from modern CoreNetwork. */
-[data-theme="retro2012"] .cn-2012-topbar{
+[data-theme="cosmic-panda"] .cn-2012-topbar{
   position:sticky!important;
   top:0!important;
   z-index:100!important;
@@ -47,7 +47,7 @@
   box-shadow:0 1px 0 rgba(255,255,255,.08),0 2px 5px rgba(0,0,0,.28)!important;
   color:#eee!important;
 }
-[data-theme="retro2012"] .cn-2012-topbar .cn-2012-topnav-link{
+[data-theme="cosmic-panda"] .cn-2012-topbar .cn-2012-topnav-link{
   min-height:30px!important;
   padding:0 8px!important;
   border:0!important;
@@ -56,8 +56,8 @@
   font-size:11px!important;
   font-weight:400!important;
 }
-[data-theme="retro2012"] .cn-2012-topbar .cn-2012-topnav-link:hover{background:#464646!important;color:#fff!important}
-[data-theme="retro2012"] .cn-2012-topbar form input{
+[data-theme="cosmic-panda"] .cn-2012-topbar .cn-2012-topnav-link:hover{background:#464646!important;color:#fff!important}
+[data-theme="cosmic-panda"] .cn-2012-topbar form input{
   height:31px!important;
   border:1px solid #111!important;
   border-right:0!important;
@@ -65,31 +65,31 @@
   background:#fff!important;
   color:#222!important;
 }
-[data-theme="retro2012"] .cn-2012-topbar form button{
+[data-theme="cosmic-panda"] .cn-2012-topbar form button{
   height:31px!important;
   border:1px solid #111!important;
   border-radius:0 2px 2px 0!important;
   background:linear-gradient(#f8f8f8,#d8d8d8)!important;
   color:#333!important;
 }
-[data-theme="retro2012"] .cn-2012-topbar a,
-[data-theme="retro2012"] .cn-2012-topbar button,
-[data-theme="retro2012"] .cn-2012-topbar svg{color:#eee!important}
-[data-theme="retro2012"] .cn-2012-topbar [aria-label="Cambiar tema"]{
+[data-theme="cosmic-panda"] .cn-2012-topbar a,
+[data-theme="cosmic-panda"] .cn-2012-topbar button,
+[data-theme="cosmic-panda"] .cn-2012-topbar svg{color:#eee!important}
+[data-theme="cosmic-panda"] .cn-2012-topbar [aria-label="Cambiar tema"]{
   border:1px solid #111!important;
   border-radius:2px!important;
   background:linear-gradient(#555,#303030)!important;
 }
 
 /* Guide/sidebar: dark, dense and scrollable. */
-[data-theme="retro2012"] .cn-2012-shell-body{
+[data-theme="cosmic-panda"] .cn-2012-shell-body{
   position:relative!important;
   grid-template-columns:214px minmax(0,1fr)!important;
   gap:0!important;
   max-width:none!important;
   background:var(--cp-bg)!important;
 }
-[data-theme="retro2012"] .cn-2012-sidebar{
+[data-theme="cosmic-panda"] .cn-2012-sidebar{
   position:sticky!important;
   top:56px!important;
   width:214px!important;
@@ -103,10 +103,10 @@
   box-shadow:1px 0 4px rgba(0,0,0,.32)!important;
   color:#d2d2d2!important;
 }
-[data-theme="retro2012"] .cn-2012-sidebar-inner{padding:8px 0 14px!important;background:transparent!important}
-[data-theme="retro2012"] .cn-2012-sidebar nav{padding:0 8px!important;gap:1px!important}
-[data-theme="retro2012"] .cn-2012-sidebar-link,
-[data-theme="retro2012"] .cn-2012-sidebar-subscription{
+[data-theme="cosmic-panda"] .cn-2012-sidebar-inner{padding:8px 0 14px!important;background:transparent!important}
+[data-theme="cosmic-panda"] .cn-2012-sidebar nav{padding:0 8px!important;gap:1px!important}
+[data-theme="cosmic-panda"] .cn-2012-sidebar-link,
+[data-theme="cosmic-panda"] .cn-2012-sidebar-subscription{
   min-height:30px!important;
   border:0!important;
   border-radius:1px!important;
@@ -114,15 +114,15 @@
   color:#cfcfcf!important;
   font-size:12px!important;
 }
-[data-theme="retro2012"] .cn-2012-sidebar-link:hover,
-[data-theme="retro2012"] .cn-2012-sidebar-subscription:hover{background:#292929!important;color:#fff!important}
-[data-theme="retro2012"] .cn-2012-sidebar-link.bg-surface,
-[data-theme="retro2012"] .cn-2012-sidebar-link[aria-current="page"]{
+[data-theme="cosmic-panda"] .cn-2012-sidebar-link:hover,
+[data-theme="cosmic-panda"] .cn-2012-sidebar-subscription:hover{background:#292929!important;color:#fff!important}
+[data-theme="cosmic-panda"] .cn-2012-sidebar-link.bg-surface,
+[data-theme="cosmic-panda"] .cn-2012-sidebar-link[aria-current="page"]{
   background:linear-gradient(90deg,#333,#252525)!important;
   color:#fff!important;
   box-shadow:inset 3px 0 var(--cp-red)!important;
 }
-[data-theme="retro2012"] .cn-2012-sidebar-section-title{
+[data-theme="cosmic-panda"] .cn-2012-sidebar-section-title{
   padding:10px 15px 5px!important;
   color:#888!important;
   font-size:10px!important;
@@ -130,8 +130,8 @@
   text-transform:uppercase!important;
   letter-spacing:.08em!important;
 }
-[data-theme="retro2012"] .cn-2012-sidebar-divider{background:#2d2d2d!important}
-[data-theme="retro2012"] .cn-2012-sidebar-add{
+[data-theme="cosmic-panda"] .cn-2012-sidebar-divider{background:#2d2d2d!important}
+[data-theme="cosmic-panda"] .cn-2012-sidebar-add{
   margin:0 8px 7px!important;
   padding:7px 8px!important;
   border:1px solid #393939!important;
@@ -141,43 +141,43 @@
 }
 
 /* Main canvas: no modern floating-shell look. */
-[data-theme="retro2012"] .cn-2012-main{
+[data-theme="cosmic-panda"] .cn-2012-main{
   min-width:0!important;
   width:100%!important;
   padding:20px 24px 40px!important;
   background:linear-gradient(#dedfe1,#d7d8da)!important;
   color:var(--cp-text)!important;
 }
-[data-theme="retro2012"] .cn-2012-main a{color:var(--cp-link)}
-[data-theme="retro2012"] .cn-2012-main .rounded-xl,
-[data-theme="retro2012"] .cn-2012-main .rounded-2xl,
-[data-theme="retro2012"] .cn-2012-main .rounded-3xl,
-[data-theme="retro2012"] .cn-2012-main .rounded-full{border-radius:2px!important}
+[data-theme="cosmic-panda"] .cn-2012-main a{color:var(--cp-link)}
+[data-theme="cosmic-panda"] .cn-2012-main .rounded-xl,
+[data-theme="cosmic-panda"] .cn-2012-main .rounded-2xl,
+[data-theme="cosmic-panda"] .cn-2012-main .rounded-3xl,
+[data-theme="cosmic-panda"] .cn-2012-main .rounded-full{border-radius:2px!important}
 
 /* Content blocks become historical slabs rather than app-like cards. */
-[data-theme="retro2012"] .cn-2012-main .bg-surface,
-[data-theme="retro2012"] .cn-2012-main .bg-card,
-[data-theme="retro2012"] .cn-2012-main .bg-background{
+[data-theme="cosmic-panda"] .cn-2012-main .bg-surface,
+[data-theme="cosmic-panda"] .cn-2012-main .bg-card,
+[data-theme="cosmic-panda"] .cn-2012-main .bg-background{
   background:#fff!important;
 }
-[data-theme="retro2012"] .cn-2012-main .border,
-[data-theme="retro2012"] .cn-2012-main .border-border,
-[data-theme="retro2012"] .cn-2012-main .border-input{
+[data-theme="cosmic-panda"] .cn-2012-main .border,
+[data-theme="cosmic-panda"] .cn-2012-main .border-border,
+[data-theme="cosmic-panda"] .cn-2012-main .border-input{
   border-color:var(--cp-border)!important;
 }
-[data-theme="retro2012"] .cn-2012-main article,
-[data-theme="retro2012"] .cn-2012-main .cn-video-card,
-[data-theme="retro2012"] .cn-2012-main [class*="group/card"]{
+[data-theme="cosmic-panda"] .cn-2012-main article,
+[data-theme="cosmic-panda"] .cn-2012-main .cn-video-card,
+[data-theme="cosmic-panda"] .cn-2012-main [class*="group/card"]{
   border:1px solid #c9c9c9!important;
   border-radius:2px!important;
   background:#fff!important;
   box-shadow:0 1px 2px rgba(0,0,0,.06)!important;
 }
-[data-theme="retro2012"] .cn-2012-main img{border-radius:1px!important}
-[data-theme="retro2012"] .cn-2012-main button{
+[data-theme="cosmic-panda"] .cn-2012-main img{border-radius:1px!important}
+[data-theme="cosmic-panda"] .cn-2012-main button{
   border-radius:2px!important;
 }
-[data-theme="retro2012"] .cn-2012-main button[class*="bg-primary"]{
+[data-theme="cosmic-panda"] .cn-2012-main button[class*="bg-primary"]{
   background:linear-gradient(#666,#444)!important;
   border:1px solid #333!important;
   color:#fff!important;
@@ -185,42 +185,42 @@
 }
 
 /* Explore/home/watch: replace generous modern spacing with compact 2012 rhythm. */
-[data-theme="retro2012"] .cn-explore-section,
-[data-theme="retro2012"] .cn-watch-page,
-[data-theme="retro2012"] .cn-2012-watch-page,
-[data-theme="retro2012"] .cn-watch-recommendations{
+[data-theme="cosmic-panda"] .cn-explore-section,
+[data-theme="cosmic-panda"] .cn-watch-page,
+[data-theme="cosmic-panda"] .cn-2012-watch-page,
+[data-theme="cosmic-panda"] .cn-watch-recommendations{
   border-radius:2px!important;
   border:1px solid var(--cp-border)!important;
   background:#fff!important;
   box-shadow:0 1px 2px rgba(0,0,0,.08)!important;
 }
-[data-theme="retro2012"] .cn-watch-recommendations{background:#efefef!important}
-[data-theme="retro2012"] [data-corenet-player]{border-radius:0!important;background:#000!important;border:1px solid #111!important}
+[data-theme="cosmic-panda"] .cn-watch-recommendations{background:#efefef!important}
+[data-theme="cosmic-panda"] [data-corenet-player]{border-radius:0!important;background:#000!important;border:1px solid #111!important}
 
 /* Footer follows the same flat grey/white language. */
-[data-theme="retro2012"] footer{
+[data-theme="cosmic-panda"] footer{
   background:#d0d0d0!important;
   border-top:1px solid #bbb!important;
   color:#555!important;
 }
 
 /* Small historical details. */
-[data-theme="retro2012"] .cn-2012-main h1{font-weight:400!important}
-[data-theme="retro2012"] .cn-2012-main h2,[data-theme="retro2012"] .cn-2012-main h3{font-weight:700!important}
-[data-theme="retro2012"] ::-webkit-scrollbar{width:11px;height:11px}
-[data-theme="retro2012"] ::-webkit-scrollbar-track{background:#202020}
-[data-theme="retro2012"] ::-webkit-scrollbar-thumb{background:#555;border:2px solid #202020}
-[data-theme="retro2012"] ::-webkit-scrollbar-thumb:hover{background:#666}
+[data-theme="cosmic-panda"] .cn-2012-main h1{font-weight:400!important}
+[data-theme="cosmic-panda"] .cn-2012-main h2,[data-theme="cosmic-panda"] .cn-2012-main h3{font-weight:700!important}
+[data-theme="cosmic-panda"] ::-webkit-scrollbar{width:11px;height:11px}
+[data-theme="cosmic-panda"] ::-webkit-scrollbar-track{background:#202020}
+[data-theme="cosmic-panda"] ::-webkit-scrollbar-thumb{background:#555;border:2px solid #202020}
+[data-theme="cosmic-panda"] ::-webkit-scrollbar-thumb:hover{background:#666}
 
 /* Settings itself is also part of the Custom Theme experience. */
-[data-theme="retro2012"] .cn-settings-page{font-family:Arial,Helvetica,sans-serif!important}
-[data-theme="retro2012"] .cn-settings-nav{background:#161616!important;border-color:#000!important}
-[data-theme="retro2012"] .cn-settings-nav button{border-radius:1px!important;color:#bbb!important}
-[data-theme="retro2012"] .cn-settings-nav button[data-active="true"]{background:#303030!important;color:#fff!important;box-shadow:inset 3px 0 var(--cp-red)!important}
-[data-theme="retro2012"] .cn-settings-card{border-radius:2px!important;background:#fff!important;border-color:#c7c7c7!important;box-shadow:0 1px 2px rgba(0,0,0,.08)!important}
+[data-theme="cosmic-panda"] .cn-settings-page{font-family:Arial,Helvetica,sans-serif!important}
+[data-theme="cosmic-panda"] .cn-settings-nav{background:#161616!important;border-color:#000!important}
+[data-theme="cosmic-panda"] .cn-settings-nav button{border-radius:1px!important;color:#bbb!important}
+[data-theme="cosmic-panda"] .cn-settings-nav button[data-active="true"]{background:#303030!important;color:#fff!important;box-shadow:inset 3px 0 var(--cp-red)!important}
+[data-theme="cosmic-panda"] .cn-settings-card{border-radius:2px!important;background:#fff!important;border-color:#c7c7c7!important;box-shadow:0 1px 2px rgba(0,0,0,.08)!important}
 
 @media(max-width:900px){
-  [data-theme="retro2012"] .cn-2012-shell-body{display:block!important}
-  [data-theme="retro2012"] .cn-2012-sidebar{display:none!important}
-  [data-theme="retro2012"] .cn-2012-main{padding:14px 12px 30px!important}
+  [data-theme="cosmic-panda"] .cn-2012-shell-body{display:block!important}
+  [data-theme="cosmic-panda"] .cn-2012-sidebar{display:none!important}
+  [data-theme="cosmic-panda"] .cn-2012-main{padding:14px 12px 30px!important}
 }
