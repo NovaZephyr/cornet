@@ -1,5 +1,5 @@
 /* Cosmic Panda is a light theme. Dark chrome is component-scoped, not a dark theme. */
-[data-theme="retro2012"] {
+[data-theme="cosmic-panda"] {
   color-scheme: light !important;
   --background:#e5e5e5 !important;
   --foreground:#333333 !important;
@@ -29,27 +29,27 @@
   --sidebar-border:#000000 !important;
   --sidebar-ring:#777777 !important;
 }
-[data-theme="retro2012"] body,
-[data-theme="retro2012"] .cn-2012-app,
-[data-theme="retro2012"] .cn-2012-main {
+[data-theme="cosmic-panda"] body,
+[data-theme="cosmic-panda"] .cn-2012-app,
+[data-theme="cosmic-panda"] .cn-2012-main {
   background:#e5e5e5 !important;
   color:#333333 !important;
 }
-[data-theme="retro2012"] .cn-2012-main .bg-background,
-[data-theme="retro2012"] .cn-2012-main .bg-surface,
-[data-theme="retro2012"] .cn-2012-main .bg-card,
-[data-theme="retro2012"] .cn-2012-main .bg-popover {
+[data-theme="cosmic-panda"] .cn-2012-main .bg-background,
+[data-theme="cosmic-panda"] .cn-2012-main .bg-surface,
+[data-theme="cosmic-panda"] .cn-2012-main .bg-card,
+[data-theme="cosmic-panda"] .cn-2012-main .bg-popover {
   background:#ffffff !important;
   color:#333333 !important;
 }
-[data-theme="retro2012"] .cn-2012-main .text-foreground,
-[data-theme="retro2012"] .cn-2012-main .text-card-foreground,
-[data-theme="retro2012"] .cn-2012-main .text-popover-foreground {
+[data-theme="cosmic-panda"] .cn-2012-main .text-foreground,
+[data-theme="cosmic-panda"] .cn-2012-main .text-card-foreground,
+[data-theme="cosmic-panda"] .cn-2012-main .text-popover-foreground {
   color:#333333 !important;
 }
-[data-theme="retro2012"] .cn-2012-main .text-muted-foreground {
+[data-theme="cosmic-panda"] .cn-2012-main .text-muted-foreground {
   color:#6b6b6b !important;
 }
 /* The historic guide/topbar may be dark visually, but the theme itself remains light. */
-[data-theme="retro2012"] .cn-2012-topbar,
-[data-theme="retro2012"] .cn-2012-sidebar { color-scheme:dark !important; }
+[data-theme="cosmic-panda"] .cn-2012-topbar,
+[data-theme="cosmic-panda"] .cn-2012-sidebar { color-scheme:dark !important; }

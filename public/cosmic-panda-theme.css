@@ -1,5 +1,5 @@
 /* Cosmic Panda 2012 — historical 2012 light shell + dark guide. */
-[data-theme="retro2012"] {
+[data-theme="cosmic-panda"] {
   color-scheme: light !important;
   --background: #e7e7e7;
   --foreground: #333;
@@ -31,22 +31,22 @@
   font-family: Arial, Helvetica, sans-serif !important;
 }
 
-html[data-theme="retro2012"],
-html[data-theme="retro2012"] body {
+html[data-theme="cosmic-panda"],
+html[data-theme="cosmic-panda"] body {
   margin: 0;
   background: #e7e7e7 !important;
   color: #333 !important;
   font-family: Arial, Helvetica, sans-serif !important;
 }
 
-html[data-theme="retro2012"] .cn-shell {
+html[data-theme="cosmic-panda"] .cn-shell {
   min-height: 100vh;
   background: #e7e7e7 !important;
   color: #333 !important;
 }
 
 /* 2012-era chrome: white top bar, compact search, no modern glass. */
-html[data-theme="retro2012"] .cn-shell-header {
+html[data-theme="cosmic-panda"] .cn-shell-header {
   height: 50px !important;
   min-height: 50px !important;
   padding: 0 12px !important;
@@ -55,28 +55,28 @@ html[data-theme="retro2012"] .cn-shell-header {
   box-shadow: 0 1px 2px rgb(0 0 0 / 6%) !important;
   color: #333 !important;
 }
-html[data-theme="retro2012"] .cn-shell-header a,
-html[data-theme="retro2012"] .cn-shell-header button,
-html[data-theme="retro2012"] .cn-shell-header svg {
+html[data-theme="cosmic-panda"] .cn-shell-header a,
+html[data-theme="cosmic-panda"] .cn-shell-header button,
+html[data-theme="cosmic-panda"] .cn-shell-header svg {
   color: #333 !important;
 }
-html[data-theme="retro2012"] .cn-shell-logo img {
+html[data-theme="cosmic-panda"] .cn-shell-logo img {
   width: 28px !important;
   height: 28px !important;
 }
-html[data-theme="retro2012"] .cn-shell-logo strong {
+html[data-theme="cosmic-panda"] .cn-shell-logo strong {
   font-size: 18px !important;
   font-weight: 700 !important;
   letter-spacing: -0.4px !important;
 }
-html[data-theme="retro2012"] .cn-shell-logo small {
+html[data-theme="cosmic-panda"] .cn-shell-logo small {
   display: none !important;
 }
-html[data-theme="retro2012"] .cn-shell-search {
+html[data-theme="cosmic-panda"] .cn-shell-search {
   max-width: 510px !important;
   height: 31px !important;
 }
-html[data-theme="retro2012"] .cn-shell-search input {
+html[data-theme="cosmic-panda"] .cn-shell-search input {
   height: 31px !important;
   min-height: 31px !important;
   border: 1px solid #bdbdbd !important;
@@ -86,7 +86,7 @@ html[data-theme="retro2012"] .cn-shell-search input {
   box-shadow: inset 0 1px 2px rgb(0 0 0 / 10%) !important;
   font-size: 13px !important;
 }
-html[data-theme="retro2012"] .cn-shell-search button {
+html[data-theme="cosmic-panda"] .cn-shell-search button {
   height: 31px !important;
   width: 46px !important;
   border: 1px solid #bdbdbd !important;
@@ -95,16 +95,16 @@ html[data-theme="retro2012"] .cn-shell-search button {
   background: linear-gradient(#fafafa, #e4e4e4) !important;
   box-shadow: none !important;
 }
-html[data-theme="retro2012"] .cn-shell-icon-button {
+html[data-theme="cosmic-panda"] .cn-shell-icon-button {
   border-radius: 2px !important;
   box-shadow: none !important;
 }
 
 /* Historical guide: compact dark rail instead of a modern floating sidebar. */
-html[data-theme="retro2012"] .cn-shell-layout {
+html[data-theme="cosmic-panda"] .cn-shell-layout {
   background: #e7e7e7 !important;
 }
-html[data-theme="retro2012"] .cn-shell-sidebar {
+html[data-theme="cosmic-panda"] .cn-shell-sidebar {
   width: 190px !important;
   min-width: 190px !important;
   padding: 8px 7px !important;
@@ -112,27 +112,27 @@ html[data-theme="retro2012"] .cn-shell-sidebar {
   border-right: 1px solid #171717 !important;
   box-shadow: 1px 0 2px rgb(0 0 0 / 12%) !important;
 }
-html[data-theme="retro2012"] .cn-shell-sidebar.cn-shell-sidebar-collapsed {
+html[data-theme="cosmic-panda"] .cn-shell-sidebar.cn-shell-sidebar-collapsed {
   width: 58px !important;
   min-width: 58px !important;
 }
-html[data-theme="retro2012"] .cn-shell-account {
+html[data-theme="cosmic-panda"] .cn-shell-account {
   padding: 7px 7px 9px !important;
   margin-bottom: 6px !important;
   border-bottom: 1px solid #444 !important;
 }
-html[data-theme="retro2012"] .cn-shell-account strong {
+html[data-theme="cosmic-panda"] .cn-shell-account strong {
   color: #fff !important;
   font-size: 12px !important;
 }
-html[data-theme="retro2012"] .cn-shell-account span {
+html[data-theme="cosmic-panda"] .cn-shell-account span {
   color: #a7a7a7 !important;
   font-size: 10px !important;
 }
-html[data-theme="retro2012"] .cn-shell-sidebar nav {
+html[data-theme="cosmic-panda"] .cn-shell-sidebar nav {
   gap: 0 !important;
 }
-html[data-theme="retro2012"] .cn-shell-sidebar nav a {
+html[data-theme="cosmic-panda"] .cn-shell-sidebar nav a {
   min-height: 31px !important;
   padding: 7px 8px !important;
   margin: 1px 0 !important;
@@ -144,28 +144,28 @@ html[data-theme="retro2012"] .cn-shell-sidebar nav a {
   box-shadow: none !important;
   transform: none !important;
 }
-html[data-theme="retro2012"] .cn-shell-sidebar nav a:hover {
+html[data-theme="cosmic-panda"] .cn-shell-sidebar nav a:hover {
   background: #3a3a3a !important;
   color: #fff !important;
 }
-html[data-theme="retro2012"] .cn-shell-sidebar nav a[data-active="true"] {
+html[data-theme="cosmic-panda"] .cn-shell-sidebar nav a[data-active="true"] {
   background: #3d3d3d !important;
   color: #fff !important;
   box-shadow: inset 3px 0 #cc181e !important;
 }
 
 /* Main canvas: gray page surround with a white centered 2012 content plate. */
-html[data-theme="retro2012"] .cn-shell-main {
+html[data-theme="cosmic-panda"] .cn-shell-main {
   min-width: 0 !important;
   padding: 18px 18px 40px !important;
   background: #e7e7e7 !important;
 }
-html[data-theme="retro2012"] .cn-shell-main > :not(.cn-shell-footer) {
+html[data-theme="cosmic-panda"] .cn-shell-main > :not(.cn-shell-footer) {
   width: min(100%, 1080px) !important;
   max-width: 1080px !important;
   margin-inline: auto !important;
 }
-html[data-theme="retro2012"] .cn-shell-footer {
+html[data-theme="cosmic-panda"] .cn-shell-footer {
   width: min(100%, 1080px) !important;
   margin: 28px auto 0 !important;
   padding-top: 16px !important;
@@ -175,30 +175,30 @@ html[data-theme="retro2012"] .cn-shell-footer {
 }
 
 /* Global 2012 component language: square controls, almost no shadow, small typography. */
-html[data-theme="retro2012"] button,
-html[data-theme="retro2012"] [role="button"],
-html[data-theme="retro2012"] input,
-html[data-theme="retro2012"] select,
-html[data-theme="retro2012"] textarea,
-html[data-theme="retro2012"] .rounded-xl,
-html[data-theme="retro2012"] .rounded-2xl,
-html[data-theme="retro2012"] .rounded-lg {
+html[data-theme="cosmic-panda"] button,
+html[data-theme="cosmic-panda"] [role="button"],
+html[data-theme="cosmic-panda"] input,
+html[data-theme="cosmic-panda"] select,
+html[data-theme="cosmic-panda"] textarea,
+html[data-theme="cosmic-panda"] .rounded-xl,
+html[data-theme="cosmic-panda"] .rounded-2xl,
+html[data-theme="cosmic-panda"] .rounded-lg {
   border-radius: 2px !important;
   box-shadow: none !important;
 }
-html[data-theme="retro2012"] img {
+html[data-theme="cosmic-panda"] img {
   border-radius: 0 !important;
 }
-html[data-theme="retro2012"] .cn-shell-main .bg-card,
-html[data-theme="retro2012"] .cn-shell-main .bg-surface {
+html[data-theme="cosmic-panda"] .cn-shell-main .bg-card,
+html[data-theme="cosmic-panda"] .cn-shell-main .bg-surface {
   background: #fff !important;
 }
-html[data-theme="retro2012"] .cn-shell-main .border-border {
+html[data-theme="cosmic-panda"] .cn-shell-main .border-border {
   border-color: #d7d7d7 !important;
 }
 
 /* 2012 homepage: white plate, section headings, horizontal video shelves. */
-html[data-theme="retro2012"] .cn-cosmic-home {
+html[data-theme="cosmic-panda"] .cn-cosmic-home {
   width: 100% !important;
   max-width: 1080px !important;
   margin: 0 auto !important;
@@ -206,7 +206,7 @@ html[data-theme="retro2012"] .cn-cosmic-home {
   border: 1px solid #d6d6d6 !important;
   box-shadow: 0 1px 2px rgb(0 0 0 / 5%) !important;
 }
-html[data-theme="retro2012"] .cn-cosmic-home-tabs {
+html[data-theme="cosmic-panda"] .cn-cosmic-home-tabs {
   display: flex !important;
   align-items: stretch !important;
   gap: 0 !important;
@@ -215,7 +215,7 @@ html[data-theme="retro2012"] .cn-cosmic-home-tabs {
   background: #f3f3f3 !important;
   border-bottom: 1px solid #d6d6d6 !important;
 }
-html[data-theme="retro2012"] .cn-cosmic-home-tabs button {
+html[data-theme="cosmic-panda"] .cn-cosmic-home-tabs button {
   min-height: 36px !important;
   padding: 0 12px !important;
   border: 0 !important;
@@ -226,38 +226,38 @@ html[data-theme="retro2012"] .cn-cosmic-home-tabs button {
   font-weight: 700 !important;
   text-transform: uppercase !important;
 }
-html[data-theme="retro2012"] .cn-cosmic-home-tabs button:hover {
+html[data-theme="cosmic-panda"] .cn-cosmic-home-tabs button:hover {
   background: #e9e9e9 !important;
   color: #333 !important;
 }
-html[data-theme="retro2012"] .cn-cosmic-home-tabs button.is-active {
+html[data-theme="cosmic-panda"] .cn-cosmic-home-tabs button.is-active {
   color: #cc181e !important;
   border-bottom-color: #cc181e !important;
 }
-html[data-theme="retro2012"] .cn-cosmic-feature {
+html[data-theme="cosmic-panda"] .cn-cosmic-feature {
   display: grid !important;
   grid-template-columns: minmax(0, 1.7fr) minmax(260px, 0.9fr) !important;
   gap: 0 !important;
   border-bottom: 1px solid #d6d6d6 !important;
 }
-html[data-theme="retro2012"] .cn-cosmic-feature-main {
+html[data-theme="cosmic-panda"] .cn-cosmic-feature-main {
   min-width: 0 !important;
   padding: 14px !important;
   border-right: 1px solid #ddd !important;
 }
-html[data-theme="retro2012"] .cn-cosmic-feature-list {
+html[data-theme="cosmic-panda"] .cn-cosmic-feature-list {
   min-width: 0 !important;
   padding: 10px !important;
 }
-html[data-theme="retro2012"] .cn-cosmic-feature-list > div {
+html[data-theme="cosmic-panda"] .cn-cosmic-feature-list > div {
   padding: 7px 0 !important;
   border-bottom: 1px solid #e2e2e2 !important;
 }
-html[data-theme="retro2012"] .cn-cosmic-shelf {
+html[data-theme="cosmic-panda"] .cn-cosmic-shelf {
   padding: 14px !important;
   border-bottom: 1px solid #ddd !important;
 }
-html[data-theme="retro2012"] .cn-cosmic-shelf-heading {
+html[data-theme="cosmic-panda"] .cn-cosmic-shelf-heading {
   display: flex !important;
   align-items: baseline !important;
   justify-content: space-between !important;
@@ -265,101 +265,101 @@ html[data-theme="retro2012"] .cn-cosmic-shelf-heading {
   padding-bottom: 6px !important;
   border-bottom: 1px solid #d9d9d9 !important;
 }
-html[data-theme="retro2012"] .cn-cosmic-shelf-heading h2 {
+html[data-theme="cosmic-panda"] .cn-cosmic-shelf-heading h2 {
   margin: 0 !important;
   color: #333 !important;
   font-size: 13px !important;
   font-weight: 700 !important;
   text-transform: uppercase !important;
 }
-html[data-theme="retro2012"] .cn-cosmic-shelf-heading span {
+html[data-theme="cosmic-panda"] .cn-cosmic-shelf-heading span {
   color: #999 !important;
   font-size: 10px !important;
 }
-html[data-theme="retro2012"] .cn-cosmic-grid {
+html[data-theme="cosmic-panda"] .cn-cosmic-grid {
   display: grid !important;
   grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
   gap: 12px !important;
 }
-html[data-theme="retro2012"] .cn-cosmic-home .cn-cosmic-grid > * {
+html[data-theme="cosmic-panda"] .cn-cosmic-home .cn-cosmic-grid > * {
   min-width: 0 !important;
 }
-html[data-theme="retro2012"] .cn-cosmic-home .cn-video-card,
-html[data-theme="retro2012"] .cn-cosmic-home article {
+html[data-theme="cosmic-panda"] .cn-cosmic-home .cn-video-card,
+html[data-theme="cosmic-panda"] .cn-cosmic-home article {
   border-radius: 2px !important;
   box-shadow: none !important;
 }
-html[data-theme="retro2012"] .cn-cosmic-home a {
+html[data-theme="cosmic-panda"] .cn-cosmic-home a {
   color: inherit;
 }
-html[data-theme="retro2012"] .cn-cosmic-home .cn-cosmic-grid a.line-clamp-2 {
+html[data-theme="cosmic-panda"] .cn-cosmic-home .cn-cosmic-grid a.line-clamp-2 {
   font-size: 12px !important;
   line-height: 1.35 !important;
 }
-html[data-theme="retro2012"] .cn-cosmic-home .cn-cosmic-grid p,
-html[data-theme="retro2012"] .cn-cosmic-home .cn-cosmic-grid a.text-xs {
+html[data-theme="cosmic-panda"] .cn-cosmic-home .cn-cosmic-grid p,
+html[data-theme="cosmic-panda"] .cn-cosmic-home .cn-cosmic-grid a.text-xs {
   font-size: 10px !important;
 }
 
 /* Watch page: Cosmic Panda's characteristic black player stage and gray details. */
-html[data-theme="retro2012"] [data-corenet-player] {
+html[data-theme="cosmic-panda"] [data-corenet-player] {
   background: #111 !important;
   border: 1px solid #111 !important;
   padding: 8px !important;
   box-shadow: none !important;
 }
-html[data-theme="retro2012"] [data-corenet-player] video {
+html[data-theme="cosmic-panda"] [data-corenet-player] video {
   border-radius: 0 !important;
 }
-html[data-theme="retro2012"] .cn-shell-main > div {
+html[data-theme="cosmic-panda"] .cn-shell-main > div {
   color: #333 !important;
 }
-html[data-theme="retro2012"] .cn-shell-main .bg-black {
+html[data-theme="cosmic-panda"] .cn-shell-main .bg-black {
   background: #111 !important;
 }
 
 /* Shorts keeps its own feed behavior, but the skin remains historically styled. */
-html[data-theme="retro2012"] .cn-shorts-page {
+html[data-theme="cosmic-panda"] .cn-shorts-page {
   background: #e7e7e7 !important;
 }
-html[data-theme="retro2012"] .cn-shorts-card,
-html[data-theme="retro2012"] .cn-shorts-header,
-html[data-theme="retro2012"] .cn-shorts-empty {
+html[data-theme="cosmic-panda"] .cn-shorts-card,
+html[data-theme="cosmic-panda"] .cn-shorts-header,
+html[data-theme="cosmic-panda"] .cn-shorts-empty {
   border-radius: 2px !important;
   box-shadow: none !important;
 }
-html[data-theme="retro2012"] .cn-shorts-header,
-html[data-theme="retro2012"] .cn-shorts-empty {
+html[data-theme="cosmic-panda"] .cn-shorts-header,
+html[data-theme="cosmic-panda"] .cn-shorts-empty {
   background: #fff !important;
   border: 1px solid #d6d6d6 !important;
 }
-html[data-theme="retro2012"] .cn-shorts-kicker {
+html[data-theme="cosmic-panda"] .cn-shorts-kicker {
   color: #cc181e !important;
   font-weight: 700 !important;
 }
 
 @media (max-width: 900px) {
-  html[data-theme="retro2012"] .cn-cosmic-feature {
+  html[data-theme="cosmic-panda"] .cn-cosmic-feature {
     grid-template-columns: 1fr !important;
   }
-  html[data-theme="retro2012"] .cn-cosmic-feature-main {
+  html[data-theme="cosmic-panda"] .cn-cosmic-feature-main {
     border-right: 0 !important;
     border-bottom: 1px solid #ddd !important;
   }
-  html[data-theme="retro2012"] .cn-cosmic-grid {
+  html[data-theme="cosmic-panda"] .cn-cosmic-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
   }
 }
 
 @media (max-width: 600px) {
-  html[data-theme="retro2012"] .cn-shell-main {
+  html[data-theme="cosmic-panda"] .cn-shell-main {
     padding: 10px !important;
   }
-  html[data-theme="retro2012"] .cn-cosmic-home {
+  html[data-theme="cosmic-panda"] .cn-cosmic-home {
     border-left: 0 !important;
     border-right: 0 !important;
   }
-  html[data-theme="retro2012"] .cn-cosmic-grid {
+  html[data-theme="cosmic-panda"] .cn-cosmic-grid {
     grid-template-columns: 1fr !important;
   }
 }
