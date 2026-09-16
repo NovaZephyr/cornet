@@ -1,0 +1,88 @@
+/* Per-channel color tokens shared by historical Channel 1.0 and Channel 2.0. */
+.cn-historical-color-scope{
+  --cn-channel-primary:#1f4fa3;
+  --cn-channel-secondary:#2aa84a;
+  --cn-channel-surface:#fff;
+  --cn-channel-text:#222;
+}
+
+/* Channel 1.0 */
+.cn-historical-color-scope .cn-retro-layout-classic-2009{
+  color:var(--cn-channel-text)!important;
+}
+.cn-historical-color-scope .cn-retro-layout-classic-2009 main{
+  background:color-mix(in srgb,var(--cn-channel-primary) 10%,#e9e9e9)!important;
+}
+.cn-historical-color-scope .cn-retro-layout-classic-2009 main section,
+.cn-historical-color-scope .cn-retro-layout-classic-2009 aside section{
+  background:var(--cn-channel-surface)!important;
+  border-color:var(--cn-channel-primary)!important;
+  color:var(--cn-channel-text)!important;
+}
+.cn-historical-color-scope .cn-retro-layout-classic-2009 main section > div:first-child,
+.cn-historical-color-scope .cn-retro-layout-classic-2009 aside section > h2{
+  background:linear-gradient(to bottom,color-mix(in srgb,var(--cn-channel-primary) 30%,#fff),color-mix(in srgb,var(--cn-channel-primary) 12%,#fff))!important;
+  border-color:color-mix(in srgb,var(--cn-channel-primary) 55%,#fff)!important;
+  color:var(--cn-channel-text)!important;
+}
+.cn-historical-color-scope .cn-retro-layout-classic-2009 a{
+  color:var(--cn-channel-primary)!important;
+}
+.cn-historical-color-scope .cn-retro-layout-classic-2009 button:first-child{
+  background:linear-gradient(to bottom,color-mix(in srgb,var(--cn-channel-primary) 82%,#fff),var(--cn-channel-primary))!important;
+  border-color:var(--cn-channel-primary)!important;
+}
+.cn-historical-color-scope .cn-retro-layout-classic-2009 main section article{
+  border-color:color-mix(in srgb,var(--cn-channel-primary) 30%,#ddd)!important;
+}
+
+/* Channel 2.0 */
+.cn-historical-color-scope .cn-channel20-canvas{
+  color:var(--cn-channel-text)!important;
+}
+.cn-historical-color-scope .cn-channel20-shell{
+  border-color:var(--cn-channel-primary)!important;
+  background:var(--cn-channel-surface)!important;
+}
+.cn-historical-color-scope .cn-channel20-header,
+.cn-historical-color-scope .cn-channel20-nav{
+  border-color:color-mix(in srgb,var(--cn-channel-primary) 45%,#bbb)!important;
+}
+.cn-historical-color-scope .cn-channel20-nav a.active{
+  color:var(--cn-channel-primary)!important;
+  border-bottom-color:var(--cn-channel-primary)!important;
+}
+.cn-historical-color-scope .cn-channel20-columns{
+  background:color-mix(in srgb,var(--cn-channel-primary) 10%,#e9e9e9)!important;
+}
+.cn-historical-color-scope .cn-channel20-profile section,
+.cn-historical-color-scope .cn-channel20-feature,
+.cn-historical-color-scope .cn-channel20-section{
+  background:var(--cn-channel-surface)!important;
+  border-color:var(--cn-channel-primary)!important;
+  color:var(--cn-channel-text)!important;
+}
+.cn-historical-color-scope .cn-channel20-profile h2,
+.cn-historical-color-scope .cn-channel20-section-title{
+  background:linear-gradient(to bottom,color-mix(in srgb,var(--cn-channel-primary) 34%,#fff),color-mix(in srgb,var(--cn-channel-primary) 12%,#fff))!important;
+  border-color:color-mix(in srgb,var(--cn-channel-primary) 55%,#fff)!important;
+  color:var(--cn-channel-text)!important;
+}
+.cn-historical-color-scope .cn-channel20-main a,
+.cn-historical-color-scope .cn-channel20-profile a{
+  color:var(--cn-channel-primary)!important;
+}
+.cn-historical-color-scope .cn-channel20-subscribe{
+  background:linear-gradient(to bottom,color-mix(in srgb,var(--cn-channel-primary) 82%,#fff),var(--cn-channel-primary))!important;
+  border-color:var(--cn-channel-primary)!important;
+}
+.cn-historical-color-scope .cn-channel20-upload-list article{
+  border-color:color-mix(in srgb,var(--cn-channel-primary) 30%,#ddd)!important;
+}
+.cn-historical-color-scope .cn-channel20-upload-list article .thumbnail{
+  border-color:var(--cn-channel-primary)!important;
+}
+
+@media (max-width:700px){
+  .cn-historical-color-scope .cn-channel20-feature-body{grid-template-columns:1fr!important}
+}
