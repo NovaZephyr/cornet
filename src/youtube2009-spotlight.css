@@ -1,4 +1,5 @@
-html[data-theme="yt-2009"] .cn-yt2009-spotlight{margin:0 0 18px;border:1px solid #c9c9c9;background:#fff;font-family:Arial,Helvetica,sans-serif}
+html[data-theme="yt-2009"] .cn-yt2009-spotlight{margin:0 0 18px;border:1px solid #c9c9c9;background:#fff;font-family:Arial,Helvetica,sans-serif;border-radius:0!important}
+html[data-theme="yt-2009"] .cn-yt2009-spotlight *{border-radius:0!important}
 html[data-theme="yt-2009"] .cn-yt2009-spotlight-heading{display:flex;align-items:center;justify-content:space-between;padding:6px 9px;border-bottom:1px solid #c8c8c8;background:linear-gradient(#fff,#e9e9e9);color:#333}
 html[data-theme="yt-2009"] .cn-yt2009-spotlight-heading h2{margin:0;color:#333;font-size:13px;font-weight:700}
 html[data-theme="yt-2009"] .cn-yt2009-spotlight-heading span{color:#777;font-size:10px}
