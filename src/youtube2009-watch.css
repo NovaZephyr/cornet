@@ -1,251 +1,45 @@
 /* YouTube 2009 watch page — scoped exclusively to the canonical yt-2009 theme. */
-html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) {
-  width: min(100%, 1000px) !important;
-  max-width: 1000px !important;
-  padding-top: 12px !important;
-  padding-bottom: 24px !important;
-  font-family: Arial, Helvetica, sans-serif !important;
-}
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) { width:min(100%,1000px)!important;max-width:1000px!important;padding-top:12px!important;padding-bottom:24px!important;font-family:Arial,Helvetica,sans-serif!important }
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player])>div{gap:14px!important}
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player])>div>div:first-child{display:flex!important;flex-direction:column!important;gap:0!important}
+html[data-theme="yt-2009"] [data-corenet-player]{order:1;overflow:hidden!important;padding:0!important;border:1px solid #222!important;background:#111!important;border-radius:0!important;box-shadow:none!important}
+html[data-theme="yt-2009"] [data-corenet-player] video{display:block!important;border-radius:0!important}
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .mt-3.rounded-xl{order:2;margin-top:8px!important;padding:8px!important;border:1px solid #d3d3d3!important;border-radius:0!important;background:#fff!important;box-shadow:none!important}
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .mt-3.rounded-xl h2{margin-bottom:6px!important;color:#333!important;font-size:12px!important}
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .mt-3.rounded-xl button{padding:5px 8px!important;border:1px solid #ccc!important;background:#f7f7f7!important;font-size:10px!important}
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) h1{order:3;margin-top:9px!important;margin-bottom:3px!important;color:#222!important;font-size:20px!important;line-height:1.25!important;font-weight:700!important}
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .mt-4.flex.flex-wrap{order:4;min-height:42px!important;margin-top:3px!important;padding:7px 0!important;border-top:1px solid #ddd!important;border-bottom:1px solid #ccc!important;gap:7px!important}
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .mt-4.flex.flex-wrap a{color:#164f8a!important;text-decoration:none!important}
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .mt-4.flex.flex-wrap a:hover{ text-decoration:underline!important }
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) h1 + *{order:5;margin-top:8px!important;margin-bottom:0!important;padding:8px!important;border:1px solid #d3d3d3!important;border-radius:0!important;background:#fff!important;color:#555!important;box-shadow:none!important}
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) h1 + * p{margin:0!important}
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) section{order:6;margin-top:14px!important;padding-top:9px!important;border-top:1px solid #ccc!important}
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) section h2{margin-bottom:8px!important;color:#333!important;font-size:14px!important}
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) button{border-radius:0!important;box-shadow:none!important;font-family:Arial,Helvetica,sans-serif!important}
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) [role="button"]{border-radius:0!important}
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) > div > div:nth-child(2){flex:0 0 285px!important;width:285px!important;max-width:285px!important}
 
-html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) > div {
-  gap: 14px !important;
-}
+/* Block 6: compact related-video list, replacing modern card treatment. */
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) > div > div:nth-child(2) > div:first-child{min-height:25px!important;padding:5px 6px!important;border-bottom:1px solid #ccc!important;background:#eee!important}
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) > div > div:nth-child(2) > div:first-child h2{color:#333!important;font-size:13px!important;font-weight:bold!important}
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) > div > div:nth-child(2) > div:first-child span{color:#666!important;font-size:10px!important}
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .cn-video-card{display:flex!important;min-height:78px!important;padding:5px!important;gap:7px!important;border:0!important;border-bottom:1px solid #ddd!important;border-radius:0!important;background:#fff!important;box-shadow:none!important}
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .cn-video-card:hover{background:#f5f5f5!important}
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .cn-video-card img{flex:0 0 120px!important;width:120px!important;height:68px!important;object-fit:cover!important;border-radius:0!important}
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .cn-video-card a{font-size:12px!important;line-height:1.25!important}
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .cn-video-card p,html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .cn-video-card span{font-size:10px!important;line-height:1.25!important;color:#666!important}
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .cn-video-card .text-foreground{color:#164f8a!important}
 
-/* Main historical watch-page columns. */
-html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) > div > div:first-child {
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 0 !important;
-}
-
-/* Player */
-html[data-theme="yt-2009"] [data-corenet-player] {
-  order: 1;
-  overflow: hidden !important;
-  padding: 0 !important;
-  border: 1px solid #222 !important;
-  background: #111 !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
-}
-
-html[data-theme="yt-2009"] [data-corenet-player] video {
-  display: block !important;
-  border-radius: 0 !important;
-}
-
-/* Chapter strip stays immediately below the player when present. */
-html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .mt-3.rounded-xl {
-  order: 2;
-  margin-top: 8px !important;
-  padding: 8px !important;
-  border: 1px solid #d3d3d3 !important;
-  border-radius: 0 !important;
-  background: #fff !important;
-  box-shadow: none !important;
-}
-
-html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .mt-3.rounded-xl h2 {
-  margin-bottom: 6px !important;
-  color: #333 !important;
-  font-size: 12px !important;
-}
-
-html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .mt-3.rounded-xl button {
-  padding: 5px 8px !important;
-  border: 1px solid #ccc !important;
-  background: #f7f7f7 !important;
-  font-size: 10px !important;
-}
-
-/* Title comes directly after the player, matching the compact 2009 hierarchy. */
-html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) h1 {
-  order: 3;
-  margin-top: 9px !important;
-  margin-bottom: 3px !important;
-  color: #222 !important;
-  font-size: 20px !important;
-  line-height: 1.25 !important;
-  font-weight: 700 !important;
-}
-
-/* Channel + action strip follows the title. */
-html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .mt-4.flex.flex-wrap {
-  order: 4;
-  min-height: 42px !important;
-  margin-top: 3px !important;
-  padding: 7px 0 !important;
-  border-top: 1px solid #ddd !important;
-  border-bottom: 1px solid #ccc !important;
-  gap: 7px !important;
-}
-
-html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .mt-4.flex.flex-wrap a {
-  color: #164f8a !important;
-  text-decoration: none !important;
-}
-
-html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .mt-4.flex.flex-wrap a:hover {
-  text-decoration: underline !important;
-}
-
-/* Description / view metadata becomes its own plain information block. */
-html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) h1 + * {
-  order: 5;
-  margin-top: 8px !important;
-  margin-bottom: 0 !important;
-  padding: 8px !important;
-  border: 1px solid #d3d3d3 !important;
-  border-radius: 0 !important;
-  background: #fff !important;
-  color: #555 !important;
-  box-shadow: none !important;
-}
-
-html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) h1 + * p {
-  margin: 0 !important;
-}
-
-/* Comments remain below the video information, separated by a simple rule. */
-html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) section {
-  order: 6;
-  margin-top: 14px !important;
-  padding-top: 9px !important;
-  border-top: 1px solid #ccc !important;
-}
-
-html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) section h2 {
-  margin-bottom: 8px !important;
-  color: #333 !important;
-  font-size: 14px !important;
-}
-
-/* Keep action controls compact and period-appropriate. */
-html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) button {
-  border-radius: 0 !important;
-  box-shadow: none !important;
-  font-family: Arial, Helvetica, sans-serif !important;
-}
-
-html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .bg-surface,
-html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) [class*="bg-surface"] {
-  box-shadow: none !important;
-}
-
-/* Historical controls: small gray rectangles with blue labels. */
-html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) [role="button"] {
-  border-radius: 0 !important;
-}
-
-/* Suggestions should read as a compact right-hand list, not modern cards. */
-html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) > div > div:nth-child(2) {
-  flex: 0 0 285px !important;
-  width: 285px !important;
-  max-width: 285px !important;
-}
-
-html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .cn-video-card {
-  padding: 5px !important;
-  gap: 7px !important;
-  border: 1px solid #d5d5d5 !important;
-  border-width: 1px !important;
-  border-radius: 0 !important;
-  background: #fff !important;
-  box-shadow: none !important;
-}
-
-html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .cn-video-card:hover {
-  border-color: #aaa !important;
-}
-
-html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .cn-video-card img {
-  width: 120px !important;
-  height: 68px !important;
-  object-fit: cover !important;
-  border-radius: 0 !important;
-}
-
-/* Description / comments / related modules inherit the old white bordered-panel language. */
-html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .border-border {
-  border-color: #d3d3d3 !important;
-}
-
-html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .text-muted-foreground {
-  color: #666 !important;
-}
-
-html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) a {
-  color: #164f8a;
-}
-
-html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) a:hover {
-  color: #cc0000;
-  text-decoration: underline;
-}
-
-/* Comments: simple horizontal separators instead of floating modern cards. */
-html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) textarea {
-  min-height: 58px !important;
-  border: 1px solid #aaa !important;
-  border-radius: 0 !important;
-  background: #fff !important;
-  color: #222 !important;
-  box-shadow: none !important;
-  font-size: 12px !important;
-}
-
-html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) textarea:focus {
-  border-color: #4a7aa8 !important;
-  box-shadow: none !important;
-  outline: 1px solid #4a7aa8 !important;
-}
-
-html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) form {
-  border-radius: 0 !important;
-}
-
-html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) [class*="divide-y"] > * {
-  border-radius: 0 !important;
-  box-shadow: none !important;
-}
-
-html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) [class*="divide-y"] {
-  border-top: 1px solid #d3d3d3 !important;
-}
-
-/* Absolutely no modern rounded UI inside this page. */
-html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) [class*="rounded"] {
-  border-radius: 0 !important;
-}
-
-/* Final historical pass: neutralize modern card effects and oversized spacing. */
-html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) [class*="shadow"],
-html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) [class*="backdrop-blur"],
-html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) [class*="ring-"] {
-  box-shadow: none !important;
-  backdrop-filter: none !important;
-}
-
-html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) [class*="bg-black/"] {
-  backdrop-filter: none !important;
-}
-
-html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) p {
-  line-height: 1.4 !important;
-}
-
-@media (max-width: 900px) {
-  html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) {
-    padding: 8px 10px 18px !important;
-  }
-
-  html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) > div {
-    gap: 10px !important;
-  }
-
-  html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) > div > div:nth-child(2) {
-    width: 100% !important;
-    max-width: none !important;
-    flex-basis: auto !important;
-  }
-}
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .border-border{border-color:#d3d3d3!important}
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .text-muted-foreground{color:#666!important}
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) a{color:#164f8a}
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) a:hover{color:#c00;text-decoration:underline}
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) textarea{min-height:58px!important;border:1px solid #aaa!important;border-radius:0!important;background:#fff!important;color:#222!important;box-shadow:none!important;font-size:12px!important}
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) textarea:focus{border-color:#4a7aa8!important;box-shadow:none!important;outline:1px solid #4a7aa8!important}
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) form{border-radius:0!important}
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) [class*="divide-y"]>*{border-radius:0!important;box-shadow:none!important}
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) [class*="divide-y"]{border-top:1px solid #d3d3d3!important}
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) [class*="rounded"]{border-radius:0!important}
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) [class*="shadow"],html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) [class*="backdrop-blur"],html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) [class*="ring-"]{box-shadow:none!important;backdrop-filter:none!important}
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) p{line-height:1.4!important}
+@media(max-width:900px){html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]){padding:8px 10px 18px!important}html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player])>div{gap:10px!important}html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player])>div>div:nth-child(2){width:100%!important;max-width:none!important;flex-basis:auto!important}}
