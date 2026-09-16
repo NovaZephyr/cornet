@@ -3,6 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { ChannelAvatar, VerifiedBadge } from "@/components/Media";
 import { VideoCard, type VideoWithChannel } from "@/components/VideoCard";
 import { supabase } from "@/integrations/supabase/client";
+import { useTheme } from "@/hooks/useTheme";
 import "@/youtube2009-spotlight.css";
 
 export type HomeSpotlight = {
@@ -19,7 +20,10 @@ export type HomeSpotlight = {
   videos: VideoWithChannel[];
 };
 
-export function useYouTube2009Spotlight(enabled = true) {
+export function useYouTube2009Spotlight() {
+  const { theme } = useTheme();
+  const enabled = theme === "yt-2009";
+
   return useQuery({
     queryKey: ["youtube-2009-spotlight"],
     enabled,
