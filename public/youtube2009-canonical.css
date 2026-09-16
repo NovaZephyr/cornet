@@ -113,7 +113,7 @@ html[data-theme="yt-2009"] .cn-shell-search input {
   min-height: 28px !important;
   padding-left: 10px !important;
   border: 1px solid #aaa !important;
-  border-radius: 1px !important;
+  border-radius: 0 !important;
   background: #fff !important;
   color: #222 !important;
   box-shadow: inset 0 1px 2px rgb(0 0 0 / 10%) !important;
@@ -128,7 +128,7 @@ html[data-theme="yt-2009"] .cn-shell-search button {
   height: 28px !important;
   width: 44px !important;
   border: 1px solid #aaa !important;
-  border-radius: 1px !important;
+  border-radius: 0 !important;
   background: linear-gradient(#fff, #ddd) !important;
   color: #333 !important;
   box-shadow: none !important;
@@ -143,7 +143,7 @@ html[data-theme="yt-2009"] .cn-shell-actions .cn-shell-avatar-button,
 html[data-theme="yt-2009"] .cn-shell-actions .cn-shell-icon-button {
   width: 30px !important;
   height: 30px !important;
-  border-radius: 1px !important;
+  border-radius: 0 !important;
 }
 
 /* Sidebar is structurally disabled for this theme; its navigation lives above. */
@@ -180,7 +180,7 @@ html[data-theme="yt-2009"] button,
 html[data-theme="yt-2009"] input,
 html[data-theme="yt-2009"] select,
 html[data-theme="yt-2009"] textarea {
-  border-radius: 1px !important;
+  border-radius: 0 !important;
 }
 
 html[data-theme="yt-2009"] a {
@@ -189,7 +189,7 @@ html[data-theme="yt-2009"] a {
 
 html[data-theme="yt-2009"] .cn-video-card {
   border: 1px solid #d5d5d5 !important;
-  border-radius: 2px !important;
+  border-radius: 0 !important;
   background: #fff !important;
   box-shadow: none !important;
 }
