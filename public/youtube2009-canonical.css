@@ -1,0 +1,240 @@
+/* Canonical YouTube 2009 shell.
+   The historical reference uses a compact white header, inline navigation,
+   a full-width content canvas and no modern left navigation rail. */
+html[data-theme="yt-2009"] {
+  color-scheme: light;
+  --background: #fafafa;
+  --foreground: #222;
+  --surface: #fff;
+  --surface-hover: #f1f1f1;
+  --card: #fff;
+  --card-foreground: #222;
+  --popover: #fff;
+  --popover-foreground: #222;
+  --primary: #c00;
+  --primary-foreground: #fff;
+  --secondary: #e8e8e8;
+  --secondary-foreground: #222;
+  --muted: #e8e8e8;
+  --muted-foreground: #666;
+  --accent: #164f8a;
+  --accent-foreground: #fff;
+  --border: #d7d7d7;
+  --input: #fff;
+  --ring: #c00;
+  font-family: Arial, Helvetica, sans-serif !important;
+}
+
+html[data-theme="yt-2009"],
+html[data-theme="yt-2009"] body {
+  background: #fafafa !important;
+  color: #222 !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+}
+
+html[data-theme="yt-2009"] .cn-shell {
+  min-height: 100vh;
+  background: #fafafa !important;
+  color: #222 !important;
+}
+
+/* Historical header: compact, white and information-dense. */
+html[data-theme="yt-2009"] .cn-shell-header {
+  position: relative !important;
+  display: grid !important;
+  grid-template-columns: auto minmax(220px, 1fr) auto !important;
+  gap: 16px !important;
+  min-height: 48px !important;
+  height: 48px !important;
+  padding: 0 18px !important;
+  background: #fff !important;
+  border-bottom: 1px solid #ccc !important;
+  box-shadow: none !important;
+}
+
+html[data-theme="yt-2009"] .cn-shell-header-left {
+  gap: 10px !important;
+}
+
+/* The sidebar's hamburger is not part of the 2009 desktop composition. */
+html[data-theme="yt-2009"] .cn-shell-header-left > .cn-shell-icon-button {
+  display: none !important;
+}
+
+html[data-theme="yt-2009"] .cn-shell-logo {
+  gap: 5px !important;
+  padding: 0 !important;
+  min-width: max-content !important;
+}
+
+html[data-theme="yt-2009"] .cn-shell-logo img {
+  width: 34px !important;
+  height: 34px !important;
+}
+
+html[data-theme="yt-2009"] .cn-shell-logo strong {
+  color: #c00 !important;
+  font-size: 18px !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.06em !important;
+}
+
+html[data-theme="yt-2009"] .cn-shell-logo small {
+  display: none !important;
+}
+
+/* Navigation moved out of the sidebar and into the historical top bar. */
+html[data-theme="yt-2009"] .cn-shell-historical-nav {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  white-space: nowrap !important;
+}
+
+html[data-theme="yt-2009"] .cn-shell-historical-nav a {
+  color: #164f8a !important;
+  font-size: 11px !important;
+  line-height: 1 !important;
+  text-decoration: underline !important;
+}
+
+html[data-theme="yt-2009"] .cn-shell-historical-nav a:hover {
+  color: #c00 !important;
+}
+
+html[data-theme="yt-2009"] .cn-shell-search {
+  width: min(500px, 100%) !important;
+  max-width: 500px !important;
+  justify-self: center !important;
+}
+
+html[data-theme="yt-2009"] .cn-shell-search input {
+  height: 28px !important;
+  min-height: 28px !important;
+  padding-left: 10px !important;
+  border: 1px solid #aaa !important;
+  border-radius: 1px !important;
+  background: #fff !important;
+  color: #222 !important;
+  box-shadow: inset 0 1px 2px rgb(0 0 0 / 10%) !important;
+  font-size: 12px !important;
+}
+
+html[data-theme="yt-2009"] .cn-shell-search > svg {
+  display: none !important;
+}
+
+html[data-theme="yt-2009"] .cn-shell-search button {
+  height: 28px !important;
+  width: 44px !important;
+  border: 1px solid #aaa !important;
+  border-radius: 1px !important;
+  background: linear-gradient(#fff, #ddd) !important;
+  color: #333 !important;
+  box-shadow: none !important;
+  font-size: 11px !important;
+}
+
+html[data-theme="yt-2009"] .cn-shell-actions {
+  gap: 5px !important;
+}
+
+html[data-theme="yt-2009"] .cn-shell-actions .cn-shell-avatar-button,
+html[data-theme="yt-2009"] .cn-shell-actions .cn-shell-icon-button {
+  width: 30px !important;
+  height: 30px !important;
+  border-radius: 1px !important;
+}
+
+/* Sidebar is structurally disabled for this theme; its navigation lives above. */
+html[data-theme="yt-2009"] .cn-shell-layout {
+  display: block !important;
+  min-height: 0 !important;
+}
+
+html[data-theme="yt-2009"] .cn-shell-sidebar {
+  display: none !important;
+}
+
+html[data-theme="yt-2009"] .cn-shell-main {
+  width: min(100%, 1000px) !important;
+  max-width: 1000px !important;
+  min-height: calc(100vh - 48px) !important;
+  margin: 0 auto !important;
+  padding: 14px 18px 28px !important;
+  background: #fafafa !important;
+}
+
+html[data-theme="yt-2009"] .cn-shell-footer {
+  width: min(100%, 1000px) !important;
+  margin: 0 auto !important;
+  padding: 18px !important;
+  background: #fff !important;
+  border-top: 1px solid #d7d7d7 !important;
+  color: #666 !important;
+  font-size: 10px !important;
+}
+
+/* Historical controls and cards: square, dense, blue-link oriented. */
+html[data-theme="yt-2009"] button,
+html[data-theme="yt-2009"] input,
+html[data-theme="yt-2009"] select,
+html[data-theme="yt-2009"] textarea {
+  border-radius: 1px !important;
+}
+
+html[data-theme="yt-2009"] a {
+  color: #164f8a;
+}
+
+html[data-theme="yt-2009"] .cn-video-card {
+  border: 1px solid #d5d5d5 !important;
+  border-radius: 2px !important;
+  background: #fff !important;
+  box-shadow: none !important;
+}
+
+html[data-theme="yt-2009"] .cn-video-card:hover {
+  border-color: #aaa !important;
+  box-shadow: none !important;
+}
+
+/* Keep the modern mobile drawer/bottom navigation from replacing the historical desktop shell. */
+@media (min-width: 901px) {
+  html[data-theme="yt-2009"] .cn-shell-mobile-nav {
+    display: none !important;
+  }
+}
+
+@media (max-width: 900px) {
+  html[data-theme="yt-2009"] .cn-shell-header {
+    grid-template-columns: 1fr auto !important;
+    gap: 8px !important;
+    height: auto !important;
+    min-height: 48px !important;
+    padding: 6px 10px !important;
+  }
+
+  html[data-theme="yt-2009"] .cn-shell-header-left {
+    flex-wrap: wrap !important;
+  }
+
+  html[data-theme="yt-2009"] .cn-shell-historical-nav {
+    order: 3 !important;
+    width: 100% !important;
+    overflow-x: auto !important;
+    padding: 3px 0 !important;
+  }
+
+  html[data-theme="yt-2009"] .cn-shell-search {
+    grid-column: 1 / -1 !important;
+    grid-row: 2 !important;
+    width: 100% !important;
+    max-width: none !important;
+  }
+
+  html[data-theme="yt-2009"] .cn-shell-main {
+    width: 100% !important;
+    padding: 10px !important;
+  }
+}
