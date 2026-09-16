@@ -1,0 +1,21 @@
+html[data-theme="yt-2009"] .cn-yt2009-spotlight{margin:0 0 18px;border:1px solid #c9c9c9;background:#fff;font-family:Arial,Helvetica,sans-serif}
+html[data-theme="yt-2009"] .cn-yt2009-spotlight-heading{display:flex;align-items:center;justify-content:space-between;padding:6px 9px;border-bottom:1px solid #c8c8c8;background:linear-gradient(#fff,#e9e9e9);color:#333}
+html[data-theme="yt-2009"] .cn-yt2009-spotlight-heading h2{margin:0;color:#333;font-size:13px;font-weight:700}
+html[data-theme="yt-2009"] .cn-yt2009-spotlight-heading span{color:#777;font-size:10px}
+html[data-theme="yt-2009"] .cn-yt2009-spotlight-body{display:grid;grid-template-columns:220px minmax(0,1fr);gap:12px;padding:10px}
+html[data-theme="yt-2009"] .cn-yt2009-spotlight-channel{border-right:1px solid #ddd;padding:2px 12px 2px 2px}
+html[data-theme="yt-2009"] .cn-yt2009-spotlight-channel-name{display:flex;gap:8px;align-items:center;color:#164f8a;text-decoration:none}
+html[data-theme="yt-2009"] .cn-yt2009-spotlight-channel-name strong{display:block;font-size:13px;color:#164f8a}
+html[data-theme="yt-2009"] .cn-yt2009-spotlight-channel-name small{display:block;margin-top:2px;color:#777;font-size:10px}
+html[data-theme="yt-2009"] .cn-yt2009-spotlight-description{margin:9px 0 0;color:#444;font-size:11px;line-height:1.45}
+html[data-theme="yt-2009"] .cn-yt2009-spotlight-custom{margin-top:9px;padding:7px;border:1px solid #ddd;background:#f7f7f7;color:#333;font-size:11px;line-height:1.4}
+html[data-theme="yt-2009"] .cn-yt2009-spotlight-subs{margin:8px 0 0;color:#777;font-size:10px}
+html[data-theme="yt-2009"] .cn-yt2009-spotlight-videos-heading{margin:0 0 7px;color:#555;font-size:11px;font-weight:700}
+html[data-theme="yt-2009"] .cn-yt2009-spotlight-video-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
+html[data-theme="yt-2009"] .cn-yt2009-spotlight-video-grid>div{gap:4px!important}
+html[data-theme="yt-2009"] .cn-yt2009-spotlight-video-grid a{color:#164f8a}
+html[data-theme="yt-2009"] .cn-yt2009-spotlight-video-grid .relative{border-radius:0!important}
+html[data-theme="yt-2009"] .cn-yt2009-spotlight-video-grid .line-clamp-2{font-size:11px;line-height:1.3}
+html[data-theme="yt-2009"] .cn-yt2009-spotlight-video-grid p,html[data-theme="yt-2009"] .cn-yt2009-spotlight-video-grid .text-xs{font-size:9px;line-height:1.3}
+html[data-theme="yt-2009"] .cn-yt2009-spotlight-empty{margin:0;padding:25px 8px;color:#777;font-size:11px;text-align:center}
+@media(max-width:760px){html[data-theme="yt-2009"] .cn-yt2009-spotlight-body{grid-template-columns:1fr}html[data-theme="yt-2009"] .cn-yt2009-spotlight-channel{border-right:0;border-bottom:1px solid #ddd;padding:2px 2px 10px}html[data-theme="yt-2009"] .cn-yt2009-spotlight-video-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
