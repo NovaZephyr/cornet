@@ -28,10 +28,20 @@ function Section({ title, subtitle, children }: { title: string; subtitle?: stri
 export function YouTube2009HomeSections({ videos }: { videos: VideoWithChannel[] }) {
   if (!videos.length) return null;
 
-  const recommended = videos.slice(0, 4);
-  const sortedByViews = [...videos].sort((a, b) => Number(b.views ?? 0) - Number(a.views ?? 0));
-  const popular = sortedByViews.slice(0, 8);
+  const latestIds = new Set(videos.slice(0, 8).map((video) => video.id));
+  const latestExcluded = videos.filter((video) => !latestIds.has(video.id));
+  const recommended = latestExcluded.slice(0, 4);
+
+  const usedIds = new Set([...latestIds, ...recommended.map((video) => video.id)]);
+  const remaining = videos.filter((video) => !usedIds.has(video.id));
+  const sortedByViews = [...remaining].sort((a, b) => Number(b.views ?? 0) - Number(a.views ?? 0));
   const featured = sortedByViews.filter((video) => Number(video.views ?? 0) > 0).slice(0, 4);
+
+  const featuredIds = new Set(featured.map((video) => video.id));
+  const popular = [...videos]
+    .filter((video) => !latestIds.has(video.id) && !recommended.some((item) => item.id === video.id) && !featuredIds.has(video.id))
+    .sort((a, b) => Number(b.views ?? 0) - Number(a.views ?? 0))
+    .slice(0, 8);
 
   return <div className="cn-yt2009-home-sections">
     <Section title="Recommended Videos" subtitle="Videos you may enjoy">
