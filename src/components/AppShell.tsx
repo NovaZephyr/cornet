@@ -52,6 +52,16 @@ function AppShellFrame({ children, hideSidebar = false, fullscreen = false }: Ap
     shortsEnabled,
   });
 
+  const isYoutube2009 = theme === "yt-2009";
+  const historicalNavItems = isYoutube2009
+    ? items
+        .filter(({ to }) => ["/", "/explore", "/series", "/community", "/upload"].includes(to))
+        .map(({ to, label }) => ({
+          to,
+          label: to === "/" ? "Home" : to === "/explore" ? "Videos" : to === "/series" ? "Shows" : to === "/community" ? "Community" : "Upload",
+        }))
+    : [];
+
   return (
     <div
       className={cn(
@@ -66,6 +76,7 @@ function AppShellFrame({ children, hideSidebar = false, fullscreen = false }: Ap
           mobileOpen={mobileOpen}
           onMenuClick={handleMenuClick}
           logo={<ShellLogo />}
+          historicalNavItems={historicalNavItems}
           actions={
             <ShellUserMenu
               user={user}
@@ -80,11 +91,11 @@ function AppShellFrame({ children, hideSidebar = false, fullscreen = false }: Ap
       <div
         className={cn(
           "cn-shell-layout",
-          hideSidebar && "cn-shell-layout--no-sidebar",
+          (hideSidebar || isYoutube2009) && "cn-shell-layout--no-sidebar",
         )}
-        data-sidebar-hidden={hideSidebar ? "true" : "false"}
+        data-sidebar-hidden={hideSidebar || isYoutube2009 ? "true" : "false"}
       >
-        {!hideSidebar && (
+        {!hideSidebar && !isYoutube2009 && (
           <ShellErrorBoundary label="sidebar">
             <ShellSidebar
               user={user}
