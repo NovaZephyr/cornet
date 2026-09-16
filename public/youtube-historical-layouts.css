@@ -3,7 +3,7 @@
 /* Historical YouTube channel fidelity overrides. These styles are layout-owned, never theme-owned. */
 
 /* Channel 1.0: the partner background is the page canvas, not a small panel. */
-.cn-retro-layout-classic-2009 > div{min-height:100vh!important;background-color:transparent!important;background-size:auto!important;background-repeat:repeat!important;background-position:top center!important}
+.cn-retro-layout-classic-2009 > div{width:100vw!important;min-height:100vh!important;margin-left:calc(50% - 50vw)!important;background-color:transparent!important;background-size:cover!important;background-repeat:no-repeat!important;background-position:top center!important;background-attachment:scroll!important}
 .cn-retro-layout-classic-2009 > div > div{background:transparent!important;border:0!important;box-shadow:none!important;overflow:visible!important}
 .cn-retro-layout-classic-2009 > div > div > header,
 .cn-retro-layout-classic-2009 > div > div > footer{display:none!important}
