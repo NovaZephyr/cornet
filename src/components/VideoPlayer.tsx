@@ -1,15 +1,15 @@
 import { useEffect, useRef, useState, type KeyboardEvent } from "react";
-import { Check, ChevronDown, Expand, Loader2, MessageSquareText, Minimize, Pause, Play, RotateCcw, Settings, ShieldAlert, Volume2, VolumeX } from "lucide-react";
+import { Check, ChevronDown, Expand, Loader2, MessageSquareText, Minimize, Pause, Play, RotateCcw, Settings, Volume2, VolumeX } from "lucide-react";
 import { formatTimestamp } from "@/lib/captions";
 import "./video-player.css";
 
 export type PlayerCaption = { src: string; srclang: string; label: string; default?: boolean };
 export type PlayerChapter = { id: string; title: string; startSeconds: number; endSeconds?: number | null };
-interface VideoPlayerProps { src?: string; poster?: string; autoPlay?: boolean; className?: string; captions?: PlayerCaption[]; chapters?: PlayerChapter[]; ageRestricted?: boolean }
+interface VideoPlayerProps { src?: string; poster?: string; autoPlay?: boolean; className?: string; captions?: PlayerCaption[]; chapters?: PlayerChapter[] }
 const SPEEDS = [0.5, 0.75, 1, 1.25, 1.5, 2];
 const formatTime = (seconds: number) => Number.isFinite(seconds) ? formatTimestamp(seconds) : "0:00";
 
-export function VideoPlayer({ src, poster, autoPlay, className, captions = [], chapters = [], ageRestricted: ageRestrictedProp = false }: VideoPlayerProps) {
+export function VideoPlayer({ src, poster, autoPlay, className, captions = [], chapters = [] }: VideoPlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const hideTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
@@ -30,9 +30,6 @@ export function VideoPlayer({ src, poster, autoPlay, className, captions = [], c
   const [settingsView, setSettingsView] = useState<"main" | "captions" | "speed">("main");
   const [captionEnabled, setCaptionEnabled] = useState(false);
   const [captionLanguage, setCaptionLanguage] = useState("");
-  const [ageRestricted, setAgeRestricted] = useState(ageRestrictedProp === true);
-  const [ageGate, setAgeGate] = useState(ageRestrictedProp === true);
-  const [ageLoading, setAgeLoading] = useState(false);
 
   const applyCaptionMode = (language: string, enabled: boolean) => {
     const video = videoRef.current;
@@ -46,13 +43,6 @@ export function VideoPlayer({ src, poster, autoPlay, className, captions = [], c
     const target = Array.from(video.textTracks).find((track) => track.language === language) ?? Array.from(video.textTracks)[0];
     if (target) target.mode = "showing";
   };
-
-  useEffect(() => {
-    const restricted = ageRestrictedProp === true;
-    setAgeRestricted(restricted);
-    setAgeGate(restricted);
-    setAgeLoading(false);
-  }, [ageRestrictedProp, src]);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -86,20 +76,19 @@ export function VideoPlayer({ src, poster, autoPlay, className, captions = [], c
 
   const togglePlay = () => {
     const video = videoRef.current;
-    if (!video || ageGate) return;
+    if (!video) return;
     if (video.paused) void video.play().catch(() => setError(true)); else video.pause();
   };
   const toggleMute = () => { const video = videoRef.current; if (!video) return; video.muted = !video.muted; setMuted(video.muted); };
   const onVolumeChange = (value: number) => { const video = videoRef.current; if (!video) return; video.volume = value; video.muted = value === 0; setVolume(value); setMuted(value === 0); };
-  const seekTo = (value: number) => { const video = videoRef.current; if (!video || ageGate) return; video.currentTime = Math.max(0, Math.min(value, duration || value)); setCurrent(video.currentTime); };
+  const seekTo = (value: number) => { const video = videoRef.current; if (!video) return; video.currentTime = Math.max(0, Math.min(value, duration || value)); setCurrent(video.currentTime); };
   const toggleFullscreen = () => { const element = containerRef.current; if (!element) return; if (!document.fullscreenElement) void element.requestFullscreen().catch(() => undefined); else void document.exitFullscreen().catch(() => undefined); };
   const setPlaybackRate = (value: number) => { const video = videoRef.current; if (!video) return; video.playbackRate = value; setRate(value); setShowSettings(false); setSettingsView("main"); };
   const wake = () => { setShowControls(true); if (hideTimer.current) clearTimeout(hideTimer.current); hideTimer.current = setTimeout(() => { if (videoRef.current && !videoRef.current.paused) setShowControls(false); }, 2400); };
-  const continueVideo = () => { setAgeGate(false); requestAnimationFrame(() => { if (autoPlay) void videoRef.current?.play().catch(() => undefined); }); };
-  const retry = () => { const video = videoRef.current; if (!video) return; setError(false); setLoading(true); video.load(); if (autoPlay && !ageGate) void video.play().catch(() => undefined); };
+  const retry = () => { const video = videoRef.current; if (!video) return; setError(false); setLoading(true); video.load(); if (autoPlay) void video.play().catch(() => undefined); };
   const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     const video = videoRef.current;
-    if (!video || ageGate) return;
+    if (!video) return;
     if (event.key === " " || event.key.toLowerCase() === "k") { event.preventDefault(); togglePlay(); }
     else if (event.key.toLowerCase() === "m") toggleMute();
     else if (event.key.toLowerCase() === "f") toggleFullscreen();
@@ -115,7 +104,6 @@ export function VideoPlayer({ src, poster, autoPlay, className, captions = [], c
   const controlsClass = [
     "cn-video-player__controls",
     showControls || !playing ? "" : "cn-video-player__controls--hidden",
-    ageGate ? "cn-video-player__controls--blocked" : "",
   ].filter(Boolean).join(" ");
 
   return (
@@ -135,7 +123,7 @@ export function VideoPlayer({ src, poster, autoPlay, className, captions = [], c
         ref={videoRef}
         src={src}
         poster={poster}
-        autoPlay={autoPlay && !ageGate}
+        autoPlay={autoPlay}
         playsInline
         preload="metadata"
         onClick={togglePlay}
@@ -145,13 +133,13 @@ export function VideoPlayer({ src, poster, autoPlay, className, captions = [], c
         aria-label="Video"
       />
 
-      {loading && !ageGate && !error && (
+      {loading && !error && (
         <div className="cn-video-player__loading">
           <span className="cn-video-player__loading-icon"><Loader2 /></span>
         </div>
       )}
 
-      {error && !ageGate && (
+      {error && (
         <div className="cn-video-player__error">
           <div className="cn-video-player__message">
             <RotateCcw className="cn-video-player__message-icon" />
@@ -162,22 +150,10 @@ export function VideoPlayer({ src, poster, autoPlay, className, captions = [], c
         </div>
       )}
 
-      {!playing && !loading && !ageGate && !error && (
+      {!playing && !loading && !error && (
         <button type="button" onClick={togglePlay} aria-label="Reproducir" className="cn-video-player__play-overlay">
           <span className="cn-video-player__play-icon"><Play className="cn-video-player__play-symbol" /></span>
         </button>
-      )}
-
-      {!ageLoading && ageRestricted && ageGate && (
-        <div className="cn-video-player__age-gate">
-          <div className="cn-video-player__age-content">
-            <ShieldAlert className="cn-video-player__age-icon" />
-            <h2>Contenido restringido para mayores de 18</h2>
-            <p>Este video está marcado como restringido por el creador. Confirma que eres mayor de 18 años para continuar.</p>
-            <button type="button" onClick={continueVideo} className="cn-video-player__button cn-video-player__button--age">Soy mayor de 18 — Ver video</button>
-            <p className="cn-video-player__age-note">Esta advertencia no sustituye una verificación legal de edad.</p>
-          </div>
-        </div>
       )}
 
       <div className={controlsClass}>
@@ -253,7 +229,7 @@ export function VideoPlayer({ src, poster, autoPlay, className, captions = [], c
         </div>
       </div>
 
-      {chapters.length > 0 && !ageGate && (
+      {chapters.length > 0 && (
         <div className="cn-video-player__chapters">
           {chapters.map((chapter) => <button key={chapter.id} type="button" onClick={() => seekTo(chapter.startSeconds)} className="cn-video-player__chapter" title={`${chapter.title} · ${formatTimestamp(chapter.startSeconds)}`}>
             {chapter.title}
