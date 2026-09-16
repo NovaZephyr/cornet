@@ -10,7 +10,7 @@ html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .mt-3.round
 html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) h1{order:3;margin-top:9px!important;margin-bottom:3px!important;color:#222!important;font-size:20px!important;line-height:1.25!important;font-weight:700!important}
 html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .mt-4.flex.flex-wrap{order:4;min-height:42px!important;margin-top:3px!important;padding:7px 0!important;border-top:1px solid #ddd!important;border-bottom:1px solid #ccc!important;gap:7px!important}
 html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .mt-4.flex.flex-wrap a{color:#164f8a!important;text-decoration:none!important}
-html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .mt-4.flex.flex-wrap a:hover{ text-decoration:underline!important }
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .mt-4.flex.flex-wrap a:hover{text-decoration:underline!important}
 html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) h1 + *{order:5;margin-top:8px!important;margin-bottom:0!important;padding:8px!important;border:1px solid #d3d3d3!important;border-radius:0!important;background:#fff!important;color:#555!important;box-shadow:none!important}
 html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) h1 + * p{margin:0!important}
 html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) section{order:6;margin-top:14px!important;padding-top:9px!important;border-top:1px solid #ccc!important}
@@ -42,4 +42,42 @@ html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) [class*="di
 html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) [class*="rounded"]{border-radius:0!important}
 html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) [class*="shadow"],html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) [class*="backdrop-blur"],html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) [class*="ring-"]{box-shadow:none!important;backdrop-filter:none!important}
 html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) p{line-height:1.4!important}
-@media(max-width:900px){html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]){padding:8px 10px 18px!important}html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player])>div{gap:10px!important}html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player])>div>div:nth-child(2){width:100%!important;max-width:none!important;flex-basis:auto!important}}
+
+/* Block 7: final details — flat actions, readable comments, empty states, and responsive cleanup. */
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .mt-4.flex.flex-wrap > button{min-height:28px!important;padding:5px 9px!important;border:1px solid #bbb!important;background:#f5f5f5!important;color:#333!important;font-size:11px!important;font-weight:normal!important}
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .mt-4.flex.flex-wrap > button:hover{background:#e8e8e8!important;border-color:#999!important}
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .mt-4.flex.flex-wrap > a{font-size:12px!important}
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .mt-4.flex.flex-wrap > div.ml-auto{margin-left:auto!important;border:1px solid #bbb!important;border-radius:0!important;background:#f5f5f5!important}
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .mt-4.flex.flex-wrap > div.ml-auto button{min-height:27px!important;padding:4px 9px!important;color:#333!important;font-size:11px!important}
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .mt-4.flex.flex-wrap > div.ml-auto button:hover{background:#e8e8e8!important}
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .mt-4.flex.flex-wrap > div.ml-auto span{background:#bbb!important}
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) section form{margin-bottom:10px!important}
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) section form button{min-height:27px!important;padding:5px 10px!important;border:1px solid #aaa!important;background:#f3f3f3!important;color:#333!important;font-size:11px!important}
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) section form button:hover{background:#e7e7e7!important}
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) section [class*="divide-y"] > *{padding-top:9px!important;padding-bottom:9px!important}
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) section [class*="divide-y"] img{border-radius:0!important}
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) section [class*="divide-y"] p{font-size:12px!important;color:#333!important}
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) section [class*="divide-y"] .text-xs{font-size:10px!important;color:#777!important}
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) section:empty{display:none!important}
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .cn-video-card:only-child{border-bottom:1px solid #ddd!important}
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .cn-video-card a,.cn-shell-main:has([data-corenet-player]) .cn-video-card a:visited{color:#164f8a!important}
+
+@media(max-width:900px){
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]){padding:8px 10px 18px!important}
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player])>div{gap:10px!important}
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player])>div>div:nth-child(2){width:100%!important;max-width:none!important;flex-basis:auto!important}
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) h1{font-size:18px!important}
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .mt-4.flex.flex-wrap{align-items:flex-start!important}
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .mt-4.flex.flex-wrap > div.ml-auto{margin-left:0!important}
+}
+
+@media(max-width:560px){
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]){padding-left:6px!important;padding-right:6px!important}
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) h1{font-size:16px!important}
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .mt-4.flex.flex-wrap{gap:5px!important}
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .mt-4.flex.flex-wrap > button{padding:4px 7px!important}
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .mt-4.flex.flex-wrap > div.ml-auto{width:100%!important;display:flex!important;margin-top:2px!important}
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .mt-4.flex.flex-wrap > div.ml-auto button{flex:1 1 0!important;justify-content:center!important}
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .cn-video-card{min-height:74px!important}
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .cn-video-card img{width:110px!important;height:62px!important;flex-basis:110px!important}
+}
