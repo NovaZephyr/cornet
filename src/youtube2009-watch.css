@@ -1,0 +1,129 @@
+/* YouTube 2009 watch page — scoped exclusively to the canonical yt-2009 theme. */
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) {
+  width: min(100%, 1000px) !important;
+  max-width: 1000px !important;
+  padding-top: 12px !important;
+  padding-bottom: 24px !important;
+}
+
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) > div {
+  gap: 14px !important;
+}
+
+html[data-theme="yt-2009"] [data-corenet-player] {
+  overflow: hidden !important;
+  padding: 0 !important;
+  border: 1px solid #222 !important;
+  background: #111 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+html[data-theme="yt-2009"] [data-corenet-player] video {
+  display: block !important;
+  border-radius: 0 !important;
+}
+
+/* Old-style information strip beneath the player. */
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .mt-4 {
+  margin-top: 10px !important;
+}
+
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .mt-4.flex.flex-wrap {
+  min-height: 42px !important;
+  padding: 8px 0 !important;
+  border-bottom: 1px solid #ccc !important;
+  gap: 8px !important;
+}
+
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .mt-4.flex.flex-wrap a {
+  color: #164f8a !important;
+  text-decoration: none !important;
+}
+
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .mt-4.flex.flex-wrap a:hover {
+  text-decoration: underline !important;
+}
+
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .mt-4.flex.flex-wrap .rounded-full {
+  border-radius: 0 !important;
+}
+
+/* Keep action controls compact and period-appropriate. */
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) button {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .bg-surface,
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) [class*="bg-surface"] {
+  box-shadow: none !important;
+}
+
+/* Chapter panel. */
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .mt-3.rounded-xl {
+  margin-top: 8px !important;
+  padding: 8px !important;
+  border: 1px solid #d3d3d3 !important;
+  border-radius: 0 !important;
+  background: #fff !important;
+  box-shadow: none !important;
+}
+
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .mt-3.rounded-xl h2 {
+  margin-bottom: 6px !important;
+  color: #333 !important;
+  font-size: 12px !important;
+}
+
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .mt-3.rounded-xl button {
+  padding: 5px 8px !important;
+  border: 1px solid #ccc !important;
+  background: #f7f7f7 !important;
+  font-size: 10px !important;
+}
+
+/* Description / comments / related modules inherit the old white bordered-panel language. */
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .border-border {
+  border-color: #d3d3d3 !important;
+}
+
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .rounded-2xl,
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .rounded-xl,
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .rounded-lg {
+  border-radius: 0 !important;
+}
+
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .text-muted-foreground {
+  color: #666 !important;
+}
+
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) h1 {
+  color: #222 !important;
+  font-size: 20px !important;
+  line-height: 1.25 !important;
+  font-weight: 700 !important;
+}
+
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) h2 {
+  color: #333 !important;
+  font-size: 14px !important;
+}
+
+/* Suggestions should read as compact video links rather than modern cards. */
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .cn-video-card {
+  border: 1px solid #d5d5d5 !important;
+  border-radius: 0 !important;
+  background: #fff !important;
+  box-shadow: none !important;
+}
+
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .cn-video-card:hover {
+  border-color: #aaa !important;
+}
+
+@media (max-width: 900px) {
+  html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) {
+    padding: 8px 10px 18px !important;
+  }
+}
