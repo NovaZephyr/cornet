@@ -4,7 +4,6 @@ import "./core/light.css";
 import "./youtube/2005.css";
 import "./youtube/2007.css";
 import "./youtube/2009.css";
-import "./youtube/2012.css";
 import "./youtube/2013.css";
 import "./youtube/2019.css";
 import "./custom/cosmic-panda.css";
@@ -31,9 +30,10 @@ import "./experimental/vhs.css";
 export const THEME_REGISTRY = {
   dark:{group:"core",label:"Cornet Dark"}, light:{group:"core",label:"Cornet Light"},
   "yt-2005":{group:"youtube",label:"YouTube 2005"}, "yt-2007":{group:"youtube",label:"YouTube 2007"},
-  "yt-2009":{group:"youtube",label:"YouTube 2009"}, "yt-2012":{group:"youtube",label:"YouTube 2012"},
+  "yt-2009":{group:"youtube",label:"YouTube 2009"},
   "yt-2013":{group:"youtube",label:"YouTube 2013"}, "yt-2019":{group:"youtube",label:"YouTube 2019"},
   "cosmic-panda":{group:"custom",label:"Cosmic Panda"},
+  "liquid-glass":{group:"custom",label:"Liquid Glass"},
   "grad-ocean":{group:"gradients",label:"Ocean"}, "grad-sunset":{group:"gradients",label:"Sunset"},
   "grad-neon":{group:"gradients",label:"Neon"}, "grad-candy":{group:"gradients",label:"Candy"},
   dracula:{group:"community",label:"Dracula"}, nord:{group:"community",label:"Nord"},
@@ -48,7 +48,18 @@ export const THEME_REGISTRY = {
 } as const;
 
 export type ThemeId=keyof typeof THEME_REGISTRY;
-export const LEGACY_THEME_ALIASES={"cornet-2009":"yt-2009","youtube-2013":"yt-2013",youtube2019:"yt-2019",retro2012:"cosmic-panda"} as const;
+export const LEGACY_THEME_ALIASES={
+  "cornet-2009":"yt-2009",
+  youtube2009:"yt-2009",
+  "youtube-2009":"yt-2009",
+  "youtube-2013":"yt-2013",
+  youtube2013:"yt-2013",
+  feather2013:"yt-2013",
+  youtube2019:"yt-2019",
+  retro2012:"cosmic-panda",
+  "youtube-2012":"cosmic-panda",
+  "yt-2012":"cosmic-panda",
+} as const;
 export type LegacyThemeId=keyof typeof LEGACY_THEME_ALIASES;
 export type ResolvableThemeId=ThemeId|LegacyThemeId;
 export function resolveThemeId(value:string):ThemeId|undefined{return value in THEME_REGISTRY?value as ThemeId:value in LEGACY_THEME_ALIASES?LEGACY_THEME_ALIASES[value as LegacyThemeId]:undefined;}
