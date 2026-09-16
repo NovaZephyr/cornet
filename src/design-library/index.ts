@@ -48,12 +48,13 @@ export const themes: ThemeDefinition[] = [
 
 const channelLayoutStyles = ["/custom-channel-layouts.css"];
 const variantStyles = ["/channel-layout-variants.css"];
-const historicalStyles = [...variantStyles, "/youtube-historical-layouts.css"];
+const historicalStyles = [...variantStyles, "/youtube-historical-layouts.css", "/historical-channel-colors.css"];
+const channel20Styles = [...variantStyles, "/youtube-historical-layouts.css", "/historical-channel-colors.css"];
 
 export const channelLayouts: ChannelLayoutDefinition[] = [
   { id: "corenetwork", name: "Cosmephant", category: "special", kind: "layout", description: "Diseño original de Cornet.", stylesheets: [] },
   { id: "classic-2009", name: "Channel 1.0", category: "historical", kind: "layout", description: "Layout de canal basado en la referencia histórica Channel 1.0; conserva el ID classic-2009 por compatibilidad.", stylesheets: historicalStyles },
-  { id: "standard-2012", name: "Channel 2.0", category: "historical", kind: "layout", description: "Layout de canal basado en la referencia histórica Channel 2.0; conserva el ID standard-2012 por compatibilidad.", stylesheets: variantStyles },
+  { id: "standard-2012", name: "Channel 2.0", category: "historical", kind: "layout", description: "Layout de canal basado en la referencia histórica Channel 2.0; conserva el ID standard-2012 por compatibilidad.", stylesheets: channel20Styles },
   { id: "cosmic-panda", name: "Cosmic Panda", category: "historical", kind: "layout", description: "Layout de canal Cosmic Panda; independiente del tema global.", stylesheets: ["/cosmic-panda-channel-core.css", "/youtube-historical-layouts.css"] },
   { id: "liquid-glass", name: "Liquid Glass", category: "special", kind: "layout", description: "Canal translúcido con profundidad, tarjetas flotantes y estética inspirada en Apple.", stylesheets: ["/liquid-glass-layout.css"] },
   { id: "early-youtube-2005", name: "Early YouTube 2005–2006", category: "historical", kind: "layout", description: "Canal mínimo de la era temprana: tabla simple, enlaces y poco chrome.", stylesheets: variantStyles },
