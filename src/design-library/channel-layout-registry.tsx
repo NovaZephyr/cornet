@@ -1,4 +1,4 @@
-import type { ComponentType } from "react";
+import type { CSSProperties, ComponentType } from "react";
 import { channelLayouts } from "./index";
 import type { ChannelLayoutProps } from "./channel-data";
 import { ClassicChannel, CosmicPandaChannel } from "./channel-layouts";
@@ -27,12 +27,26 @@ import { Channel20Layout } from "./channel-2-0-layout";
 
 export type ChannelLayoutComponent = ComponentType<ChannelLayoutProps>;
 
+function HistoricalColorScope({ data, children }: ChannelLayoutProps & { children: React.ReactNode }) {
+  const style = {
+    "--cn-channel-primary": data.profile.channel_primary_color ?? "#1f4fa3",
+    "--cn-channel-secondary": data.profile.channel_secondary_color ?? "#2aa84a",
+    "--cn-channel-surface": data.profile.channel_surface_color ?? "#ffffff",
+    "--cn-channel-text": data.profile.channel_text_color ?? "#222222",
+  } as CSSProperties;
+  return <div className="cn-historical-color-scope" style={style}>{children}</div>;
+}
+
+function withHistoricalColors(Component: ChannelLayoutComponent): ChannelLayoutComponent {
+  return (props) => <HistoricalColorScope {...props}><Component {...props} /></HistoricalColorScope>;
+}
+
 const components: Record<string, ChannelLayoutComponent> = {
   corenetwork: ClassicChannel,
   "cosmic-panda": CosmicPandaChannel,
   "liquid-glass": LiquidGlassChannel,
-  "classic-2009": Classic2009Layout,
-  "standard-2012": Channel20Layout,
+  "classic-2009": withHistoricalColors(Classic2009Layout),
+  "standard-2012": withHistoricalColors(Channel20Layout),
   "early-youtube-2005": EarlyYoutubeLayout,
   "star-rating-2007": StarRatingLayout,
   "transition-2010": Transition2010Layout,
