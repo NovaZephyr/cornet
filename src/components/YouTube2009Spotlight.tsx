@@ -3,6 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { ChannelAvatar, VerifiedBadge } from "@/components/Media";
 import { VideoCard, type VideoWithChannel } from "@/components/VideoCard";
 import { supabase } from "@/integrations/supabase/client";
+import "@/youtube2009-spotlight.css";
 
 export type HomeSpotlight = {
   channel_id: string;
