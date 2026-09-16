@@ -4,12 +4,14 @@ html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) {
   max-width: 1000px !important;
   padding-top: 12px !important;
   padding-bottom: 24px !important;
+  font-family: Arial, Helvetica, sans-serif !important;
 }
 
 html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) > div {
   gap: 14px !important;
 }
 
+/* Player */
 html[data-theme="yt-2009"] [data-corenet-player] {
   overflow: hidden !important;
   padding: 0 !important;
@@ -90,7 +92,8 @@ html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .border-bor
 
 html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .rounded-2xl,
 html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .rounded-xl,
-html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .rounded-lg {
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .rounded-lg,
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .rounded-full {
   border-radius: 0 !important;
 }
 
@@ -110,7 +113,27 @@ html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) h2 {
   font-size: 14px !important;
 }
 
-/* Suggestions should read as compact video links rather than modern cards. */
+/* Title and description: compact, plain and link-heavy like the old watch pages. */
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) h1 + * {
+  color: #555 !important;
+}
+
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) a {
+  color: #164f8a;
+}
+
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) a:hover {
+  color: #cc0000;
+  text-decoration: underline;
+}
+
+/* Suggestions should read as a compact right-hand list, not modern cards. */
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) > div > div:nth-child(2) {
+  flex: 0 0 285px !important;
+  width: 285px !important;
+  max-width: 285px !important;
+}
+
 html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .cn-video-card {
   border: 1px solid #d5d5d5 !important;
   border-radius: 0 !important;
@@ -122,8 +145,53 @@ html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .cn-video-c
   border-color: #aaa !important;
 }
 
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) .cn-video-card img {
+  border-radius: 0 !important;
+}
+
+/* Comments: simple horizontal separators instead of floating modern cards. */
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) textarea {
+  min-height: 58px !important;
+  border: 1px solid #aaa !important;
+  border-radius: 0 !important;
+  background: #fff !important;
+  color: #222 !important;
+  box-shadow: none !important;
+  font-size: 12px !important;
+}
+
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) textarea:focus {
+  border-color: #4a7aa8 !important;
+  box-shadow: none !important;
+  outline: 1px solid #4a7aa8 !important;
+}
+
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) form {
+  border-radius: 0 !important;
+}
+
+/* Historical controls: small gray rectangles with blue labels. */
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) button {
+  font-family: Arial, Helvetica, sans-serif !important;
+}
+
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) [role="button"] {
+  border-radius: 0 !important;
+}
+
+/* Absolutely no modern rounded UI inside this page. */
+html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) [class*="rounded"] {
+  border-radius: 0 !important;
+}
+
 @media (max-width: 900px) {
   html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) {
     padding: 8px 10px 18px !important;
+  }
+
+  html[data-theme="yt-2009"] .cn-shell-main:has([data-corenet-player]) > div > div:nth-child(2) {
+    width: 100% !important;
+    max-width: none !important;
+    flex-basis: auto !important;
   }
 }
