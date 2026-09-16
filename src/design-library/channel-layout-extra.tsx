@@ -1,4 +1,4 @@
-import { Flag, Film, LayoutGrid, Newspaper } from "lucide-react";
+import { Flag, Film, Newspaper } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ChannelAvatar, SignedImage } from "@/components/Media";
 import { VideoCard } from "@/components/VideoCard";
@@ -11,10 +11,54 @@ function Identity({ data, size = 72 }: { data: ChannelLayoutProps["data"]; size?
 }
 function Actions({ data, onSubscribe, onReport }: ChannelLayoutProps) { return <div className="cn-extra-actions"><Button size="sm" onClick={onSubscribe}>{data.isSubscribed ? "Suscrito" : "Suscribirse"}</Button><Button size="sm" variant="outline" onClick={onReport}><Flag className="mr-1 h-3.5 w-3.5" />Denunciar</Button></div>; }
 
-export function Classic2009Layout({ data, onSubscribe, onReport }: ChannelLayoutProps) { return <div className="cn-extra-layout cn-extra-classic2009"><header><div className="cn-extra-brand">YouTube</div><Identity data={data} size={50} /><Actions data={data} onSubscribe={onSubscribe} onReport={onReport} /></header><div className="cn-extra-tabs"><span className="active">Home</span><span>Videos</span><span>Channels</span></div><main><aside><h2>About this user</h2><p>{data.profile.description || "No description."}</p><h3>Channel stats</h3><p>{data.videos.length} videos</p><p>{data.profile.subscriber_count ?? data.subscriptions.length} subscribers</p></aside><section><h2>Videos</h2><div className="cn-extra-classic-grid">{data.videos.map(v => <VideoCard key={v.id} video={v} />)}</div></section></main></div>; }
+export function Classic2009Layout({ data, onSubscribe, onReport }: ChannelLayoutProps) {
+  const featured = data.videos[0];
+  const uploads = data.videos.slice(1);
+  const popularFavorites = data.videos.filter((video) => video.views > 0).slice(0, 4);
+  const backgroundStyle = data.background ? { backgroundImage: `url(${data.background})` } : undefined;
+
+  return <div className="cn-extra-layout cn-extra-classic2009" style={backgroundStyle}>
+    <header>
+      <div className="cn-extra-brand">YouTube</div>
+      <Identity data={data} size={50} />
+      <Actions data={data} onSubscribe={onSubscribe} onReport={onReport} />
+    </header>
+    <nav className="cn-extra-classic-tabs"><span className="active">Home</span><span>Videos</span><span>Favorites</span><span>Channels</span></nav>
+    <main>
+      <aside>
+        <section className="cn-extra-profile-box">
+          <Identity data={data} size={70} />
+          <h2>About this user</h2>
+          <p>{data.profile.description || "No description."}</p>
+          <h3>Channel stats</h3>
+          <p>{data.videos.length} videos</p>
+          <p>{data.profile.subscriber_count ?? data.subscriptions.length} subscribers</p>
+        </section>
+        <section className="cn-extra-connections">
+          <h2>Connections</h2>
+          <p>{data.subscriptions.length} subscribers connected to this channel.</p>
+        </section>
+      </aside>
+      <section className="cn-extra-channel-content">
+        {featured && <section className="cn-extra-featured">
+          <h2>Featured Video</h2>
+          <div className="cn-extra-featured-body"><VideoCard video={featured} compact /><div><h3>{featured.title}</h3><p>{featured.description || ""}</p><a href={`/watch?v=${featured.code}`}><Film className="mr-1 inline h-3.5 w-3.5" />Watch this video</a></div></div>
+        </section>}
+        <section>
+          <h2>Videos</h2>
+          <div className="cn-extra-classic-grid">{uploads.map(v => <VideoCard key={v.id} video={v} />)}</div>
+        </section>
+        <section className="cn-extra-favorites">
+          <h2>Favorites</h2>
+          {popularFavorites.length ? <div className="cn-extra-favorites-grid">{popularFavorites.map(v => <VideoCard key={v.id} video={v} compact />)}</div> : <p>No favorites selected.</p>}
+        </section>
+      </section>
+    </main>
+  </div>;
+}
 
 export function Standard2012Layout({ data, onSubscribe, onReport }: ChannelLayoutProps) { const hero=data.videos[0]; return <div className="cn-extra-layout cn-extra-standard2012"><header><Identity data={data} /><Actions data={data} onSubscribe={onSubscribe} onReport={onReport} /></header><nav><span className="active">CHANNEL</span><span>VIDEOS</span><span>PLAYLISTS</span><span>ABOUT</span></nav><section className="cn-extra-standard-main"><aside><h2>Channel</h2><p>{data.profile.description || "This channel has no description."}</p><a href="#videos">Uploads</a><a href="#community">Community</a></aside><div><div className="cn-extra-standard-feature">{hero && <VideoCard video={hero} compact />}<div><h2>{hero?.title || "Featured video"}</h2><p>{hero?.description || ""}</p></div></div><div id="videos" className="cn-extra-standard-grid">{data.videos.slice(1).map(v=><VideoCard key={v.id} video={v}/>)}</div></div></section></div>; }
 
-export function MagazineLayout({ data, onSubscribe, onReport }: ChannelLayoutProps) { const hero=data.videos[0]; return <div className="cn-extra-layout cn-extra-magazine"><header><div><p className="cn-extra-kicker">CORNET CHANNEL</p><Identity data={data} size={58}/></div><Actions data={data} onSubscribe={onSubscribe} onReport={onReport}/></header>{hero && <article className="cn-extra-magazine-hero"><SignedImage path={hero.thumbnail_path} alt={hero.title} className="aspect-[16/8] w-full object-cover"/><div><p className="cn-extra-kicker">FEATURED</p><h2>{hero.title}</h2><p>{hero.description || ""}</p><a href={`/watch?v=${hero.code}`}>Ver / leer →</a></div></article>}<div className="cn-extra-magazine-columns"><main><h2><Newspaper className="inline h-4 w-4"/> Últimos vídeos</h2>{data.videos.slice(1,9).map(v=><article key={v.id}><VideoCard video={v}/><h3>{v.title}</h3><p>{v.description || ""}</p></article>)}</main><aside><h2>Sobre el canal</h2><p>{data.profile.description || "Sin descripción."}</p><h2>Comunidad</h2><CommunityFeed channelId={data.profile.id}/></aside></div></div>; }
+export function MagazineLayout({ data, onSubscribe, onReport }: ChannelLayoutProps) { const hero=data.videos[0]; return <div className="cn-extra-layout cn-extra-magazine"><header><div><p className="cn-extra-kicker">CORNET CHANNEL</p><Identity data={data} size={58}/></div><Actions data={data} onSubscribe={onSubscribe} onReport={onReport}/></header>{hero && <article className="cn-extra-magazine-hero"><SignedImage path={hero.thumbnail_path} alt={hero.title} className="aspect-[16/8] w-full object-cover"/><div><p className="cn-extra-kicker">FEATURED</p><h2>{hero.title}</h2><p>{hero.description || ""}</p><a href={`/watch?v=${hero.code}`}>Ver / leer →</a></div></article>}<div className="cn-extra-magazine-columns"><main><h2>Últimos vídeos</h2>{data.videos.slice(1,9).map(v=><article key={v.id}><VideoCard video={v}/><h3>{v.title}</h3><p>{v.description || ""}</p></article>)}</main><aside><h2>Sobre el canal</h2><p>{data.profile.description || "Sin descripción."}</p><h2>Comunidad</h2><CommunityFeed channelId={data.profile.id}/></aside></div></div>; }
 
 export function CinephileLayout({ data, onSubscribe, onReport }: ChannelLayoutProps) { const hero=data.videos[0]; return <div className="cn-extra-layout cn-extra-cinephile"><header><div><p className="cn-extra-kicker">CINEMA</p><Identity data={data} size={64}/></div><Actions data={data} onSubscribe={onSubscribe} onReport={onReport}/></header>{hero && <section className="cn-extra-cinema-hero"><div className="cn-extra-cinema-poster"><SignedImage path={hero.thumbnail_path} alt={hero.title} className="h-full w-full object-cover"/></div><div><p className="cn-extra-kicker">NOW SHOWING</p><h2>{hero.title}</h2><p>{hero.description || ""}</p><a href={`/watch?v=${hero.code}`}><Film className="mr-1 inline h-4 w-4"/> Reproducir</a></div></section>}<section className="cn-extra-cinema-shelf"><h2>Filmografía del canal</h2><div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">{data.videos.slice(1).map(v=><VideoCard key={v.id} video={v}/>)}</div></section></div>; }
