@@ -4,6 +4,7 @@ import { AppShell } from "@/components/AppShell";
 import { ChannelAvatar, VerifiedBadge } from "@/components/Media";
 import { VideoCard } from "@/components/VideoCard";
 import { YouTube2009Spotlight, useYouTube2009Spotlight } from "@/components/YouTube2009Spotlight";
+import { YouTube2009HomeSections } from "@/components/YouTube2009HomeSections";
 import { fetchHomeFeed, fetchVideos, searchChannels, type VideoSort } from "@/lib/queries";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
@@ -98,6 +99,7 @@ function Home() {
       {spotlightQuery.isLoading ? <section className="cn-yt2009-spotlight"><div className="cn-yt2009-spotlight-heading"><h2>Spotlight</h2><span>Cargando…</span></div></section> : spotlightQuery.data ? <YouTube2009Spotlight spotlight={spotlightQuery.data} /> : null}
       <div className="mb-3 flex items-center justify-between border-b border-[#ccc] pb-1"><h2 className="text-[13px] font-bold text-[#333]">Latest Videos</h2><span className="text-[10px] text-[#777]">Most recent uploads</span></div>
       {videosQuery.isLoading ? <div className="grid grid-cols-2 gap-3 md:grid-cols-4">{Array.from({ length: 8 }).map((_, i) => <div key={i}><Skeleton className="aspect-video w-full rounded-none" /><Skeleton className="mt-2 h-3 w-4/5" /></div>)}</div> : videosQuery.data && videosQuery.data.length > 0 ? <div className="grid grid-cols-2 gap-3 md:grid-cols-4">{videosQuery.data.slice(0, 8).map((video) => <VideoCard key={video.id} video={video} />)}</div> : <p className="py-16 text-center text-xs text-[#777]">No encontramos videos.</p>}
+      {videosQuery.data && <YouTube2009HomeSections videos={videosQuery.data} />}
     </> : isPolymerHome ? <>
       <nav className="cn-polymer-home-tabs" aria-label="Filtros de inicio">
         {polymerFilters.map((filter) => <button key={filter.value} type="button" onClick={() => setSort(filter.value)} className={sort === filter.value ? "is-active" : ""}>{filter.label}</button>)}
