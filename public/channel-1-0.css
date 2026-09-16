@@ -17,7 +17,6 @@
 .cn-extra-classic2009 .cn-extra-profile-box{padding:9px}
 .cn-extra-classic2009 .cn-extra-profile-box .cn-extra-identity{display:block;text-align:center;padding-bottom:9px;border-bottom:1px solid #ddd}
 .cn-extra-classic2009 .cn-extra-profile-box .cn-extra-identity>div:last-child{margin-top:6px}
-.cn-extra-classic2009 .cn-extra-profile-box .cn-extra-identity h1{font-size:13px}
 .cn-extra-classic2009 .cn-extra-profile-box h2,.cn-extra-classic2009 .cn-extra-profile-box h3,.cn-extra-classic2009 .cn-extra-connections h2,.cn-extra-classic2009 .cn-extra-channel-content>section>h2{margin:0;padding:6px 8px;background:#eee;border-bottom:1px solid #bbb;font-size:12px;color:#333}
 .cn-extra-classic2009 .cn-extra-profile-box p,.cn-extra-classic2009 .cn-extra-connections p{margin:7px 8px;font-size:10px;line-height:1.45;color:#555}
 .cn-extra-classic2009 .cn-extra-connections{padding-bottom:2px}
@@ -37,5 +36,14 @@
 .cn-extra-classic2009 .cn-extra-favorites-grid>*{min-width:0}
 .cn-extra-classic2009 .cn-extra-favorites>p{padding:10px;margin:0;color:#777;font-size:10px}
 .cn-extra-classic2009 img,.cn-extra-classic2009 video{border-radius:0!important}
+
+/* Channel 1.0 page canvas: the custom background must sit behind the entire
+   channel, while the historical modules remain individual white boxes. */
+.cn-retro-layout-classic-2009>div:first-child{box-sizing:border-box!important;width:100%!important;max-width:none!important;min-height:100vh!important;margin:0!important;padding:12px 0 24px!important;background-color:transparent!important;border:0!important;box-shadow:none!important;border-radius:0!important}
+.cn-retro-layout-classic-2009>div:first-child>div{box-sizing:border-box!important;width:100%!important;max-width:980px!important;margin:0 auto!important;background:transparent!important;border:0!important;box-shadow:none!important;border-radius:0!important}
+.cn-retro-layout-classic-2009>div:first-child>div>header{border:1px solid #999!important;box-shadow:0 1px 3px rgba(0,0,0,.2)!important}
+.cn-retro-layout-classic-2009>div:first-child>div>div.grid{background:transparent!important;padding:10px 0!important}
+.cn-retro-layout-classic-2009>div:first-child>div>footer{margin-top:0!important;border:1px solid #aaa!important}
+
 @media(max-width:760px){.cn-extra-classic2009>header{flex-wrap:wrap}.cn-extra-classic2009>header .cn-extra-identity{order:3;flex-basis:100%}.cn-extra-classic2009>main{grid-template-columns:1fr}.cn-extra-classic2009 .cn-extra-featured-body{grid-template-columns:1fr}.cn-extra-classic2009 .cn-extra-classic-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.cn-extra-classic2009 .cn-extra-favorites-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:480px){.cn-extra-classic2009 .cn-extra-classic-tabs{overflow-x:auto}.cn-extra-classic2009 .cn-extra-classic-tabs span{white-space:nowrap}.cn-extra-classic2009 .cn-extra-classic-grid{grid-template-columns:1fr}.cn-extra-classic2009 .cn-extra-favorites-grid{grid-template-columns:1fr}}
