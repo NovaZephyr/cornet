@@ -23,6 +23,7 @@ import {
   Channel2019Layout,
 } from "./channel-layout-variants";
 import { Classic2009Layout, Standard2012Layout, MagazineLayout, CinephileLayout } from "./channel-layout-extra";
+import { Channel20Layout } from "./channel-2-0-layout";
 
 export type ChannelLayoutComponent = ComponentType<ChannelLayoutProps>;
 
@@ -31,7 +32,7 @@ const components: Record<string, ChannelLayoutComponent> = {
   "cosmic-panda": CosmicPandaChannel,
   "liquid-glass": LiquidGlassChannel,
   "classic-2009": Classic2009Layout,
-  "standard-2012": Standard2012Layout,
+  "standard-2012": Channel20Layout,
   "early-youtube-2005": EarlyYoutubeLayout,
   "star-rating-2007": StarRatingLayout,
   "transition-2010": Transition2010Layout,
