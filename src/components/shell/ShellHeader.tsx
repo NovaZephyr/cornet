@@ -4,11 +4,14 @@ import { Link } from "@tanstack/react-router";
 import corenetworkMark from "@/assets/corenetwork-mark.png";
 import { ShellSearch } from "./ShellSearch";
 
+type HistoricalNavItem = { to: string; label: string };
+
 type ShellHeaderProps = {
   mobileOpen: boolean;
   onMenuClick: () => void;
   logo: ReactNode;
   actions: ReactNode;
+  historicalNavItems?: HistoricalNavItem[];
 };
 
 export function ShellHeader({
@@ -16,6 +19,7 @@ export function ShellHeader({
   onMenuClick,
   logo,
   actions,
+  historicalNavItems = [],
 }: ShellHeaderProps) {
   return (
     <header className="cn-shell-header">
@@ -36,6 +40,16 @@ export function ShellHeader({
         </button>
 
         {logo}
+
+        {historicalNavItems.length > 0 && (
+          <nav className="cn-shell-historical-nav" aria-label="Navegación histórica">
+            {historicalNavItems.map(({ to, label }) => (
+              <Link key={`${to}-${label}`} to={to}>
+                {label}
+              </Link>
+            ))}
+          </nav>
+        )}
       </div>
 
       <ShellSearch />
