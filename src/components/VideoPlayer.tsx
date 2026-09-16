@@ -1,16 +1,15 @@
 import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 import { Check, ChevronDown, Expand, Loader2, MessageSquareText, Minimize, Pause, Play, RotateCcw, Settings, ShieldAlert, Volume2, VolumeX } from "lucide-react";
 import { formatTimestamp } from "@/lib/captions";
-import { supabase } from "@/integrations/supabase/client";
 import "./video-player.css";
 
 export type PlayerCaption = { src: string; srclang: string; label: string; default?: boolean };
 export type PlayerChapter = { id: string; title: string; startSeconds: number; endSeconds?: number | null };
-interface VideoPlayerProps { src?: string; poster?: string; autoPlay?: boolean; className?: string; captions?: PlayerCaption[]; chapters?: PlayerChapter[] }
+interface VideoPlayerProps { src?: string; poster?: string; autoPlay?: boolean; className?: string; captions?: PlayerCaption[]; chapters?: PlayerChapter[]; ageRestricted?: boolean }
 const SPEEDS = [0.5, 0.75, 1, 1.25, 1.5, 2];
 const formatTime = (seconds: number) => Number.isFinite(seconds) ? formatTimestamp(seconds) : "0:00";
 
-export function VideoPlayer({ src, poster, autoPlay, className, captions = [], chapters = [] }: VideoPlayerProps) {
+export function VideoPlayer({ src, poster, autoPlay, className, captions = [], chapters = [], ageRestricted: ageRestrictedProp = false }: VideoPlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const hideTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
@@ -31,9 +30,9 @@ export function VideoPlayer({ src, poster, autoPlay, className, captions = [], c
   const [settingsView, setSettingsView] = useState<"main" | "captions" | "speed">("main");
   const [captionEnabled, setCaptionEnabled] = useState(false);
   const [captionLanguage, setCaptionLanguage] = useState("");
-  const [ageRestricted, setAgeRestricted] = useState(false);
-  const [ageGate, setAgeGate] = useState(false);
-  const [ageLoading, setAgeLoading] = useState(true);
+  const [ageRestricted, setAgeRestricted] = useState(ageRestrictedProp === true);
+  const [ageGate, setAgeGate] = useState(ageRestrictedProp === true);
+  const [ageLoading, setAgeLoading] = useState(false);
 
   const applyCaptionMode = (language: string, enabled: boolean) => {
     const video = videoRef.current;
@@ -49,18 +48,11 @@ export function VideoPlayer({ src, poster, autoPlay, className, captions = [], c
   };
 
   useEffect(() => {
-    let active = true;
-    const code = typeof window !== "undefined" ? new URLSearchParams(window.location.search).get("v") : null;
-    if (!code) { setAgeLoading(false); return; }
-    void supabase.from("videos").select("age_restricted").eq("code", code).maybeSingle().then(({ data }) => {
-      if (!active) return;
-      const restricted = data?.age_restricted === true;
-      setAgeRestricted(restricted);
-      setAgeGate(restricted);
-      setAgeLoading(false);
-    }, () => { if (active) setAgeLoading(false); });
-    return () => { active = false; };
-  }, [src]);
+    const restricted = ageRestrictedProp === true;
+    setAgeRestricted(restricted);
+    setAgeGate(restricted);
+    setAgeLoading(false);
+  }, [ageRestrictedProp, src]);
 
   useEffect(() => {
     const video = videoRef.current;
