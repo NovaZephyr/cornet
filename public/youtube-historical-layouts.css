@@ -2,6 +2,13 @@
 
 /* Historical YouTube channel fidelity overrides. These styles are layout-owned, never theme-owned. */
 
+/* Channel 1.0: the partner background is the page canvas, not a small panel. */
+.cn-retro-layout-classic-2009 > div{min-height:100vh!important;background-color:transparent!important;background-size:auto!important;background-repeat:repeat!important;background-position:top center!important}
+.cn-retro-layout-classic-2009 > div > div{background:transparent!important;border:0!important;box-shadow:none!important;overflow:visible!important}
+.cn-retro-layout-classic-2009 > div > div > header,
+.cn-retro-layout-classic-2009 > div > div > footer{display:none!important}
+.cn-retro-layout-classic-2009 > div > div > div:first-of-type{background:transparent!important;border:0!important}
+
 /* YouTube 2009: compact, blue/gray, list-first channel. */
 .cn-extra-classic2009{width:100%;max-width:960px;margin:0 auto;background:#fff;color:#333;border:1px solid #c9c9c9;font-family:Arial,Helvetica,sans-serif;box-shadow:none;border-radius:0}
 .cn-extra-classic2009 header{min-height:50px;padding:8px 10px;background:linear-gradient(#fff,#ececec);border-bottom:1px solid #c5c5c5;box-shadow:none}
