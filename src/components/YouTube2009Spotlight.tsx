@@ -19,9 +19,10 @@ export type HomeSpotlight = {
   videos: VideoWithChannel[];
 };
 
-export function useYouTube2009Spotlight() {
+export function useYouTube2009Spotlight(enabled = true) {
   return useQuery({
     queryKey: ["youtube-2009-spotlight"],
+    enabled,
     staleTime: 5 * 60_000,
     gcTime: 15 * 60_000,
     queryFn: async (): Promise<HomeSpotlight | null> => {
