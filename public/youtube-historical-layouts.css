@@ -1,3 +1,5 @@
+@import url("/channel-1-0.css");
+
 /* Historical YouTube channel fidelity overrides. These styles are layout-owned, never theme-owned. */
 
 /* YouTube 2009: compact, blue/gray, list-first channel. */
@@ -68,7 +70,6 @@
 .cn-layout-2019-shelves{padding:18px!important}
 .cn-layout-2019-shelves>.featured{gap:18px!important;padding-bottom:20px!important}
 .cn-layout-2019-shelves>.featured h2{font-size:20px!important;font-weight:500!important}
-.cn-layout-2019-shelves>.featured .rounded-xl,.cn-layout-2019-shelves>.featured .rounded-lg{border-radius:6px!important}
 .cn-layout-2019-shelves section>h2{font-size:16px!important;font-weight:500!important}
 .cn-layout-2019-shelves section .cn-layout-video-list{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:16px!important}
 .cn-layout-2019 .shadow,.cn-layout-2019 .shadow-sm{box-shadow:0 1px 3px rgba(0,0,0,.08)!important}
