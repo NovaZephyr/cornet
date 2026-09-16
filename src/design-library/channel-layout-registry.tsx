@@ -1,4 +1,4 @@
-import type { CSSProperties, ComponentType } from "react";
+import type { ComponentType, CSSProperties, ReactNode } from "react";
 import { channelLayouts } from "./index";
 import type { ChannelLayoutProps } from "./channel-data";
 import { ClassicChannel, CosmicPandaChannel } from "./channel-layouts";
@@ -27,7 +27,7 @@ import { Channel20Layout } from "./channel-2-0-layout";
 
 export type ChannelLayoutComponent = ComponentType<ChannelLayoutProps>;
 
-function HistoricalColorScope({ data, children }: ChannelLayoutProps & { children: React.ReactNode }) {
+function HistoricalColorScope({ data, children }: ChannelLayoutProps & { children: ReactNode }) {
   const style = {
     "--cn-channel-primary": data.profile.channel_primary_color ?? "#1f4fa3",
     "--cn-channel-secondary": data.profile.channel_secondary_color ?? "#2aa84a",
