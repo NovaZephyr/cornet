@@ -175,6 +175,105 @@ html[data-theme="yt-2009"] .cn-shell-footer {
   font-size: 10px !important;
 }
 
+/* Historical footer: search bar, five compact link columns and locale controls. */
+html[data-theme="yt-2009"] .cn-yt2009-footer {
+  margin-top: 12px !important;
+  padding: 12px 8px 10px !important;
+  border-top: 1px solid #d7d7d7 !important;
+  background: #fff !important;
+  color: #666 !important;
+  font-size: 10px !important;
+}
+
+html[data-theme="yt-2009"] .cn-yt2009-footer-search {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 4px !important;
+  margin: 0 0 12px !important;
+}
+
+html[data-theme="yt-2009"] .cn-yt2009-footer-search input {
+  width: 155px !important;
+  height: 22px !important;
+  min-height: 22px !important;
+  padding: 1px 4px !important;
+  border: 1px solid #bbb !important;
+  border-radius: 0 !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  font-size: 10px !important;
+}
+
+html[data-theme="yt-2009"] .cn-yt2009-footer-search button {
+  height: 22px !important;
+  min-width: 48px !important;
+  padding: 1px 6px !important;
+  border: 1px solid #aaa !important;
+  border-radius: 0 !important;
+  background: linear-gradient(#fff, #ddd) !important;
+  color: #333 !important;
+  font-size: 10px !important;
+}
+
+html[data-theme="yt-2009"] .cn-yt2009-footer-links {
+  display: grid !important;
+  grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+  gap: 18px !important;
+  padding: 0 10px !important;
+}
+
+html[data-theme="yt-2009"] .cn-yt2009-footer-links > div {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  gap: 3px !important;
+  min-width: 0 !important;
+}
+
+html[data-theme="yt-2009"] .cn-yt2009-footer-links strong {
+  margin-bottom: 2px !important;
+  color: #555 !important;
+  font-size: 10px !important;
+  font-weight: 400 !important;
+}
+
+html[data-theme="yt-2009"] .cn-yt2009-footer-links a {
+  color: #164f8a !important;
+  font-size: 9px !important;
+  line-height: 1.25 !important;
+  text-decoration: none !important;
+}
+
+html[data-theme="yt-2009"] .cn-yt2009-footer-links a:hover,
+html[data-theme="yt-2009"] .cn-yt2009-footer-meta a:hover {
+  text-decoration: underline !important;
+}
+
+html[data-theme="yt-2009"] .cn-yt2009-footer-meta {
+  display: flex !important;
+  align-items: center !important;
+  flex-wrap: wrap !important;
+  gap: 3px 8px !important;
+  margin: 13px 10px 0 !important;
+  padding-top: 7px !important;
+  border-top: 1px solid #eee !important;
+  color: #777 !important;
+  font-size: 9px !important;
+}
+
+html[data-theme="yt-2009"] .cn-yt2009-footer-meta a {
+  color: #164f8a !important;
+  text-decoration: none !important;
+}
+
+html[data-theme="yt-2009"] .cn-yt2009-footer-copy {
+  margin: 14px 0 0 !important;
+  text-align: center !important;
+  color: #777 !important;
+  font-size: 9px !important;
+}
+
 /* Historical controls and cards: square, dense, blue-link oriented. */
 html[data-theme="yt-2009"] button,
 html[data-theme="yt-2009"] input,
@@ -236,5 +335,10 @@ html[data-theme="yt-2009"] .cn-video-card:hover {
   html[data-theme="yt-2009"] .cn-shell-main {
     width: 100% !important;
     padding: 10px !important;
+  }
+
+  html[data-theme="yt-2009"] .cn-yt2009-footer-links {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 14px 10px !important;
   }
 }
