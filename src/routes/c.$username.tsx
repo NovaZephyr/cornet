@@ -48,7 +48,7 @@ function Channel() {
   return (
     <AppShell hideSidebar={!showShellSidebar}>
       <ChannelLayoutStyles layoutId={layoutId} />
-      <div className={!showShellSidebar ? "cn-retro-scope" : undefined}>
+      <div className={`cn-retro-scope cn-retro-layout-${layoutId}`}>
         <Layout {...layoutProps} />
       </div>
       <ReportDialog
