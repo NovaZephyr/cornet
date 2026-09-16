@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import type { ReactNode } from "react";
 import type { VideoWithChannel } from "@/components/VideoCard";
 import { SignedImage } from "@/components/Media";
 import { formatViews, timeAgo } from "@/lib/format";
@@ -20,7 +21,7 @@ function VideoItem({ video, rank }: { video: VideoWithChannel; rank?: number }) 
   );
 }
 
-function Section({ title, subtitle, children }: { title: string; subtitle?: string; children: React.ReactNode }) {
+function Section({ title, subtitle, children }: { title: string; subtitle?: string; children: ReactNode }) {
   return <section className="cn-yt2009-section"><header><h2>{title}</h2>{subtitle && <span>{subtitle}</span>}</header>{children}</section>;
 }
 
