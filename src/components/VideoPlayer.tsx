@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 import { Check, ChevronDown, Expand, Loader2, MessageSquareText, Minimize, Pause, Play, RotateCcw, Settings, ShieldAlert, Volume2, VolumeX } from "lucide-react";
 import { formatTimestamp } from "@/lib/captions";
 import { supabase } from "@/integrations/supabase/client";
+import "./video-player.css";
 
 export type PlayerCaption = { src: string; srclang: string; label: string; default?: boolean };
 export type PlayerChapter = { id: string; title: string; startSeconds: number; endSeconds?: number | null };
@@ -119,26 +120,154 @@ export function VideoPlayer({ src, poster, autoPlay, className, captions = [], c
   const progress = duration ? Math.min(100, (current / duration) * 100) : 0;
   const buffer = duration ? Math.min(100, (buffered / duration) * 100) : 0;
   const activeCaptionLabel = captions.find((caption) => caption.srclang === captionLanguage)?.label ?? "Desactivados";
+  const controlsClass = [
+    "cn-video-player__controls",
+    showControls || !playing ? "" : "cn-video-player__controls--hidden",
+    ageGate ? "cn-video-player__controls--blocked" : "",
+  ].filter(Boolean).join(" ");
 
-  return <div ref={containerRef} tabIndex={0} onKeyDown={handleKeyDown} onFocus={wake} onMouseMove={wake} onMouseLeave={() => playing && setShowControls(false)} role="application" aria-label="Reproductor de video" className={`group/player relative aspect-video w-full select-none overflow-hidden rounded-2xl bg-black shadow-2xl shadow-black/20 ring-1 ring-white/10 outline-none focus-visible:ring-2 focus-visible:ring-primary/60 ${className ?? ""}`}>
-    <video ref={videoRef} src={src} poster={poster} autoPlay={autoPlay && !ageGate} playsInline preload="metadata" onClick={togglePlay} onDoubleClick={toggleFullscreen} onPointerDown={() => containerRef.current?.focus()} className="h-full w-full cursor-pointer bg-black object-contain" aria-label="Video" />
-    {loading && !ageGate && !error && <div className="pointer-events-none absolute inset-0 flex items-center justify-center"><span className="rounded-full bg-black/40 p-3 backdrop-blur"><Loader2 className="h-8 w-8 animate-spin text-white" /></span></div>}
-    {error && !ageGate && <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/75 p-6 text-center text-white backdrop-blur-sm"><div><RotateCcw className="mx-auto h-6 w-6" /><h2 className="mt-4 text-lg font-semibold">No se pudo cargar el video</h2><p className="mt-1 text-sm text-white/65">Comprueba la conexión y vuelve a intentarlo.</p><button type="button" onClick={retry} className="mt-4 rounded-full bg-white px-4 py-2 text-sm font-semibold text-black hover:bg-white/90">Reintentar</button></div></div>}
-    {!playing && !loading && !ageGate && !error && <button type="button" onClick={togglePlay} aria-label="Reproducir" className="absolute inset-0 flex items-center justify-center bg-black/10"><span className="flex h-16 w-16 items-center justify-center rounded-full bg-white/95 text-black shadow-2xl transition-transform hover:scale-105"><Play className="ml-1 h-7 w-7 fill-current" /></span></button>}
-    {!ageLoading && ageRestricted && ageGate && <div className="absolute inset-0 z-30 flex items-center justify-center bg-black/90 p-6 text-center text-white"><div className="max-w-md"><ShieldAlert className="mx-auto h-12 w-12 text-white/80" /><h2 className="mt-4 text-2xl font-bold">Contenido restringido para mayores de 18</h2><p className="mt-2 text-sm text-white/70">Este video está marcado como restringido por el creador. Confirma que eres mayor de 18 años para continuar.</p><button type="button" onClick={continueVideo} className="mt-5 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-black hover:bg-white/90">Soy mayor de 18 — Ver video</button><p className="mt-3 text-[11px] text-white/45">Esta advertencia no sustituye una verificación legal de edad.</p></div></div>}
-    <div className={`absolute inset-x-0 bottom-0 bg-gradient-to-t from-black via-black/75 to-transparent px-3 pb-3 pt-14 transition-opacity duration-200 sm:px-4 ${showControls || !playing ? "opacity-100" : "pointer-events-none opacity-0"} ${ageGate ? "pointer-events-none opacity-0" : ""}`}>
-      <div className="relative mb-3 h-1.5 cursor-pointer rounded-full bg-white/25"><div className="absolute inset-y-0 left-0 rounded-full bg-white/30" style={{ width: `${buffer}%` }} /><div className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-cyan-400 to-primary" style={{ width: `${progress}%` }} /><input type="range" min={0} max={duration || 0} step={0.1} value={current} onChange={(event) => seekTo(Number(event.target.value))} className="absolute inset-0 h-full w-full cursor-pointer opacity-0" aria-label="Progreso del video" /></div>
-      <div className="flex items-center gap-1 text-white sm:gap-2">
-        <button type="button" onClick={togglePlay} aria-label={playing ? "Pausar" : "Reproducir"} className="rounded-lg p-2 hover:bg-white/10">{playing ? <Pause className="h-5 w-5" fill="currentColor" /> : <Play className="h-5 w-5" fill="currentColor" />}</button>
-        <div className="group/vol flex items-center gap-1"><button type="button" onClick={toggleMute} aria-label={muted ? "Activar sonido" : "Silenciar"} className="rounded-lg p-2 hover:bg-white/10">{muted || volume === 0 ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}</button><input type="range" min={0} max={1} step={0.05} value={muted ? 0 : volume} onChange={(event) => onVolumeChange(Number(event.target.value))} className="h-1 w-0 opacity-0 transition-all group-hover/vol:w-16 group-hover/vol:opacity-100" aria-label="Volumen" /></div>
-        <span className="ml-1 text-xs font-medium tabular-nums text-white/90 sm:text-sm">{formatTime(current)} <span className="text-white/40">/</span> {formatTime(duration)}</span>
-        <div className="ml-auto flex items-center gap-0.5">
-          {captions.length > 0 && <button type="button" onClick={() => applyCaptionMode(captionEnabledRef.current ? "" : captions[0].srclang, !captionEnabledRef.current)} aria-label="Subtítulos" className={`rounded-lg p-2 hover:bg-white/10 ${captionEnabled ? "bg-white/15" : ""}`}><MessageSquareText className="h-5 w-5" /></button>}
-          <div className="relative"><button type="button" onClick={() => { setShowSettings((open) => !open); setSettingsView("main"); }} aria-label="Configuración" className="rounded-lg p-2 hover:bg-white/10"><Settings className="h-5 w-5" /></button>{showSettings && <div className="absolute bottom-12 right-0 w-64 overflow-hidden rounded-2xl border border-white/10 bg-zinc-950/95 p-1.5 text-sm text-white shadow-2xl backdrop-blur-xl">{settingsView === "main" && <><button type="button" onClick={() => setSettingsView("speed")} className="flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-left hover:bg-white/10"><span>Velocidad</span><span className="flex items-center gap-1 text-xs text-white/60">{rate}x <ChevronDown className="h-3 w-3" /></span></button>{captions.length > 0 && <button type="button" onClick={() => setSettingsView("captions")} className="flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-left hover:bg-white/10"><span>Subtítulos / CC</span><span className="flex items-center gap-1 text-xs text-white/60">{activeCaptionLabel} <ChevronDown className="h-3 w-3" /></span></button>}</>}{settingsView === "speed" && <><button type="button" onClick={() => setSettingsView("main")} className="w-full rounded-xl px-3 py-2 text-left text-xs text-white/55 hover:bg-white/10">← Configuración</button>{SPEEDS.map((speed) => <button key={speed} type="button" onClick={() => setPlaybackRate(speed)} className="flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-left hover:bg-white/10"><span>{speed === 1 ? "Normal" : `${speed}x`}</span>{speed === rate && <Check className="h-4 w-4 text-cyan-300" />}</button>)}</>}{settingsView === "captions" && <><button type="button" onClick={() => setSettingsView("main")} className="w-full rounded-xl px-3 py-2 text-left text-xs text-white/55 hover:bg-white/10">← Configuración</button><button type="button" onClick={() => applyCaptionMode("", false)} className="flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-left hover:bg-white/10"><span>Desactivados</span>{!captionEnabled && <Check className="h-4 w-4 text-cyan-300" />}</button>{captions.map((caption) => <button key={`${caption.srclang}-${caption.label}`} type="button" onClick={() => applyCaptionMode(caption.srclang, true)} className="flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-left hover:bg-white/10"><span>{caption.label}</span>{captionEnabled && captionLanguage === caption.srclang && <Check className="h-4 w-4 text-cyan-300" />}</button>)}</>}</div>}</div>
-          <button type="button" onClick={toggleFullscreen} aria-label={fullscreen ? "Salir de pantalla completa" : "Pantalla completa"} className="rounded-lg p-2 hover:bg-white/10">{fullscreen ? <Minimize className="h-5 w-5" /> : <Expand className="h-5 w-5" />}</button>
+  return (
+    <div
+      ref={containerRef}
+      tabIndex={0}
+      onKeyDown={handleKeyDown}
+      onFocus={wake}
+      onMouseMove={wake}
+      onMouseLeave={() => playing && setShowControls(false)}
+      role="application"
+      aria-label="Reproductor de video"
+      data-corenet-player
+      className={`cn-video-player ${className ?? ""}`}
+    >
+      <video
+        ref={videoRef}
+        src={src}
+        poster={poster}
+        autoPlay={autoPlay && !ageGate}
+        playsInline
+        preload="metadata"
+        onClick={togglePlay}
+        onDoubleClick={toggleFullscreen}
+        onPointerDown={() => containerRef.current?.focus()}
+        className="cn-video-player__video"
+        aria-label="Video"
+      />
+
+      {loading && !ageGate && !error && (
+        <div className="cn-video-player__loading">
+          <span className="cn-video-player__loading-icon"><Loader2 /></span>
+        </div>
+      )}
+
+      {error && !ageGate && (
+        <div className="cn-video-player__error">
+          <div className="cn-video-player__message">
+            <RotateCcw className="cn-video-player__message-icon" />
+            <h2>No se pudo cargar el video</h2>
+            <p>Comprueba la conexión y vuelve a intentarlo.</p>
+            <button type="button" onClick={retry} className="cn-video-player__button cn-video-player__button--retry">Reintentar</button>
+          </div>
+        </div>
+      )}
+
+      {!playing && !loading && !ageGate && !error && (
+        <button type="button" onClick={togglePlay} aria-label="Reproducir" className="cn-video-player__play-overlay">
+          <span className="cn-video-player__play-icon"><Play className="cn-video-player__play-symbol" /></span>
+        </button>
+      )}
+
+      {!ageLoading && ageRestricted && ageGate && (
+        <div className="cn-video-player__age-gate">
+          <div className="cn-video-player__age-content">
+            <ShieldAlert className="cn-video-player__age-icon" />
+            <h2>Contenido restringido para mayores de 18</h2>
+            <p>Este video está marcado como restringido por el creador. Confirma que eres mayor de 18 años para continuar.</p>
+            <button type="button" onClick={continueVideo} className="cn-video-player__button cn-video-player__button--age">Soy mayor de 18 — Ver video</button>
+            <p className="cn-video-player__age-note">Esta advertencia no sustituye una verificación legal de edad.</p>
+          </div>
+        </div>
+      )}
+
+      <div className={controlsClass}>
+        <div className="cn-video-player__progress">
+          <div className="cn-video-player__buffer" style={{ width: `${buffer}%` }} />
+          <div className="cn-video-player__played" style={{ width: `${progress}%` }} />
+          <input type="range" min={0} max={duration || 0} step={0.1} value={current} onChange={(event) => seekTo(Number(event.target.value))} className="cn-video-player__range" aria-label="Progreso del video" />
+        </div>
+
+        <div className="cn-video-player__toolbar">
+          <button type="button" onClick={togglePlay} aria-label={playing ? "Pausar" : "Reproducir"} className="cn-video-player__control">
+            {playing ? <Pause fill="currentColor" /> : <Play fill="currentColor" />}
+          </button>
+
+          <div className="cn-video-player__volume">
+            <button type="button" onClick={toggleMute} aria-label={muted ? "Activar sonido" : "Silenciar"} className="cn-video-player__control">
+              {muted || volume === 0 ? <VolumeX /> : <Volume2 />}
+            </button>
+            <input type="range" min={0} max={1} step={0.05} value={muted ? 0 : volume} onChange={(event) => onVolumeChange(Number(event.target.value))} className="cn-video-player__volume-range" aria-label="Volumen" />
+          </div>
+
+          <span className="cn-video-player__time">
+            {formatTime(current)} <span className="cn-video-player__time-separator">/</span> {formatTime(duration)}
+          </span>
+
+          <span className="cn-video-player__spacer" />
+
+          {captions.length > 0 && (
+            <button type="button" onClick={() => applyCaptionMode(captionEnabledRef.current ? "" : captions[0].srclang, !captionEnabledRef.current)} aria-label="Subtítulos" aria-pressed={captionEnabled} className="cn-video-player__control">
+              <MessageSquareText />
+            </button>
+          )}
+
+          <div className="cn-video-player__settings">
+            <button type="button" onClick={() => { setShowSettings((open) => !open); setSettingsView("main"); }} aria-label="Configuración" aria-expanded={showSettings} className="cn-video-player__settings-button">
+              <Settings />
+            </button>
+
+            {showSettings && (
+              <div className="cn-video-player__menu">
+                {settingsView === "main" && <>
+                  <button type="button" onClick={() => setSettingsView("speed")} className="cn-video-player__menu-button">
+                    <span>Velocidad</span><span className="cn-video-player__menu-muted">{rate}x <ChevronDown /></span>
+                  </button>
+                  {captions.length > 0 && <button type="button" onClick={() => setSettingsView("captions")} className="cn-video-player__menu-button">
+                    <span>Subtítulos / CC</span><span className="cn-video-player__menu-muted">{activeCaptionLabel} <ChevronDown /></span>
+                  </button>}
+                </>}
+
+                {settingsView === "speed" && <>
+                  <button type="button" onClick={() => setSettingsView("main")} className="cn-video-player__menu-button"><span>← Configuración</span></button>
+                  {SPEEDS.map((speed) => <button key={speed} type="button" onClick={() => setPlaybackRate(speed)} className="cn-video-player__menu-button">
+                    <span>{speed === 1 ? "Normal" : `${speed}x`}</span>{speed === rate && <Check />}
+                  </button>)}
+                </>}
+
+                {settingsView === "captions" && <>
+                  <button type="button" onClick={() => setSettingsView("main")} className="cn-video-player__menu-button"><span>← Configuración</span></button>
+                  <button type="button" onClick={() => applyCaptionMode("", false)} className="cn-video-player__menu-button">
+                    <span>Desactivados</span>{!captionEnabled && <Check />}
+                  </button>
+                  {captions.map((caption) => <button key={`${caption.srclang}-${caption.label}`} type="button" onClick={() => applyCaptionMode(caption.srclang, true)} className="cn-video-player__menu-button">
+                    <span>{caption.label}</span>{captionEnabled && captionLanguage === caption.srclang && <Check />}
+                  </button>)}
+                </>}
+              </div>
+            )}
+          </div>
+
+          <button type="button" onClick={toggleFullscreen} aria-label={fullscreen ? "Salir de pantalla completa" : "Pantalla completa"} className="cn-video-player__control">
+            {fullscreen ? <Minimize /> : <Expand />}
+          </button>
         </div>
       </div>
+
+      {chapters.length > 0 && !ageGate && (
+        <div className="cn-video-player__chapters">
+          {chapters.map((chapter) => <button key={chapter.id} type="button" onClick={() => seekTo(chapter.startSeconds)} className="cn-video-player__chapter" title={`${chapter.title} · ${formatTimestamp(chapter.startSeconds)}`}>
+            {chapter.title}
+          </button>)}
+        </div>
+      )}
     </div>
-    {chapters.length > 0 && !ageGate && <div className="absolute left-3 right-3 top-3 flex gap-1.5 overflow-x-auto rounded-xl border border-white/10 bg-black/35 p-1.5 text-white backdrop-blur-md scrollbar-none">{chapters.map((chapter) => <button key={chapter.id} type="button" onClick={() => seekTo(chapter.startSeconds)} className="shrink-0 rounded-lg bg-white/8 px-3 py-1.5 text-[11px] font-medium hover:bg-white/15" title={`${chapter.title} · ${formatTimestamp(chapter.startSeconds)}`}>{chapter.title}</button>)}</div>}
-  </div>;
+  );
 }
