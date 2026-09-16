@@ -42,7 +42,7 @@ export function useYouTube2009Spotlight() {
 
       const { data: videos, error: videosError } = await db
         .from("videos")
-        .select("id,code,title,description,category,thumbnail_path,video_path,duration_seconds,views,created_at,user_id,profiles(username,display_name,avatar_path,is_verified,subscriber_count)")
+        .select("id,code,title,description,category,thumbnail_path,video_path,duration_seconds,views,created_at,user_id")
         .eq("user_id", config.channel_id)
         .eq("visibility", "public")
         .order("views", { ascending: false, nullsFirst: false })
@@ -50,11 +50,17 @@ export function useYouTube2009Spotlight() {
         .limit(4);
       if (videosError) throw videosError;
 
+      const channel = config.profiles ?? null;
+      const channelVideos = (videos ?? []).map((video: Omit<VideoWithChannel, "profiles">) => ({
+        ...video,
+        profiles: channel,
+      })) as VideoWithChannel[];
+
       return {
         channel_id: config.channel_id,
         custom_text: config.custom_text ?? "",
-        channel: config.profiles ?? null,
-        videos: (videos ?? []) as VideoWithChannel[],
+        channel,
+        videos: channelVideos,
       };
     },
   });
