@@ -1,0 +1,362 @@
+.cn-video-player {
+  --cn-player-bg: #000;
+  --cn-player-fg: #fff;
+  --cn-player-accent: #35b8ff;
+  --cn-player-control-bg: rgba(0, 0, 0, 0.72);
+  --cn-player-border: rgba(255, 255, 255, 0.14);
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--cn-player-bg);
+  color: var(--cn-player-fg);
+  outline: none;
+  user-select: none;
+}
+
+.cn-video-player:focus-visible {
+  box-shadow: 0 0 0 2px var(--cn-player-accent);
+}
+
+.cn-video-player__video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  object-fit: contain;
+  cursor: pointer;
+}
+
+.cn-video-player__loading,
+.cn-video-player__error,
+.cn-video-player__age-gate,
+.cn-video-player__play-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cn-video-player__loading {
+  pointer-events: none;
+  z-index: 4;
+}
+
+.cn-video-player__loading-icon {
+  display: inline-flex;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.cn-video-player__loading-icon svg {
+  width: 30px;
+  height: 30px;
+  animation: cn-video-player-spin 0.9s linear infinite;
+}
+
+@keyframes cn-video-player-spin {
+  to { transform: rotate(360deg); }
+}
+
+.cn-video-player__error {
+  z-index: 20;
+  padding: 24px;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.82);
+}
+
+.cn-video-player__message {
+  max-width: 420px;
+}
+
+.cn-video-player__message-icon {
+  width: 28px;
+  height: 28px;
+}
+
+.cn-video-player__message h2 {
+  margin: 14px 0 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.cn-video-player__message p {
+  margin: 5px 0 0;
+  font-size: 13px;
+  opacity: 0.68;
+}
+
+.cn-video-player__button {
+  border: 1px solid transparent;
+  background: rgba(255, 255, 255, 0.94);
+  color: #111;
+  cursor: pointer;
+  font: inherit;
+}
+
+.cn-video-player__button--retry,
+.cn-video-player__button--age {
+  margin-top: 16px;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.cn-video-player__play-overlay {
+  z-index: 5;
+  border: 0;
+  background: rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  color: #111;
+}
+
+.cn-video-player__play-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  background: rgba(255, 255, 255, 0.95);
+  transition: transform 120ms ease;
+}
+
+.cn-video-player__play-overlay:hover .cn-video-player__play-icon {
+  transform: scale(1.05);
+}
+
+.cn-video-player__controls {
+  position: absolute;
+  z-index: 10;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 52px 14px 12px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.96), rgba(0, 0, 0, 0.72), transparent);
+  opacity: 1;
+  transition: opacity 180ms ease;
+}
+
+.cn-video-player__controls--hidden,
+.cn-video-player__controls--blocked {
+  pointer-events: none;
+  opacity: 0;
+}
+
+.cn-video-player__progress {
+  position: relative;
+  height: 6px;
+  margin-bottom: 10px;
+  background: rgba(255, 255, 255, 0.25);
+  cursor: pointer;
+}
+
+.cn-video-player__buffer,
+.cn-video-player__played {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+.cn-video-player__buffer { background: rgba(255, 255, 255, 0.32); }
+.cn-video-player__played { background: var(--cn-player-accent); }
+
+.cn-video-player__range {
+  position: absolute;
+  inset: -6px 0;
+  width: 100%;
+  height: 18px;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.cn-video-player__toolbar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 34px;
+}
+
+.cn-video-player__control,
+.cn-video-player__settings-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 34px;
+  height: 34px;
+  padding: 7px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.cn-video-player__control:hover,
+.cn-video-player__settings-button:hover,
+.cn-video-player__control[aria-pressed="true"] {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.cn-video-player__control svg,
+.cn-video-player__settings-button svg {
+  width: 19px;
+  height: 19px;
+}
+
+.cn-video-player__volume {
+  display: flex;
+  align-items: center;
+}
+
+.cn-video-player__volume-range {
+  width: 0;
+  height: 4px;
+  margin-left: 2px;
+  opacity: 0;
+  transition: width 120ms ease, opacity 120ms ease;
+}
+
+.cn-video-player__volume:hover .cn-video-player__volume-range,
+.cn-video-player__volume-range:focus {
+  width: 64px;
+  opacity: 1;
+}
+
+.cn-video-player__time {
+  margin-left: 4px;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.cn-video-player__time-separator { opacity: 0.42; }
+.cn-video-player__spacer { flex: 1; }
+
+.cn-video-player__settings {
+  position: relative;
+}
+
+.cn-video-player__menu {
+  position: absolute;
+  right: 0;
+  bottom: 42px;
+  width: 250px;
+  padding: 5px;
+  border: 1px solid var(--cn-player-border);
+  background: rgba(12, 12, 12, 0.97);
+  color: #fff;
+  font-size: 13px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+.cn-video-player__menu-button {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9px 10px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.cn-video-player__menu-button:hover { background: rgba(255, 255, 255, 0.1); }
+.cn-video-player__menu-button svg { width: 15px; height: 15px; }
+.cn-video-player__menu-muted { opacity: 0.55; }
+
+.cn-video-player__chapters {
+  position: absolute;
+  z-index: 12;
+  top: 10px;
+  right: 10px;
+  left: 10px;
+  display: flex;
+  gap: 5px;
+  overflow-x: auto;
+  padding: 5px;
+  border: 1px solid var(--cn-player-border);
+  background: rgba(0, 0, 0, 0.55);
+}
+
+.cn-video-player__chapter {
+  flex: 0 0 auto;
+  padding: 6px 10px;
+  border: 0;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.cn-video-player__chapter:hover { background: rgba(255, 255, 255, 0.16); }
+
+.cn-video-player__age-gate {
+  z-index: 30;
+  padding: 24px;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.92);
+}
+
+.cn-video-player__age-content { max-width: 430px; }
+.cn-video-player__age-icon { width: 46px; height: 46px; opacity: 0.82; }
+.cn-video-player__age-content h2 { margin: 14px 0 0; font-size: 22px; }
+.cn-video-player__age-content p { margin: 8px 0 0; font-size: 13px; opacity: 0.7; }
+.cn-video-player__age-note { margin-top: 10px !important; font-size: 11px !important; opacity: 0.45 !important; }
+
+/* YouTube 2009: deliberately square and compact. */
+html[data-theme="yt-2009"] .cn-video-player {
+  --cn-player-accent: #2d6ca2;
+  --cn-player-control-bg: #222;
+  border: 1px solid #333;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+html[data-theme="yt-2009"] .cn-video-player * { border-radius: 0 !important; }
+html[data-theme="yt-2009"] .cn-video-player__controls { padding: 42px 8px 7px; background: linear-gradient(to top, rgba(0, 0, 0, 0.94), rgba(0, 0, 0, 0.62), transparent); }
+html[data-theme="yt-2009"] .cn-video-player__control,
+html[data-theme="yt-2009"] .cn-video-player__settings-button { width: 30px; height: 30px; padding: 6px; }
+html[data-theme="yt-2009"] .cn-video-player__control svg,
+html[data-theme="yt-2009"] .cn-video-player__settings-button svg { width: 17px; height: 17px; }
+html[data-theme="yt-2009"] .cn-video-player__progress { height: 5px; margin-bottom: 6px; background: #555; }
+html[data-theme="yt-2009"] .cn-video-player__played { background: #cc181e; }
+html[data-theme="yt-2009"] .cn-video-player__menu { border-color: #555; background: #222; box-shadow: none; }
+html[data-theme="yt-2009"] .cn-video-player__menu-button:hover { background: #444; }
+html[data-theme="yt-2009"] .cn-video-player__chapters { top: 7px; right: 7px; left: 7px; padding: 3px; background: rgba(0, 0, 0, 0.7); }
+html[data-theme="yt-2009"] .cn-video-player__chapter { background: #333; }
+html[data-theme="yt-2009"] .cn-video-player__play-icon { width: 58px; height: 58px; }
+
+/* YouTube 2019 / Polymer-inspired skin. */
+html[data-theme="yt-2019"] .cn-video-player {
+  --cn-player-accent: #ff0000;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+html[data-theme="yt-2019"] .cn-video-player__played { background: #ff0000; }
+html[data-theme="yt-2019"] .cn-video-player__controls { padding-bottom: 9px; }
+html[data-theme="yt-2019"] .cn-video-player__play-icon { width: 60px; height: 60px; }
+
+/* Cosmic Panda keeps the custom player structure but gets its own visual language. */
+html[data-theme="cosmic-panda"] .cn-video-player {
+  --cn-player-accent: #7c5cff;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.28);
+}
+
+html[data-theme="cosmic-panda"] .cn-video-player__played { background: #7c5cff; }
+
+@media (max-width: 640px) {
+  .cn-video-player__controls { padding-right: 8px; padding-left: 8px; }
+  .cn-video-player__time { font-size: 11px; }
+  .cn-video-player__menu { width: 220px; }
+  .cn-video-player__volume-range { display: none; }
+}
