@@ -14,7 +14,6 @@ function Actions({ data, onSubscribe, onReport }: ChannelLayoutProps) { return <
 export function Classic2009Layout({ data, onSubscribe, onReport }: ChannelLayoutProps) {
   const featured = data.videos[0];
   const uploads = data.videos.slice(1);
-  const popularFavorites = data.videos.filter((video) => video.views > 0).slice(0, 4);
   const backgroundStyle = data.background ? { backgroundImage: `url(${data.background})` } : undefined;
 
   return <div className="cn-extra-layout cn-extra-classic2009" style={backgroundStyle}>
@@ -50,7 +49,7 @@ export function Classic2009Layout({ data, onSubscribe, onReport }: ChannelLayout
         </section>
         <section className="cn-extra-favorites">
           <h2>Favorites</h2>
-          {popularFavorites.length ? <div className="cn-extra-favorites-grid">{popularFavorites.map(v => <VideoCard key={v.id} video={v} compact />)}</div> : <p>No favorites selected.</p>}
+          <p>Favorites are not configured in the current channel data.</p>
         </section>
       </section>
     </main>
