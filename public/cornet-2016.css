@@ -202,9 +202,177 @@ html[data-theme="cornet-2016"] .cn-cornet-2016-featured-side img {
   max-width: 100%;
 }
 
+/* Block 2.3 — Trending / Más vistos uses the existing Explore page and feed. */
+html[data-theme="cornet-2016"] .cn-explore-page {
+  max-width: 1280px;
+  gap: 14px;
+  padding: 10px 0 34px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+html[data-theme="cornet-2016"] .cn-explore-sidebar {
+  top: 66px;
+  width: 210px;
+  flex-basis: 210px;
+  padding: 7px;
+  border-radius: 2px;
+  background: #fafafa;
+  border-color: var(--cn-2016-border);
+  box-shadow: none;
+}
+
+html[data-theme="cornet-2016"] .cn-explore-sidebar-brand {
+  padding: 7px 8px 9px;
+  border-bottom-color: var(--cn-2016-border);
+}
+
+html[data-theme="cornet-2016"] .cn-explore-kicker,
+html[data-theme="cornet-2016"] .cn-explore-sidebar-title {
+  color: var(--cn-2016-muted);
+}
+
+html[data-theme="cornet-2016"] .cn-explore-nav { gap: 0; }
+html[data-theme="cornet-2016"] .cn-explore-nav a {
+  min-height: 36px;
+  padding: 7px 9px;
+  border-radius: 0;
+  color: #555;
+  font-size: 13px;
+}
+
+html[data-theme="cornet-2016"] .cn-explore-nav a:hover {
+  background: #e9e9e9;
+}
+
+html[data-theme="cornet-2016"] .cn-explore-nav a.is-active {
+  background: #e2e2e2;
+  color: var(--cn-2016-orange-dark);
+  box-shadow: inset 3px 0 0 var(--cn-2016-orange);
+}
+
+html[data-theme="cornet-2016"] .cn-explore-content { min-width: 0; }
+
+html[data-theme="cornet-2016"] .cn-explore-heading {
+  margin-bottom: 8px;
+  padding: 2px 0 7px;
+  border-bottom: 1px solid var(--cn-2016-border);
+}
+
+html[data-theme="cornet-2016"] .cn-explore-heading-eyebrow {
+  margin-bottom: 3px;
+  color: var(--cn-2016-orange-dark);
+  font-size: 10px;
+}
+
+html[data-theme="cornet-2016"] .cn-explore-heading h1 {
+  font-size: 24px;
+  letter-spacing: 0;
+  color: #222;
+}
+
+html[data-theme="cornet-2016"] .cn-explore-heading p {
+  margin-top: 3px;
+  color: var(--cn-2016-muted);
+  font-size: 12px;
+}
+
+html[data-theme="cornet-2016"] .cn-explore-tabs {
+  gap: 0;
+  padding: 0;
+  border-bottom: 1px solid var(--cn-2016-border);
+}
+
+html[data-theme="cornet-2016"] .cn-explore-tabs a,
+html[data-theme="cornet-2016"] .cn-explore-tabs button {
+  min-height: 34px;
+  padding: 7px 13px;
+  border: 0;
+  border-radius: 0;
+  background: #f7f7f7;
+  color: #555;
+  font-size: 12px;
+}
+
+html[data-theme="cornet-2016"] .cn-explore-tabs a:hover,
+html[data-theme="cornet-2016"] .cn-explore-tabs button:hover {
+  background: #e9e9e9;
+}
+
+html[data-theme="cornet-2016"] .cn-explore-tabs a.is-active,
+html[data-theme="cornet-2016"] .cn-explore-tabs button.is-active {
+  background: #fff;
+  color: var(--cn-2016-orange-dark);
+  box-shadow: inset 0 -3px 0 var(--cn-2016-orange);
+}
+
+/* The existing third Explore tab is the Cornet 2016 Trending destination. */
+html[data-theme="cornet-2016"] .cn-explore-tabs a:nth-child(3).is-active {
+  font-weight: 700;
+}
+
+html[data-theme="cornet-2016"] .cn-explore-tabs a:nth-child(3).is-active::before {
+  content: "TRENDING";
+  margin-right: 5px;
+  color: var(--cn-2016-orange);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .08em;
+}
+
+html[data-theme="cornet-2016"] .cn-explore-section {
+  margin-bottom: 24px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--cn-2016-border);
+}
+
+html[data-theme="cornet-2016"] .cn-explore-section-head {
+  margin-bottom: 9px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+html[data-theme="cornet-2016"] .cn-explore-section-head h2 {
+  font-size: 16px;
+  color: #222;
+}
+
+html[data-theme="cornet-2016"] .cn-explore-section-head a {
+  color: var(--cn-2016-orange-dark);
+}
+
+html[data-theme="cornet-2016"] .cn-explore-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 22px 14px;
+}
+
+html[data-theme="cornet-2016"] .cn-explore-empty {
+  padding: 28px;
+  border-radius: 2px;
+  background: #fff;
+  border-color: var(--cn-2016-border);
+}
+
+html[data-theme="cornet-2016"] .cn-explore-page .cn-explore-section:first-of-type .cn-explore-section-title svg {
+  color: var(--cn-2016-orange);
+}
+
+html[data-theme="cornet-2016"] .cn-explore-page .cn-explore-section:first-of-type .cn-explore-section-head h2 {
+  font-size: 18px;
+}
+
+html[data-theme="cornet-2016"] .cn-explore-page .cn-explore-section:first-of-type .cn-explore-section-head h2::after {
+  content: "  •  TRENDING";
+  color: var(--cn-2016-orange);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  vertical-align: middle;
+}
+
 @media (max-width: 1100px) {
   html[data-theme="cornet-2016"] .cn-cornet-2016-home > .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   html[data-theme="cornet-2016"] .cn-cornet-2016-featured { grid-template-columns: minmax(0, 1.7fr) minmax(230px, 1fr); }
+  html[data-theme="cornet-2016"] .cn-explore-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 
 @media (max-width: 700px) {
@@ -214,11 +382,15 @@ html[data-theme="cornet-2016"] .cn-cornet-2016-featured-side img {
   html[data-theme="cornet-2016"] .cn-cornet-2016-featured-card,
   html[data-theme="cornet-2016"] .cn-cornet-2016-featured-side { padding-top: 14px; }
   html[data-theme="cornet-2016"] .cn-cornet-2016-featured-side { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  html[data-theme="cornet-2016"] .cn-explore-page { display: block; }
+  html[data-theme="cornet-2016"] .cn-explore-sidebar { position: static; width: auto; margin-bottom: 10px; }
+  html[data-theme="cornet-2016"] .cn-explore-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 10px; }
 }
 
 @media (max-width: 480px) {
   html[data-theme="cornet-2016"] .cn-cornet-2016-home > .grid { grid-template-columns: 1fr; }
   html[data-theme="cornet-2016"] .cn-cornet-2016-featured-side { grid-template-columns: 1fr; }
+  html[data-theme="cornet-2016"] .cn-explore-grid { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 768px) {
