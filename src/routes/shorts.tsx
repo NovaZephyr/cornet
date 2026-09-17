@@ -24,9 +24,9 @@ export const Route = createFileRoute("/shorts")({
   component: ShortsPage,
 });
 
-function ShortCard({ video, active, onDisabled }: { video: ShortVideo; active: boolean; onDisabled: (videoId: string) => void }) {
+function ShortCard({ video, active, nearby, onDisabled }: { video: ShortVideo; active: boolean; nearby: boolean; onDisabled: (videoId: string) => void }) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
-  const videoUrl = useSignedUrl(video.video_path);
+  const videoUrl = useSignedUrl(nearby ? video.video_path : null);
   const posterUrl = useSignedUrl(video.thumbnail_path);
   const { user } = useAuth();
   const qc = useQueryClient();
@@ -41,13 +41,14 @@ function ShortCard({ video, active, onDisabled }: { video: ShortVideo; active: b
       return (data ?? []) as { user_id: string; is_like: boolean }[];
     },
     staleTime: 30_000,
+    enabled: nearby,
   });
 
   useEffect(() => {
     const element = videoRef.current;
     if (!element) return;
     element.muted = muted;
-    if (active) void element.play().catch(() => undefined);
+    if (active && videoUrl) void element.play().catch(() => undefined);
     else element.pause();
   }, [active, muted, videoUrl]);
 
@@ -66,6 +67,15 @@ function ShortCard({ video, active, onDisabled }: { video: ShortVideo; active: b
       element.removeEventListener("durationchange", updateProgress);
     };
   }, [videoUrl]);
+
+  useEffect(() => {
+    const element = videoRef.current;
+    if (!element || nearby) return;
+    element.pause();
+    element.removeAttribute("src");
+    element.load();
+    setProgress(0);
+  }, [nearby]);
 
   const liked = likesQuery.data?.some((like) => like.user_id === user?.id && like.is_like) ?? false;
   const likeCount = likesQuery.data?.filter((like) => like.is_like).length ?? 0;
@@ -173,10 +183,10 @@ function ShortsPage() {
     qc.setQueryData<ShortVideo[]>(["shorts-feed"], (old) => (old ?? []).filter((video) => video.id !== videoId));
   };
 
-  const hasShorts = Boolean(query.data?.length);
   const activeIndex = query.data?.findIndex((video) => video.id === activeId) ?? -1;
   const canGoPrevious = activeIndex > 0;
   const canGoNext = activeIndex >= 0 && activeIndex < (query.data?.length ?? 0) - 1;
+  const hasShorts = Boolean(query.data?.length);
 
-  return <AppShell hideSidebar fullscreen><div className="cn-shorts-page"><header className="cn-shorts-header"><div><span className="cn-shorts-kicker">Cornet</span><h1>Shorts</h1><p>Videos verticales y cuadrados en un feed continuo.</p></div><Link to="/upload" className="cn-shorts-upload">Crear un Short</Link></header>{query.isLoading ? <div className="cn-shorts-loading"><Loader2 className="h-5 w-5 animate-spin" />Cargando Shorts…</div> : hasShorts ? <div ref={cardsRef} className="cn-shorts-feed" aria-label="Feed de Shorts">{query.data?.map((video) => <ShortCard key={video.id} video={video} active={activeId === video.id} onDisabled={disableFromFeed} />)}<div className="cn-shorts-navigation" aria-label="Navegación de Shorts"><button type="button" onClick={() => scrollToAdjacent(-1)} disabled={!canGoPrevious} aria-label="Short anterior"><ChevronUp /></button><span>{activeIndex >= 0 ? `${activeIndex + 1} / ${query.data?.length ?? 0}` : ""}</span><button type="button" onClick={() => scrollToAdjacent(1)} disabled={!canGoNext} aria-label="Siguiente Short"><ChevronDown /></button></div></div> : <section className="cn-shorts-empty"><PlaySquare className="h-8 w-8" /><h2>Aún no hay Shorts</h2><p>Los videos verticales o cuadrados de hasta 180 segundos aparecerán aquí, salvo que el creador los desactive.</p><Button asChild><Link to="/upload">Subir el primero</Link></Button></section>}</div></AppShell>;
+  return <AppShell hideSidebar fullscreen><div className="cn-shorts-page"><header className="cn-shorts-header"><div><span className="cn-shorts-kicker">Cornet</span><h1>Shorts</h1><p>Videos verticales y cuadrados en un feed continuo.</p></div><Link to="/upload" className="cn-shorts-upload">Crear un Short</Link></header>{query.isLoading ? <div className="cn-shorts-loading"><Loader2 className="h-5 w-5 animate-spin" />Cargando Shorts…</div> : hasShorts ? <div ref={cardsRef} className="cn-shorts-feed" aria-label="Feed de Shorts">{query.data?.map((video, index) => <ShortCard key={video.id} video={video} active={activeId === video.id} nearby={Math.abs(index - activeIndex) <= 1} onDisabled={disableFromFeed} />)}<div className="cn-shorts-navigation" aria-label="Navegación de Shorts"><button type="button" onClick={() => scrollToAdjacent(-1)} disabled={!canGoPrevious} aria-label="Short anterior"><ChevronUp /></button><span>{activeIndex >= 0 ? `${activeIndex + 1} / ${query.data?.length ?? 0}` : ""}</span><button type="button" onClick={() => scrollToAdjacent(1)} disabled={!canGoNext} aria-label="Siguiente Short"><ChevronDown /></button></div></div> : <section className="cn-shorts-empty"><PlaySquare className="h-8 w-8" /><h2>Aún no hay Shorts</h2><p>Los videos verticales o cuadrados de hasta 180 segundos aparecerán aquí, salvo que el creador los desactive.</p><Button asChild><Link to="/upload">Subir el primero</Link></Button></section>}</div></AppShell>;
 }
