@@ -31,6 +31,7 @@ function ShortCard({ video, active, onDisabled }: { video: ShortVideo; active: b
   const { user } = useAuth();
   const qc = useQueryClient();
   const [muted, setMuted] = useState(true);
+  const [progress, setProgress] = useState(0);
 
   const likesQuery = useQuery({
     queryKey: ["short-likes", video.id],
@@ -49,6 +50,22 @@ function ShortCard({ video, active, onDisabled }: { video: ShortVideo; active: b
     if (active) void element.play().catch(() => undefined);
     else element.pause();
   }, [active, muted, videoUrl]);
+
+  useEffect(() => {
+    const element = videoRef.current;
+    if (!element) return;
+    const updateProgress = () => {
+      setProgress(element.duration > 0 ? Math.min(100, (element.currentTime / element.duration) * 100) : 0);
+    };
+    element.addEventListener("timeupdate", updateProgress);
+    element.addEventListener("loadedmetadata", updateProgress);
+    element.addEventListener("durationchange", updateProgress);
+    return () => {
+      element.removeEventListener("timeupdate", updateProgress);
+      element.removeEventListener("loadedmetadata", updateProgress);
+      element.removeEventListener("durationchange", updateProgress);
+    };
+  }, [videoUrl]);
 
   const liked = likesQuery.data?.some((like) => like.user_id === user?.id && like.is_like) ?? false;
   const likeCount = likesQuery.data?.filter((like) => like.is_like).length ?? 0;
@@ -102,7 +119,7 @@ function ShortCard({ video, active, onDisabled }: { video: ShortVideo; active: b
         </div>
       </div>
     </div>
-    <div className="cn-shorts-progress" aria-hidden="true"><span /></div>
+    <div className="cn-shorts-progress" aria-hidden="true"><span style={{ width: `${progress}%` }} /></div>
   </article>;
 }
 
