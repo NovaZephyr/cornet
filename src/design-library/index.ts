@@ -44,7 +44,7 @@ export const themes: ThemeDefinition[] = [
   { id: "y2kChrome", name: "Y2K Chrome", category: "custom", kind: "theme", description: "Metal, azul eléctrico y estética tecnológica Y2K.", stylesheets: ["/custom-theme-packs.css"], family: "web-aesthetic", pages: ["home", "watch", "channel"] },
   { id: "xpLuna", name: "Windows XP Luna", category: "custom", kind: "theme", description: "Chrome azul, superficies plateadas y controles Luna.", stylesheets: ["/custom-theme-packs.css"], family: "desktop-era", pages: ["home", "watch", "channel", "settings"] },
   { id: "crtVhs", name: "CRT / VHS", category: "custom", kind: "theme", description: "Scanlines, fósforo, glow y estética de televisión antigua.", stylesheets: ["/custom-theme-packs.css"], family: "broadcast-era", pages: ["home", "watch"] },
-  { id: "cornet-2016", name: "Cornet 2016", category: "custom", kind: "theme", description: "Estética social de 2016 para Cornet, con identidad naranja, Rectos tipo Reels y Community inspirado en Reddit.", stylesheets: ["/cornet-2016.css", "/cornet-2016-community.css"], family: "cornet-historical", pages: ["home", "watch", "shorts", "channel", "community", "settings", "explore", "playlists"] },
+  { id: "cornet-2016", name: "Cornet 2016", category: "custom", kind: "theme", description: "Estética social de 2016 para Cornet, con identidad naranja, Rectos tipo Reels y Community inspirado en Reddit.", stylesheets: ["/cornet-2016.css", "/cornet-2016-community.css", "/cornet-2016-watch.css"], family: "cornet-historical", pages: ["home", "watch", "shorts", "channel", "community", "settings", "explore", "playlists"] },
 ];
 
 const channelLayoutStyles = ["/custom-channel-layouts.css"];
