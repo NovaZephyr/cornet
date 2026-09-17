@@ -33,6 +33,7 @@ export const THEME_REGISTRY = {
   "yt-2009":{group:"youtube",label:"YouTube 2009"},
   "yt-2013":{group:"youtube",label:"YouTube 2013"}, "yt-2019":{group:"youtube",label:"YouTube 2019"},
   "cosmic-panda":{group:"custom",label:"Cosmic Panda"},
+  "cornet-2016":{group:"custom",label:"Cornet 2016"},
   "liquid-glass":{group:"custom",label:"Liquid Glass"},
   "grad-ocean":{group:"gradients",label:"Ocean"}, "grad-sunset":{group:"gradients",label:"Sunset"},
   "grad-neon":{group:"gradients",label:"Neon"}, "grad-candy":{group:"gradients",label:"Candy"},
