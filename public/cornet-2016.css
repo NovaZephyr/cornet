@@ -1,0 +1,24 @@
+/* Cornet Classic 2016 v3
+ * Phase 0 scaffold.
+ * The stylesheet is loaded by DesignLibraryRuntime and is intentionally
+ * scoped to the Cornet 2016 theme so it cannot leak into other themes.
+ */
+
+html[data-theme="cornet-2016"] {
+  --cn-2016-orange: #f4511e;
+  --cn-2016-orange-dark: #d84315;
+  --cn-2016-background: #eeeeee;
+  --cn-2016-surface: #ffffff;
+  --cn-2016-border: #d5d5d5;
+  --cn-2016-text: #333333;
+  --cn-2016-muted: #777777;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-theme="cornet-2016"] * {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
