@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { Bookmark, ExternalLink, Heart, Loader2, MessageCircle, MoreVertical, PlaySquare, Share2, Volume2, VolumeX } from "lucide-react";
+import { Bookmark, ChevronDown, ChevronUp, ExternalLink, Heart, Loader2, MessageCircle, MoreVertical, PlaySquare, Share2, Volume2, VolumeX } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
@@ -126,9 +126,40 @@ function ShortsPage() {
     return () => observer.disconnect();
   }, [query.data, activeId]);
 
+  useEffect(() => {
+    const root = cardsRef.current;
+    if (!root) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== "ArrowDown" && event.key !== "ArrowUp" && event.key !== "PageDown" && event.key !== "PageUp") return;
+      if (event.target instanceof HTMLElement && (event.target.isContentEditable || ["INPUT", "TEXTAREA", "SELECT"].includes(event.target.tagName))) return;
+      event.preventDefault();
+      const items = Array.from(root.querySelectorAll<HTMLElement>(".cn-shorts-card"));
+      const currentIndex = Math.max(0, items.findIndex((item) => item.getAttribute("data-video-id") === activeId));
+      const direction = event.key === "ArrowUp" || event.key === "PageUp" ? -1 : 1;
+      const nextIndex = Math.min(items.length - 1, Math.max(0, currentIndex + direction));
+      items[nextIndex]?.scrollIntoView({ behavior: "smooth", block: "center" });
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [activeId]);
+
+  const scrollToAdjacent = (direction: -1 | 1) => {
+    const root = cardsRef.current;
+    if (!root) return;
+    const items = Array.from(root.querySelectorAll<HTMLElement>(".cn-shorts-card"));
+    const currentIndex = Math.max(0, items.findIndex((item) => item.getAttribute("data-video-id") === activeId));
+    const nextIndex = Math.min(items.length - 1, Math.max(0, currentIndex + direction));
+    items[nextIndex]?.scrollIntoView({ behavior: "smooth", block: "center" });
+  };
+
   const disableFromFeed = (videoId: string) => {
     qc.setQueryData<ShortVideo[]>(["shorts-feed"], (old) => (old ?? []).filter((video) => video.id !== videoId));
   };
 
-  return <AppShell hideSidebar fullscreen><div className="cn-shorts-page"><header className="cn-shorts-header"><div><span className="cn-shorts-kicker">Cornet</span><h1>Shorts</h1><p>Videos verticales y cuadrados en un feed continuo.</p></div><Link to="/upload" className="cn-shorts-upload">Crear un Short</Link></header>{query.isLoading ? <div className="cn-shorts-loading"><Loader2 className="h-5 w-5 animate-spin" />Cargando Shorts…</div> : query.data && query.data.length > 0 ? <div ref={cardsRef} className="cn-shorts-feed" aria-label="Feed de Shorts">{query.data.map((video) => <ShortCard key={video.id} video={video} active={activeId === video.id} onDisabled={disableFromFeed} />)}</div> : <section className="cn-shorts-empty"><PlaySquare className="h-8 w-8" /><h2>Aún no hay Shorts</h2><p>Los videos verticales o cuadrados de hasta 180 segundos aparecerán aquí, salvo que el creador los desactive.</p><Button asChild><Link to="/upload">Subir el primero</Link></Button></section>}</div></AppShell>;
+  const hasShorts = Boolean(query.data?.length);
+  const activeIndex = query.data?.findIndex((video) => video.id === activeId) ?? -1;
+  const canGoPrevious = activeIndex > 0;
+  const canGoNext = activeIndex >= 0 && activeIndex < (query.data?.length ?? 0) - 1;
+
+  return <AppShell hideSidebar fullscreen><div className="cn-shorts-page"><header className="cn-shorts-header"><div><span className="cn-shorts-kicker">Cornet</span><h1>Shorts</h1><p>Videos verticales y cuadrados en un feed continuo.</p></div><Link to="/upload" className="cn-shorts-upload">Crear un Short</Link></header>{query.isLoading ? <div className="cn-shorts-loading"><Loader2 className="h-5 w-5 animate-spin" />Cargando Shorts…</div> : hasShorts ? <div ref={cardsRef} className="cn-shorts-feed" aria-label="Feed de Shorts">{query.data?.map((video) => <ShortCard key={video.id} video={video} active={activeId === video.id} onDisabled={disableFromFeed} />)}<div className="cn-shorts-navigation" aria-label="Navegación de Shorts"><button type="button" onClick={() => scrollToAdjacent(-1)} disabled={!canGoPrevious} aria-label="Short anterior"><ChevronUp /></button><span>{activeIndex >= 0 ? `${activeIndex + 1} / ${query.data?.length ?? 0}` : ""}</span><button type="button" onClick={() => scrollToAdjacent(1)} disabled={!canGoNext} aria-label="Siguiente Short"><ChevronDown /></button></div></div> : <section className="cn-shorts-empty"><PlaySquare className="h-8 w-8" /><h2>Aún no hay Shorts</h2><p>Los videos verticales o cuadrados de hasta 180 segundos aparecerán aquí, salvo que el creador los desactive.</p><Button asChild><Link to="/upload">Subir el primero</Link></Button></section>}</div></AppShell>;
 }
