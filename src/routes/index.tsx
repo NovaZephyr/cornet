@@ -46,6 +46,7 @@ function Home() {
   const isPolymerHome = theme === "yt-2019" && !q;
   const isCosmicHome = theme === "cosmic-panda" && !q;
   const isYouTube2009Home = theme === "yt-2009" && !q;
+  const isCornet2016Home = theme === "cornet-2016" && !q;
   const spotlightQuery = useYouTube2009Spotlight();
   const videoSort: VideoSort = sort === "subscribers" || sort === "views" || sort === "recent" || sort === "oldest" ? sort : "recent";
   const videosQuery = useQuery({
@@ -122,14 +123,14 @@ function Home() {
           {cosmicShelves.map(([title, videos], shelfIndex) => <section className="cn-cosmic-shelf" key={`${title}-${shelfIndex}`}><div className="cn-cosmic-shelf-heading"><h2>{title}</h2><span>{videos.length} videos</span></div><div className="cn-cosmic-grid">{videos.map((video) => <VideoCard key={video.id} video={video} />)}</div></section>)}
         </> : <section className="cn-cosmic-shelf"><p className="py-16 text-center text-sm text-muted-foreground">No encontramos videos.</p></section>}
       </div>
-    </> : <>
+    </> : <div className={isCornet2016Home ? "cn-cornet-2016-home" : undefined}>
       <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
         <div>{q ? <p className="text-sm text-muted-foreground">Resultados para <span className="font-medium text-foreground">“{q}”</span></p> : <p className="text-sm text-muted-foreground">{isRecommended ? "Recomendados para ti" : "Videos filtrados"}</p>}</div>
         <Select value={sort} onValueChange={(value) => setSort(value as SearchOrder)}><SelectTrigger className="w-48"><SelectValue placeholder="Ordenar" /></SelectTrigger><SelectContent><SelectItem value="recommended">Recomendados</SelectItem><SelectItem value="subscribers">Más suscripciones</SelectItem><SelectItem value="views">Más vistos</SelectItem><SelectItem value="recent">Más recientes</SelectItem><SelectItem value="oldest">Más antiguos</SelectItem></SelectContent></Select>
       </div>
-      {q && channelsQuery.data && channelsQuery.data.length > 0 && <section className="mb-8"><div className="mb-3 flex items-center justify-between"><h2 className="text-lg font-semibold">Canales</h2><span className="text-xs text-muted-foreground">{channelsQuery.data.length} resultados</span></div><div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">{channelsQuery.data.map((channel) => <Link key={channel.id} to="/c/$username" params={{ username: channel.username }} className="flex items-center gap-3 rounded-xl border border-border bg-card p-3 transition-colors hover:bg-surface-hover"><ChannelAvatar path={channel.avatar_path} name={channel.display_name || channel.username} size={48} /><div className="min-w-0"><div className="flex items-center gap-1 truncate font-medium">{channel.display_name || channel.username}{channel.is_verified && <VerifiedBadge className="h-4 w-4" />}</div><p className="truncate text-xs text-muted-foreground">@{channel.username} · {channel.subscriber_count ?? 0} suscriptores</p></div></Link>)}</div></section>}
+      {q && channelsQuery.data && channelsQuery.data.length > 0 && <section className="mb-8"><div className="mb-3 flex items-center justify-between"><h2 className="text-lg font-semibold">Canales</h2><span className="text-xs text-muted-foreground">{channelsQuery.data.length} resultados</span></div><div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">{channelsQuery.data.map((channel) => <Link key={channel.id} to="/c/$username" params={{ username: channel.username }} className="flex items-center gap-3 rounded-xl border border-border bg-card p-3 transition-colors hover:bg-surface-hover"><ChannelAvatar path={channel.avatar_path} name={channel.display_name || channel.username} size={48} /><div className="min-w-0"><div className="flex items-center gap-1 truncate font-medium">{channel.display_name || channel.username}{channel.is_verified && <VerifiedBadge className="h-4 w-4" />}</div><p className="truncate text-xs text-muted-foreground">@{channel.username} · {channel.subscriber_count ?? 0} suscriptores</p></div></div>)}</div></section>}
       {q && <h2 className="mb-4 text-lg font-semibold">Videos</h2>}
       {videosQuery.isLoading ? <div className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">{Array.from({ length: 8 }).map((_, i) => <div key={i} className="space-y-3"><Skeleton className="aspect-video w-full rounded-xl" /><Skeleton className="h-4 w-3/4" /><Skeleton className="h-3 w-1/2" /></div>)}</div> : videosQuery.data && videosQuery.data.length > 0 ? <div className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">{videosQuery.data.map((v) => <VideoCard key={v.id} video={v} />)}</div> : <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-border py-24 text-center"><p className="text-lg font-medium">No encontramos videos</p><p className="mt-1 text-sm text-muted-foreground">Prueba otra búsqueda o cambia los filtros.</p>{q && <Button className="mt-4" variant="secondary" onClick={() => void navigate({ to: "/" })}>Limpiar búsqueda</Button>}</div>}
-    </>}
+    </div>}
   </AppShell>;
 }
