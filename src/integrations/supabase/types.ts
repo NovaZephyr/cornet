@@ -443,6 +443,38 @@ export type Database = {
         }
         Relationships: []
       }
+      home_spotlight: {
+        Row: {
+          channel_id: string
+          custom_text: string
+          enabled: boolean
+          id: boolean
+          updated_at: string
+        }
+        Insert: {
+          channel_id: string
+          custom_text?: string
+          enabled?: boolean
+          id?: boolean
+          updated_at?: string
+        }
+        Update: {
+          channel_id?: string
+          custom_text?: string
+          enabled?: boolean
+          id?: boolean
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "home_spotlight_channel_id_fkey"
+            columns: ["channel_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       live_stream_secrets: {
         Row: {
           live_stream_id: string
