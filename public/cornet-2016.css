@@ -84,7 +84,6 @@ html[data-theme="cornet-2016"] .cn-cornet-2016-home > .mb-5 p {
 html[data-theme="cornet-2016"] .cn-cornet-2016-home > .mb-5 .w-48 { width: 180px !important; }
 html[data-theme="cornet-2016"] .cn-cornet-2016-home > .mb-5 [data-radix-select-trigger] { height: 32px; border-color: var(--cn-2016-border); background: #fff; box-shadow: none; }
 
-/* The normal Home video grid becomes a compact 2016 portal grid. */
 html[data-theme="cornet-2016"] .cn-cornet-2016-home > .grid {
   grid-template-columns: repeat(4, minmax(0, 1fr));
   column-gap: 18px;
@@ -136,7 +135,6 @@ html[data-theme="cornet-2016"] .cn-cornet-2016-home > .grid > div.flex.flex-col 
   color: var(--cn-2016-orange-dark) !important;
 }
 
-/* Search channel cards stay compact when the Home route is used for search. */
 html[data-theme="cornet-2016"] .cn-cornet-2016-home section .grid > a {
   border-radius: 2px !important;
   border-color: var(--cn-2016-border) !important;
@@ -149,17 +147,78 @@ html[data-theme="cornet-2016"] .cn-cornet-2016-home .rounded-2xl.border-dashed {
   background: #fff;
 }
 
+/* Block 2.3 — Featured video */
+html[data-theme="cornet-2016"] .cn-cornet-2016-featured {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(260px, 1fr);
+  gap: 18px;
+  margin-bottom: 28px;
+  padding: 12px;
+  background: var(--cn-2016-surface);
+  border: 1px solid var(--cn-2016-border);
+  border-top: 3px solid var(--cn-2016-orange);
+}
+
+html[data-theme="cornet-2016"] .cn-cornet-2016-featured-label {
+  position: absolute;
+  top: -1px;
+  left: 12px;
+  z-index: 2;
+  padding: 2px 7px;
+  background: var(--cn-2016-orange);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  line-height: 16px;
+}
+
+html[data-theme="cornet-2016"] .cn-cornet-2016-featured-card,
+html[data-theme="cornet-2016"] .cn-cornet-2016-featured-side {
+  min-width: 0;
+}
+
+html[data-theme="cornet-2016"] .cn-cornet-2016-featured-card {
+  padding-top: 14px;
+}
+
+html[data-theme="cornet-2016"] .cn-cornet-2016-featured-card > div {
+  min-width: 0;
+}
+
+html[data-theme="cornet-2016"] .cn-cornet-2016-featured-side {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  padding-top: 14px;
+}
+
+html[data-theme="cornet-2016"] .cn-cornet-2016-featured-side > * {
+  min-width: 0;
+}
+
+html[data-theme="cornet-2016"] .cn-cornet-2016-featured-side img {
+  max-width: 100%;
+}
+
 @media (max-width: 1100px) {
   html[data-theme="cornet-2016"] .cn-cornet-2016-home > .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  html[data-theme="cornet-2016"] .cn-cornet-2016-featured { grid-template-columns: minmax(0, 1.7fr) minmax(230px, 1fr); }
 }
 
 @media (max-width: 700px) {
   html[data-theme="cornet-2016"] .cn-cornet-2016-home > .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 12px; row-gap: 20px; }
   html[data-theme="cornet-2016"] .cn-cornet-2016-home > .mb-5 { padding: 8px 10px; }
+  html[data-theme="cornet-2016"] .cn-cornet-2016-featured { grid-template-columns: 1fr; gap: 10px; padding: 10px; }
+  html[data-theme="cornet-2016"] .cn-cornet-2016-featured-card,
+  html[data-theme="cornet-2016"] .cn-cornet-2016-featured-side { padding-top: 14px; }
+  html[data-theme="cornet-2016"] .cn-cornet-2016-featured-side { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
 }
 
 @media (max-width: 480px) {
   html[data-theme="cornet-2016"] .cn-cornet-2016-home > .grid { grid-template-columns: 1fr; }
+  html[data-theme="cornet-2016"] .cn-cornet-2016-featured-side { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 768px) {
