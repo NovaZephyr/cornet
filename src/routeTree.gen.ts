@@ -18,6 +18,7 @@ import { Route as AdminBlogRouteImport } from './routes/admin-blog'
 import { Route as AdminCampaignsRouteImport } from './routes/admin-campaigns'
 import { Route as AdminCornetRouteImport } from './routes/admin-cornet'
 import { Route as AdminMaintenanceRouteImport } from './routes/admin-maintenance'
+import { Route as AdminSpotlightRouteImport } from './routes/admin-spotlight'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as BlogRouteImport } from './routes/blog'
 import { Route as CommunityRouteImport } from './routes/community'
@@ -93,6 +94,11 @@ const AdminCornetRoute = AdminCornetRouteImport.update({
 const AdminMaintenanceRoute = AdminMaintenanceRouteImport.update({
   id: '/admin-maintenance',
   path: '/admin-maintenance',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminSpotlightRoute = AdminSpotlightRouteImport.update({
+  id: '/admin-spotlight',
+  path: '/admin-spotlight',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -261,6 +267,7 @@ export interface FileRoutesByFullPath {
   '/admin-campaigns': typeof AdminCampaignsRoute
   '/admin-cornet': typeof AdminCornetRoute
   '/admin-maintenance': typeof AdminMaintenanceRoute
+  '/admin-spotlight': typeof AdminSpotlightRoute
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRoute
   '/community': typeof CommunityRoute
@@ -303,6 +310,7 @@ export interface FileRoutesByTo {
   '/admin-campaigns': typeof AdminCampaignsRoute
   '/admin-cornet': typeof AdminCornetRoute
   '/admin-maintenance': typeof AdminMaintenanceRoute
+  '/admin-spotlight': typeof AdminSpotlightRoute
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRoute
   '/community': typeof CommunityRoute
@@ -345,6 +353,7 @@ export interface FileRoutesById {
   '/admin-campaigns': typeof AdminCampaignsRoute
   '/admin-cornet': typeof AdminCornetRoute
   '/admin-maintenance': typeof AdminMaintenanceRoute
+  '/admin-spotlight': typeof AdminSpotlightRoute
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRoute
   '/community': typeof CommunityRoute
@@ -389,6 +398,7 @@ export interface FileRouteTypes {
     | '/admin-campaigns'
     | '/admin-cornet'
     | '/admin-maintenance'
+    | '/admin-spotlight'
     | '/auth'
     | '/blog'
     | '/community'
@@ -431,6 +441,7 @@ export interface FileRouteTypes {
     | '/admin-campaigns'
     | '/admin-cornet'
     | '/admin-maintenance'
+    | '/admin-spotlight'
     | '/auth'
     | '/blog'
     | '/community'
@@ -472,6 +483,7 @@ export interface FileRouteTypes {
     | '/admin-campaigns'
     | '/admin-cornet'
     | '/admin-maintenance'
+    | '/admin-spotlight'
     | '/auth'
     | '/blog'
     | '/community'
@@ -515,6 +527,7 @@ export interface RootRouteChildren {
   AdminCampaignsRoute: typeof AdminCampaignsRoute
   AdminCornetRoute: typeof AdminCornetRoute
   AdminMaintenanceRoute: typeof AdminMaintenanceRoute
+  AdminSpotlightRoute: typeof AdminSpotlightRoute
   AuthRoute: typeof AuthRoute
   BlogRoute: typeof BlogRoute
   CommunityRoute: typeof CommunityRoute
@@ -605,6 +618,13 @@ declare module '@tanstack/react-router' {
       path: '/admin-maintenance'
       fullPath: '/admin-maintenance'
       preLoaderRoute: typeof AdminMaintenanceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin-spotlight': {
+      id: '/admin-spotlight'
+      path: '/admin-spotlight'
+      fullPath: '/admin-spotlight'
+      preLoaderRoute: typeof AdminSpotlightRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth': {
@@ -873,6 +893,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminCampaignsRoute: AdminCampaignsRoute,
   AdminCornetRoute: AdminCornetRoute,
   AdminMaintenanceRoute: AdminMaintenanceRoute,
+  AdminSpotlightRoute: AdminSpotlightRoute,
   AuthRoute: AuthRoute,
   BlogRoute: BlogRoute,
   CommunityRoute: CommunityRoute,
