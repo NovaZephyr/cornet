@@ -7,10 +7,16 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { VideoCard } from "@/components/VideoCard";
 import { ChannelAvatar, VerifiedBadge } from "@/components/Media";
 import { fetchHomeFeed, fetchVideos, searchChannels, type VideoSort } from "@/lib/queries";
-undefined
 import { useTheme } from "@/hooks/useTheme";
 
-type HomeSearch = { q?: string; sort?: VideoSort | "recommended" };\n\nexport const Route = createFileRoute("/")({\n  validateSearch: (search: Record<string, unknown>): HomeSearch => ({\n    ...(typeof search.q === "string" && search.q ? { q: search.q } : {}),\n    ...(typeof search.sort === "string" ? { sort: search.sort as HomeSearch["sort"] } : {}),\n  }),\n  component: HomePage,\n});\n\nfunction HomePage() {
+type HomeSearch = { q?: string; sort?: VideoSort | "recommended" };\n\nexport const Route = createFileRoute("/")({\n  validateSearch: (search: Record<string, unknown>): HomeSearch => ({
+    ...(typeof search.q === "string" && search.q ? { q: search.q } : {}),
+    ...(typeof search.sort === "string" ? { sort: search.sort as HomeSearch["sort"] } : {}),
+  }),
+  component: HomePage,
+});
+
+function HomePage() {
   const navigate = useNavigate();
   const search = Route.useSearch();
   const { theme } = useTheme();
