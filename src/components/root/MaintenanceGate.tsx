@@ -35,9 +35,11 @@ export function MaintenanceGate({ children }: { children?: ReactNode }) {
   const isAuthRoute = location.pathname === "/auth";
   const forceMaintenance = typeof window !== "undefined" && window.location.search.includes("forceMaintenance=true");
   const [settingsLoading, setSettingsLoading] = useState(false);
+  const [hydrated, setHydrated] = useState(false);
   const [maintenance, setMaintenance] = useState<{ enabled: boolean; message: string } | null>(null);
 
   useEffect(() => {
+    setHydrated(true);
     if (isAuthRoute) return;
     let cancelled = false;
     setSettingsLoading(true);
@@ -64,6 +66,9 @@ export function MaintenanceGate({ children }: { children?: ReactNode }) {
 
   const content = children ?? <Outlet />;
   if (isAuthRoute) return <>{content}</>;
+  // SSR and the first client render must expose the route content so TanStack Start can hydrate it.
+  // Maintenance/auth checks continue on the client after hydration.
+  if (!hydrated) return <>{content}</>;
   if (loading || settingsLoading || maintenance === null) return <LoadingScreen />;
   if ((maintenance.enabled || forceMaintenance) && !isAdmin) return <MaintenanceScreen message={maintenance.message} />;
   return <>{content}</>;
