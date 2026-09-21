@@ -1,33 +1,33 @@
-import { Link, useNavigate, useSearch } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { AppShell } from "@/components/shell/AppShell";
+import { AppShell } from "@/components/AppShell";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
-import { VideoCard } from "@/components/video/VideoCard";
-import { ChannelAvatar } from "@/components/channel/ChannelAvatar";
-import { VerifiedBadge } from "@/components/channel/VerifiedBadge";
-import { fetchHomeFeed, fetchVideos, searchChannels, type SearchOrder } from "@/lib/api";
+import { VideoCard } from "@/components/VideoCard";
+import { ChannelAvatar, VerifiedBadge } from "@/components/Media";
+import { fetchHomeFeed, fetchVideos, searchChannels, type VideoSort } from "@/lib/queries";
+undefined
 import { useTheme } from "@/hooks/useTheme";
 
-export default function HomePage() {
+type HomeSearch = { q?: string; sort?: VideoSort | "recommended" };\n\nexport const Route = createFileRoute("/")({\n  validateSearch: (search: Record<string, unknown>): HomeSearch => ({\n    ...(typeof search.q === "string" && search.q ? { q: search.q } : {}),\n    ...(typeof search.sort === "string" ? { sort: search.sort as HomeSearch["sort"] } : {}),\n  }),\n  component: HomePage,\n});\n\nfunction HomePage() {
   const navigate = useNavigate();
-  const search = useSearch({ from: "/" });
+  const search = Route.useSearch();
   const { theme } = useTheme();
   const q = typeof search.q === "string" ? search.q : undefined;
-  const sort = (typeof search.sort === "string" ? search.sort : "recommended") as SearchOrder;
+  const sort = search.sort ?? "recommended";
   const isRecommended = sort === "recommended";
   const isCornet2016Home = theme === "cornet-2016" && !q;
 
   const videosQuery = useQuery({
     queryKey: ["home-feed", q ?? null, sort],
-    queryFn: () => isRecommended ? fetchHomeFeed(32) : fetchVideos({ order: sort, limit: 32 }),
+    queryFn: () => isRecommended ? fetchHomeFeed(32) : fetchVideos({ search: q, orderBy: sort as VideoSort, limit: 32 }),
     staleTime: 60_000,
   });
 
   const channelsQuery = useQuery({
     queryKey: ["channel-search", q],
-    queryFn: () => searchChannels(q!, 12),
+    queryFn: () => searchChannels(q!, "subscribers"),
     enabled: Boolean(q),
     staleTime: 60_000,
   });
