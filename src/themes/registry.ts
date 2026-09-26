@@ -6,6 +6,7 @@ import "./youtube/2007.css";
 import "./youtube/2009.css";
 import "./youtube/2013.css";
 import "./youtube/2019.css";
+import "./youtube/classic-2006-2007.css";
 import "./custom/cosmic-panda.css";
 import "./gradients/ocean.css";
 import "./gradients/sunset.css";
@@ -30,6 +31,7 @@ import "./experimental/vhs.css";
 export const THEME_REGISTRY = {
   dark:{group:"core",label:"Cornet Dark"}, light:{group:"core",label:"Cornet Light"},
   "yt-2005":{group:"youtube",label:"YouTube 2005"}, "yt-2007":{group:"youtube",label:"YouTube 2007"},
+  "yt-classic":{group:"youtube",label:"YouTube Classic (2006–2007)"},
   "yt-2009":{group:"youtube",label:"YouTube 2009"},
   "yt-2013":{group:"youtube",label:"YouTube 2013"}, "yt-2019":{group:"youtube",label:"YouTube 2019"},
   "cosmic-panda":{group:"custom",label:"Cosmic Panda"},
