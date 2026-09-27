@@ -52,6 +52,26 @@
 [data-theme="yt-classic"] :is(.video-meta,[data-video-meta]){font-size:11px;color:#555}
 [data-theme="yt-classic"] :is(.video-actions,[data-video-actions]) button{border-radius:2px;font-size:10px}
 
+/* Home: compact centered 2006/07 portal rather than a modern app grid. */
+[data-theme="yt-classic"] .cn-shell-main>main{width:min(960px,calc(100% - 28px));max-width:960px;margin:0 auto;padding:12px 0 28px!important}
+[data-theme="yt-classic"] .cn-shell-main>main .mb-5{margin-bottom:10px!important;padding-bottom:5px;border-bottom:1px solid #ccc}
+[data-theme="yt-classic"] .cn-shell-main>main .mb-5>div:first-child p{margin:0;font-size:11px;color:#555}
+[data-theme="yt-classic"] .cn-shell-main>main .mb-5>div:last-child{display:flex;align-items:center;gap:4px}
+[data-theme="yt-classic"] .cn-shell-main>main .mb-5 select{height:22px}
+[data-theme="yt-classic"] .cn-shell-main>main .mb-5 button{height:22px}
+[data-theme="yt-classic"] .cn-shell-main>main .grid.grid-cols-1.gap-x-4{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px 10px!important}
+[data-theme="yt-classic"] .cn-shell-main>main .grid.grid-cols-1.gap-x-4>div{min-width:0;padding-bottom:7px;border-bottom:1px dotted #aaa}
+[data-theme="yt-classic"] .cn-shell-main>main .grid.grid-cols-1.gap-x-4 img{border-radius:0!important}
+[data-theme="yt-classic"] .cn-shell-main>main .grid.grid-cols-1.gap-x-4 a{font-size:12px}
+[data-theme="yt-classic"] .cn-shell-main>main .grid.grid-cols-1.gap-x-4 p,
+[data-theme="yt-classic"] .cn-shell-main>main .grid.grid-cols-1.gap-x-4 span{font-size:10px}
+[data-theme="yt-classic"] .cn-shell-main>main .grid.grid-cols-1.gap-x-4 .rounded-xl{border-radius:0!important}
+
+/* Search/channel results remain compact and table-like. */
+[data-theme="yt-classic"] .cn-shell-main>main section{border-radius:0!important}
+[data-theme="yt-classic"] .cn-shell-main>main section .rounded-xl{border-radius:0!important}
+[data-theme="yt-classic"] .cn-shell-main>main section .bg-card{background:#fff!important}
+
 /* Do not introduce modern rounded cards, glass effects or oversized spacing. */
 [data-theme="yt-classic"] :is(.rounded,.rounded-lg,.rounded-xl,.rounded-2xl){border-radius:0!important}
 [data-theme="yt-classic"] :is([class*="backdrop-blur"],[class*="glass"]){backdrop-filter:none!important}
@@ -65,4 +85,6 @@
   [data-theme="yt-classic"] .cn-shell-search--historical{grid-column:1;grid-row:4;width:auto;height:30px;padding-inline:4px}
   [data-theme="yt-classic"] .cn-shell-search--historical input{width:min(230px,70vw);margin-left:auto}
   [data-theme="yt-classic"] .cn-shell-main{min-height:calc(100vh - 135px)}
+  [data-theme="yt-classic"] .cn-shell-main>main{width:calc(100% - 18px);padding-top:8px!important}
+  [data-theme="yt-classic"] .cn-shell-main>main .grid.grid-cols-1.gap-x-4{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 8px!important}
 }
