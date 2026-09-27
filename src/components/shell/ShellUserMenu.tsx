@@ -10,9 +10,23 @@ type ShellUserMenuProps = {
   profile: { avatar_path?: string | null; display_name?: string | null; username?: string | null } | null;
   username: string;
   signOut: () => Promise<unknown> | unknown;
+  historical?: boolean;
 };
 
-export function ShellUserMenu({ user, profile, username, signOut }: ShellUserMenuProps) {
+export function ShellUserMenu({ user, profile, username, signOut, historical = false }: ShellUserMenuProps) {
+  if (historical) {
+    return (
+      <div className="cn-shell-actions cn-shell-actions--classic-links" aria-label="Enlaces de cuenta">
+        <Link to="/auth">Sign Up</Link><span>|</span>
+        {user ? <Link to="/c/$username" params={{ username }}>My Account</Link> : <Link to="/auth">My Account</Link>}
+        <span>|</span><Link to="/history">History</Link><span>|</span>
+        <Link to="/about">Help</Link><span>|</span>
+        {user ? <button type="button" onClick={() => void signOut()}>Log Out</button> : <Link to="/auth">Log In</Link>}
+        <span>|</span><Link to="/">Site</Link>
+      </div>
+    );
+  }
+
   return (
     <div className="cn-shell-actions">
       <ShellThemeMenu />
