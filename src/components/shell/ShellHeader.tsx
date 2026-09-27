@@ -4,7 +4,7 @@ import { Link } from "@tanstack/react-router";
 import corenetworkMark from "@/assets/corenetwork-mark.png";
 import { ShellSearch } from "./ShellSearch";
 
-type HistoricalNavItem = { to: string; label: string };
+type HistoricalNavItem = { to: string; label: string; search?: Record<string, unknown> };
 type HistoricalNavMode = "inline" | "row";
 
 type ShellHeaderProps = {
@@ -45,8 +45,8 @@ export function ShellHeader({
 
           {historicalNavItems.length > 0 && historicalNavMode === "inline" && (
             <nav className="cn-shell-historical-nav" aria-label="Navegación histórica">
-              {historicalNavItems.map(({ to, label }) => (
-                <Link key={`${to}-${label}`} to={to}>{label}</Link>
+              {historicalNavItems.map(({ to, label, search }) => (
+                <Link key={`${to}-${label}`} to={to} search={search}>{label}</Link>
               ))}
             </nav>
           )}
@@ -58,8 +58,8 @@ export function ShellHeader({
 
       {hasHistoricalRow && (
         <nav className="cn-shell-historical-row" aria-label="Navegación histórica">
-          {historicalNavItems.map(({ to, label }) => (
-            <Link key={`${to}-${label}`} to={to}>{label}</Link>
+          {historicalNavItems.map(({ to, label, search }) => (
+            <Link key={`${to}-${label}`} to={to} search={search}>{label}</Link>
           ))}
         </nav>
       )}
@@ -72,7 +72,7 @@ export function ShellLogo() {
     <Link to="/" className="cn-shell-logo" aria-label="Cornet — inicio">
       <img src={corenetworkMark} alt="Cornet" width={34} height={34} />
       <span>
-        <strong>Cornet</strong>
+        <strong><span className="cn-shell-logo-word-black">Corn</span><span className="cn-shell-logo-word-red">et</span></strong>
         <small>video · comunidad · compartir</small>
       </span>
     </Link>
