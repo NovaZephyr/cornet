@@ -53,12 +53,12 @@ function AppShellFrame({ children, hideSidebar = false, fullscreen = false }: Ap
   const isYoutube2009 = theme === "yt-2009";
   const isYoutubeClassic = theme === "yt-classic";
   const historicalNavItems = isYoutubeClassic
-    ? items
-        .filter(({ to }) => ["/explore", "/series", "/community"].includes(to))
-        .map(({ to }) => ({
-          to,
-          label: to === "/explore" ? "Videos" : to === "/series" ? "Categories" : "Community",
-        }))
+    ? [
+        { to: "/explore", label: "Videos" },
+        { to: "/explore", label: "Categories", search: { view: "videos" } },
+        { to: "/explore", label: "Channels", search: { view: "channels" } },
+        { to: "/community", label: "Community" },
+      ]
     : isYoutube2009
       ? items
           .filter(({ to }) => ["/", "/explore", "/series", "/community", "/upload"].includes(to))
@@ -91,6 +91,7 @@ function AppShellFrame({ children, hideSidebar = false, fullscreen = false }: Ap
               profile={profile}
               username={username}
               signOut={signOut}
+              historical={isYoutubeClassic}
             />
           }
         />
