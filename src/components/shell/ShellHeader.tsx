@@ -4,7 +4,8 @@ import { Link } from "@tanstack/react-router";
 import corenetworkMark from "@/assets/corenetwork-mark.png";
 import { ShellSearch } from "./ShellSearch";
 
-type HistoricalNavItem = { to: string; label: string; search?: Record<string, unknown> };
+type HistoricalNavSearch = { view?: "channels" | "videos" | "series" };
+type HistoricalNavItem = { to: string; label: string; search?: HistoricalNavSearch };
 type HistoricalNavMode = "inline" | "row";
 
 type ShellHeaderProps = {
