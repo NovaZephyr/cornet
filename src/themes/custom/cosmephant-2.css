@@ -475,3 +475,17 @@
   .cn-shell[data-theme-id="cosmephant-2"] .cn-shell-cosmephant-upload { padding-inline: 7px; }
   .cn-shell[data-theme-id="cosmephant-2"] .cn-shell-actions--cosmephant { gap: 3px; }
 }
+
+
+/* Cosmephant 2.0 uses Lexend, matching the Figma typography. */
+:root[data-theme="cosmephant-2"],
+.cn-shell[data-theme-id="cosmephant-2"] {
+  --font-sans: "Lexend", ui-sans-serif, system-ui, sans-serif;
+}
+[data-theme="cosmephant-2"] body,
+.cn-shell[data-theme-id="cosmephant-2"] {
+  font-family: "Lexend", ui-sans-serif, system-ui, sans-serif;
+}
+.cn-shell[data-theme-id="cosmephant-2"] :is(button, input, select, textarea) {
+  font-family: inherit;
+}
