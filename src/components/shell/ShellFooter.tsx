@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { useTheme } from "@/hooks/useTheme";
+import corenetworkMark from "@/assets/corenetwork-mark.png";
 
 function YouTube2009Footer() {
   return (
@@ -67,7 +68,11 @@ export function ShellFooter() {
 
   return (
     <footer className="cn-shell-footer">
-      <div>
+      <div className="cn-cosmephant-footer-brand" aria-hidden="true">
+        <img src={corenetworkMark} alt="" />
+        <span>CORNET</span>
+      </div>
+      <div className="cn-cosmephant-footer-links">
         <Link to="/about">Información</Link>
         <Link to="/community">Comunidad</Link>
         <Link to="/partner">Partners</Link>
