@@ -73,6 +73,7 @@ function AppShellFrame({ children, hideSidebar = false, fullscreen = false }: Ap
       className={cn(
         "cn-shell",
         mobileOpen && "cn-shell-mobile-open",
+        sidebarOpen && "cn-shell-sidebar-open",
         fullscreen && "cn-shell--fullscreen",
       )}
       data-theme-id={theme}
