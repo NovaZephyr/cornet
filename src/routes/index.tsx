@@ -54,12 +54,12 @@ function HomePage() {
     ["Recomendados", videos.slice(5, 13)],
     ["Más videos", videos.slice(13, 21)],
   ] as const;
-  const polymerFilters = [
+  const polymerFilters: { value: HomeSearch["sort"]; label: string }[] = [
     { value: "recommended", label: "Inicio" },
     { value: "recent", label: "Más recientes" },
     { value: "views", label: "Más vistos" },
   ];
-  const cosmicFilters = [
+  const cosmicFilters: { value: HomeSearch["sort"]; label: string }[] = [
     { value: "recommended", label: "Para ti" },
     { value: "recent", label: "Recientes" },
     { value: "views", label: "Populares" },
@@ -173,7 +173,7 @@ function HomePage() {
                   <p className="text-sm text-muted-foreground">{isRecommended ? "Recomendados para ti" : "Videos filtrados"}</p>
                 )}
               </div>
-              <Select value={sort} onValueChange={(value) => void navigate({ to: "/", search: (prev) => ({ ...prev, sort: value }) })}>
+              <Select value={sort} onValueChange={(value) => void navigate({ to: "/", search: (prev) => ({ ...prev, sort: value as HomeSearch["sort"] }) })}>
                 <SelectTrigger className="w-48"><SelectValue placeholder="Ordenar" /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="recommended">Recomendados</SelectItem>

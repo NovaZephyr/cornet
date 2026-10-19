@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { AppShell } from "@/components/AppShell";
 import { useEffect, useMemo, useState } from "react";
-import { Download, ExternalLink, Github, Loader2 } from "lucide-react";
+import { Download, ExternalLink, Github, Loader2, Play } from "lucide-react";
+import cyanuroBanner from "@/assets/cyanuro-banner.png.asset.json";
 
 type ReleaseAsset = {
   name: string;
@@ -224,6 +225,33 @@ function DownloadsPage() {
           >
             <Github className="h-4 w-4" /> Ver releases <ExternalLink className="h-3.5 w-3.5" />
           </a>
+        </section>
+
+        <section className="group relative mt-6 overflow-hidden rounded-2xl border border-border bg-surface shadow-sm transition-[border-color,box-shadow] duration-300 hover:border-primary/70 hover:shadow-[0_0_28px_hsl(var(--primary)/0.25)]">
+          <div className="relative h-40 overflow-hidden sm:h-56">
+            <img src={cyanuroBanner.url} alt="Cyanuro" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]" />
+            <div className="absolute inset-0 bg-gradient-to-t from-surface via-surface/40 to-transparent" />
+            <span className="absolute bottom-3 left-5 rounded-full bg-primary px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-primary-foreground shadow-md">
+              Newpipe de Cornet
+            </span>
+          </div>
+
+          <div className="relative -mt-2 flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between sm:px-6 sm:pb-6">
+            <div className="max-w-2xl">
+              <h2 className="text-xl font-bold">¡Prueba el newpipe de Cornet, Cyanuro!</h2>
+              <p className="mt-2 text-sm leading-6 text-muted-foreground">
+                Cyanuro es el newpipe de Cornet que optimiza mejor la página, tiene varios clientes ¡y más! Es como usar Cornet normalmente.
+              </p>
+            </div>
+            <a
+              href="https://cyanuro.lovable.app"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex h-11 shrink-0 items-center justify-center gap-2 rounded-xl bg-primary px-5 text-sm font-semibold text-primary-foreground transition-[box-shadow,transform] duration-200 hover:-translate-y-0.5 hover:shadow-[0_0_18px_hsl(var(--primary)/0.45)]"
+            >
+              <Play className="h-4 w-4" /> Abrir Cyanuro <ExternalLink className="h-3.5 w-3.5" />
+            </a>
+          </div>
         </section>
 
         {error && (
