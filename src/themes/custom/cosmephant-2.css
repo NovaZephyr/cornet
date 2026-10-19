@@ -328,3 +328,150 @@
     padding: 14px 12px 24px;
   }
 }
+
+
+/* Cosmephant topbar follows the Figma composition: brand, centered search, account actions. */
+.cn-shell[data-theme-id="cosmephant-2"] .cn-shell-header {
+  min-height: 62px;
+  padding-inline: clamp(12px, 2.4vw, 36px);
+  background: linear-gradient(105deg, #260e0d 0%, #32190d 100%);
+  border-bottom: 3px solid #090707;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-shell-header-main {
+  grid-template-columns: minmax(200px, 1fr) minmax(280px, min(36vw, 520px)) minmax(200px, 1fr);
+  min-height: 59px;
+  gap: clamp(10px, 1.8vw, 24px);
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-shell-header-left { gap: 8px; }
+.cn-shell[data-theme-id="cosmephant-2"] .cn-shell-icon-button {
+  width: 34px;
+  height: 34px;
+  color: #fff;
+  border-radius: 7px;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-shell-logo { gap: 8px; }
+.cn-shell[data-theme-id="cosmephant-2"] .cn-shell-logo img { width: 32px; height: 32px; }
+.cn-shell[data-theme-id="cosmephant-2"] .cn-shell-logo strong {
+  color: #fff;
+  font-size: 18px;
+  letter-spacing: -.02em;
+  text-transform: uppercase;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-shell-logo-word-black,
+.cn-shell[data-theme-id="cosmephant-2"] .cn-shell-logo-word-red { color: #fff !important; }
+.cn-shell[data-theme-id="cosmephant-2"] .cn-shell-logo small { display: none; }
+
+.cn-shell[data-theme-id="cosmephant-2"] .cn-shell-search--cosmephant {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 40px;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  max-width: 520px;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-shell-search--cosmephant > svg { display: none; }
+.cn-shell[data-theme-id="cosmephant-2"] .cn-shell-search--cosmephant input {
+  min-width: 0;
+  height: 36px;
+  min-height: 36px;
+  padding: 0 17px !important;
+  border: 1px solid #432c24;
+  border-radius: 999px;
+  background: linear-gradient(100deg, #2a1916, #392314);
+  box-shadow: inset 0 2px 6px rgb(0 0 0 / .55), 0 1px 2px rgb(255 255 255 / .05);
+  color: #fff;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-shell-search--cosmephant input::placeholder { color: transparent; }
+.cn-shell[data-theme-id="cosmephant-2"] .cn-shell-search--cosmephant button {
+  position: static;
+  width: 40px;
+  min-width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid #432c24;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #3a241a, #261713);
+  color: #fff;
+  box-shadow: 0 2px 5px rgb(0 0 0 / .45);
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-shell-search--cosmephant button:hover,
+.cn-shell[data-theme-id="cosmephant-2"] .cn-shell-cosmephant-notifications:hover {
+  background: #4a2c20;
+}
+
+.cn-shell[data-theme-id="cosmephant-2"] .cn-shell-actions--cosmephant {
+  justify-self: end;
+  gap: 13px;
+  white-space: nowrap;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-shell-cosmephant-upload {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-height: 32px;
+  padding: 0 13px;
+  border: 1px solid #4a3026;
+  border-radius: 999px;
+  background: linear-gradient(105deg, #321d16, #412819);
+  box-shadow: 0 2px 6px rgb(0 0 0 / .32);
+  color: #fff;
+  font-size: 13px;
+  text-decoration: none;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-shell-cosmephant-upload span { font-size: 17px; line-height: 1; }
+.cn-shell[data-theme-id="cosmephant-2"] .cn-shell-cosmephant-notifications {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 38px;
+  border-radius: 50%;
+  color: #fff;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-shell-cosmephant-avatar,
+.cn-shell[data-theme-id="cosmephant-2"] .cn-shell-cosmephant-guest {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: 50%;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-shell-cosmephant-guest {
+  background: #f6f4f2;
+  box-shadow: 0 1px 3px rgb(0 0 0 / .35);
+}
+
+@media (min-width: 701px) and (max-width: 1100px) {
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-shell-header-main {
+    grid-template-columns: minmax(170px, auto) minmax(150px, 1fr) auto;
+    gap: 10px;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-shell-actions--cosmephant { gap: 7px; }
+}
+@media (max-width: 700px) {
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-shell-header { min-height: 101px; }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-shell-header-main {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas: "brand actions" "search search";
+    gap: 3px 9px;
+    min-height: 97px;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-shell-search--cosmephant {
+    grid-area: search;
+    max-width: none;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-shell-actions--cosmephant { grid-area: actions; gap: 5px; }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-shell-cosmephant-upload { min-height: 30px; padding-inline: 9px; font-size: 12px; }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-shell-cosmephant-notifications { width: 30px; height: 34px; }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-shell-cosmephant-avatar,
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-shell-cosmephant-guest { width: 34px; height: 34px; }
+}
+@media (max-width: 360px) {
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-shell-cosmephant-upload { padding-inline: 7px; }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-shell-actions--cosmephant { gap: 3px; }
+}
