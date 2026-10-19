@@ -778,8 +778,12 @@
 
 /* Messenger page composition from the supplied Cosmephant 2.0 Figma frame. */
 :root[data-theme="cosmephant-2"] .cn-cosmephant-messenger {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
   width: 100%;
   min-width: 0;
+  min-height: 0;
   color: #fff;
 }
 :root[data-theme="cosmephant-2"] .cn-messenger-chrome {
@@ -860,8 +864,12 @@
   color: #fff;
 }
 :root[data-theme="cosmephant-2"] .cn-cosmephant-messenger > .mx-auto {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
   width: 100%;
   max-width: none;
+  min-height: 0;
   margin: 0;
   padding: 0 clamp(12px, 2.2vw, 32px) 24px;
 }
@@ -873,9 +881,10 @@
 :root[data-theme="cosmephant-2"] .cn-messenger-chat-layout {
   display: grid;
   grid-template-columns: minmax(220px, 300px) minmax(0, 1fr);
-  height: clamp(165px, 43vh, 720px) !important;
-  min-height: 165px !important;
+  height: clamp(220px, calc(100vh - 320px), 720px) !important;
+  min-height: 220px !important;
   max-height: 720px !important;
+  flex: 1 1 auto;
   border: 0 !important;
   border-radius: 16px !important;
   background: linear-gradient(115deg, #111 0%, #171717 100%) !important;
