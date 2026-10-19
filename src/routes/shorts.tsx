@@ -3,6 +3,7 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Bookmark, ChevronDown, ChevronUp, ExternalLink, Heart, Loader2, MessageCircle, MoreVertical, PlaySquare, Share2, Volume2, VolumeX } from "lucide-react";
 import { toast } from "sonner";
+import { untypedDb } from "@/lib/untyped-db";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { ChannelAvatar, VerifiedBadge } from "@/components/Media";
@@ -86,7 +87,7 @@ function ShortCard({ video, active, nearby, onDisabled }: { video: ShortVideo; a
 
   const toggleLike = async () => {
     if (!user) return void toast.error("Inicia sesión para reaccionar");
-    const current = likesQuery.data?.find((like) => like.user_id === user.id);
+    const current = likesQuery.data?.rows.find((like) => like.user_id === user.id);
     const result = current?.is_like
       ? await supabase.from("video_likes").delete().eq("video_id", video.id).eq("user_id", user.id)
       : await supabase.from("video_likes").upsert({ video_id: video.id, user_id: user.id, is_like: true });

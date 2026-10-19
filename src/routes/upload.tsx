@@ -4,6 +4,7 @@ import { BarChart3, CheckCircle2, Edit3, Eye, FileVideo, ListVideo, MoreVertical
 import { toast } from "sonner";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { untypedDb } from "@/lib/untyped-db";
 import { AppShell } from "@/components/AppShell";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -59,13 +60,13 @@ function Dashboard({ userId }: { userId: string }) {
     },
   });
   const { data: profile } = useQuery({ queryKey: ["studio-profile", userId], queryFn: async () => { const { data, error } = await supabase.from("profiles").select("subscriber_count,display_name,username").eq("id", userId).maybeSingle(); if (error) throw error; return data; } });
-  const { data: likes } = useQuery({ queryKey: ["studio-likes", userId], queryFn: async () => { const { data, error } = await supabase.from("video_likes").select("video_id,is_like").in("video_id", (videos ?? []).map((v) => v.id)); if (error) return []; return data ?? []; }, enabled: !!videos?.length });
+  const { data: likes } = useQuery({ queryKey: ["studio-likes", userId], queryFn: async () => { const { data, error } = await untypedDb.rpc("video_like_totals", { p_video_ids: (videos ?? []).map((v) => v.id) }); if (error) return []; return (data ?? []) as { video_id: string; likes: number }[]; }, enabled: !!videos?.length });
 
   const totalViews = (videos ?? []).reduce((sum, video) => sum + Number(video.views ?? 0), 0);
   const publicVideos = (videos ?? []).filter((video) => video.visibility === "public").length;
   const averageViews = videos?.length ? Math.round(totalViews / videos.length) : 0;
   const topVideo = [...(videos ?? [])].sort((a, b) => b.views - a.views)[0];
-  const likeTotal = (likes ?? []).filter((row) => row.is_like).length;
+  const likeTotal = (likes ?? []).reduce((sum, row) => sum + Number(row.likes ?? 0), 0);
   const filteredVideos = useMemo(() => (videos ?? []).filter((video) => !search.trim() || video.title.toLowerCase().includes(search.trim().toLowerCase())), [videos, search]);
 
   const removeVideo = async (video: VideoRow) => {
