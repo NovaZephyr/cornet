@@ -489,3 +489,46 @@
 .cn-shell[data-theme-id="cosmephant-2"] :is(button, input, select, textarea) {
   font-family: inherit;
 }
+
+
+/* Compact desktop controls to match Figma's tighter topbar. */
+@media (min-width: 701px) {
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-shell-header { min-height: 56px; }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-shell-header-main { min-height: 53px; }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-shell-header-left { gap: 4px; }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-shell-icon-button { width: 24px; height: 32px; }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-shell-logo { gap: 6px; }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-shell-logo img { width: 26px; height: 26px; }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-shell-logo strong { font-size: 17px; }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-shell-search--cosmephant {
+    grid-template-columns: minmax(0, 1fr) 30px;
+    gap: 7px;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-shell-search--cosmephant input {
+    height: 27px;
+    min-height: 27px;
+    padding-inline: 14px !important;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-shell-search--cosmephant button {
+    width: 30px;
+    min-width: 30px;
+    height: 30px;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-shell-actions--cosmephant {
+    gap: 10px;
+    margin-right: 12px;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-shell-cosmephant-upload {
+    min-height: 28px;
+    padding-inline: 11px;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-shell-cosmephant-notifications {
+    width: 30px;
+    height: 32px;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-shell-cosmephant-avatar,
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-shell-cosmephant-guest {
+    width: 34px;
+    height: 34px;
+  }
+}
