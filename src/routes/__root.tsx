@@ -10,6 +10,7 @@ import { ThemeProvider } from "@/hooks/useTheme";
 import { Toaster } from "@/components/ui/sonner";
 import { ShellErrorBoundary } from "@/components/shell/ShellErrorBoundary";
 import { MaintenanceGate } from "@/components/root/MaintenanceGate";
+import { AccountModerationGate } from "@/components/root/AccountModerationGate";
 import { GlobalMobileBottomBar } from "@/components/root/GlobalMobileBottomBar";
 import { RouteContentBoundary } from "@/components/root/RouteContentBoundary";
 
@@ -45,7 +46,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   errorComponent: ErrorComponent,
 });
 
-const themeBootstrap = `(function(){try{var t=localStorage.getItem('corenetwork-theme-v3');var alias={retro2012:'cosmic-panda','youtube-2012':'cosmic-panda','yt-2012':'cosmic-panda',youtube2009:'yt-2009','youtube-2009':'yt-2009','youtube-2013':'yt-2013',youtube2013:'yt-2013',feather2013:'yt-2013',youtube2019:'yt-2019',windowsAero:'windows-aero',frutigerAero:'frutiger-aero',web2Glossy:'web2-glossy',y2kChrome:'y2k-chrome',xpLuna:'windows-xp-luna',crtVhs:'crt'};if(t&&alias[t])t=alias[t];var v=['dark','light','yt-2005','yt-2007','yt-2009','yt-2013','yt-2019','cosmic-panda','liquid-glass','grad-ocean','grad-sunset','grad-neon','grad-candy','dracula','nord','solarized-light','solarized-dark','gruvbox','tokyo-night','catppuccin','high-contrast','sepia','grayscale','windows-aero','frutiger-aero','web2-glossy','y2k-chrome','windows-xp-luna','crt','vhs','custom','system'];if(!t||v.indexOf(t)<0)t='grad-ocean';var r=document.documentElement;var light=['light','cosmic-panda','sepia','grayscale','solarized-light','grad-candy','yt-2005','yt-2007','yt-2009','yt-2013','yt-2019','liquid-glass','windows-aero','frutiger-aero','web2-glossy','windows-xp-luna'].indexOf(t)>=0;r.dataset.theme=t;r.classList.toggle('dark',!light);r.style.colorScheme=light?'light':'dark';}catch(e){}})();`;
+const themeBootstrap = `(function(){try{var t=localStorage.getItem('corenetwork-theme-v3');var alias={retro2012:'cosmic-panda','youtube-2012':'cosmic-panda','yt-2012':'cosmic-panda',youtube2009:'yt-2009','youtube-2009':'yt-2009','youtube-2013':'yt-2013',youtube2013:'yt-2013',feather2013:'yt-2013',youtube2019:'yt-2019',windowsAero:'windows-aero',frutigerAero:'frutiger-aero',web2Glossy:'web2-glossy',y2kChrome:'y2k-chrome',xpLuna:'windows-xp-luna',crtVhs:'crt'};if(t&&alias[t])t=alias[t];var v=['dark','light','cosmephant-2','yt-2005','yt-2007','yt-2009','yt-2013','yt-2019','cosmic-panda','liquid-glass','grad-ocean','grad-sunset','grad-neon','grad-candy','dracula','nord','solarized-light','solarized-dark','gruvbox','tokyo-night','catppuccin','high-contrast','sepia','grayscale','windows-aero','frutiger-aero','web2-glossy','y2k-chrome','windows-xp-luna','crt','vhs','custom','system'];if(!t||v.indexOf(t)<0)t='grad-ocean';var r=document.documentElement;var light=['light','cosmic-panda','sepia','grayscale','solarized-light','grad-candy','yt-2005','yt-2007','yt-2009','yt-2013','yt-2019','liquid-glass','windows-aero','frutiger-aero','web2-glossy','windows-xp-luna'].indexOf(t)>=0;r.dataset.theme=t;r.classList.toggle('dark',!light);r.style.colorScheme=light?'light':'dark';}catch(e){}})();`;
 
 function RootShell({ children }: { children: ReactNode }) {
   return <html lang="es" suppressHydrationWarning><head><HeadContent /><script dangerouslySetInnerHTML={{ __html: themeBootstrap }} /></head><body>{children}<Scripts /></body></html>;
@@ -53,5 +54,5 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
-  return <QueryClientProvider client={queryClient}><ThemeProvider><AuthProvider><DesignLibraryRuntime /><ShellErrorBoundary label="maintenance gate"><MaintenanceGate><RouteContentBoundary><Outlet /></RouteContentBoundary></MaintenanceGate></ShellErrorBoundary><ShellErrorBoundary label="mobile navigation"><GlobalMobileBottomBar /></ShellErrorBoundary><Toaster position="bottom-center" /></AuthProvider></ThemeProvider></QueryClientProvider>;
+  return <QueryClientProvider client={queryClient}><ThemeProvider><AuthProvider><DesignLibraryRuntime /><ShellErrorBoundary label="maintenance gate"><AccountModerationGate><MaintenanceGate><RouteContentBoundary><Outlet /></RouteContentBoundary></MaintenanceGate></AccountModerationGate></ShellErrorBoundary><ShellErrorBoundary label="mobile navigation"><GlobalMobileBottomBar /></ShellErrorBoundary><Toaster position="bottom-center" /></AuthProvider></ThemeProvider></QueryClientProvider>;
 }

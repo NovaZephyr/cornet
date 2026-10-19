@@ -26,6 +26,7 @@ import "./retro/y2k-chrome.css";
 import "./retro/xp-luna.css";
 import "./experimental/crt.css";
 import "./experimental/vhs.css";
+import "./experimental/cosmephant-2.css";
 
 /** Visual theme registry. Themes never own structural/channel layout. */
 export const THEME_REGISTRY = {
@@ -35,7 +36,7 @@ export const THEME_REGISTRY = {
   "yt-2009":{group:"youtube",label:"YouTube 2009"},
   "yt-2013":{group:"youtube",label:"YouTube 2013"}, "yt-2019":{group:"youtube",label:"YouTube 2019"},
   "cosmic-panda":{group:"custom",label:"Cosmic Panda"},
-  "cornet-2016":{group:"custom",label:"Cornet 2016"},
+  "cornet-2016":{group:"custom",label:"Cornet 2016"}, "cosmephant-2":{group:"custom",label:"Cosmephant 2.0"},
   "liquid-glass":{group:"custom",label:"Liquid Glass"},
   "grad-ocean":{group:"gradients",label:"Ocean"}, "grad-sunset":{group:"gradients",label:"Sunset"},
   "grad-neon":{group:"gradients",label:"Neon"}, "grad-candy":{group:"gradients",label:"Candy"},

@@ -1,0 +1,24 @@
+/* Cosmephant 2.0 — distinct dark preset for the visibility refresh.
+ * Color and surface tokens only; Cornet Dark remains untouched. */
+[data-theme="cosmephant-2"] {
+  color-scheme: dark;
+  --theme-bg: #10131b;
+  --theme-surface: #191e2b;
+  --theme-surface-2: #252d3e;
+  --theme-border: #3b465c;
+  --theme-text: #f4f7ff;
+  --theme-muted: #b7c2d8;
+  --theme-accent: #65d5c8;
+  --theme-sidebar: #121824;
+}
+
+[data-theme="cosmephant-2"] body {
+  background:
+    radial-gradient(ellipse at 12% 0%, rgb(101 213 200 / 8%), transparent 34rem),
+    var(--theme-bg);
+  color: var(--theme-text);
+}
+
+[data-theme="cosmephant-2"] :is(.card, [data-surface], [role="dialog"]) {
+  border-color: var(--theme-border);
+}
