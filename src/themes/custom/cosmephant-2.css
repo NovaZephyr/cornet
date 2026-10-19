@@ -962,3 +962,17 @@
     grid-template-rows: minmax(120px, 34%) minmax(0, 1fr);
   }
 }
+
+
+/* Pixel alignment of the Messenger Figma frame at compact desktop widths. */
+@media (min-width: 701px) {
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-messenger-chrome {
+    padding-inline: clamp(16px, 3.3vw, 32px);
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-messenger-promo {
+    padding-left: clamp(16px, 22vw, 164px);
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-messenger > .mx-auto {
+    padding-inline: clamp(16px, 3.3vw, 32px);
+  }
+}
