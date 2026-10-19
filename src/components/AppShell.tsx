@@ -40,7 +40,7 @@ function AppShellFrame({ children, hideSidebar = false, fullscreen = false }: Ap
   const { user, profile, username, isStaff, signOut } = useShellUser();
   const { theme } = useTheme();
   const pathname = useRouterState({ select: (state) => state.location.pathname });
-  const { sidebarOpen, mobileOpen, handleMenuClick } = useShellState(pathname);
+  const { sidebarOpen, mobileOpen, handleMenuClick } = useShellState(pathname, theme);
   const { shortsEnabled } = useShellExperiments();
 
   const { items, active } = useShellNavigation({
@@ -111,7 +111,7 @@ function AppShellFrame({ children, hideSidebar = false, fullscreen = false }: Ap
               profile={profile}
               username={username}
               items={items}
-              sidebarOpen={sidebarOpen}
+              sidebarOpen={sidebarOpen || mobileOpen}
               active={active}
             />
           </ShellErrorBoundary>
