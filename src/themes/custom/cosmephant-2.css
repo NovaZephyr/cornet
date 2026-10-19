@@ -777,16 +777,16 @@
 
 
 /* Messenger page composition from the supplied Cosmephant 2.0 Figma frame. */
-.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-messenger {
+:root[data-theme="cosmephant-2"] .cn-cosmephant-messenger {
   width: 100%;
   min-width: 0;
   color: #fff;
 }
-.cn-shell[data-theme-id="cosmephant-2"] .cn-messenger-chrome {
+:root[data-theme="cosmephant-2"] .cn-messenger-chrome {
   padding: 8px clamp(12px, 2.2vw, 32px) 0;
   font-family: "Lexend", ui-sans-serif, system-ui, sans-serif;
 }
-.cn-shell[data-theme-id="cosmephant-2"] .cn-messenger-promo {
+:root[data-theme="cosmephant-2"] .cn-messenger-promo {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 22px;
   align-items: center;
@@ -799,7 +799,7 @@
   background: linear-gradient(110deg, #151515 0%, #191919 100%);
   color: #fff;
 }
-.cn-shell[data-theme-id="cosmephant-2"] .cn-messenger-promo h1 {
+:root[data-theme="cosmephant-2"] .cn-messenger-promo h1 {
   margin: 0 0 2px;
   font-family: inherit;
   font-size: clamp(15px, 1.65vw, 20px);
@@ -807,7 +807,7 @@
   line-height: 1.1;
   letter-spacing: .005em;
 }
-.cn-shell[data-theme-id="cosmephant-2"] .cn-messenger-promo p {
+:root[data-theme="cosmephant-2"] .cn-messenger-promo p {
   max-width: 850px;
   margin: 0;
   color: #e5e0de;
@@ -815,7 +815,7 @@
   font-size: 8px;
   line-height: 1.2;
 }
-.cn-shell[data-theme-id="cosmephant-2"] .cn-messenger-promo button {
+:root[data-theme="cosmephant-2"] .cn-messenger-promo button {
   display: grid;
   width: 24px;
   height: 24px;
@@ -825,10 +825,10 @@
   background: transparent;
   color: #fff;
 }
-.cn-shell[data-theme-id="cosmephant-2"] .cn-messenger-promo button:hover {
+:root[data-theme="cosmephant-2"] .cn-messenger-promo button:hover {
   background: rgb(255 255 255 / .1);
 }
-.cn-shell[data-theme-id="cosmephant-2"] .cn-messenger-tabs {
+:root[data-theme="cosmephant-2"] .cn-messenger-tabs {
   display: flex;
   align-items: center;
   gap: 4px;
@@ -839,8 +839,8 @@
   background: linear-gradient(105deg, #171717, #202020);
   scrollbar-width: none;
 }
-.cn-shell[data-theme-id="cosmephant-2"] .cn-messenger-tabs::-webkit-scrollbar { display: none; }
-.cn-shell[data-theme-id="cosmephant-2"] .cn-messenger-tabs button {
+:root[data-theme="cosmephant-2"] .cn-messenger-tabs::-webkit-scrollbar { display: none; }
+:root[data-theme="cosmephant-2"] .cn-messenger-tabs button {
   flex: 0 0 auto;
   min-height: 24px;
   padding: 0 14px;
@@ -854,23 +854,23 @@
   line-height: 1;
   white-space: nowrap;
 }
-.cn-shell[data-theme-id="cosmephant-2"] .cn-messenger-tabs button:hover,
-.cn-shell[data-theme-id="cosmephant-2"] .cn-messenger-tabs button.is-active {
+:root[data-theme="cosmephant-2"] .cn-messenger-tabs button:hover,
+:root[data-theme="cosmephant-2"] .cn-messenger-tabs button.is-active {
   background: #292929;
   color: #fff;
 }
-.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-messenger > .mx-auto {
+:root[data-theme="cosmephant-2"] .cn-cosmephant-messenger > .mx-auto {
   width: 100%;
   max-width: none;
   margin: 0;
   padding: 0 clamp(12px, 2.2vw, 32px) 24px;
 }
-.cn-shell[data-theme-id="cosmephant-2"] .cn-messenger-group-action {
+:root[data-theme="cosmephant-2"] .cn-messenger-group-action {
   display: flex;
   justify-content: flex-end;
   padding: 8px 0;
 }
-.cn-shell[data-theme-id="cosmephant-2"] .cn-messenger-chat-layout {
+:root[data-theme="cosmephant-2"] .cn-messenger-chat-layout {
   display: grid;
   grid-template-columns: minmax(220px, 300px) minmax(0, 1fr);
   height: clamp(165px, 43vh, 720px) !important;
@@ -882,83 +882,83 @@
   color: #fff !important;
   box-shadow: none !important;
 }
-.cn-shell[data-theme-id="cosmephant-2"] .cn-messenger-chat-layout:has(.cn-messenger-empty) {
+:root[data-theme="cosmephant-2"] .cn-messenger-chat-layout:has(.cn-messenger-empty) {
   grid-template-columns: minmax(0, 1fr);
 }
-.cn-shell[data-theme-id="cosmephant-2"] .cn-messenger-chat-layout:has(.cn-messenger-empty) > aside {
+:root[data-theme="cosmephant-2"] .cn-messenger-chat-layout:has(.cn-messenger-empty) > aside {
   display: none;
 }
-.cn-shell[data-theme-id="cosmephant-2"] .cn-messenger-chat-layout > aside {
+:root[data-theme="cosmephant-2"] .cn-messenger-chat-layout > aside {
   border-color: rgb(255 255 255 / .06) !important;
   background: transparent !important;
 }
-.cn-shell[data-theme-id="cosmephant-2"] .cn-messenger-chat-layout > aside > div:first-child {
+:root[data-theme="cosmephant-2"] .cn-messenger-chat-layout > aside > div:first-child {
   border-color: rgb(255 255 255 / .06) !important;
 }
-.cn-shell[data-theme-id="cosmephant-2"] .cn-messenger-chat-layout > aside input {
+:root[data-theme="cosmephant-2"] .cn-messenger-chat-layout > aside input {
   border: 1px solid rgb(255 255 255 / .08) !important;
   border-radius: 999px !important;
   background: #1b1b1b !important;
   color: #fff !important;
 }
-.cn-shell[data-theme-id="cosmephant-2"] .cn-messenger-chat-layout > aside > div:last-child > p.py-12 {
+:root[data-theme="cosmephant-2"] .cn-messenger-chat-layout > aside > div:last-child > p.py-12 {
   display: none;
 }
-.cn-shell[data-theme-id="cosmephant-2"] .cn-messenger-chat-layout > section {
+:root[data-theme="cosmephant-2"] .cn-messenger-chat-layout > section {
   background: transparent !important;
 }
-.cn-shell[data-theme-id="cosmephant-2"] .cn-messenger-chat-layout > section > header,
-.cn-shell[data-theme-id="cosmephant-2"] .cn-messenger-chat-layout > section > form {
+:root[data-theme="cosmephant-2"] .cn-messenger-chat-layout > section > header,
+:root[data-theme="cosmephant-2"] .cn-messenger-chat-layout > section > form {
   border-color: rgb(255 255 255 / .07) !important;
   background: #171717 !important;
 }
-.cn-shell[data-theme-id="cosmephant-2"] .cn-messenger-empty {
+:root[data-theme="cosmephant-2"] .cn-messenger-empty {
   flex: 1;
   min-height: 100%;
 }
-.cn-shell[data-theme-id="cosmephant-2"] .cn-messenger-chat-layout > section form > div {
+:root[data-theme="cosmephant-2"] .cn-messenger-chat-layout > section form > div {
   border-color: rgb(255 255 255 / .1) !important;
   border-radius: 14px !important;
   background: #202020 !important;
 }
-.cn-shell[data-theme-id="cosmephant-2"] .cn-messenger-chat-layout > section form button[type="submit"] {
+:root[data-theme="cosmephant-2"] .cn-messenger-chat-layout > section form button[type="submit"] {
   background: #f04438 !important;
 }
 @media (max-width: 700px) {
-  .cn-shell[data-theme-id="cosmephant-2"] .cn-messenger-chrome {
+  :root[data-theme="cosmephant-2"] .cn-messenger-chrome {
     padding: 7px 10px 0;
   }
-  .cn-shell[data-theme-id="cosmephant-2"] .cn-messenger-promo {
+  :root[data-theme="cosmephant-2"] .cn-messenger-promo {
     min-height: 58px;
     margin: 6px 0 8px;
     padding: 8px 10px;
   }
-  .cn-shell[data-theme-id="cosmephant-2"] .cn-messenger-promo h1 {
+  :root[data-theme="cosmephant-2"] .cn-messenger-promo h1 {
     font-size: 15px;
   }
-  .cn-shell[data-theme-id="cosmephant-2"] .cn-messenger-promo p {
+  :root[data-theme="cosmephant-2"] .cn-messenger-promo p {
     font-size: 8px;
   }
-  .cn-shell[data-theme-id="cosmephant-2"] .cn-messenger-tabs {
+  :root[data-theme="cosmephant-2"] .cn-messenger-tabs {
     gap: 2px;
     padding-inline: 4px;
   }
-  .cn-shell[data-theme-id="cosmephant-2"] .cn-messenger-tabs button {
+  :root[data-theme="cosmephant-2"] .cn-messenger-tabs button {
     padding-inline: 10px;
     font-size: 12px;
   }
-  .cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-messenger > .mx-auto {
+  :root[data-theme="cosmephant-2"] .cn-cosmephant-messenger > .mx-auto {
     padding: 0 10px 20px;
   }
-  .cn-shell[data-theme-id="cosmephant-2"] .cn-messenger-chat-layout {
+  :root[data-theme="cosmephant-2"] .cn-messenger-chat-layout {
     grid-template-columns: minmax(0, 1fr);
     height: clamp(240px, 52vh, 580px) !important;
     min-height: 240px !important;
   }
-  .cn-shell[data-theme-id="cosmephant-2"] .cn-messenger-chat-layout:has(.cn-messenger-empty) {
+  :root[data-theme="cosmephant-2"] .cn-messenger-chat-layout:has(.cn-messenger-empty) {
     grid-template-columns: minmax(0, 1fr);
   }
-  .cn-shell[data-theme-id="cosmephant-2"] .cn-messenger-chat-layout:not(:has(.cn-messenger-empty)) {
+  :root[data-theme="cosmephant-2"] .cn-messenger-chat-layout:not(:has(.cn-messenger-empty)) {
     grid-template-rows: minmax(120px, 34%) minmax(0, 1fr);
   }
 }
@@ -966,13 +966,13 @@
 
 /* Pixel alignment of the Messenger Figma frame at compact desktop widths. */
 @media (min-width: 701px) {
-  .cn-shell[data-theme-id="cosmephant-2"] .cn-messenger-chrome {
+  :root[data-theme="cosmephant-2"] .cn-messenger-chrome {
     padding-inline: clamp(16px, 3.3vw, 32px);
   }
-  .cn-shell[data-theme-id="cosmephant-2"] .cn-messenger-promo {
+  :root[data-theme="cosmephant-2"] .cn-messenger-promo {
     padding-left: clamp(16px, 22vw, 164px);
   }
-  .cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-messenger > .mx-auto {
+  :root[data-theme="cosmephant-2"] .cn-cosmephant-messenger > .mx-auto {
     padding-inline: clamp(16px, 3.3vw, 32px);
   }
 }
