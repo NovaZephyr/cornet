@@ -3,6 +3,7 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Bookmark, ChevronDown, ChevronUp, ExternalLink, Heart, Loader2, MessageCircle, MoreVertical, PlaySquare, Share2, Volume2, VolumeX } from "lucide-react";
 import { toast } from "sonner";
+import { untypedDb } from "@/lib/untyped-db";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { ChannelAvatar, VerifiedBadge } from "@/components/Media";
@@ -36,9 +37,13 @@ function ShortCard({ video, active, nearby, onDisabled }: { video: ShortVideo; a
   const likesQuery = useQuery({
     queryKey: ["short-likes", video.id],
     queryFn: async () => {
-      const { data, error } = await supabase.from("video_likes").select("user_id, is_like").eq("video_id", video.id);
-      if (error) throw error;
-      return (data ?? []) as { user_id: string; is_like: boolean }[];
+      const [rowsRes, countsRes] = await Promise.all([
+        supabase.from("video_likes").select("user_id, is_like").eq("video_id", video.id),
+        untypedDb.rpc("video_reaction_counts", { p_video_id: video.id }),
+      ]);
+      if (rowsRes.error) throw rowsRes.error;
+      const counts = (countsRes.data as { likes: number }[] | null)?.[0];
+      return { rows: (rowsRes.data ?? []) as { user_id: string; is_like: boolean }[], likes: Number(counts?.likes ?? 0) };
     },
     staleTime: 30_000,
     enabled: nearby,
@@ -77,12 +82,12 @@ function ShortCard({ video, active, nearby, onDisabled }: { video: ShortVideo; a
     setProgress(0);
   }, [nearby]);
 
-  const liked = likesQuery.data?.some((like) => like.user_id === user?.id && like.is_like) ?? false;
-  const likeCount = likesQuery.data?.filter((like) => like.is_like).length ?? 0;
+  const liked = likesQuery.data?.rows.some((like) => like.user_id === user?.id && like.is_like) ?? false;
+  const likeCount = likesQuery.data?.likes ?? 0;
 
   const toggleLike = async () => {
     if (!user) return void toast.error("Inicia sesión para reaccionar");
-    const current = likesQuery.data?.find((like) => like.user_id === user.id);
+    const current = likesQuery.data?.rows.find((like) => like.user_id === user.id);
     const result = current?.is_like
       ? await supabase.from("video_likes").delete().eq("video_id", video.id).eq("user_id", user.id)
       : await supabase.from("video_likes").upsert({ video_id: video.id, user_id: user.id, is_like: true });
