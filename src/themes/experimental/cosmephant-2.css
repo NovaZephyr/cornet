@@ -1,24 +1,61 @@
-/* Cosmephant 2.0 — distinct dark preset for the visibility refresh.
- * Color and surface tokens only; Cornet Dark remains untouched. */
+/* Cosmephant 2.0 — palette sampled from the Figma desktop and mobile page designs.
+ * Visual styling only; layout remains owned by Cornet's shell and pages. */
 [data-theme="cosmephant-2"] {
   color-scheme: dark;
-  --theme-bg: #10131b;
-  --theme-surface: #191e2b;
-  --theme-surface-2: #252d3e;
-  --theme-border: #3b465c;
-  --theme-text: #f4f7ff;
-  --theme-muted: #b7c2d8;
-  --theme-accent: #65d5c8;
-  --theme-sidebar: #121824;
+  --theme-bg: #0c0c0c;
+  --theme-surface: #1b1313;
+  --theme-surface-2: #331c1a;
+  --theme-border: #331c1a;
+  --theme-text: #ffffff;
+  --theme-muted: #b8b2b2;
+  --theme-accent: #f04438;
+  --theme-sidebar: #0c0c0c;
+  --cosmephant-header-start: #280f0f;
+  --cosmephant-header-end: #2d1b0b;
+  --cosmephant-ribbon-start: #2d1e1e;
+  --cosmephant-ribbon-end: #311d11;
 }
 
 [data-theme="cosmephant-2"] body {
-  background:
-    radial-gradient(ellipse at 12% 0%, rgb(101 213 200 / 8%), transparent 34rem),
-    var(--theme-bg);
+  background: var(--theme-bg);
   color: var(--theme-text);
 }
 
+[data-theme="cosmephant-2"] .cn-shell-header {
+  background: linear-gradient(
+    105deg,
+    var(--cosmephant-header-start),
+    var(--cosmephant-header-end)
+  );
+  border-bottom: 4px solid #000000;
+}
+
+[data-theme="cosmephant-2"] .cn-shell-sidebar {
+  background: var(--theme-sidebar);
+}
+
+[data-theme="cosmephant-2"] .cn-shell-sidebar nav a:hover,
+[data-theme="cosmephant-2"] .cn-shell-sidebar nav a[data-active="true"] {
+  background: linear-gradient(
+    105deg,
+    var(--cosmephant-ribbon-start),
+    var(--cosmephant-ribbon-end)
+  );
+}
+
+[data-theme="cosmephant-2"] .cn-shell-sidebar nav a[data-active="true"] {
+  color: var(--theme-text);
+}
+
+[data-theme="cosmephant-2"] .cn-shell-mobile-nav {
+  background: linear-gradient(
+    105deg,
+    var(--cosmephant-header-start),
+    var(--cosmephant-header-end)
+  );
+}
+
 [data-theme="cosmephant-2"] :is(.card, [data-surface], [role="dialog"]) {
+  background: var(--theme-surface);
   border-color: var(--theme-border);
 }
