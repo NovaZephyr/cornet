@@ -266,3 +266,65 @@
     flex-direction: row;
   }
 }
+
+
+/* Figma visual finish for every Cosmephant 2.0 breakpoint. */
+.cn-shell[data-theme-id="cosmephant-2"] .cn-shell-header {
+  background: linear-gradient(105deg, #260e0d 0%, #32190d 100%);
+  border-bottom: 3px solid #090707;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-shell-search input {
+  min-height: 36px;
+  border: 1px solid #41271d;
+  background: linear-gradient(100deg, #2a1916, #392314);
+  box-shadow: inset 0 1px 5px rgb(0 0 0 / .5), 0 1px 2px rgb(255 255 255 / .05);
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-shell-search button {
+  min-width: 38px;
+  color: #f4e8e3;
+  background: #321e16;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-shell-header .cn-shell-icon-button:hover,
+.cn-shell[data-theme-id="cosmephant-2"] .cn-shell-header .cn-shell-avatar-button:hover {
+  background: rgb(255 255 255 / .1);
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-shell-sidebar:not(.cn-shell-sidebar-collapsed) {
+  border-right: 1px solid #321e19;
+  background: #100d0d;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-shell-sidebar nav a {
+  background: #1b1413;
+  border-radius: 12px;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-shell-sidebar nav a[data-active="true"] {
+  background: linear-gradient(105deg, #321c1b, #3a2415);
+  color: #fff;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-shell-mobile-nav {
+  background: linear-gradient(105deg, #260e0d, #32190d);
+  border-top-color: #41241b;
+}
+@media (min-width: 701px) and (max-width: 1100px) {
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-main {
+    padding-inline: 20px !important;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-video-grid {
+    grid-template-columns: repeat(auto-fill, minmax(205px, 1fr));
+    gap: 24px 14px;
+  }
+}
+@media (max-width: 700px) {
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-shell-header {
+    border-bottom-width: 2px;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-shell-search input {
+    min-height: 38px;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-video-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px 12px;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-community-page {
+    padding: 14px 12px 24px;
+  }
+}
