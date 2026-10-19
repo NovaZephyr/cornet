@@ -215,3 +215,18 @@
     background: rgb(0 0 0 / .48);
   }
 }
+
+
+/* Desktop uses its own open state; mobileOpen remains reserved for the drawer breakpoint. */
+@media (min-width: 901px) {
+  .cn-shell[data-theme-id="cosmephant-2"].cn-shell-sidebar-open .cn-shell-sidebar:not(.cn-shell-sidebar-collapsed) {
+    transform: translateX(0);
+  }
+  .cn-shell[data-theme-id="cosmephant-2"].cn-shell-sidebar-open .cn-shell-layout::before {
+    content: "";
+    position: fixed;
+    inset: 60px 0 0;
+    z-index: 990;
+    background: rgb(0 0 0 / .48);
+  }
+}
