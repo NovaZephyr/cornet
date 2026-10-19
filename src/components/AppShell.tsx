@@ -55,8 +55,8 @@ function AppShellFrame({ children, hideSidebar = false, fullscreen = false }: Ap
   const historicalNavItems = isYoutubeClassic
     ? [
         { to: "/explore", label: "Videos" },
-        { to: "/explore", label: "Categories", search: { view: "videos" } },
-        { to: "/explore", label: "Channels", search: { view: "channels" } },
+        { to: "/explore", label: "Categories", search: { view: "videos" as const } },
+        { to: "/explore", label: "Channels", search: { view: "channels" as const } },
         { to: "/community", label: "Community" },
       ]
     : isYoutube2009
