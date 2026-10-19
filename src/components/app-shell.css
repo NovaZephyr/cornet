@@ -230,3 +230,24 @@
     background: rgb(0 0 0 / .48);
   }
 }
+
+
+/* Refine Cosmephant desktop header proportions against the Figma frame. */
+@media (min-width: 701px) {
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-shell-header {
+    min-height: 56px;
+    padding-inline: 12px;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-shell-header-main {
+    grid-template-columns: minmax(200px, 1fr) minmax(240px, min(30vw, 560px)) minmax(200px, 1fr);
+    min-height: 53px;
+    gap: clamp(8px, 1.4vw, 18px);
+  }
+}
+@media (min-width: 701px) and (max-width: 1100px) {
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-shell-header-main {
+    grid-template-columns: minmax(150px, auto) minmax(150px, 1fr) auto;
+    min-height: 53px;
+    gap: 8px;
+  }
+}
