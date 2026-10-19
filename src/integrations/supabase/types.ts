@@ -1282,6 +1282,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      channel_subscriber_count: {
+        Args: { p_channel_id: string }
+        Returns: number
+      }
       create_cornet_dm: { Args: { p_other_user: string }; Returns: string }
       create_cornet_group: {
         Args: { p_member_ids: string[]; p_name: string }
@@ -1384,6 +1388,20 @@ export type Database = {
           _video_id?: string
         }
         Returns: string
+      }
+      video_like_totals: {
+        Args: { p_video_ids: string[] }
+        Returns: {
+          likes: number
+          video_id: string
+        }[]
+      }
+      video_reaction_counts: {
+        Args: { p_video_id: string }
+        Returns: {
+          dislikes: number
+          likes: number
+        }[]
       }
       vote_on_announcement_poll: {
         Args: { _announcement_id: string; _option_id: string }
