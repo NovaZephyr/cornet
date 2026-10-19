@@ -26,7 +26,7 @@ import "./retro/y2k-chrome.css";
 import "./retro/xp-luna.css";
 import "./experimental/crt.css";
 import "./experimental/vhs.css";
-import "./experimental/cosmephant-2.css";
+import "./custom/cosmephant-2.css";
 
 /** Visual theme registry. Themes never own structural/channel layout. */
 export const THEME_REGISTRY = {
