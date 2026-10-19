@@ -64,12 +64,20 @@ function HomePage() {
     { value: "recent", label: "Recientes" },
     { value: "views", label: "Populares" },
   ];
+  const cosmephantFilters: { value: HomeSearch["sort"]; label: string }[] = [
+    { value: "recommended", label: "Para ti" },
+    { value: "views", label: "Popular" },
+    { value: "subscribers", label: "Más suscripciones" },
+    { value: "recent", label: "Recientes" },
+    { value: "oldest", label: "Antiguos" },
+  ];
+  const isCosmephantHome = theme === "cosmephant-2" && !q;
   const isPolymerHome = theme === "yt-2019" && !q;
   const isCosmicHome = theme === "cosmic-panda" && !q;
 
   return (
     <AppShell>
-      <main className="mx-auto w-full max-w-7xl px-4 py-6">
+      <main className="mx-auto w-full max-w-7xl px-4 py-6 cn-cosmephant-main">
         {isPolymerHome ? (
           <>
             <nav className="cn-polymer-home-tabs" aria-label="Filtros de inicio">
@@ -111,6 +119,44 @@ function HomePage() {
                 <div className="cn-polymer-empty"><p>No encontramos videos.</p></div>
               )}
             </div>
+          </>
+        ) : isCosmephantHome ? (
+          <>
+            <nav className="cn-cosmephant-home-tabs" aria-label="Categorías de inicio">
+              {cosmephantFilters.map((filter) => (
+                <button
+                  key={filter.value}
+                  type="button"
+                  aria-pressed={sort === filter.value}
+                  onClick={() => void navigate({ to: "/", search: (prev) => ({ ...prev, sort: filter.value }) })}
+                  className={sort === filter.value ? "is-active" : ""}
+                >
+                  {filter.label}
+                </button>
+              ))}
+            </nav>
+            {videosQuery.isLoading ? (
+              <div className="cn-cosmephant-video-grid" aria-label="Cargando videos">
+                {Array.from({ length: 8 }).map((_, i) => (
+                  <div key={i}>
+                    <Skeleton className="aspect-video w-full rounded-none" />
+                    <Skeleton className="mt-2 h-4 w-5/6" />
+                    <Skeleton className="mt-1 h-3 w-2/5" />
+                  </div>
+                ))}
+              </div>
+            ) : videos.length > 0 ? (
+              <section className="cn-cosmephant-home-feed" aria-label="Videos recomendados">
+                <div className="cn-cosmephant-home-heading">
+                  <h1>{sort === "recommended" ? "Recomendados para ti" : cosmephantFilters.find((filter) => filter.value === sort)?.label}</h1>
+                </div>
+                <div className="cn-cosmephant-video-grid">
+                  {videos.map((video) => <VideoCard key={video.id} video={video} />)}
+                </div>
+              </section>
+            ) : (
+              <div className="cn-cosmephant-empty">No encontramos videos.</div>
+            )}
           </>
         ) : isCosmicHome ? (
           <>
