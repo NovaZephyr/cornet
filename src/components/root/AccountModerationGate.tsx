@@ -13,7 +13,7 @@ export function AccountModerationGate({ children }: { children: ReactNode }) {
 
   if (loading || !user || !profile) return <>{children}</>;
 
-  const status: ModerationStatus = profile.is_banned ? "banned" : profile.moderation_status;
+  const status: ModerationStatus = profile.is_banned ? "banned" : profile.moderation_status ?? "active";
   if (status === "active") return <>{children}</>;
 
   const suspendedUntil = status === "suspended" && profile.moderation_suspended_until
