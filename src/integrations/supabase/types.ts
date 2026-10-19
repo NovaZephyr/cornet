@@ -850,6 +850,11 @@ export type Database = {
           gif_path: string | null
           id: string
           is_banned: boolean
+          moderation_reason: string | null
+          moderation_status: string
+          moderation_suspended_until: string | null
+          moderation_updated_at: string | null
+          moderation_updated_by: string | null
           is_music_channel: boolean
           is_verified: boolean
           preferred_language: string
@@ -877,6 +882,11 @@ export type Database = {
           gif_path?: string | null
           id: string
           is_banned?: boolean
+          moderation_reason?: string | null
+          moderation_status?: string
+          moderation_suspended_until?: string | null
+          moderation_updated_at?: string | null
+          moderation_updated_by?: string | null
           is_music_channel?: boolean
           is_verified?: boolean
           preferred_language?: string
@@ -1346,6 +1356,8 @@ export type Database = {
       }
       increment_views: { Args: { _video_id: string }; Returns: undefined }
       is_banned: { Args: { _user_id: string }; Returns: boolean }
+      moderate_account: { Args: { _duration_hours?: number; _reason?: string; _status: string; _user_id: string }; Returns: boolean }
+      reactivate_my_account: { Args: never; Returns: boolean }
       is_message_member: {
         Args: { p_conversation_id: string; p_user_id: string }
         Returns: boolean
