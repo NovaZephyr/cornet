@@ -81,6 +81,7 @@ function AppShellFrame({ children, hideSidebar = false, fullscreen = false }: Ap
       <ShellErrorBoundary label="header">
         <ShellHeader
           mobileOpen={mobileOpen}
+          cosmephant={theme === "cosmephant-2"}
           onMenuClick={handleMenuClick}
           logo={<ShellLogo />}
           historicalNavItems={historicalNavItems}
@@ -93,6 +94,7 @@ function AppShellFrame({ children, hideSidebar = false, fullscreen = false }: Ap
               username={username}
               signOut={signOut}
               historical={isYoutubeClassic}
+              cosmephant={theme === "cosmephant-2"}
             />
           }
         />
