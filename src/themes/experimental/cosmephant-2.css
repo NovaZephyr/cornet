@@ -89,7 +89,7 @@
   border-color: var(--border);
 }
 [data-theme="cosmephant-2"] .cn-shell-mobile-nav a[data-active="true"] {
-  color: var(--primary-foreground);
+  color: var(--primary);
 }
 [data-theme="cosmephant-2"] :is(.card, [data-surface], [role="dialog"]) {
   background: var(--card);
