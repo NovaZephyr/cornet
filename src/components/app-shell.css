@@ -49,3 +49,53 @@
 }
 
 .cn-shell--fullscreen{height:100dvh;overflow:hidden}.cn-shell-main--fullscreen{height:calc(100dvh - 60px);min-height:0;overflow:hidden}.cn-shell--fullscreen .cn-shell-layout{height:calc(100dvh - 60px);min-height:0}@media(max-width:900px){.cn-shell--fullscreen .cn-shell-main--fullscreen{height:calc(100dvh - 60px);padding-bottom:0}.cn-shell--fullscreen .cn-shell-layout{height:calc(100dvh - 60px);min-height:0}}
+
+/* Cosmephant 2.0 desktop shell */
+@media (min-width: 901px) {
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-shell-sidebar-collapsed {
+    display: none !important;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-shell-layout:has(.cn-shell-sidebar-collapsed) {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-shell-layout:has(> .cn-shell-sidebar:not(.cn-shell-sidebar-collapsed)) {
+    grid-template-columns: 270px minmax(0, 1fr);
+  }
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-shell-header {
+  display: block;
+  min-height: 56px;
+  padding: 0 20px;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-shell-header-main {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(220px, min(40vw, 520px)) minmax(0, 1fr);
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  min-height: 53px;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-shell-header-left {
+  justify-self: start;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-shell-search {
+  justify-self: center;
+  width: 100%;
+  max-width: 520px;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-shell-actions {
+  justify-self: end;
+}
+@media (max-width: 900px) {
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-shell-header {
+    padding: 0 10px;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-shell-header-main {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: 8px;
+    min-height: 53px;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-shell-search {
+    max-width: none;
+  }
+}
