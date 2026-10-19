@@ -1,7 +1,9 @@
 /* Cosmephant 2.0 — palette sampled from the Figma desktop and mobile page designs.
- * Visual styling only; layout remains owned by Cornet's shell and pages. */
+ * Semantic tokens apply the palette across every route and shared UI component. */
 [data-theme="cosmephant-2"] {
   color-scheme: dark;
+
+  /* Theme tokens used by legacy and theme-aware components. */
   --theme-bg: #0c0c0c;
   --theme-surface: #1b1313;
   --theme-surface-2: #331c1a;
@@ -14,10 +16,47 @@
   --cosmephant-header-end: #2d1b0b;
   --cosmephant-ribbon-start: #2d1e1e;
   --cosmephant-ribbon-end: #311d11;
+
+  /* Cornet's semantic design tokens, shared by every page and component. */
+  --background: #0c0c0c;
+  --foreground: #ffffff;
+  --surface: #1b1313;
+  --surface-hover: #2d1e1e;
+  --card: #1b1313;
+  --card-foreground: #ffffff;
+  --popover: #1b1313;
+  --popover-foreground: #ffffff;
+  --primary: #f04438;
+  --primary-foreground: #ffffff;
+  --secondary: #2d1e1e;
+  --secondary-foreground: #ffffff;
+  --muted: #251919;
+  --muted-foreground: #b8b2b2;
+  --accent: #331c1a;
+  --accent-foreground: #ffffff;
+  --destructive: #f04438;
+  --destructive-foreground: #ffffff;
+  --border: #331c1a;
+  --input: #2d1e1e;
+  --ring: #f04438;
+  --verified: #70a7ff;
+  --partner: #f4c95d;
+  --sidebar: #0c0c0c;
+  --sidebar-foreground: #ffffff;
+  --sidebar-primary: #f04438;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #2d1e1e;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #331c1a;
+  --sidebar-ring: #f04438;
 }
 [data-theme="cosmephant-2"] body {
-  background: var(--theme-bg);
-  color: var(--theme-text);
+  background: var(--background);
+  color: var(--foreground);
+}
+[data-theme="cosmephant-2"] .cn-shell {
+  background: var(--background);
+  color: var(--foreground);
 }
 [data-theme="cosmephant-2"] .cn-shell-header {
   background: linear-gradient(
@@ -28,7 +67,7 @@
   border-bottom: 4px solid #000000;
 }
 [data-theme="cosmephant-2"] .cn-shell-sidebar {
-  background: var(--theme-sidebar);
+  background: var(--sidebar);
 }
 [data-theme="cosmephant-2"] .cn-shell-sidebar nav a:hover,
 [data-theme="cosmephant-2"] .cn-shell-sidebar nav a[data-active="true"] {
@@ -39,7 +78,7 @@
   );
 }
 [data-theme="cosmephant-2"] .cn-shell-sidebar nav a[data-active="true"] {
-  color: var(--theme-text);
+  color: var(--sidebar-foreground);
 }
 [data-theme="cosmephant-2"] .cn-shell-mobile-nav {
   background: linear-gradient(
@@ -47,8 +86,12 @@
     var(--cosmephant-header-start),
     var(--cosmephant-header-end)
   );
+  border-color: var(--border);
+}
+[data-theme="cosmephant-2"] .cn-shell-mobile-nav a[data-active="true"] {
+  color: var(--primary-foreground);
 }
 [data-theme="cosmephant-2"] :is(.card, [data-surface], [role="dialog"]) {
-  background: var(--theme-surface);
-  border-color: var(--theme-border);
+  background: var(--card);
+  border-color: var(--border);
 }
