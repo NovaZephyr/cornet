@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite dev",
-    "generate-routes": "tsr generate-routes",
-    "build": "bun run generate-routes && vite build",
+    "generate-routes": "tsr generate",
+    "build": "bun run generate-routes && vite build"
     "build:dev": "bun run generate-routes && vite build --mode development",
     "preview": "vite preview",
     "lint": "eslint .",
