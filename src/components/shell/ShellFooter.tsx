@@ -68,7 +68,13 @@ export function ShellFooter() {
   return (
     <footer className="cn-shell-footer">
       <div className="cn-cosmephant-footer-brand" aria-hidden="true">
-
+        <svg width="12" height="12" viewBox="0 0 24 24" style={{ display: "block", width: 12, height: 12, flex: "0 0 12px" }}>
+          <rect width="24" height="24" rx="6" fill="#f04438" />
+          <path d="M8 7.5 17 12l-9 4.5z" fill="none" stroke="white" strokeWidth="1.8" strokeLinejoin="round" />
+          <circle cx="8" cy="7.5" r="1.5" fill="white" />
+          <circle cx="17" cy="12" r="1.5" fill="white" />
+          <circle cx="8" cy="16.5" r="1.5" fill="white" />
+        </svg>
         <span>CORNET</span>
       </div>
       <div className="cn-cosmephant-footer-links">
