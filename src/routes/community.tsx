@@ -36,7 +36,8 @@ function CommunityPage() {
           </div>
         </section>
 
-        <Tabs defaultValue="social" className="cn-cosmephant-community-layout">
+        <div className="cn-cosmephant-community-layout">
+        <Tabs defaultValue="social">
           <TabsList className="cn-community-tabs mb-3 h-auto w-full max-w-xl">
             <TabsTrigger value="social" className="flex-1 gap-2 py-2.5"><MessageCircle className="h-4 w-4" />Publicaciones</TabsTrigger>
             <TabsTrigger value="storage" className="flex-1 gap-2 py-2.5"><UploadCloud className="h-4 w-4" />Archivos y enlaces</TabsTrigger>
@@ -44,6 +45,7 @@ function CommunityPage() {
           <TabsContent value="social"><div className="cn-community-card"><CommunityFeed /></div></TabsContent>
           <TabsContent value="storage"><div className="cn-community-card"><CommunityStorage /></div></TabsContent>
         </Tabs>
+        </div>
       </div>
     </AppShell>
   );
