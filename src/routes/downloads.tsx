@@ -226,6 +226,40 @@ function DownloadsPage() {
           </a>
         </section>
 
+        <section className="mt-4 overflow-hidden rounded-2xl border border-border bg-surface shadow-sm">
+          <div className="grid items-center sm:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)]">
+            <a
+              href="https://cyanuro.lovable.app/"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Probar Cyanuro, el cliente alternativo de Cornet"
+              className="block overflow-hidden bg-[#087f85] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-inset"
+            >
+              <img
+                src="/cyanuro.webp"
+                alt="Cyanuro"
+                className="aspect-video h-full w-full object-cover transition-transform duration-300 hover:scale-[1.02]"
+              />
+            </a>
+            <div className="p-6 sm:p-8">
+              <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
+                ¡Prueba el newpipe de Cornet, Cyanuro!
+              </h2>
+              <p className="mt-2 text-sm leading-6 text-muted-foreground sm:text-base">
+                Cyanuro es un newpipe de Cornet que optimiza mejor la página, tiene varios clientes y más. ¡Es como usar Cornet normalmente!
+              </p>
+              <a
+                href="https://cyanuro.lovable.app/"
+                target="_blank"
+                rel="noreferrer"
+                className="mt-5 inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-primary px-4 text-sm font-semibold text-primary-foreground transition-[box-shadow,transform] duration-200 hover:-translate-y-0.5 hover:shadow-[0_0_18px_hsl(var(--primary)/0.35)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+              >
+                Probar Cyanuro <ExternalLink className="h-4 w-4" />
+              </a>
+            </div>
+          </div>
+        </section>
+
         {error && (
           <p className="mt-4 text-center text-xs text-muted-foreground">
             GitHub no respondió correctamente. Puedes consultar los releases directamente desde el enlace anterior.
