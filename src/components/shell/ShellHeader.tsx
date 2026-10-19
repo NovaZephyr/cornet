@@ -10,6 +10,7 @@ type HistoricalNavMode = "inline" | "row";
 
 type ShellHeaderProps = {
   mobileOpen: boolean;
+  cosmephant: boolean;
   onMenuClick: () => void;
   logo: ReactNode;
   actions: ReactNode;
@@ -20,6 +21,7 @@ type ShellHeaderProps = {
 
 export function ShellHeader({
   mobileOpen,
+  cosmephant,
   onMenuClick,
   logo,
   actions,
@@ -53,7 +55,7 @@ export function ShellHeader({
           )}
         </div>
 
-        <ShellSearch historical={historicalSearch} />
+        <ShellSearch historical={historicalSearch} cosmephant={cosmephant} />
         {actions}
       </div>
 
