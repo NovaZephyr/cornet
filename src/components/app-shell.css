@@ -168,3 +168,50 @@
 @media (prefers-reduced-motion: reduce) {
   .cn-shell[data-theme-id="cosmephant-2"] .cn-shell-sidebar { transition: none; }
 }
+
+
+/* Match the Figma overlay sidebar: keep the page and topbar in place. */
+.cn-shell[data-theme-id="cosmephant-2"] .cn-shell-layout { position: relative; }
+@media (min-width: 901px) {
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-shell-layout:has(> .cn-shell-sidebar:not(.cn-shell-sidebar-collapsed)) {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-shell-sidebar:not(.cn-shell-sidebar-collapsed) {
+    position: fixed;
+    inset: 60px auto 0 0;
+    width: 280px;
+    height: auto;
+    z-index: 1000;
+    transform: translateX(-105%);
+    transition: transform .2s ease;
+    box-shadow: 18px 0 38px rgb(0 0 0 / .34);
+  }
+  .cn-shell[data-theme-id="cosmephant-2"].cn-shell-mobile-open .cn-shell-sidebar:not(.cn-shell-sidebar-collapsed) {
+    transform: translateX(0);
+  }
+  .cn-shell[data-theme-id="cosmephant-2"].cn-shell-mobile-open .cn-shell-layout::before {
+    content: "";
+    position: fixed;
+    inset: 60px 0 0;
+    z-index: 990;
+    background: rgb(0 0 0 / .48);
+  }
+}
+@media (min-width: 701px) and (max-width: 900px) {
+  .cn-shell[data-theme-id="cosmephant-2"].cn-shell-mobile-open .cn-shell-layout::before {
+    content: "";
+    position: fixed;
+    inset: 60px 0 60px;
+    z-index: 990;
+    background: rgb(0 0 0 / .48);
+  }
+}
+@media (max-width: 700px) {
+  .cn-shell[data-theme-id="cosmephant-2"].cn-shell-mobile-open .cn-shell-layout::before {
+    content: "";
+    position: fixed;
+    inset: 102px 0 60px;
+    z-index: 1000;
+    background: rgb(0 0 0 / .48);
+  }
+}
