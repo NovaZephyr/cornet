@@ -10,6 +10,7 @@ import { ThemeProvider } from "@/hooks/useTheme";
 import { Toaster } from "@/components/ui/sonner";
 import { ShellErrorBoundary } from "@/components/shell/ShellErrorBoundary";
 import { MaintenanceGate } from "@/components/root/MaintenanceGate";
+import { AccountModerationGate } from "@/components/root/AccountModerationGate";
 import { GlobalMobileBottomBar } from "@/components/root/GlobalMobileBottomBar";
 import { RouteContentBoundary } from "@/components/root/RouteContentBoundary";
 
@@ -53,5 +54,5 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
-  return <QueryClientProvider client={queryClient}><ThemeProvider><AuthProvider><DesignLibraryRuntime /><ShellErrorBoundary label="maintenance gate"><MaintenanceGate><RouteContentBoundary><Outlet /></RouteContentBoundary></MaintenanceGate></ShellErrorBoundary><ShellErrorBoundary label="mobile navigation"><GlobalMobileBottomBar /></ShellErrorBoundary><Toaster position="bottom-center" /></AuthProvider></ThemeProvider></QueryClientProvider>;
+  return <QueryClientProvider client={queryClient}><ThemeProvider><AuthProvider><DesignLibraryRuntime /><ShellErrorBoundary label="maintenance gate"><AccountModerationGate><MaintenanceGate><RouteContentBoundary><Outlet /></RouteContentBoundary></MaintenanceGate></AccountModerationGate></ShellErrorBoundary><ShellErrorBoundary label="mobile navigation"><GlobalMobileBottomBar /></ShellErrorBoundary><Toaster position="bottom-center" /></AuthProvider></ThemeProvider></QueryClientProvider>;
 }
