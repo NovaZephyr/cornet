@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { AppShell } from "@/components/AppShell";
 import { useEffect, useMemo, useState } from "react";
-import { Download, ExternalLink, Github, Loader2 } from "lucide-react";
+import { Download, ExternalLink, Github, Loader2, Play } from "lucide-react";
+import cyanuroBanner from "@/assets/cyanuro-banner.png.asset.json";
 
 type ReleaseAsset = {
   name: string;
