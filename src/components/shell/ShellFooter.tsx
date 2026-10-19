@@ -69,7 +69,7 @@ export function ShellFooter() {
   return (
     <footer className="cn-shell-footer">
       <div className="cn-cosmephant-footer-brand" aria-hidden="true">
-        <img src={corenetworkMark} alt="" />
+        <img src={corenetworkMark} alt="" width={12} height={12} style={{ width: 12, height: 12, maxWidth: 12, flex: "0 0 12px" }} />
         <span>CORNET</span>
       </div>
       <div className="cn-cosmephant-footer-links">
