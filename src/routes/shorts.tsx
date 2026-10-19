@@ -36,9 +36,13 @@ function ShortCard({ video, active, nearby, onDisabled }: { video: ShortVideo; a
   const likesQuery = useQuery({
     queryKey: ["short-likes", video.id],
     queryFn: async () => {
-      const { data, error } = await supabase.from("video_likes").select("user_id, is_like").eq("video_id", video.id);
-      if (error) throw error;
-      return (data ?? []) as { user_id: string; is_like: boolean }[];
+      const [rowsRes, countsRes] = await Promise.all([
+        supabase.from("video_likes").select("user_id, is_like").eq("video_id", video.id),
+        untypedDb.rpc("video_reaction_counts", { p_video_id: video.id }),
+      ]);
+      if (rowsRes.error) throw rowsRes.error;
+      const counts = (countsRes.data as { likes: number }[] | null)?.[0];
+      return { rows: (rowsRes.data ?? []) as { user_id: string; is_like: boolean }[], likes: Number(counts?.likes ?? 0) };
     },
     staleTime: 30_000,
     enabled: nearby,
@@ -77,8 +81,8 @@ function ShortCard({ video, active, nearby, onDisabled }: { video: ShortVideo; a
     setProgress(0);
   }, [nearby]);
 
-  const liked = likesQuery.data?.some((like) => like.user_id === user?.id && like.is_like) ?? false;
-  const likeCount = likesQuery.data?.filter((like) => like.is_like).length ?? 0;
+  const liked = likesQuery.data?.rows.some((like) => like.user_id === user?.id && like.is_like) ?? false;
+  const likeCount = likesQuery.data?.likes ?? 0;
 
   const toggleLike = async () => {
     if (!user) return void toast.error("Inicia sesión para reaccionar");
