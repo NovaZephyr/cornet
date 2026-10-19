@@ -882,12 +882,6 @@
   color: #fff !important;
   box-shadow: none !important;
 }
-:root[data-theme="cosmephant-2"] .cn-messenger-chat-layout:has(.cn-messenger-empty) {
-  grid-template-columns: minmax(0, 1fr);
-}
-:root[data-theme="cosmephant-2"] .cn-messenger-chat-layout:has(.cn-messenger-empty) > aside {
-  display: none;
-}
 :root[data-theme="cosmephant-2"] .cn-messenger-chat-layout > aside {
   border-color: rgb(255 255 255 / .06) !important;
   background: transparent !important;
@@ -954,9 +948,6 @@
     grid-template-columns: minmax(0, 1fr);
     height: clamp(240px, 52vh, 580px) !important;
     min-height: 240px !important;
-  }
-  :root[data-theme="cosmephant-2"] .cn-messenger-chat-layout:has(.cn-messenger-empty) {
-    grid-template-columns: minmax(0, 1fr);
   }
   :root[data-theme="cosmephant-2"] .cn-messenger-chat-layout:not(:has(.cn-messenger-empty)) {
     grid-template-rows: minmax(120px, 34%) minmax(0, 1fr);
