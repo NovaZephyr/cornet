@@ -1,6 +1,7 @@
 /* Cosmephant 2.0 — palette sampled from the Figma desktop and mobile page designs.
  * Semantic tokens apply the palette across every route and shared UI component. */
-[data-theme="cosmephant-2"] {
+:root[data-theme="cosmephant-2"],
+.cn-shell[data-theme-id="cosmephant-2"] {
   color-scheme: dark;
 
   /* Theme tokens used by legacy and theme-aware components. */
