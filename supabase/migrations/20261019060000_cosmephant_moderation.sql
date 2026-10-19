@@ -42,23 +42,30 @@ RETURNS trigger
 LANGUAGE plpgsql
 SECURITY DEFINER
 SET search_path = public
-AS $$
+AS $
+DECLARE
+  reactivation_rpc boolean := current_setting('app.cornet_reactivation', true) = 'on';
 BEGIN
   IF NOT (public.has_role(auth.uid(), 'admin') OR public.has_role(auth.uid(), 'moderator')) THEN
-    IF NEW.is_verified IS DISTINCT FROM OLD.is_verified
+    IF NOT reactivation_rpc AND (
+       NEW.is_verified IS DISTINCT FROM OLD.is_verified
        OR NEW.is_banned IS DISTINCT FROM OLD.is_banned
        OR NEW.warnings_count IS DISTINCT FROM OLD.warnings_count
        OR NEW.moderation_status IS DISTINCT FROM OLD.moderation_status
        OR NEW.moderation_reason IS DISTINCT FROM OLD.moderation_reason
        OR NEW.moderation_suspended_until IS DISTINCT FROM OLD.moderation_suspended_until
        OR NEW.moderation_updated_at IS DISTINCT FROM OLD.moderation_updated_at
-       OR NEW.moderation_updated_by IS DISTINCT FROM OLD.moderation_updated_by THEN
+       OR NEW.moderation_updated_by IS DISTINCT FROM OLD.moderation_updated_by
+    ) THEN
       RAISE EXCEPTION 'Solo el equipo de moderación puede cambiar el estado de moderación';
     END IF;
   END IF;
+  IF auth.uid() IS NOT NULL AND public.is_banned(auth.uid()) AND NOT reactivation_rpc THEN
+    RAISE EXCEPTION 'Tu cuenta está suspendida';
+  END IF;
   RETURN NEW;
 END;
-$$;
+$;
 
 CREATE OR REPLACE FUNCTION public.moderate_account(
   _user_id uuid,
@@ -121,8 +128,9 @@ RETURNS boolean
 LANGUAGE plpgsql
 SECURITY DEFINER
 SET search_path = public
-AS $$
+AS $
 BEGIN
+  PERFORM set_config('app.cornet_reactivation', 'on', true);
   UPDATE public.profiles
   SET moderation_status = 'active',
       moderation_reason = NULL,
