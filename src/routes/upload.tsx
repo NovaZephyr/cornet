@@ -34,7 +34,6 @@ export const Route = createFileRoute("/upload")({
 
 type CaptionDraft = { id: string; file: File; language: string; label: string; isDefault: boolean };
 type VideoRow = { id: string; code: string; title: string; description: string; video_path: string; thumbnail_path: string | null; duration_seconds: number; views: number; visibility: string; category: string; created_at: string };
-type Tab = "overview" | "videos" | "analytics";
 
 const CATEGORIES = ["Autos & Vehicles", "Comedy", "Entertainment", "Film & Animation", "Gaming", "Howto & Style", "Nonprofits & Activism", "People & Blogs", "Pets & Animals", "Science & Technology", "Sports", "Travel & Events", "Education", "Music"] as const;
 
@@ -118,6 +117,7 @@ function Dashboard({ userId }: { userId: string }) {
       <Link to="/" className="mt-2 flex min-h-10 items-center gap-3 rounded-xl px-3 text-sm text-white/75 hover:bg-[#211a19]"><ArrowLeft className="h-4 w-4" />Regresar a Cornet</Link>
     </aside>
     <main className="min-w-0 flex-1 px-4 py-5 sm:px-6 lg:px-8">
+      <nav className="mb-4 flex gap-1 overflow-x-auto pb-1 md:hidden" aria-label="Navegación de Cornet Studio">{sidebarItems.map(({ key, label, icon: Icon }) => <button key={key} type="button" onClick={() => setSection(key)} title={label} className={"flex shrink-0 items-center gap-2 rounded-full px-3 py-2 text-xs " + (section === key ? "bg-[#2b201e] text-white" : "bg-muted text-muted-foreground")}><Icon className="h-4 w-4 text-[#ff604d]"/><span>{label}</span></button>)}</nav>
       {section === "panel" && <div className="mx-auto max-w-7xl space-y-6">
         <div className="flex flex-wrap items-end justify-between gap-4"><div><p className="text-xs font-semibold uppercase tracking-[.18em] text-primary">Cornet Studio</p><h1 className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl">Panel del canal</h1><p className="mt-1 text-sm text-muted-foreground">Un resumen de lo que ocurre en tu canal.</p></div><Button className="rounded-full" onClick={() => void navigate({ to: "/upload", search: { create: true } })}><Plus className="mr-2 h-4 w-4" />Crear</Button></div>
         <div className="grid gap-4 xl:grid-cols-[1.4fr_1fr]">
