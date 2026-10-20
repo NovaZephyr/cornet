@@ -83,7 +83,7 @@ function AppShellFrame({ children, hideSidebar = false, fullscreen = false, stud
       <ShellErrorBoundary label="header">
         <ShellHeader
           mobileOpen={mobileOpen}
-          cosmephant={theme === "cosmephant-2"}
+          cosmephant={theme === "cosmephant-2" || studioMode}
           onMenuClick={handleMenuClick}
           menuHidden={studioMode}
           logo={<ShellLogo studio={studioMode} />}
@@ -97,7 +97,8 @@ function AppShellFrame({ children, hideSidebar = false, fullscreen = false, stud
               username={username}
               signOut={signOut}
               historical={isYoutubeClassic}
-              cosmephant={theme === "cosmephant-2"}
+              cosmephant={theme === "cosmephant-2" || studioMode}
+              studio={studioMode}
             />
           }
         />
