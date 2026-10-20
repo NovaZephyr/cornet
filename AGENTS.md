@@ -8,3 +8,5 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- Treat external moderation fields as optional and use the existing untyped RPC bridge for pending moderation RPCs; generated Supabase types remain authoritative and must not be falsified to conceal unapplied migrations.

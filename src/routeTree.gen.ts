@@ -335,6 +335,7 @@ export interface FileRoutesByTo {
   '/series': typeof SeriesRoute
   '/settings': typeof SettingsRoute
   '/shorts': typeof ShortsRoute
+  '/studio': typeof StudioRoute
   '/terms': typeof TermsRoute
   '/upload': typeof UploadRoute
   '/watch': typeof WatchRouteWithChildren
@@ -379,6 +380,7 @@ export interface FileRoutesById {
   '/series': typeof SeriesRoute
   '/settings': typeof SettingsRoute
   '/shorts': typeof ShortsRoute
+  '/studio': typeof StudioRoute
   '/terms': typeof TermsRoute
   '/upload': typeof UploadRoute
   '/watch': typeof WatchRouteWithChildren
@@ -467,6 +469,7 @@ export interface FileRouteTypes {
     | '/series'
     | '/settings'
     | '/shorts'
+    | '/studio'
     | '/terms'
     | '/upload'
     | '/watch'
@@ -510,6 +513,7 @@ export interface FileRouteTypes {
     | '/series'
     | '/settings'
     | '/shorts'
+    | '/studio'
     | '/terms'
     | '/upload'
     | '/watch'

@@ -230,6 +230,7 @@ function StudioUploadFlow(props: { userId: string }) {
 }
 
 function ArchiveDetailsEditor({ userId, file, onCancel }: { userId: string; file: File; onCancel: () => void }) {
+  const qc = useQueryClient();
   const [title, setTitle] = useState(file.name);
   const [busy, setBusy] = useState(false);
   const [visibility, setVisibility] = useState("public");

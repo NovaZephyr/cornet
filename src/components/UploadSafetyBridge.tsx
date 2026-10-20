@@ -12,10 +12,11 @@ export function UploadSafetyBridge() {
   const href = useRouterState({ select: (s) => s.location.href });
   const [restricted, setRestricted] = useState(false);
   const [loading, setLoading] = useState(false);
-  const search = useMemo(() => new URL(href, window.location.origin).searchParams, [href]);
+  const location = useMemo(() => new URL(href, "https://cornet.lovable.app"), [href]);
+  const search = location.searchParams;
   const editCode = search.get("edit");
   const createMode = search.get("create") === "1" || search.get("create") === "true";
-  const uploadMode = new URL(href, window.location.origin).(pathname === "/studio" || pathname === "/upload");
+  const uploadMode = location.pathname === "/studio" || location.pathname === "/upload";
 
   useEffect(() => {
     if (!user || !uploadMode) return;
