@@ -43,7 +43,7 @@ function AppShellFrame({ children, hideSidebar = false, fullscreen = false, stud
   const pathname = useRouterState({ select: (state) => state.location.pathname });
   const { sidebarOpen, mobileOpen, handleMenuClick } = useShellState(pathname, theme);
   const { shortsEnabled } = useShellExperiments();
-  const studioMode = studio || pathname === "/upload";
+  const studioMode = studio || pathname === "/studio" || pathname === "/upload";
 
   const { items, active } = useShellNavigation({
     pathname,
@@ -63,7 +63,7 @@ function AppShellFrame({ children, hideSidebar = false, fullscreen = false, stud
       ]
     : isYoutube2009
       ? items
-          .filter(({ to }) => ["/", "/explore", "/series", "/community", "/upload"].includes(to))
+          .filter(({ to }) => ["/", "/explore", "/series", "/community", "/studio"].includes(to))
           .map(({ to, label }) => ({
             to,
             label: to === "/" ? "Home" : to === "/explore" ? "Videos" : to === "/series" ? "Shows" : to === "/community" ? "Community" : "Upload",
