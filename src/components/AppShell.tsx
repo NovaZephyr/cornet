@@ -20,6 +20,7 @@ type AppShellProps = {
   children: ReactNode;
   hideSidebar?: boolean;
   fullscreen?: boolean;
+  studio?: boolean;
 };
 
 const AppShellContext = createContext(false);
@@ -29,19 +30,20 @@ export function AppShell({ children, hideSidebar = false, fullscreen = false }: 
 
   return (
     <AppShellContext.Provider value={true}>
-      <AppShellFrame hideSidebar={hideSidebar} fullscreen={fullscreen}>
+      <AppShellFrame hideSidebar={hideSidebar} fullscreen={fullscreen} studio={studio}>
         {children}
       </AppShellFrame>
     </AppShellContext.Provider>
   );
 }
 
-function AppShellFrame({ children, hideSidebar = false, fullscreen = false }: AppShellProps) {
+function AppShellFrame({ children, hideSidebar = false, fullscreen = false, studio = false }: AppShellProps) {
   const { user, profile, username, isStaff, signOut } = useShellUser();
   const { theme } = useTheme();
   const pathname = useRouterState({ select: (state) => state.location.pathname });
   const { sidebarOpen, mobileOpen, handleMenuClick } = useShellState(pathname, theme);
   const { shortsEnabled } = useShellExperiments();
+  const studioMode = studio || pathname === "/upload";
 
   const { items, active } = useShellNavigation({
     pathname,
@@ -83,7 +85,7 @@ function AppShellFrame({ children, hideSidebar = false, fullscreen = false }: Ap
           mobileOpen={mobileOpen}
           cosmephant={theme === "cosmephant-2"}
           onMenuClick={handleMenuClick}
-          logo={<ShellLogo />}
+          logo={<ShellLogo studio={studioMode} />}
           historicalNavItems={historicalNavItems}
           historicalNavMode={isYoutubeClassic ? "row" : "inline"}
           historicalSearch={isYoutubeClassic}
@@ -103,11 +105,11 @@ function AppShellFrame({ children, hideSidebar = false, fullscreen = false }: Ap
       <div
         className={cn(
           "cn-shell-layout",
-          (hideSidebar || isYoutube2009 || isYoutubeClassic) && "cn-shell-layout--no-sidebar",
+          (hideSidebar || studioMode || isYoutube2009 || isYoutubeClassic) && "cn-shell-layout--no-sidebar",
         )}
-        data-sidebar-hidden={hideSidebar || isYoutube2009 || isYoutubeClassic ? "true" : "false"}
+        data-sidebar-hidden={hideSidebar || studioMode || isYoutube2009 || isYoutubeClassic ? "true" : "false"}
       >
-        {!hideSidebar && !isYoutube2009 && !isYoutubeClassic && (
+        {!hideSidebar && !studioMode && !isYoutube2009 && !isYoutubeClassic && (
           <ShellErrorBoundary label="sidebar">
             <ShellSidebar
               user={user}
