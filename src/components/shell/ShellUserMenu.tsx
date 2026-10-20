@@ -109,7 +109,7 @@ export function ShellUserMenu({ user, profile, username, signOut, historical = f
   if (cosmephant) {
     return (
       <div className="cn-shell-actions cn-shell-actions--cosmephant">
-        <Link to="/upload" search={{ create: true }} className="cn-shell-cosmephant-upload"><span aria-hidden="true">+</span> {studio ? "Crear" : "Subir"}</Link>
+        <Link to="/studio" search={{ create: true }} className="cn-shell-cosmephant-upload"><span aria-hidden="true">+</span> {studio ? "Crear" : "Subir"}</Link>
         <ShellNotificationsMenu userId={userId} />
         {user ? (
           <DropdownMenu>
