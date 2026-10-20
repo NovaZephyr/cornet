@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { ArrowLeft, BarChart3, CheckCircle2, DollarSign, Edit3, Eye, FileVideo, FolderOpen, HelpCircle, Languages, LayoutDashboard, ListVideo, MoreVertical, Music2, Palette, PlaySquare, Plus, Radio, Search, Settings, ShieldCheck, Trash2, UploadCloud, Users, Video, X } from "lucide-react";
+import { ArrowLeft, BarChart3, CheckCircle2, DollarSign, Edit3, Eye, FileVideo, FolderOpen, HelpCircle, Languages, LayoutDashboard, ListVideo, Music2, Palette, PlaySquare, Plus, Radio, Settings, ShieldCheck, Trash2, UploadCloud, Users, Video, X } from "lucide-react";
 import { toast } from "sonner";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -13,7 +13,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/hooks/useAuth";
 import { uploadFile, useSignedUrl } from "@/lib/storage";
