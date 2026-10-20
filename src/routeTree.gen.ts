@@ -37,6 +37,7 @@ import { Route as RulesRouteImport } from './routes/rules'
 import { Route as SeriesRouteImport } from './routes/series'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as ShortsRouteImport } from './routes/shorts'
+import { Route as StudioRouteImport } from './routes/studio'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as UploadRouteImport } from './routes/upload'
 import { Route as WatchRouteImport } from './routes/watch'
@@ -191,6 +192,11 @@ const ShortsRoute = ShortsRouteImport.update({
   path: '/shorts',
   getParentRoute: () => rootRouteImport,
 } as any)
+const StudioRoute = StudioRouteImport.update({
+  id: '/studio',
+  path: '/studio',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
@@ -286,6 +292,7 @@ export interface FileRoutesByFullPath {
   '/series': typeof SeriesRoute
   '/settings': typeof SettingsRoute
   '/shorts': typeof ShortsRoute
+  '/studio': typeof StudioRoute
   '/terms': typeof TermsRoute
   '/upload': typeof UploadRoute
   '/watch': typeof WatchRouteWithChildren
@@ -417,6 +424,7 @@ export interface FileRouteTypes {
     | '/series'
     | '/settings'
     | '/shorts'
+    | '/studio'
     | '/terms'
     | '/upload'
     | '/watch'
@@ -546,6 +554,7 @@ export interface RootRouteChildren {
   SeriesRoute: typeof SeriesRoute
   SettingsRoute: typeof SettingsRoute
   ShortsRoute: typeof ShortsRoute
+  StudioRoute: typeof StudioRoute
   TermsRoute: typeof TermsRoute
   UploadRoute: typeof UploadRoute
   WatchRoute: typeof WatchRouteWithChildren
@@ -753,6 +762,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ShortsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/studio': {
+      id: '/studio'
+      path: '/studio'
+      fullPath: '/studio'
+      preLoaderRoute: typeof StudioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/terms': {
       id: '/terms'
       path: '/terms'
@@ -912,6 +928,7 @@ const rootRouteChildren: RootRouteChildren = {
   SeriesRoute: SeriesRoute,
   SettingsRoute: SettingsRoute,
   ShortsRoute: ShortsRoute,
+  StudioRoute: StudioRoute,
   TermsRoute: TermsRoute,
   UploadRoute: UploadRoute,
   WatchRoute: WatchRouteWithChildren,
