@@ -16,7 +16,7 @@ export function GlobalMobileBottomBar() {
     ...(user
       ? [
           { to: "/messages", label: "Mensajes", icon: MessageCircle },
-          { to: "/upload", label: "Subir", icon: Upload },
+          { to: "/studio", label: "Studio", icon: Upload },
         ]
       : [{ to: "/auth", label: "Tú", icon: UserIcon }]),
   ];
