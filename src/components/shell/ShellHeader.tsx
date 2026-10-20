@@ -70,13 +70,13 @@ export function ShellHeader({
   );
 }
 
-export function ShellLogo() {
+export function ShellLogo({ studio = false }: { studio?: boolean }) {
   return (
-    <Link to="/" className="cn-shell-logo" aria-label="Cornet — inicio">
+    <Link to="/" className={"cn-shell-logo" + (studio ? " cn-shell-logo--studio" : "")} aria-label={studio ? "Cornet Studio" : "Cornet — inicio"}>
       <img src={corenetworkMark} alt="Cornet" width={34} height={34} />
       <span>
-        <strong><span className="cn-shell-logo-word-black">Corn</span><span className="cn-shell-logo-word-red">et</span></strong>
-        <small>video · comunidad · compartir</small>
+        <strong>{studio ? "CORNET STUDIO" : <><span className="cn-shell-logo-word-black">Corn</span><span className="cn-shell-logo-word-red">et</span></>}</strong>
+        {!studio && <small>video · comunidad · compartir</small>}
       </span>
     </Link>
   );
