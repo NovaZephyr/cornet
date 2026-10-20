@@ -26,7 +26,7 @@ export function MobileBottomBar() {
         { to: "/explore", label: "Explorar", icon: Compass },
         { to: "/community", label: "Comunidad", icon: Users },
         { to: "/messages", label: "Mensajes", icon: MessageCircle },
-        { to: "/upload", label: "Subir", icon: Upload },
+        { to: "/studio", label: "Studio", icon: Upload },
       ]
     : [
         { to: "/", label: "Inicio", icon: Home },
