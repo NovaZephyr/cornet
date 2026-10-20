@@ -199,7 +199,7 @@ function Editor({ userId, code, initialFile, onCancel }: { userId: string; code?
       </div>
       <div className="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-white/[.08] pt-4"><Button type="button" variant="ghost" onClick={()=>onCancel?onCancel():void navigate({to:"/studio"})}>Descartar</Button><div className="ml-auto flex items-center gap-2"><Button type="submit" disabled={busy}>{busy?"Subiendo…":isEdit?"Guardar":"Subir"}</Button><Select value={visibility} onValueChange={setVisibility}><SelectTrigger className="w-32 rounded-xl bg-white/[.06]"><SelectValue/></SelectTrigger><SelectContent><SelectItem value="public">Público</SelectItem><SelectItem value="private">Privado</SelectItem></SelectContent></Select></div></div>
     </form>
-  </div>
+  </div></AppShell>;
 }
 
 
