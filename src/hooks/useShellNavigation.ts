@@ -25,7 +25,7 @@ export function useShellNavigation({ pathname, authenticated, staff, shortsEnabl
     { to: "/playlists", label: "Playlists", icon: ListVideo },
     ...(authenticated ? [
       { to: "/messages", label: "Mensajes", icon: MessageCircle },
-      { to: "/upload", label: "Cornet Studio", icon: Upload },
+      { to: "/studio", label: "Cornet Studio", icon: Upload },
     ] : []),
     { to: "/partner", label: "Partners", icon: Sparkles },
     { to: "/settings", label: "Configuración", icon: Settings },
