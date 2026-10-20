@@ -12,6 +12,7 @@ type ShellHeaderProps = {
   mobileOpen: boolean;
   cosmephant: boolean;
   onMenuClick: () => void;
+  menuHidden?: boolean;
   logo: ReactNode;
   actions: ReactNode;
   historicalNavItems?: HistoricalNavItem[];
