@@ -85,6 +85,7 @@ function AppShellFrame({ children, hideSidebar = false, fullscreen = false, stud
           mobileOpen={mobileOpen}
           cosmephant={theme === "cosmephant-2"}
           onMenuClick={handleMenuClick}
+          menuHidden={studioMode}
           logo={<ShellLogo studio={studioMode} />}
           historicalNavItems={historicalNavItems}
           historicalNavMode={isYoutubeClassic ? "row" : "inline"}
@@ -148,7 +149,7 @@ function AppShellFrame({ children, hideSidebar = false, fullscreen = false, stud
         </ShellErrorBoundary>
       )}
 
-      {!fullscreen && (
+      {!fullscreen && !studioMode && (
         <ShellErrorBoundary label="mobile navigation">
           <ShellMobileNav
             user={user}
