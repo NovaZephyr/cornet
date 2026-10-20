@@ -87,9 +87,10 @@ type ShellUserMenuProps = {
   signOut: () => Promise<unknown> | unknown;
   historical?: boolean;
   cosmephant?: boolean;
+  studio?: boolean;
 };
 
-export function ShellUserMenu({ user, profile, username, signOut, historical = false, cosmephant = false }: ShellUserMenuProps) {
+export function ShellUserMenu({ user, profile, username, signOut, historical = false, cosmephant = false, studio = false }: ShellUserMenuProps) {
   if (historical) {
     return (
       <div className="cn-shell-actions cn-shell-actions--classic-links" aria-label="Enlaces de cuenta">
@@ -108,7 +109,7 @@ export function ShellUserMenu({ user, profile, username, signOut, historical = f
   if (cosmephant) {
     return (
       <div className="cn-shell-actions cn-shell-actions--cosmephant">
-        <Link to="/upload" className="cn-shell-cosmephant-upload"><span aria-hidden="true">+</span> Subir</Link>
+        <Link to="/upload" search={{ create: true }} className="cn-shell-cosmephant-upload"><span aria-hidden="true">+</span> {studio ? "Crear" : "Subir"}</Link>
         <ShellNotificationsMenu userId={userId} />
         {user ? (
           <DropdownMenu>
