@@ -1,11 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { BarChart3, CheckCircle2, Edit3, Eye, FileVideo, ListVideo, MoreVertical, PlaySquare, Plus, Search, Trash2, UploadCloud, Video, X } from "lucide-react";
+import { ArrowLeft, BarChart3, CheckCircle2, DollarSign, Edit3, Eye, FileVideo, FolderOpen, HelpCircle, Languages, LayoutDashboard, ListVideo, MoreVertical, Music2, Palette, PlaySquare, Plus, Radio, Search, Settings, ShieldCheck, Trash2, UploadCloud, Users, Video, X } from "lucide-react";
 import { toast } from "sonner";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { untypedDb } from "@/lib/untyped-db";
 import { AppShell } from "@/components/AppShell";
+import { CommunityFeed } from "@/components/CommunityFeed";
+import { CommunityStorage } from "@/components/CommunityStorage";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -48,7 +50,8 @@ function StatCard({ label, value, hint, icon: Icon }: { label: string; value: st
 function Dashboard({ userId }: { userId: string }) {
   const qc = useQueryClient();
   const navigate = useNavigate();
-  const [tab, setTab] = useState<Tab>("overview");
+  const [section, setSection] = useState("panel");
+  const [contentTab, setContentTab] = useState("videos");
   const [search, setSearch] = useState("");
 
   const { data: videos, isLoading } = useQuery({
@@ -61,52 +64,86 @@ function Dashboard({ userId }: { userId: string }) {
   });
   const { data: profile } = useQuery({ queryKey: ["studio-profile", userId], queryFn: async () => { const { data, error } = await supabase.from("profiles").select("subscriber_count,display_name,username").eq("id", userId).maybeSingle(); if (error) throw error; return data; } });
   const { data: likes } = useQuery({ queryKey: ["studio-likes", userId], queryFn: async () => { const { data, error } = await untypedDb.rpc("video_like_totals", { p_video_ids: (videos ?? []).map((v) => v.id) }); if (error) return []; return (data ?? []) as { video_id: string; likes: number }[]; }, enabled: !!videos?.length });
-
   const totalViews = (videos ?? []).reduce((sum, video) => sum + Number(video.views ?? 0), 0);
   const publicVideos = (videos ?? []).filter((video) => video.visibility === "public").length;
   const averageViews = videos?.length ? Math.round(totalViews / videos.length) : 0;
   const topVideo = [...(videos ?? [])].sort((a, b) => b.views - a.views)[0];
   const likeTotal = (likes ?? []).reduce((sum, row) => sum + Number(row.likes ?? 0), 0);
   const filteredVideos = useMemo(() => (videos ?? []).filter((video) => !search.trim() || video.title.toLowerCase().includes(search.trim().toLowerCase())), [videos, search]);
-
   const removeVideo = async (video: VideoRow) => {
-    if (!window.confirm(`¿Eliminar “${video.title}”? Esta acción no se puede deshacer.`)) return;
+    if (!window.confirm("¿Eliminar “" + video.title + "”? Esta acción no se puede deshacer.")) return;
     const { error } = await supabase.from("videos").delete().eq("id", video.id).eq("user_id", userId);
     if (error) return void toast.error(error.message);
     void qc.invalidateQueries({ queryKey: ["my-videos", userId] });
     toast.success("Video eliminado");
   };
 
-  return <div className="mx-auto w-full max-w-7xl space-y-6 pb-16">
-    <section className="overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-primary/10 via-surface to-background p-6 shadow-sm sm:p-8">
-      <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
-        <div><p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">Creator Studio</p><h1 className="mt-2 text-3xl font-bold tracking-tight">Bienvenido a Cornet Studio</h1><p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">Gestiona tus vídeos, revisa el crecimiento del canal y publica contenido desde un solo lugar.</p></div>
-        <Button size="lg" className="rounded-full" onClick={() => void navigate({ to: "/upload", search: { create: true } })}><Plus className="mr-2 h-4 w-4" />Subir video</Button>
+  const sidebarItems = [
+    { key: "panel", label: "Panel", icon: LayoutDashboard },
+    { key: "content", label: "Contenido", icon: PlaySquare },
+    { key: "analytics", label: "Analíticas", icon: BarChart3 },
+    { key: "community", label: "Comunidad", icon: Users },
+    { key: "languages", label: "Idiomas", icon: Languages },
+    { key: "monetization", label: "Monetización", icon: DollarSign },
+    { key: "personalization", label: "Personalización", icon: Palette },
+    { key: "copyright", label: "Derechos de autor", icon: ShieldCheck },
+    { key: "audio", label: "Biblioteca de audio", icon: Music2 },
+    { key: "settings", label: "Configuración", icon: Settings },
+    { key: "help", label: "Ayuda y comentarios", icon: HelpCircle },
+  ];
+  const contentItems = [
+    { key: "videos", label: "Videos", icon: Video },
+    { key: "shorts", label: "Cuadrados", icon: PlaySquare },
+    { key: "live", label: "En vivo", icon: Radio },
+    { key: "posts", label: "Posts", icon: Users },
+    { key: "playlists", label: "Playlists", icon: ListVideo },
+    { key: "series", label: "Series", icon: FileVideo },
+    { key: "files", label: "Archivos", icon: FolderOpen },
+    { key: "podcasts", label: "Podcasts", icon: Music2 },
+  ];
+  const navButton = (item: typeof sidebarItems[number]) => {
+    const Icon = item.icon;
+    return <button key={item.key} type="button" onClick={() => setSection(item.key)} className={"flex min-h-10 w-full items-center gap-3 rounded-xl px-3 text-left text-sm transition " + (section === item.key ? "bg-[#2b201e] text-white" : "text-white/75 hover:bg-[#211a19] hover:text-white")}><Icon className="h-4 w-4 text-[#ff604d]" /><span>{item.label}</span></button>;
+  };
+
+  return <div className="flex min-h-[calc(100vh-60px)] w-full">
+    <aside className="hidden w-64 shrink-0 border-r border-[#38201b] bg-[#0c0b0b] p-3 md:block">
+      <div className="mb-4 flex items-center gap-2 border-b border-[#38201b] px-1 pb-4">
+        <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#f04438] text-white"><PlaySquare className="h-4 w-4" /></span>
+        <span className="flex-1 text-xs font-bold tracking-wide">CORNET STUDIO</span>
+        <button type="button" onClick={() => void navigate({ to: "/" })} className="rounded p-1 text-white/60 hover:text-white" aria-label="Regresar a Cornet"><X className="h-4 w-4" /></button>
       </div>
-    </section>
+      <p className="mb-2 px-1 text-[9px] font-semibold uppercase tracking-widest text-white/45">Navegación</p>
+      <nav className="grid gap-1.5">{sidebarItems.map(navButton)}</nav>
+      <Link to="/" className="mt-2 flex min-h-10 items-center gap-3 rounded-xl px-3 text-sm text-white/75 hover:bg-[#211a19]"><ArrowLeft className="h-4 w-4" />Regresar a Cornet</Link>
+    </aside>
+    <main className="min-w-0 flex-1 px-4 py-5 sm:px-6 lg:px-8">
+      {section === "panel" && <div className="mx-auto max-w-7xl space-y-6">
+        <div className="flex flex-wrap items-end justify-between gap-4"><div><p className="text-xs font-semibold uppercase tracking-[.18em] text-primary">Cornet Studio</p><h1 className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl">Panel del canal</h1><p className="mt-1 text-sm text-muted-foreground">Un resumen de lo que ocurre en tu canal.</p></div><Button className="rounded-full" onClick={() => void navigate({ to: "/upload", search: { create: true } })}><Plus className="mr-2 h-4 w-4" />Crear</Button></div>
+        <div className="grid gap-4 xl:grid-cols-[1.4fr_1fr]">
+          <section className="rounded-2xl border border-border bg-surface p-5"><h2 className="mb-4 font-semibold">Rendimiento del video más reciente</h2>{topVideo ? <div className="grid gap-4 sm:grid-cols-[minmax(180px,.8fr)_1.2fr]"><div><Thumbnail path={topVideo.thumbnail_path} alt={topVideo.title}/><p className="mt-2 truncate text-sm font-medium">{topVideo.title}</p><p className="text-xs text-muted-foreground">{formatViews(topVideo.views)} vistas · {timeAgo(topVideo.created_at)}</p></div><div className="grid grid-cols-2 gap-3"><StatCard label="Vistas totales" value={totalViews.toLocaleString("es-ES")} hint="en tus videos" icon={Eye}/><StatCard label="Me gusta" value={likeTotal.toLocaleString("es-ES")} hint="en tu contenido" icon={CheckCircle2}/><StatCard label="Suscriptores" value={Number(profile?.subscriber_count ?? 0).toLocaleString("es-ES")} hint="audiencia actual" icon={Users}/><StatCard label="Videos públicos" value={String(publicVideos)} hint={"de " + (videos ?? []).length + " videos"} icon={Video}/></div></div> : <div className="rounded-xl border border-dashed border-border p-10 text-center"><Video className="mx-auto mb-3 h-8 w-8 text-muted-foreground"/><p className="font-medium">Aún no tienes videos</p><Button className="mt-4" onClick={() => void navigate({ to: "/upload", search: { create: true } })}>Subir tu primer video</Button></div>}</section>
+          <section className="rounded-2xl border border-border bg-surface p-5"><h2 className="font-semibold">Estadísticas del canal</h2><p className="mt-1 text-xs text-muted-foreground">Resumen de tu actividad en Cornet.</p><div className="mt-5 space-y-4"><div className="flex justify-between text-sm"><span className="text-muted-foreground">Suscriptores actuales</span><strong>{Number(profile?.subscriber_count ?? 0).toLocaleString("es-ES")}</strong></div><div className="flex justify-between text-sm"><span className="text-muted-foreground">Videos publicados</span><strong>{videos?.length ?? 0}</strong></div><div className="flex justify-between text-sm"><span className="text-muted-foreground">Promedio de vistas</span><strong>{averageViews.toLocaleString("es-ES")}</strong></div><div className="flex justify-between text-sm"><span className="text-muted-foreground">Me gusta recibidos</span><strong>{likeTotal.toLocaleString("es-ES")}</strong></div><Button variant="secondary" className="w-full" onClick={() => setSection("analytics")}>Ver analíticas</Button></div></section>
+        </div>
+      </div>}
 
-    <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-      <StatCard label="Suscriptores" value={Number(profile?.subscriber_count ?? 0).toLocaleString("es-ES")} hint="audiencia actual" icon={PlaySquare} />
-      <StatCard label="Vistas totales" value={totalViews.toLocaleString("es-ES")} hint="en tus vídeos" icon={BarChart3} />
-      <StatCard label="Vídeos públicos" value={String(publicVideos)} hint={`de ${(videos ?? []).length} publicados`} icon={Video} />
-      <StatCard label="Media por vídeo" value={averageViews.toLocaleString("es-ES")} hint={`mejor: ${topVideo ? formatViews(topVideo.views) : "0"}`} icon={CheckCircle2} />
-    </div>
+      {section === "content" && <div className="mx-auto max-w-7xl space-y-5">
+        <div className="flex flex-wrap items-center justify-between gap-3"><div><h1 className="text-2xl font-bold">Contenido del canal</h1><p className="mt-1 text-sm text-muted-foreground">Administra lo que publicas en Cornet.</p></div><Button onClick={() => void navigate({ to: "/upload", search: { create: true } })}><Plus className="mr-2 h-4 w-4"/>Crear</Button></div>
+        <div className="flex flex-wrap gap-2 rounded-2xl bg-muted/60 p-2">{contentItems.map(({key,label,icon:Icon})=><button key={key} type="button" onClick={()=>setContentTab(key)} className={"inline-flex items-center gap-2 rounded-full px-3 py-2 text-xs font-medium transition " + (contentTab===key?"bg-background text-foreground shadow-sm":"text-muted-foreground hover:text-foreground")}><Icon className="h-3.5 w-3.5"/>{label}</button>)}</div>
+        {contentTab === "videos" && <section className="rounded-2xl border border-border bg-surface p-5"><div className="mb-4 flex flex-wrap items-center justify-between gap-3"><div><h2 className="font-semibold">Tus videos</h2><p className="text-xs text-muted-foreground">Edita, revisa o elimina publicaciones.</p></div><Input value={search} onChange={(e)=>setSearch(e.target.value)} placeholder="Buscar video…" className="max-w-xs"/></div>{isLoading?<p className="py-10 text-center text-sm text-muted-foreground">Cargando…</p>:filteredVideos.length?<div className="space-y-3">{filteredVideos.map(video=><div key={video.id} className="flex flex-wrap items-center gap-3 rounded-xl border border-border/70 p-3"><div className="w-32 shrink-0"><Thumbnail path={video.thumbnail_path} alt={video.title}/></div><div className="min-w-0 flex-1"><p className="truncate font-semibold">{video.title}</p><p className="mt-1 text-xs text-muted-foreground">{formatViews(video.views)} vistas · {timeAgo(video.created_at)} · {video.visibility==="public"?"Público":"Privado"}</p></div><Button variant="ghost" size="icon" asChild><Link to="/watch" search={{v:video.code}} aria-label="Ver video"><Eye className="h-4 w-4"/></Link></Button><Button variant="ghost" size="icon" onClick={()=>void navigate({to:"/upload",search:{edit:video.code}})} aria-label="Editar video"><Edit3 className="h-4 w-4"/></Button><Button variant="ghost" size="icon" onClick={()=>void removeVideo(video)} aria-label="Eliminar video"><Trash2 className="h-4 w-4"/></Button></div>)}</div>:<p className="py-10 text-center text-sm text-muted-foreground">No hay videos que coincidan.</p>}</section>}
+        {contentTab === "posts" && <section className="rounded-2xl border border-border bg-surface p-4 sm:p-6"><h2 className="mb-4 font-semibold">Publicaciones de comunidad</h2><CommunityFeed channelId={userId}/></section>}
+        {contentTab === "files" && <CommunityStorage/>}
+        {contentTab === "live" && <section className="rounded-2xl border border-border bg-surface p-6"><Radio className="mb-3 h-8 w-8 text-primary"/><h2 className="text-xl font-semibold">Transmite en vivo</h2><p className="mt-2 max-w-xl text-sm text-muted-foreground">Prepara tu emisión, administra tu clave de OBS y consulta tus transmisiones desde el estudio en vivo de Cornet.</p><Button className="mt-5" asChild><Link to="/live">Abrir estudio de transmisión</Link></Button></section>}
+        {contentTab === "shorts" && <section className="rounded-2xl border border-border bg-surface p-6"><h2 className="font-semibold">Cuadrados</h2><p className="mt-2 text-sm text-muted-foreground">Explora y administra tus videos cortos.</p><Button asChild className="mt-4" variant="secondary"><Link to="/shorts">Abrir Cuadrados</Link></Button></section>}
+        {contentTab === "playlists" && <section className="rounded-2xl border border-border bg-surface p-6"><h2 className="font-semibold">Playlists</h2><p className="mt-2 text-sm text-muted-foreground">Organiza videos del canal en listas.</p><Button asChild className="mt-4" variant="secondary"><Link to="/playlists">Abrir playlists</Link></Button></section>}
+        {contentTab === "series" && <section className="rounded-2xl border border-border bg-surface p-6"><h2 className="font-semibold">Series</h2><p className="mt-2 text-sm text-muted-foreground">Administra tus series publicadas.</p><Button asChild className="mt-4" variant="secondary"><Link to="/series">Abrir series</Link></Button></section>}
+        {contentTab === "podcasts" && <section className="rounded-2xl border border-border bg-surface p-6"><h2 className="font-semibold">Podcasts</h2><p className="mt-2 text-sm text-muted-foreground">La publicación de podcasts estará disponible próximamente.</p></section>}
+      </div>}
 
-    <div className="flex flex-wrap gap-2 rounded-2xl border border-border bg-surface p-2 shadow-sm">
-      {([ ["overview","Resumen"],["videos","Contenido"],["analytics","Analíticas"] ] as const).map(([value, label]) => <Button key={value} variant={tab === value ? "default" : "ghost"} className="rounded-xl" onClick={() => setTab(value)}>{label}</Button>)}
-      <Link to="/playlists" className="inline-flex items-center rounded-xl px-3 py-2 text-sm text-muted-foreground hover:bg-muted">Playlists</Link>
-      <Link to="/series" className="inline-flex items-center rounded-xl px-3 py-2 text-sm text-muted-foreground hover:bg-muted"><ListVideo className="mr-2 h-4 w-4" />Series</Link>
-      <Link to="/history" className="inline-flex items-center rounded-xl px-3 py-2 text-sm text-muted-foreground hover:bg-muted">Historial</Link>
-    </div>
+      {section === "analytics" && <div className="mx-auto max-w-7xl space-y-5"><div><h1 className="text-2xl font-bold">Analíticas del canal</h1><p className="mt-1 text-sm text-muted-foreground">Consulta el rendimiento general de tu contenido.</p></div><div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4"><StatCard label="Suscriptores" value={Number(profile?.subscriber_count ?? 0).toLocaleString("es-ES")} hint="audiencia actual" icon={Users}/><StatCard label="Vistas totales" value={totalViews.toLocaleString("es-ES")} hint="en tus videos" icon={Eye}/><StatCard label="Videos públicos" value={String(publicVideos)} hint="visibles para todos" icon={Video}/><StatCard label="Me gusta" value={likeTotal.toLocaleString("es-ES")} hint="en todos tus videos" icon={CheckCircle2}/></div><section className="rounded-2xl border border-border bg-surface p-5"><h2 className="font-semibold">Videos destacados</h2><div className="mt-4 space-y-3">{[...(videos??[])].sort((a,b)=>b.views-a.views).slice(0,5).map((video,index)=><div key={video.id} className="flex items-center gap-3"><span className="w-6 text-sm text-muted-foreground">{index+1}</span><div className="w-28"><Thumbnail path={video.thumbnail_path} alt={video.title}/></div><p className="min-w-0 flex-1 truncate text-sm font-medium">{video.title}</p><strong className="text-sm">{formatViews(video.views)}</strong></div>)}</div></section></div>}
 
-    {tab === "overview" && <div className="grid gap-5 lg:grid-cols-[1.25fr_.75fr]">
-      <section className="rounded-2xl border border-border bg-surface p-5"><div className="flex items-center justify-between gap-3"><div><h2 className="font-semibold">Contenido reciente</h2><p className="text-xs text-muted-foreground">Tus últimos vídeos publicados.</p></div><Button variant="ghost" size="sm" onClick={() => setTab("videos")}>Ver todo</Button></div><div className="mt-4 space-y-3">{isLoading ? <div className="py-8 text-center text-sm text-muted-foreground">Cargando…</div> : videos?.slice(0,5).map((video) => <div key={video.id} className="flex items-center gap-3 rounded-xl border border-border/70 bg-background/50 p-3"><div className="w-28 shrink-0"><Thumbnail path={video.thumbnail_path} alt={video.title} /></div><div className="min-w-0 flex-1"><p className="truncate text-sm font-semibold">{video.title}</p><p className="mt-1 text-xs text-muted-foreground">{formatViews(video.views)} vistas · {timeAgo(video.created_at)}</p></div><Badge variant="secondary">{video.visibility === "public" ? "Público" : "Privado"}</Badge></div>)}{!isLoading && !videos?.length && <div className="rounded-xl border border-dashed border-border p-10 text-center text-sm text-muted-foreground">Aún no tienes vídeos.</div>}</div></section>
-      <section className="rounded-2xl border border-border bg-surface p-5"><h2 className="font-semibold">Rendimiento rápido</h2><div className="mt-5 space-y-4"><div><div className="flex items-center justify-between text-xs"><span className="text-muted-foreground">Vídeo destacado</span><strong>{topVideo ? formatViews(topVideo.views) : "0"}</strong></div><div className="mt-2 h-2 rounded-full bg-muted"><div className="h-full rounded-full bg-primary" style={{ width: topVideo && totalViews ? `${Math.max(4, Math.round(topVideo.views / totalViews * 100))}%` : "0%" }} /></div></div><div className="rounded-xl bg-background/60 p-4"><p className="text-xs text-muted-foreground">Me gusta</p><p className="mt-1 text-2xl font-bold">{likeTotal.toLocaleString("es-ES")}</p></div><div className="rounded-xl bg-primary/5 p-4"><p className="text-xs text-muted-foreground">Consejo</p><p className="mt-1 text-sm">Mantén títulos claros, miniaturas consistentes y capítulos en vídeos largos.</p></div></div></section>
-    </div>}
-
-    {tab === "videos" && <section className="rounded-2xl border border-border bg-surface p-5"><div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"><div><h2 className="font-semibold">Contenido</h2><p className="text-xs text-muted-foreground">Edita, publica, revisa o elimina tus vídeos.</p></div><div className="relative w-full sm:w-72"><Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" /><Input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Buscar vídeo…" className="pl-9" /></div></div><div className="mt-4 overflow-x-auto"><table className="w-full min-w-[820px] text-sm"><thead><tr className="border-b border-border text-left text-xs text-muted-foreground"><th className="px-2 py-3 font-medium">Vídeo</th><th className="px-2 py-3 font-medium">Visibilidad</th><th className="px-2 py-3 font-medium">Vistas</th><th className="px-2 py-3 font-medium">Publicado</th><th className="px-2 py-3 text-right font-medium">Acciones</th></tr></thead><tbody>{filteredVideos.map((video) => <tr key={video.id} className="border-b border-border/60 last:border-0"><td className="px-2 py-3"><div className="flex min-w-0 items-center gap-3"><div className="w-28 shrink-0"><Thumbnail path={video.thumbnail_path} alt={video.title} /></div><div className="min-w-0"><p className="max-w-[340px] truncate font-semibold">{video.title}</p><p className="mt-1 text-xs text-muted-foreground">{formatTimestamp(video.duration_seconds)} · {video.category}</p></div></div></td><td className="px-2 py-3"><Badge variant="secondary">{video.visibility === "public" ? "Público" : "Privado"}</Badge></td><td className="px-2 py-3">{formatViews(video.views)}</td><td className="px-2 py-3 text-muted-foreground">{timeAgo(video.created_at)}</td><td className="px-2 py-3"><div className="flex justify-end gap-1"><Button variant="ghost" size="icon" asChild><Link to="/watch" search={{ v: video.code }} aria-label="Ver vídeo"><Eye className="h-4 w-4" /></Link></Button><Button variant="ghost" size="icon" onClick={() => void navigate({ to: "/upload", search: { edit: video.code } })} aria-label="Editar vídeo"><Edit3 className="h-4 w-4" /></Button><DropdownMenu><DropdownMenuTrigger asChild><Button variant="ghost" size="icon"><MoreVertical className="h-4 w-4" /></Button></DropdownMenuTrigger><DropdownMenuContent align="end"><DropdownMenuItem className="text-destructive" onClick={() => void removeVideo(video)}><Trash2 className="mr-2 h-4 w-4" />Eliminar</DropdownMenuItem></DropdownMenuContent></DropdownMenu></div></td></tr>)}</tbody></table>{!filteredVideos.length && <p className="py-10 text-center text-sm text-muted-foreground">No encontramos vídeos con esa búsqueda.</p>}</div></section>}
-
-    {tab === "analytics" && <section className="grid gap-5 md:grid-cols-2"><div className="rounded-2xl border border-border bg-surface p-5"><h2 className="font-semibold">Panorama del canal</h2><div className="mt-5 space-y-4"><div className="flex items-center justify-between"><span className="text-sm text-muted-foreground">Vídeos</span><strong>{videos?.length ?? 0}</strong></div><div className="flex items-center justify-between"><span className="text-sm text-muted-foreground">Públicos</span><strong>{publicVideos}</strong></div><div className="flex items-center justify-between"><span className="text-sm text-muted-foreground">Vistas</span><strong>{totalViews.toLocaleString("es-ES")}</strong></div><div className="flex items-center justify-between"><span className="text-sm text-muted-foreground">Me gusta</span><strong>{likeTotal.toLocaleString("es-ES")}</strong></div></div></div><div className="rounded-2xl border border-border bg-surface p-5"><h2 className="font-semibold">Qué mejorar</h2><ul className="mt-4 space-y-3 text-sm text-muted-foreground"><li className="rounded-xl bg-background/60 p-3">Añade una miniatura clara y reconocible.</li><li className="rounded-xl bg-background/60 p-3">Usa capítulos para mejorar la navegación.</li><li className="rounded-xl bg-background/60 p-3">Mantén una categoría precisa para que tus vídeos sean más fáciles de descubrir.</li></ul></div></section>}
+      {section === "community" && <div className="mx-auto max-w-5xl space-y-4"><div><h1 className="text-2xl font-bold">Comunidad</h1><p className="mt-1 text-sm text-muted-foreground">Publica actualizaciones para quienes siguen tu canal.</p></div><div className="rounded-2xl border border-border bg-surface p-4 sm:p-6"><CommunityFeed channelId={userId}/></div></div>}
+      {!["panel","content","analytics","community"].includes(section) && <div className="mx-auto max-w-4xl rounded-2xl border border-border bg-surface p-6 sm:p-10"><p className="text-xs font-semibold uppercase tracking-widest text-primary">Cornet Studio</p><h1 className="mt-2 text-2xl font-bold">{sidebarItems.find(item=>item.key===section)?.label}</h1><p className="mt-3 max-w-2xl text-sm leading-6 text-muted-foreground">Esta sección forma parte de la navegación de Studio. Las herramientas de este apartado todavía no están disponibles.</p><Button className="mt-5" variant="secondary" onClick={()=>setSection("panel")}>Volver al panel</Button></div>}
+    </main>
   </div>;
 }
 
@@ -151,5 +188,5 @@ function UploadPage() {
   const { user } = useAuth();
   const { edit, create } = Route.useSearch();
   if (!user) return <AppShell><div className="py-24 text-center text-muted-foreground">Inicia sesión para usar Cornet Studio.</div></AppShell>;
-  return edit || create ? <Editor userId={user.id} code={edit}/> : <AppShell><Dashboard userId={user.id}/></AppShell>;
+  return edit || create ? <AppShell studio><Editor userId={user.id} code={edit}/></AppShell> : <AppShell studio><Dashboard userId={user.id}/></AppShell>;
 }
