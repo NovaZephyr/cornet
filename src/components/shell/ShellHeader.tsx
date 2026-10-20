@@ -24,6 +24,7 @@ export function ShellHeader({
   mobileOpen,
   cosmephant,
   onMenuClick,
+  menuHidden = false,
   logo,
   actions,
   historicalNavItems = [],
@@ -36,14 +37,14 @@ export function ShellHeader({
     <header className={hasHistoricalRow ? "cn-shell-header cn-shell-header--historical" : "cn-shell-header"}>
       <div className="cn-shell-header-main">
         <div className="cn-shell-header-left">
-          <button
+          {!menuHidden && <button
             type="button"
             className="cn-shell-icon-button"
             aria-label={mobileOpen ? "Cerrar navegación" : "Mostrar navegación"}
             onClick={onMenuClick}
           >
             {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </button>
+          </button>}
 
           {logo}
 
