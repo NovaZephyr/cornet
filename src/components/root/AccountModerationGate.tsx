@@ -1,7 +1,7 @@
 import { useState, type ReactNode } from "react";
 import { Ban, Clock3, ShieldAlert, ShieldCheck } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
-import { supabase } from "@/integrations/supabase/client";
+import { untypedDb } from "@/lib/untyped-db";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
@@ -25,7 +25,7 @@ export function AccountModerationGate({ children }: { children: ReactNode }) {
   const reactivate = async () => {
     setBusy(true);
     try {
-      const { data, error } = await supabase.rpc("reactivate_my_account");
+      const { data, error } = await untypedDb.rpc("reactivate_my_account");
       if (error) throw error;
       if (!data) {
         toast.error("Tu cuenta todavía no se puede reactivar.");

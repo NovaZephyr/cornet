@@ -4,6 +4,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { AlertTriangle, BarChart3, FileText, Flag, LayoutDashboard, Megaphone, Search, ShieldCheck, Trash2, UserX, Users, Video, XCircle } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { untypedDb } from "@/lib/untyped-db";
 import { AppShell } from "@/components/AppShell";
 import { AdminAdsPanel } from "@/components/AdminAdsPanel";
 import { ChannelAvatar, VerifiedBadge } from "@/components/Media";
@@ -28,7 +29,7 @@ type AdminReport = { id: string; target_type: "video" | "channel"; reason: strin
 function isStaff(roles: AppRole[]) { return roles.includes("admin") || roles.includes("moderator"); }
 
 function useAdminData(enabled: boolean) {
-  const users = useQuery({ queryKey: ["admin-dashboard-users"], enabled, queryFn: async () => { const { data, error } = await supabase.from("profiles").select("id,username,display_name,avatar_path,is_verified,is_banned,moderation_status,moderation_reason,moderation_suspended_until,warnings_count,created_at").order("created_at", { ascending: false }).limit(100); if (error) throw error; const rows = (data ?? []) as AdminUser[]; if (!rows.length) return rows; const { data: roles, error: roleError } = await supabase.from("user_roles").select("user_id,role").in("user_id", rows.map((r) => r.id)); if (roleError) throw roleError; const byUser = new Map<string, AppRole[]>(); for (const row of roles ?? []) { const bucket = byUser.get(row.user_id) ?? []; bucket.push(row.role as AppRole); byUser.set(row.user_id, bucket); } return rows.map((row) => ({ ...row, roles: byUser.get(row.id) ?? ["user"] })); } });
+  const users = useQuery({ queryKey: ["admin-dashboard-users"], enabled, queryFn: async () => { const { data, error } = await supabase.from("profiles").select("*").order("created_at", { ascending: false }).limit(100); if (error) throw error; const rows = (data ?? []) as AdminUser[]; if (!rows.length) return rows; const { data: roles, error: roleError } = await supabase.from("user_roles").select("user_id,role").in("user_id", rows.map((r) => r.id)); if (roleError) throw roleError; const byUser = new Map<string, AppRole[]>(); for (const row of roles ?? []) { const bucket = byUser.get(row.user_id) ?? []; bucket.push(row.role as AppRole); byUser.set(row.user_id, bucket); } return rows.map((row) => ({ ...row, moderation_status: row.is_banned ? "banned" : row.moderation_status ?? "active", roles: byUser.get(row.id) ?? ["user"] })); } });
   const videos = useQuery({ queryKey: ["admin-dashboard-videos"], enabled, queryFn: async () => { const { data, error } = await supabase.from("videos").select("id,title,user_id,views,created_at,age_restricted").order("created_at", { ascending: false }).limit(100); if (error) throw error; return (data ?? []) as AdminVideo[]; } });
   const reports = useQuery({ queryKey: ["admin-dashboard-reports"], enabled, queryFn: async () => { const { data, error } = await supabase.from("content_reports").select("id,target_type,reason,status,created_at").order("created_at", { ascending: false }).limit(50); if (error) throw error; return (data ?? []) as AdminReport[]; } });
   return { users, videos, reports };
@@ -77,7 +78,7 @@ function AdminDashboard() {
       if (!Number.isInteger(durationHours) || durationHours < 1 || durationHours > 8760) return toast.error("Indica una duración entre 1 y 8760 horas");
     }
     try {
-      const { error } = await supabase.rpc("moderate_account", {
+      const { error } = await untypedDb.rpc("moderate_account", {
         _user_id: item.id,
         _status: status,
         _reason: reason,
