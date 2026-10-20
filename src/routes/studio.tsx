@@ -203,7 +203,8 @@ function Editor({ userId, code, initialFile, onCancel }: { userId: string; code?
 }
 
 
-function StudioUploadFlow({ userId }: { userId: string }) {
+function StudioUploadFlow(props: { userId: string }) {
+  const userId = props.userId;
   const navigate = useNavigate();
   const [file, setFile] = useState<File | null>(null);
   const [dragging, setDragging] = useState(false);
