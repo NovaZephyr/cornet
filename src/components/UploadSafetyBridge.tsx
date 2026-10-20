@@ -15,7 +15,7 @@ export function UploadSafetyBridge() {
   const search = useMemo(() => new URL(href, window.location.origin).searchParams, [href]);
   const editCode = search.get("edit");
   const createMode = search.get("create") === "1" || search.get("create") === "true";
-  const uploadMode = new URL(href, window.location.origin).pathname === "/upload";
+  const uploadMode = new URL(href, window.location.origin).(pathname === "/studio" || pathname === "/upload");
 
   useEffect(() => {
     if (!user || !uploadMode) return;
