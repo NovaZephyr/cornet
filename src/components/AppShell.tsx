@@ -25,7 +25,7 @@ type AppShellProps = {
 
 const AppShellContext = createContext(false);
 
-export function AppShell({ children, hideSidebar = false, fullscreen = false }: AppShellProps) {
+export function AppShell({ children, hideSidebar = false, fullscreen = false, studio = false }: AppShellProps) {
   if (useContext(AppShellContext)) return <>{children}</>;
 
   return (
