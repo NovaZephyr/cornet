@@ -976,3 +976,214 @@
     padding-inline: clamp(16px, 3.3vw, 32px);
   }
 }
+
+
+/* ==== Cosmephant 2.0 page integrations (Figma: Explore, Series, Playlists, Historial, Partners, 404, Ban) ==== */
+
+/* Explore page composition from the Figma frame. */
+.cn-shell[data-theme-id="cosmephant-2"] .cn-explore-page { padding: 14px 0 36px; }
+.cn-shell[data-theme-id="cosmephant-2"] .cn-explore-sidebar {
+  border: 1px solid #321e19;
+  border-radius: 14px;
+  background: #100d0d;
+  box-shadow: none;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-explore-sidebar-brand { border-bottom-color: #261713; }
+.cn-shell[data-theme-id="cosmephant-2"] .cn-explore-sidebar-rule { background: #261713; }
+.cn-shell[data-theme-id="cosmephant-2"] .cn-explore-kicker,
+.cn-shell[data-theme-id="cosmephant-2"] .cn-explore-sidebar-title { color: #8f8481; }
+.cn-shell[data-theme-id="cosmephant-2"] .cn-explore-nav a {
+  border-radius: 12px;
+  background: #1b1413;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-explore-nav a:hover,
+.cn-shell[data-theme-id="cosmephant-2"] .cn-explore-nav a.is-active {
+  background: linear-gradient(105deg, #321c1b, #3a2415);
+  color: #fff;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-explore-heading h1 {
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -.01em;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-explore-heading-eyebrow { color: #b8b2b2; }
+.cn-shell[data-theme-id="cosmephant-2"] .cn-explore-heading p { color: #b8b2b2; }
+.cn-shell[data-theme-id="cosmephant-2"] .cn-explore-tabs a,
+.cn-shell[data-theme-id="cosmephant-2"] .cn-explore-tabs button {
+  min-height: 32px;
+  padding: 7px 15px;
+  border: 0;
+  border-radius: 999px;
+  background: #171515;
+  color: #fff;
+  font-size: 13px;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-explore-tabs a:hover,
+.cn-shell[data-theme-id="cosmephant-2"] .cn-explore-tabs button:hover { background: #211d1d; }
+.cn-shell[data-theme-id="cosmephant-2"] .cn-explore-tabs a.is-active,
+.cn-shell[data-theme-id="cosmephant-2"] .cn-explore-tabs button.is-active {
+  background: linear-gradient(105deg, #321c1b, #3a2415);
+  color: #fff;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-explore-section-title h2 { font-size: 16px; font-weight: 600; }
+.cn-shell[data-theme-id="cosmephant-2"] .cn-explore-section-head a { color: #b8b2b2; }
+.cn-shell[data-theme-id="cosmephant-2"] .cn-explore-section-head a:hover { color: #fff; }
+.cn-shell[data-theme-id="cosmephant-2"] .cn-explore-grid { gap: 24px 16px; }
+.cn-shell[data-theme-id="cosmephant-2"] .cn-explore-empty {
+  border: 1px dashed #3a2720;
+  border-radius: 12px;
+  background: #171515;
+  color: #b8b2b2;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-recommended-grid { gap: 12px; }
+.cn-shell[data-theme-id="cosmephant-2"] .cn-recommended-channel {
+  border: 1px solid #2b1c18;
+  border-radius: 14px;
+  background: #171515;
+  box-shadow: none;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-recommended-channel:hover {
+  border-color: #4a3026;
+  background: linear-gradient(105deg, #201616, #241812);
+  box-shadow: none;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-recommended-verified { background: #70a7ff; }
+.cn-shell[data-theme-id="cosmephant-2"] .cn-recommended-follow {
+  border: 1px solid #4a3026;
+  border-radius: 999px;
+  background: linear-gradient(105deg, #321d16, #412819);
+  color: #fff;
+  font-size: 11px;
+}
+
+/* Series cards inside the Explore frame. */
+.cn-shell[data-theme-id="cosmephant-2"] .cn-series-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-series-card {
+  display: flex;
+  gap: 14px;
+  padding: 16px;
+  border: 1px solid #2b1c18;
+  border-radius: 14px;
+  background: #171515;
+  color: #fff;
+  text-decoration: none;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-series-card:hover {
+  border-color: #4a3026;
+  background: linear-gradient(105deg, #1d1414, #221610);
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-series-card-icon {
+  display: grid;
+  flex: 0 0 auto;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  border-radius: 12px;
+  background: linear-gradient(105deg, #321d16, #412819);
+  color: #f1e9e6;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-series-card h2 { margin: 0; font-size: 15px; font-weight: 600; }
+.cn-shell[data-theme-id="cosmephant-2"] .cn-series-card p { margin: 3px 0 0; color: #b8b2b2; font-size: 12px; }
+.cn-shell[data-theme-id="cosmephant-2"] .cn-series-card span { color: #e5e0de; font-size: 12px; }
+.cn-shell[data-theme-id="cosmephant-2"] .cn-series-note {
+  display: flex;
+  gap: 12px;
+  margin-top: 18px;
+  padding: 14px 16px;
+  border: 1px dashed #3a2720;
+  border-radius: 14px;
+  background: #171515;
+  color: #b8b2b2;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-series-note strong { color: #fff; }
+
+/* Shared hero/section surfaces for the remaining pages. */
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-hero {
+  border: 1px solid #3a2720 !important;
+  border-radius: 18px !important;
+  background: linear-gradient(120deg, #241212 0%, #38230f 100%) !important;
+  box-shadow: none !important;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-section {
+  border: 1px solid #2b1c18 !important;
+  border-radius: 16px !important;
+  background: linear-gradient(145deg, #1b1313, #161010) !important;
+  box-shadow: none !important;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-card {
+  border: 1px solid #2b1c18 !important;
+  border-radius: 14px !important;
+  background: #171515 !important;
+  box-shadow: none !important;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-card:hover {
+  border-color: #4a3026 !important;
+  box-shadow: none !important;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-row {
+  border: 1px solid #2b1c18 !important;
+  border-radius: 14px !important;
+  background: #171515 !important;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-row:hover { border-color: #3a2720 !important; }
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-form {
+  border: 1px solid #2b1c18 !important;
+  border-radius: 16px !important;
+  background: linear-gradient(145deg, #1b1313, #161010) !important;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-benefit {
+  border: 1px solid #2b1c18 !important;
+  border-radius: 14px !important;
+  background: #171515 !important;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-empty-state {
+  border: 1px dashed #3a2720 !important;
+  border-radius: 14px !important;
+  background: #171515 !important;
+  color: #b8b2b2 !important;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-partner .text-partner { color: #f4c95d; }
+
+/* Partner hero uses the warm ribbon treatment from the Figma frame. */
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-partner .cn-cosmephant-hero {
+  background: linear-gradient(115deg, #2a1010 0%, #3a2415 60%, #2a1b0d 100%) !important;
+}
+
+/* Status screens (404, error, ban/suspension) outside the app shell. */
+html[data-theme="cosmephant-2"] .cn-cosmephant-status {
+  background: #0c0b0b;
+  color: #fff;
+  font-family: "Lexend", ui-sans-serif, system-ui, sans-serif;
+}
+html[data-theme="cosmephant-2"] .cn-cosmephant-status-card {
+  border: 1px solid #3a2720 !important;
+  border-radius: 18px !important;
+  background: linear-gradient(145deg, #1b1313, #151010) !important;
+  box-shadow: 0 18px 44px rgb(0 0 0 / .4) !important;
+  color: #fff;
+}
+html[data-theme="cosmephant-2"] .cn-cosmephant-status-digit {
+  background: linear-gradient(105deg, #f04438, #f4c95d);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+html[data-theme="cosmephant-2"] .cn-cosmephant-status-icon {
+  border-radius: 14px !important;
+  background: rgb(240 68 56 / .14) !important;
+  color: #f04438 !important;
+}
+html[data-theme="cosmephant-2"] .cn-cosmephant-status-box {
+  border: 1px solid #2b1c18 !important;
+  border-radius: 12px !important;
+  background: #0c0b0b !important;
+}
+
+@media (max-width: 700px) {
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-series-grid { grid-template-columns: 1fr; }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-explore-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 12px; }
+}

@@ -61,9 +61,9 @@ function PlaylistsPage() {
 
   return (
     <AppShell>
-      <div className="mx-auto max-w-5xl space-y-6 pb-16">
+      <div className="cn-cosmephant-playlists mx-auto max-w-5xl space-y-6 pb-16">
         <div><h1 className="text-2xl font-bold">Listas de reproducción</h1><p className="text-sm text-muted-foreground">Crea listas públicas o privadas, añade vídeos y cambia su orden.</p></div>
-        <form onSubmit={create} className="grid gap-3 rounded-2xl bg-surface p-5 md:grid-cols-[1fr_150px_150px_auto]">
+        <form onSubmit={create} className="cn-cosmephant-form grid gap-3 rounded-2xl bg-surface p-5 md:grid-cols-[1fr_150px_150px_auto]">
           <div className="space-y-2">
             <Input placeholder="Nombre" value={title} onChange={(e) => setTitle(e.target.value)} required />
             <Textarea placeholder="Descripción opcional" value={description} onChange={(e) => setDescription(e.target.value)} rows={2} />
@@ -82,7 +82,7 @@ function PlaylistsPage() {
 
         <div className="space-y-3">
           {playlists.data?.map((playlist) => (
-            <div key={playlist.id} className="rounded-xl border border-border bg-card p-4">
+            <div key={playlist.id} className="cn-cosmephant-row rounded-xl border border-border bg-card p-4">
               <div className="grid gap-4 lg:grid-cols-[1fr_auto]">
                 <div>
                   <Link to="/playlist/$playlistId" params={{ playlistId: playlist.id }} className="flex items-center gap-1.5 text-lg font-semibold hover:underline">
@@ -111,7 +111,7 @@ function PlaylistsPage() {
               </div>
             </div>
           ))}
-          {playlists.data?.length === 0 && <p className="rounded-xl border border-dashed border-border py-14 text-center text-sm text-muted-foreground">Todavía no tienes listas.</p>}
+          {playlists.data?.length === 0 && <p className="cn-cosmephant-empty-state rounded-xl border border-dashed border-border py-14 text-center text-sm text-muted-foreground">Todavía no tienes listas.</p>}
         </div>
       </div>
     </AppShell>
