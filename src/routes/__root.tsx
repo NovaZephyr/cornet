@@ -3,6 +3,7 @@ import { Outlet, Link, createRootRouteWithContext, useRouter, HeadContent, Scrip
 import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import "../global-mobile-bar.css";
+import "@/cornet-reference-pages.css";
 import { DesignLibraryRuntime } from "../design-library/DesignLibraryRuntime";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { AuthProvider } from "@/hooks/useAuth";

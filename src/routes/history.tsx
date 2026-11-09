@@ -1,3 +1,4 @@
+import "@/cornet-reference-pages.css";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Clock3, History as HistoryIcon, Trash2 } from "lucide-react";

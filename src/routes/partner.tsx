@@ -1,3 +1,4 @@
+import "@/cornet-reference-pages.css";
 import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
