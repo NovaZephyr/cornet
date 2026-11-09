@@ -97,6 +97,10 @@ function PartnerPage() {
   return (
     <AppShell>
       <div className="cn-cosmephant-partner mx-auto max-w-3xl">
+        <header className="cn-cosmephant-partner-heading">
+          <h1>Partners</h1>
+          <p>Colaboraciones y oportunidades en Cornet.</p>
+        </header>
         <div className="cn-cosmephant-hero rounded-2xl bg-surface p-8 text-center">
           <Badge className="bg-partner text-background">Programa Partner</Badge>
           <h1 className="mt-4 text-3xl font-bold">Convierte tu canal en tu trabajo</h1>
@@ -112,6 +116,11 @@ function PartnerPage() {
               Aquí tienes las preguntas más importantes sobre los requisitos para postularte.
             </p>
           </div>
+          <div className="cn-cosmephant-partner-metrics" aria-label="Requisitos mínimos">
+            <div><strong>700</strong><span>Vistas mínimas</span></div>
+            <div><strong>100</strong><span>Suscriptores</span></div>
+            <div><strong>90</strong><span>Días sin advertencias</span></div>
+          </div>
           <div className="space-y-3">
             {REQUIREMENTS.map((item) => (
               <details key={item.question} className="rounded-xl border border-border bg-background p-4">
@@ -122,7 +131,8 @@ function PartnerPage() {
           </div>
         </section>
 
-        <div className="mt-6 grid gap-4 sm:grid-cols-2">
+        <div className="cn-cosmephant-partner-benefits mt-6 grid gap-4 sm:grid-cols-2">
+          <h2 className="cn-cosmephant-benefits-title">Beneficios</h2>
           {BENEFITS.map((b) => (
             <div key={b.title} className="cn-cosmephant-benefit rounded-xl bg-surface p-5">
               <b.icon className="h-6 w-6 text-partner" />
