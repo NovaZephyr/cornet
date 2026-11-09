@@ -1,0 +1,3 @@
+- [ ] Extract the Figma reference details and finish Cosmephant 2.0 styling for all referenced pages and responsive layouts.
+- [ ] Add a dedicated Support page with support@cornet.anonaddy.com and accessible navigation.
+- [ ] Verify changed pages and build/typecheck, then review this roadmap before completion.
