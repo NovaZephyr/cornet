@@ -61,13 +61,19 @@ export function AccountModerationGate({ children }: { children: ReactNode }) {
           <Icon className="h-6 w-6" />
         </div>
         <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">Estado de la cuenta</p>
-        <h1 className="mt-2 text-2xl font-bold tracking-tight">{title}</h1>
-        <p className="mt-3 text-sm leading-6 text-muted-foreground">{description}</p>
+        <h1 className="mt-2 text-2xl font-bold tracking-tight">{status === "banned" ? "¡ACABÓ TU DIVERSIÓN!" : title}</h1>
+        <p className="mt-3 text-sm leading-6 text-muted-foreground">
+          {status === "banned"
+            ? "Cornet detectó actividad inusual que violaba los términos y las normas de la comunidad."
+            : description}
+        </p>
 
         {profile.moderation_reason && (
           <div className="cn-cosmephant-status-box mt-5 rounded-xl border border-border bg-background p-4">
-            <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Motivo</p>
+            <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Razón</p>
             <p className="mt-2 whitespace-pre-wrap text-sm leading-6">{profile.moderation_reason}</p>
+            <p className="mt-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Afectado</p>
+            <p className="mt-1 text-sm">{status === "banned" ? "Suspensión permanente" : status === "suspended" ? "Suspensión temporal" : "Advertencia de cuenta"}</p>
           </div>
         )}
 
@@ -77,6 +83,10 @@ export function AccountModerationGate({ children }: { children: ReactNode }) {
             Termina el {new Intl.DateTimeFormat("es-CO", { dateStyle: "long", timeStyle: "short" }).format(suspendedUntil)}
           </p>
         )}
+
+        <p className="mt-5 text-sm leading-6 text-muted-foreground">
+          ¿Quieres apelar? Únete al servidor de Discord para contactar al equipo de moderación.
+        </p>
 
         {canReactivate && (
           <Button className="mt-6 w-full" onClick={() => void reactivate()} disabled={busy}>

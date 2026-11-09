@@ -86,7 +86,7 @@ function AppShellFrame({ children, hideSidebar = false, fullscreen = false, stud
           mobileOpen={mobileOpen}
           cosmephant={theme === "cosmephant-2" || studioMode}
           onMenuClick={handleMenuClick}
-          menuHidden={studioMode}
+          menuHidden={false}
           logo={<ShellLogo studio={studioMode} />}
           historicalNavItems={historicalNavItems}
           historicalNavMode={isYoutubeClassic ? "row" : "inline"}

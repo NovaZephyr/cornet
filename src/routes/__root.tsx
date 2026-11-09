@@ -18,7 +18,24 @@ import { RouteContentBoundary } from "@/components/root/RouteContentBoundary";
 const DEFAULT_SITE_EMBED_IMAGE = "https://mvwpxnszcpyayofqgtmv.supabase.co/storage/v1/object/public/media/61fe7d8d-f53f-4838-a870-4588c16e474b/announcement-7871ca44-f13f-45e5-a3c1-7908f0c348a9.png";
 
 function NotFoundComponent() {
-  return <div className="cn-cosmephant-status flex min-h-screen items-center justify-center bg-background px-4"><div className="cn-cosmephant-status-card max-w-md text-center"><h1 className="cn-cosmephant-status-digit text-7xl font-bold text-foreground">404</h1><h2 className="mt-4 text-xl font-semibold text-foreground">Esta página no existe</h2><p className="mt-2 text-sm text-muted-foreground">Puede que el enlace haya cambiado o ya no esté disponible.</p><div className="mt-6"><Link to="/" className="inline-flex items-center justify-center rounded-full bg-primary px-4 py-2 text-sm font-medium text-primary-foreground">Volver a Cornet</Link></div></div></div>;
+  return (
+    <main className="cn-cosmephant-status cn-cosmephant-not-found grid min-h-screen place-items-center px-4 py-10">
+      <section className="cn-cosmephant-status-card cn-cosmephant-not-found-layout w-full max-w-5xl">
+        <div className="cn-cosmephant-not-found-mark" aria-hidden="true">
+          <img src="/favicon.png" alt="" />
+        </div>
+        <div className="cn-cosmephant-not-found-copy">
+          <h1>404 — ¿Qué haces aquí?</h1>
+          <p>
+            Los Cornits están perdidos y nadie sabe qué hay en esta página. Por ahora, puedes volver a Cornet.
+          </p>
+          <Link to="/" className="cn-cosmephant-not-found-link">
+            Volver a Cornet
+          </Link>
+        </div>
+      </section>
+    </main>
+  );
 }
 
 function ErrorComponent({ error, reset }: ErrorComponentProps) {

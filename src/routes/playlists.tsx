@@ -58,13 +58,15 @@ function PlaylistsPage() {
     void qc.invalidateQueries({ queryKey: ["my-playlists", user.id] });
   };
 
-  if (!user) return <AppShell><p className="py-24 text-center text-muted-foreground">Inicia sesión para administrar tus listas.</p></AppShell>;
+  if (!user) return <AppShell><div className="cn-cosmephant-playlists mx-auto max-w-5xl space-y-5"><header><h1>Playlists</h1><p>Guarda y organiza videos para volver a verlos.</p></header><section className="cn-cosmephant-playlist-empty"><h2>Playlists</h2><p>Guarda y organiza videos para volver a verlos.</p></section></div></AppShell>;
 
   return (
     <AppShell>
       <div className="cn-cosmephant-playlists mx-auto max-w-5xl space-y-6 pb-16">
-        <div><h1 className="text-2xl font-bold">Listas de reproducción</h1><p className="text-sm text-muted-foreground">Crea listas públicas o privadas, añade vídeos y cambia su orden.</p></div>
-        <form onSubmit={create} className="cn-cosmephant-form grid gap-3 rounded-2xl bg-surface p-5 md:grid-cols-[1fr_150px_150px_auto]">
+        <div><h1 className="text-2xl font-bold">Playlists</h1><p className="text-sm text-muted-foreground">Guarda y organiza videos para volver a verlos.</p></div>
+        <details className="cn-cosmephant-playlists-manage">
+          <summary>Crear playlist</summary>
+          <form onSubmit={create} className="cn-cosmephant-form grid gap-3 rounded-2xl bg-surface p-5 md:grid-cols-[1fr_150px_150px_auto]">
           <div className="space-y-2">
             <Input placeholder="Nombre" value={title} onChange={(e) => setTitle(e.target.value)} required />
             <Textarea placeholder="Descripción opcional" value={description} onChange={(e) => setDescription(e.target.value)} rows={2} />
@@ -79,7 +81,8 @@ function PlaylistsPage() {
             <div />
           )}
           <Button type="submit"><Plus className="mr-2 h-4 w-4" />Crear</Button>
-        </form>
+          </form>
+        </details>
 
         <div className="space-y-3">
           {playlists.data?.map((playlist) => (
@@ -99,7 +102,9 @@ function PlaylistsPage() {
                 </div>
                 <div className="flex items-start gap-2"><Link to="/playlist/$playlistId" params={{ playlistId: playlist.id }}><Button variant="secondary">Abrir</Button></Link><Button variant="ghost" size="icon" onClick={() => void remove(playlist.id)} aria-label="Eliminar"><Trash2 className="h-4 w-4" /></Button></div>
               </div>
-              <div className="mt-4 grid gap-2 md:grid-cols-[1fr_1fr_140px_140px]">
+              <details className="cn-cosmephant-playlist-edit mt-4">
+                <summary>Editar playlist</summary>
+                <div className="mt-3 grid gap-2 md:grid-cols-[1fr_1fr_140px_140px]">
                 <Input defaultValue={playlist.title} aria-label="Nombre" onBlur={(e) => { const value = e.target.value.trim(); if (value && value !== playlist.title) void updatePlaylist(playlist, { title: value }); }} />
                 <Input defaultValue={playlist.description} aria-label="Descripción" onBlur={(e) => { const value = e.target.value; if (value !== playlist.description) void updatePlaylist(playlist, { description: value }); }} />
                 <select defaultValue={playlist.visibility} onChange={(e) => void updatePlaylist(playlist, { visibility: e.target.value as "public" | "private" })} className="h-10 rounded-md border border-border bg-background px-3"><option value="private">Privada</option><option value="public">Pública</option></select>
@@ -109,10 +114,11 @@ function PlaylistsPage() {
                     <option value="series">Serie</option>
                   </select>
                 )}
-              </div>
+                </div>
+              </details>
             </div>
           ))}
-          {playlists.data?.length === 0 && <p className="cn-cosmephant-empty-state rounded-xl border border-dashed border-border py-14 text-center text-sm text-muted-foreground">Todavía no tienes listas.</p>}
+          {playlists.data?.length === 0 && <section className="cn-cosmephant-playlist-empty"><h2>Playlists</h2><p>Guarda y organiza videos para volver a verlos.</p></section>}
         </div>
       </div>
     </AppShell>

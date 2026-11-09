@@ -254,3 +254,428 @@
 @media (max-width: 767px) {
   .cn-shell--studio .cn-shell-main { padding-inline: 0; }
 }
+
+
+/* Align Community and account states with the desktop/mobile Figma frames. */
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-community-layout {
+  display: grid;
+  grid-template-columns: 190px minmax(0, 1fr);
+  align-items: start;
+  gap: 28px;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-community-hero {
+  display: none;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-community-layout .cn-community-tabs {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+  max-width: none;
+  gap: 7px;
+  padding: 0;
+  border: 0;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-community-layout .cn-community-tabs [role="tab"] {
+  min-height: 40px;
+  justify-content: flex-start;
+  padding: 0 14px;
+  border-radius: 999px;
+  background: #171515;
+  color: #b8b2b2;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-community-layout .cn-community-tabs [role="tab"][data-state="active"] {
+  background: linear-gradient(105deg, #321c1b, #3a2415);
+  color: #fff;
+  box-shadow: none;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-community-layout [role="tabpanel"] {
+  min-width: 0;
+  margin: 0;
+}
+.cn-cosmephant-not-found .cn-cosmephant-status-card {
+  padding: clamp(28px, 6vw, 64px);
+}
+.cn-cosmephant-not-found-mark {
+  display: grid;
+  width: clamp(64px, 9vw, 104px);
+  aspect-ratio: 1;
+  place-items: center;
+  border: 1px solid #55302a;
+  border-radius: 26px;
+  background: linear-gradient(145deg, #f04438, #a92720);
+  color: #fff;
+  font-family: "Lexend Extended", "Lexend", ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(36px, 5vw, 56px);
+  font-weight: 700;
+  box-shadow: 0 18px 42px rgb(240 68 56 / .18);
+}
+@media (max-width: 760px) {
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-community-layout {
+    display: block;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-community-hero {
+    display: block;
+    padding: 0 0 18px;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-community-hero > div > div:first-child > div:first-child,
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-community-hero > div > div:last-child {
+    display: none;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-community-hero h1 {
+    font-size: 22px;
+    font-weight: 600;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-community-hero p {
+    margin-top: 6px;
+    font-size: 13px;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-community-layout .cn-community-tabs {
+    flex-direction: row;
+    width: 100%;
+    gap: 7px;
+    overflow-x: auto;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #39211e;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-community-layout .cn-community-tabs [role="tab"] {
+    flex: 0 0 auto;
+    justify-content: center;
+    min-height: 34px;
+    padding: 0 14px;
+  }
+}
+
+
+/* Partner responsive order and card proportions from the mobile reference. */
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-partner-heading {
+  display: none;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-partner-benefits {
+  grid-template-columns: 1fr;
+  align-content: start;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-benefits-title {
+  grid-column: 1 / -1;
+  margin: 0 0 2px;
+  font-size: 20px;
+  font-weight: 500;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-partner-metrics {
+  display: none;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-series-card {
+  min-height: 0;
+  padding: 0;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-series-thumb {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: #211b1a;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-series-thumb-fallback {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  place-items: center;
+  color: #b8b2b2;
+  background: linear-gradient(135deg, #251a18, #141111);
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-series-thumb-overlay {
+  position: absolute;
+  inset: auto 0 0;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 8px;
+  padding: 28px 14px 12px;
+  background: linear-gradient(transparent, rgb(0 0 0 / .82));
+  color: #fff;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-series-thumb-overlay > span {
+  justify-self: end;
+  font-size: 11px;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-series-thumb-overlay h2 {
+  grid-column: 1 / -1;
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-playlist-empty,
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-history-empty {
+  min-height: 180px;
+  padding: 30px;
+  border: 1px solid #39211e;
+  border-radius: 24px;
+  background: #1b1313;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-playlist-empty h2,
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-history-empty h2 {
+  margin: 0;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 500;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-playlist-empty p,
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-history-empty p {
+  margin-top: 12px;
+  color: #b8b2b2;
+  line-height: 1.6;
+}
+@media (max-width: 760px) {
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-partner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "heading"
+      "hero"
+      "benefits"
+      "requirements"
+      "application";
+    gap: 18px;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-partner-heading {
+    display: block;
+    grid-area: heading;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-partner-heading h1 {
+    margin: 0;
+    font-size: 32px;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-partner-heading p {
+    margin-top: 4px;
+    color: #b8b2b2;
+    font-size: 15px;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-partner > .cn-cosmephant-hero {
+    grid-area: hero;
+    padding: 24px;
+    border: 1px solid #55302a;
+    border-radius: 22px;
+    background: linear-gradient(115deg, #2a1010, #3a2415 65%, #211310);
+    text-align: left;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-partner > .cn-cosmephant-section:first-of-type {
+    grid-area: requirements;
+    padding: 0;
+    border: 0;
+    background: transparent;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-partner-benefits {
+    grid-area: benefits;
+    margin: 0;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-partner-benefits .cn-cosmephant-benefit {
+    min-height: 76px;
+    padding: 14px 16px;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-partner-benefits .cn-cosmephant-benefit h2 {
+    margin: 0;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-partner-metrics {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    margin: 18px 0 14px;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-partner-metrics > div {
+    display: flex;
+    min-width: 0;
+    min-height: 76px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    border: 1px solid #432722;
+    border-radius: 14px;
+    background: #1b1313;
+    text-align: center;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-partner-metrics strong {
+    color: #f07822;
+    font-size: 26px;
+    font-weight: 500;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-partner-metrics span {
+    color: #b8b2b2;
+    font-size: 10px;
+    line-height: 1.25;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-partner > .cn-cosmephant-section:last-child {
+    grid-area: application;
+  }
+}
+
+
+.cn-shell[data-theme-id="cosmephant-2"] .cn-community-intro {
+  display: none;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-community-layout .cn-community-tabs [role="tab"]:disabled {
+  cursor: not-allowed;
+  opacity: .75;
+}
+@media (max-width: 760px) {
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-community-intro {
+    display: block;
+    margin: 16px 0 18px;
+    padding: 22px 20px;
+    border: 1px solid #432722;
+    border-radius: 22px;
+    background: #1b1313;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-community-intro h2 {
+    margin: 0;
+    color: #fff;
+    font-size: 22px;
+    font-weight: 500;
+    line-height: 1.3;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-community-intro p {
+    margin-top: 12px;
+    color: #b8b2b2;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+}
+
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-series .cn-cosmephant-series-card {
+  min-height: 0;
+  padding: 0;
+}
+
+
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-playlists-manage,
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-playlist-edit {
+  border: 1px solid #39211e;
+  border-radius: 16px;
+  background: #171212;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-playlists-manage > summary,
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-playlist-edit > summary {
+  cursor: pointer;
+  padding: 14px 18px;
+  color: #e8dedd;
+  font-size: 13px;
+  font-weight: 600;
+  list-style-position: inside;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-playlists-manage[open] > summary,
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-playlist-edit[open] > summary {
+  border-bottom: 1px solid #39211e;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-playlists-manage > form {
+  margin: 14px;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-playlist-edit > div {
+  padding: 0 14px 14px;
+}
+
+
+.cn-cosmephant-not-found-layout {
+  display: grid;
+  grid-template-columns: minmax(140px, 220px) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(28px, 5vw, 64px);
+  text-align: left;
+}
+.cn-cosmephant-not-found-mark {
+  width: 100%;
+  aspect-ratio: 1;
+  padding: 12px;
+}
+.cn-cosmephant-not-found-mark img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.cn-cosmephant-not-found-copy h1 {
+  margin: 0;
+  color: #fff;
+  font-family: "Lexend Extended", "Lexend", ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(24px, 3vw, 38px);
+  font-weight: 500;
+  letter-spacing: -.04em;
+}
+.cn-cosmephant-not-found-copy p {
+  margin-top: 12px;
+  max-width: 760px;
+  color: #c1b4b1;
+  line-height: 1.6;
+}
+.cn-cosmephant-not-found-link {
+  display: inline-flex;
+  margin-top: 38px;
+  color: #fff;
+  font-family: "Lexend Extended", "Lexend", ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(24px, 4vw, 42px);
+  letter-spacing: -.05em;
+  text-decoration: none;
+}
+.cn-cosmephant-not-found-link:hover { color: #f04438; }
+@media (max-width: 700px) {
+  .cn-cosmephant-not-found-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+    text-align: center;
+  }
+  .cn-cosmephant-not-found-mark {
+    width: 96px;
+    margin-inline: auto;
+  }
+  .cn-cosmephant-not-found-link { margin-top: 24px; }
+}
+
+
+/* Studio navigation opens as the reference drawer instead of occupying the dashboard. */
+.cn-shell--studio .cn-studio-sidebar,
+.cn-shell--studio .cn-studio-mobile-nav {
+  display: none !important;
+}
+.cn-shell--studio .cn-studio-navigation-drawer {
+  display: none;
+  position: fixed;
+  z-index: 100;
+  top: 60px;
+  bottom: 0;
+  left: 0;
+  width: min(320px, 88vw);
+  overflow-y: auto;
+  padding: 18px 14px 28px;
+  border-right: 1px solid #38201b;
+  background: #0c0b0b;
+  box-shadow: 24px 0 64px rgb(0 0 0 / .42);
+}
+.cn-shell--studio.cn-shell-mobile-open .cn-studio-navigation-drawer,
+.cn-shell--studio.cn-shell-sidebar-open .cn-studio-navigation-drawer {
+  display: block;
+}
+.cn-shell--studio .cn-studio-navigation-drawer button {
+  min-height: 42px;
+}
+
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-community-layout {
+  display: block;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-community-tabs-root {
+  display: grid;
+  grid-template-columns: 190px minmax(0, 1fr);
+  align-items: start;
+  gap: 28px;
+}
+@media (max-width: 760px) {
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-community-tabs-root {
+    display: block;
+  }
+}
+
+@media (min-width: 761px) {
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-community-tabs-root > .cn-community-tabs {
+    min-height: 306px;
+    padding: 10px;
+    border-radius: 18px;
+    background: #171515;
+  }
+}
