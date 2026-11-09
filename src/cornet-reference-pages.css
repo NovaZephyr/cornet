@@ -345,3 +345,165 @@
     padding: 0 14px;
   }
 }
+
+
+/* Partner responsive order and card proportions from the mobile reference. */
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-partner-heading {
+  display: none;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-partner-benefits {
+  grid-template-columns: 1fr;
+  align-content: start;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-benefits-title {
+  grid-column: 1 / -1;
+  margin: 0 0 2px;
+  font-size: 20px;
+  font-weight: 500;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-partner-metrics {
+  display: none;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-series-card {
+  min-height: 0;
+  padding: 0;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-series-thumb {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: #211b1a;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-series-thumb-fallback {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  place-items: center;
+  color: #b8b2b2;
+  background: linear-gradient(135deg, #251a18, #141111);
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-series-thumb-overlay {
+  position: absolute;
+  inset: auto 0 0;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 8px;
+  padding: 28px 14px 12px;
+  background: linear-gradient(transparent, rgb(0 0 0 / .82));
+  color: #fff;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-series-thumb-overlay > span {
+  justify-self: end;
+  font-size: 11px;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-series-thumb-overlay h2 {
+  grid-column: 1 / -1;
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-playlist-empty,
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-history-empty {
+  min-height: 180px;
+  padding: 30px;
+  border: 1px solid #39211e;
+  border-radius: 24px;
+  background: #1b1313;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-playlist-empty h2,
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-history-empty h2 {
+  margin: 0;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 500;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-playlist-empty p,
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-history-empty p {
+  margin-top: 12px;
+  color: #b8b2b2;
+  line-height: 1.6;
+}
+@media (max-width: 760px) {
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-partner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "heading"
+      "hero"
+      "benefits"
+      "requirements"
+      "application";
+    gap: 18px;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-partner-heading {
+    display: block;
+    grid-area: heading;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-partner-heading h1 {
+    margin: 0;
+    font-size: 32px;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-partner-heading p {
+    margin-top: 4px;
+    color: #b8b2b2;
+    font-size: 15px;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-partner > .cn-cosmephant-hero {
+    grid-area: hero;
+    padding: 24px;
+    border: 1px solid #55302a;
+    border-radius: 22px;
+    background: linear-gradient(115deg, #2a1010, #3a2415 65%, #211310);
+    text-align: left;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-partner > .cn-cosmephant-section:first-of-type {
+    grid-area: requirements;
+    padding: 0;
+    border: 0;
+    background: transparent;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-partner-benefits {
+    grid-area: benefits;
+    margin: 0;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-partner-benefits .cn-cosmephant-benefit {
+    min-height: 76px;
+    padding: 14px 16px;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-partner-benefits .cn-cosmephant-benefit h2 {
+    margin: 0;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-partner-metrics {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    margin: 18px 0 14px;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-partner-metrics > div {
+    display: flex;
+    min-width: 0;
+    min-height: 76px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    border: 1px solid #432722;
+    border-radius: 14px;
+    background: #1b1313;
+    text-align: center;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-partner-metrics strong {
+    color: #f07822;
+    font-size: 26px;
+    font-weight: 500;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-partner-metrics span {
+    color: #b8b2b2;
+    font-size: 10px;
+    line-height: 1.25;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-partner > .cn-cosmephant-section:last-child {
+    grid-area: application;
+  }
+}
