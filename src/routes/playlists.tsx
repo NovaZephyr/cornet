@@ -58,12 +58,12 @@ function PlaylistsPage() {
     void qc.invalidateQueries({ queryKey: ["my-playlists", user.id] });
   };
 
-  if (!user) return <AppShell><p className="py-24 text-center text-muted-foreground">Inicia sesión para administrar tus listas.</p></AppShell>;
+  if (!user) return <AppShell><div className="cn-cosmephant-playlists mx-auto max-w-5xl space-y-5"><header><h1>Playlists</h1><p>Guarda y organiza videos para volver a verlos.</p></header><section className="cn-cosmephant-playlist-empty"><h2>Playlists</h2><p>Guarda y organiza videos para volver a verlos.</p></section></div></AppShell>;
 
   return (
     <AppShell>
       <div className="cn-cosmephant-playlists mx-auto max-w-5xl space-y-6 pb-16">
-        <div><h1 className="text-2xl font-bold">Listas de reproducción</h1><p className="text-sm text-muted-foreground">Crea listas públicas o privadas, añade vídeos y cambia su orden.</p></div>
+        <div><h1 className="text-2xl font-bold">Playlists</h1><p className="text-sm text-muted-foreground">Guarda y organiza videos para volver a verlos.</p></div>
         <form onSubmit={create} className="cn-cosmephant-form grid gap-3 rounded-2xl bg-surface p-5 md:grid-cols-[1fr_150px_150px_auto]">
           <div className="space-y-2">
             <Input placeholder="Nombre" value={title} onChange={(e) => setTitle(e.target.value)} required />
