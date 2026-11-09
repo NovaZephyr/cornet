@@ -654,3 +654,18 @@
 .cn-shell--studio .cn-studio-navigation-drawer button {
   min-height: 42px;
 }
+
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-community-layout {
+  display: block;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-community-tabs-root {
+  display: grid;
+  grid-template-columns: 190px minmax(0, 1fr);
+  align-items: start;
+  gap: 28px;
+}
+@media (max-width: 760px) {
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-community-tabs-root {
+    display: block;
+  }
+}
