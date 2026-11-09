@@ -254,3 +254,94 @@
 @media (max-width: 767px) {
   .cn-shell--studio .cn-shell-main { padding-inline: 0; }
 }
+
+
+/* Align Community and account states with the desktop/mobile Figma frames. */
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-community-layout {
+  display: grid;
+  grid-template-columns: 190px minmax(0, 1fr);
+  align-items: start;
+  gap: 28px;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-community-hero {
+  display: none;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-community-layout .cn-community-tabs {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+  max-width: none;
+  gap: 7px;
+  padding: 0;
+  border: 0;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-community-layout .cn-community-tabs [role="tab"] {
+  min-height: 40px;
+  justify-content: flex-start;
+  padding: 0 14px;
+  border-radius: 999px;
+  background: #171515;
+  color: #b8b2b2;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-community-layout .cn-community-tabs [role="tab"][data-state="active"] {
+  background: linear-gradient(105deg, #321c1b, #3a2415);
+  color: #fff;
+  box-shadow: none;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-community-layout [role="tabpanel"] {
+  min-width: 0;
+  margin: 0;
+}
+.cn-cosmephant-not-found .cn-cosmephant-status-card {
+  padding: clamp(28px, 6vw, 64px);
+}
+.cn-cosmephant-not-found-mark {
+  display: grid;
+  width: clamp(64px, 9vw, 104px);
+  aspect-ratio: 1;
+  place-items: center;
+  border: 1px solid #55302a;
+  border-radius: 26px;
+  background: linear-gradient(145deg, #f04438, #a92720);
+  color: #fff;
+  font-family: "Lexend Extended", "Lexend", ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(36px, 5vw, 56px);
+  font-weight: 700;
+  box-shadow: 0 18px 42px rgb(240 68 56 / .18);
+}
+@media (max-width: 760px) {
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-community-layout {
+    display: block;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-community-hero {
+    display: block;
+    padding: 0 0 18px;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-community-hero > div > div:first-child > div:first-child,
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-community-hero > div > div:last-child {
+    display: none;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-community-hero h1 {
+    font-size: 22px;
+    font-weight: 600;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-community-hero p {
+    margin-top: 6px;
+    font-size: 13px;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-community-layout .cn-community-tabs {
+    flex-direction: row;
+    width: 100%;
+    gap: 7px;
+    overflow-x: auto;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #39211e;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-community-layout .cn-community-tabs [role="tab"] {
+    flex: 0 0 auto;
+    justify-content: center;
+    min-height: 34px;
+    padding: 0 14px;
+  }
+}
