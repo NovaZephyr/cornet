@@ -74,6 +74,7 @@ function AppShellFrame({ children, hideSidebar = false, fullscreen = false, stud
     <div
       className={cn(
         "cn-shell",
+        studioMode && "cn-shell--studio",
         mobileOpen && "cn-shell-mobile-open",
         sidebarOpen && "cn-shell-sidebar-open",
         fullscreen && "cn-shell--fullscreen",
