@@ -20,16 +20,19 @@ const DEFAULT_SITE_EMBED_IMAGE = "https://mvwpxnszcpyayofqgtmv.supabase.co/stora
 function NotFoundComponent() {
   return (
     <main className="cn-cosmephant-status cn-cosmephant-not-found grid min-h-screen place-items-center px-4 py-10">
-      <section className="cn-cosmephant-status-card w-full max-w-4xl text-center">
-        <div className="cn-cosmephant-not-found-mark mx-auto mb-6" aria-hidden="true">C</div>
-        <p className="cn-cosmephant-status-digit text-6xl font-bold">404</p>
-        <h1 className="mt-3 text-2xl font-semibold">¿Qué haces aquí?</h1>
-        <p className="mx-auto mt-3 max-w-xl text-sm">
-          Los Cornits están perdidos y nadie sabe qué hay en esta página. Por ahora, puedes volver a Cornet.
-        </p>
-        <Link to="/" className="mt-7 inline-flex min-h-11 items-center justify-center rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground">
-          Volver a Cornet
-        </Link>
+      <section className="cn-cosmephant-status-card cn-cosmephant-not-found-layout w-full max-w-5xl">
+        <div className="cn-cosmephant-not-found-mark" aria-hidden="true">
+          <img src="/favicon.png" alt="" />
+        </div>
+        <div className="cn-cosmephant-not-found-copy">
+          <h1>404 — ¿Qué haces aquí?</h1>
+          <p>
+            Los Cornits están perdidos y nadie sabe qué hay en esta página. Por ahora, puedes volver a Cornet.
+          </p>
+          <Link to="/" className="cn-cosmephant-not-found-link">
+            Volver a Cornet
+          </Link>
+        </div>
       </section>
     </main>
   );
