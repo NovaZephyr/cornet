@@ -539,3 +539,8 @@
     line-height: 1.5;
   }
 }
+
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-series .cn-cosmephant-series-card {
+  min-height: 0;
+  padding: 0;
+}
