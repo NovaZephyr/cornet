@@ -648,7 +648,8 @@
   background: #0c0b0b;
   box-shadow: 24px 0 64px rgb(0 0 0 / .42);
 }
-.cn-shell--studio.cn-shell-mobile-open .cn-studio-navigation-drawer {
+.cn-shell--studio.cn-shell-mobile-open .cn-studio-navigation-drawer,
+.cn-shell--studio.cn-shell-sidebar-open .cn-studio-navigation-drawer {
   display: block;
 }
 .cn-shell--studio .cn-studio-navigation-drawer button {
