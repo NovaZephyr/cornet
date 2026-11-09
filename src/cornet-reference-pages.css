@@ -669,3 +669,12 @@
     display: block;
   }
 }
+
+@media (min-width: 761px) {
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-community-tabs-root > .cn-community-tabs {
+    min-height: 306px;
+    padding: 10px;
+    border-radius: 18px;
+    background: #171515;
+  }
+}
