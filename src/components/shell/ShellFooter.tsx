@@ -26,9 +26,9 @@ function YouTube2009Footer() {
         </div>
         <div>
           <strong>Ayuda</strong>
-          <Link to="/about">Centro de ayuda</Link>
+          <Link to="/support">Centro de ayuda</Link>
           <Link to="/community">Foros de comunidad</Link>
-          <Link to="/about">Centro de seguridad</Link>
+          <Link to="/support">Contactar con soporte</Link>
           <Link to="/about">Guía para creadores</Link>
         </div>
         <div>
@@ -82,6 +82,7 @@ export function ShellFooter() {
         <Link to="/community">Comunidad</Link>
         <Link to="/partner">Partners</Link>
         <Link to="/playlists">Playlists</Link>
+        <Link to="/support">Soporte</Link>
         <Link to="/terms">Términos</Link>
         <Link to="/privacy">Privacidad</Link>
         <Link to="/settings">Configuración</Link>
