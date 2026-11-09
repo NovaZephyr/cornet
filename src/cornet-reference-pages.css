@@ -544,3 +544,30 @@
   min-height: 0;
   padding: 0;
 }
+
+
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-playlists-manage,
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-playlist-edit {
+  border: 1px solid #39211e;
+  border-radius: 16px;
+  background: #171212;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-playlists-manage > summary,
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-playlist-edit > summary {
+  cursor: pointer;
+  padding: 14px 18px;
+  color: #e8dedd;
+  font-size: 13px;
+  font-weight: 600;
+  list-style-position: inside;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-playlists-manage[open] > summary,
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-playlist-edit[open] > summary {
+  border-bottom: 1px solid #39211e;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-playlists-manage > form {
+  margin: 14px;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-playlist-edit > div {
+  padding: 0 14px 14px;
+}
