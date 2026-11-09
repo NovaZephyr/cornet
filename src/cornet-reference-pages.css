@@ -1,0 +1,115 @@
+/* Cornet reference screens — scoped to Cosmephant 2.0 pages only. */
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-series,
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-playlists,
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-history,
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-partner {
+  width: min(100% - 64px, 1320px);
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 34px 0 48px;
+  color: #fff;
+  font-family: "Lexend", ui-sans-serif, system-ui, sans-serif;
+}
+.cn-shell[data-theme-id="cosmephant-2"] :is(.cn-cosmephant-series,.cn-cosmephant-playlists,.cn-cosmephant-history,.cn-cosmephant-partner) h1,
+.cn-shell[data-theme-id="cosmephant-2"] :is(.cn-cosmephant-series,.cn-cosmephant-playlists,.cn-cosmephant-history,.cn-cosmephant-partner) h2 {
+  font-family: "Lexend Extended", "Lexend", ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: -.035em;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-series > header,
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-playlists > div:first-child,
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-history > div:first-child {
+  margin: 0 0 24px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  text-align: left;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-series > header h1,
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-playlists h1,
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-history h1,
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-partner h1 {
+  margin: 0;
+  color: #fff;
+  font-size: clamp(28px, 3vw, 40px);
+  font-weight: 500;
+  line-height: 1.2;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-series > header p,
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-playlists > div:first-child p,
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-history > div:first-child p,
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-partner > .cn-cosmephant-hero p {
+  margin-top: 12px;
+  color: #b8b2b2;
+  font-size: 16px;
+  line-height: 1.6;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-series .cn-cosmephant-hero {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-series .cn-cosmephant-hero > div > span { display: none; }
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-series .cn-cosmephant-cards {
+  grid-template-columns: repeat(auto-fill,minmax(290px,1fr));
+  gap: 18px;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-series .cn-cosmephant-card {
+  min-height: 190px;
+  padding: 22px;
+  border: 1px solid #331c1a;
+  border-radius: 18px;
+  background: linear-gradient(145deg,#1b1313,#111010);
+  box-shadow: none;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-series .cn-cosmephant-card:hover {
+  border-color: #704037;
+  background: linear-gradient(145deg,#241716,#151010);
+  transform: translateY(-2px);
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-series .cn-cosmephant-note {
+  border-color: #331c1a;
+  background: #1b1313;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-playlists .cn-cosmephant-form,
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-playlists .cn-cosmephant-row,
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-history .cn-cosmephant-row {
+  border: 1px solid #331c1a;
+  border-radius: 16px;
+  background: #171212;
+  box-shadow: none;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-playlists .cn-cosmephant-form { margin-bottom: 22px; }
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-history .cn-cosmephant-row { padding: 16px; }
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-history .cn-cosmephant-row img { border-radius: 12px; }
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-partner {
+  display: grid;
+  grid-template-columns: minmax(0,1.7fr) minmax(300px,1fr);
+  grid-template-areas: "hero hero" "requirements benefits" "requirements application";
+  align-items: stretch;
+  gap: 18px;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-partner > .cn-cosmephant-hero { grid-area: hero; padding: 0; border: 0; background: transparent; text-align: left; }
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-partner > .cn-cosmephant-hero h1 { margin-top: 8px; }
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-partner > .cn-cosmephant-section:first-of-type { grid-area: requirements; margin: 0; border: 1px solid #331c1a; background: #1b1313; }
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-partner > .grid { grid-area: benefits; grid-template-columns: 1fr; margin: 0; }
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-partner .cn-cosmephant-benefit { display: flex; align-items: center; gap: 12px; border: 1px solid #331c1a; background: #1b1313; padding: 13px 16px; }
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-partner .cn-cosmephant-benefit h2 { margin: 0; font-size: 14px; letter-spacing: 0; }
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-partner .cn-cosmephant-benefit p { margin: 3px 0 0; font-size: 12px; }
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-partner > .cn-cosmephant-section:last-child { grid-area: application; margin: 0; border: 1px solid #331c1a; background: #1b1313; }
+.cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-partner details { border-color: #331c1a; border-radius: 12px; background: #141111; }
+@media (max-width: 760px) {
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-series,
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-playlists,
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-history,
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-partner {
+    width: auto;
+    padding: 24px 16px 36px;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-partner { display: flex; flex-direction: column; }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-partner > .grid { grid-template-columns: 1fr; }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-playlists .cn-cosmephant-form { grid-template-columns: 1fr; }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-cosmephant-history > div:first-child { align-items: flex-start; }
+}
