@@ -1,6 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Outlet, Link, createRootRouteWithContext, useRouter, HeadContent, Scripts, type ErrorComponentProps } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import "../global-mobile-bar.css";
 import "@/cornet-reference-pages.css";
@@ -16,6 +16,11 @@ import { GlobalMobileBottomBar } from "@/components/root/GlobalMobileBottomBar";
 import { RouteContentBoundary } from "@/components/root/RouteContentBoundary";
 
 const DEFAULT_SITE_EMBED_IMAGE = "https://mvwpxnszcpyayofqgtmv.supabase.co/storage/v1/object/public/media/61fe7d8d-f53f-4838-a870-4588c16e474b/announcement-7871ca44-f13f-45e5-a3c1-7908f0c348a9.png";
+
+type BeforeInstallPromptEvent = Event & {
+  prompt: () => Promise<void>;
+  userChoice: Promise<{ outcome: "accepted" | "dismissed"; platform: string }>;
+};
 
 function NotFoundComponent() {
   return (
@@ -42,7 +47,7 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
   console.error(error);
   const router = useRouter();
   useEffect(() => { reportLovableError(error, { boundary: "tanstack_root_error_component" }); }, [error]);
-  return <div className="cn-cosmephant-status flex min-h-screen items-center justify-center bg-background px-4"><div className="cn-cosmephant-status-card max-w-md text-center"><h1 className="text-xl font-semibold tracking-tight text-foreground">No pudimos cargar esta página</h1><p className="mt-2 text-sm leading-6 text-muted-foreground">Algo salió mal. Puedes intentarlo de nuevo o volver al inicio.</p><div className="mt-6 flex flex-wrap justify-center gap-2"><button onClick={() => { router.invalidate(); reset(); }} className="inline-flex items-center justify-center rounded-full bg-primary px-4 py-2 text-sm font-medium text-primary-foreground">Intentar de nuevo</button><a href="/" className="inline-flex items-center justify-center rounded-full border border-input bg-background px-4 py-2 text-sm text-foreground">Ir al inicio</a></div></div></div>;
+  return <div className="cn-cosmephant-status flex min-h-screen items-center justify-center bg-background px-4"><div className="cn-cosmephant-status-card max-w-md text-center"><h1 className="text-2xl font-bold text-foreground">Algo salió mal</h1><p className="mt-3 text-sm text-muted-foreground">Ha ocurrido un error y no se pudo cargar esta vista.</p><button onClick={() => reset()} className="mt-6 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground">Reintentar</button></div></div>;
 }
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
@@ -50,12 +55,15 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" }, { name: "viewport", content: "width=device-width, initial-scale=1" }, { title: "Cornet — comparte lo que te importa" },
       { name: "description", content: "Videos, comunidad y espacios para compartir en Cornet." }, { name: "author", content: "Cornet" },
-      { property: "og:title", content: "Cornet — comparte lo que te importa" }, { property: "og:description", content: "Una plataforma sencilla para ver videos, conversar y compartir." }, { property: "og:type", content: "website" }, { property: "og:url", content: "/" }, { property: "og:image", content: DEFAULT_SITE_EMBED_IMAGE }, { property: "og:image:alt", content: "Cornet — comparte lo que te importa" }, { property: "og:site_name", content: "Cornet" },
-      { name: "twitter:card", content: "summary_large_image" }, { name: "twitter:title", content: "Cornet — comparte lo que te importa" }, { name: "twitter:description", content: "Una plataforma sencilla para ver videos, conversar y compartir." }, { name: "twitter:image", content: DEFAULT_SITE_EMBED_IMAGE },
+      { property: "og:title", content: "Cornet — comparte lo que te importa" }, { property: "og:description", content: "Una plataforma sencilla para ver videos, conversar y compartir." }, { property: "og:type", content: "website" },
+      { property: "og:image", content: DEFAULT_SITE_EMBED_IMAGE }, { property: "og:site_name", content: "Cornet" },
+      { name: "twitter:card", content: "summary_large_image" }, { name: "twitter:title", content: "Cornet — comparte lo que te importa" }, { name: "twitter:description", content: "Una plataforma para vivir comunidad, contenido y entretenimiento." },
+      { name: "theme-color", content: "#0f172a" }, { name: "apple-mobile-web-app-capable", content: "yes" }, { name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" }, { name: "apple-mobile-web-app-title", content: "Cornet" },
     ],
     links: [
-      { rel: "stylesheet", href: appCss }, { rel: "stylesheet", href: "/explore.css" }, { rel: "stylesheet", href: "/messenger-theme.css" }, { rel: "stylesheet", href: "/user-themes.css" }, { rel: "stylesheet", href: "/cosmic-panda-channel-fullpage.css" }, { rel: "stylesheet", href: "/cosmic-panda-channel-layout.css" },
-      { rel: "preconnect", href: "https://fonts.googleapis.com" }, { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" }, { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" }, { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&display=swap" }, { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&display=swap" }, { rel: "icon", href: "/favicon.png", type: "image/png" },
+      { rel: "stylesheet", href: appCss }, { rel: "stylesheet", href: "/explore.css" }, { rel: "stylesheet", href: "/messenger-theme.css" }, { rel: "stylesheet", href: "/user-themes.css" },
+      { rel: "manifest", href: "/manifest.webmanifest" }, { rel: "apple-touch-icon", href: "/corenetwork-mark.png" }, { rel: "icon", href: "/favicon.png" },
+      { rel: "preconnect", href: "https://fonts.googleapis.com" }, { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" }, { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" },
     ],
   }),
   shellComponent: RootShell,
@@ -64,13 +72,74 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   errorComponent: ErrorComponent,
 });
 
-const themeBootstrap = `(function(){try{var t=localStorage.getItem('corenetwork-theme-v3');var alias={retro2012:'cosmic-panda','youtube-2012':'cosmic-panda','yt-2012':'cosmic-panda',youtube2009:'yt-2009','youtube-2009':'yt-2009','youtube-2013':'yt-2013',youtube2013:'yt-2013',feather2013:'yt-2013',youtube2019:'yt-2019',windowsAero:'windows-aero',frutigerAero:'frutiger-aero',web2Glossy:'web2-glossy',y2kChrome:'y2k-chrome',xpLuna:'windows-xp-luna',crtVhs:'crt'};if(t&&alias[t])t=alias[t];var v=['dark','light','cosmephant-2','yt-2005','yt-2007','yt-2009','yt-2013','yt-2019','cosmic-panda','liquid-glass','grad-ocean','grad-sunset','grad-neon','grad-candy','dracula','nord','solarized-light','solarized-dark','gruvbox','tokyo-night','catppuccin','high-contrast','sepia','grayscale','windows-aero','frutiger-aero','web2-glossy','y2k-chrome','windows-xp-luna','crt','vhs','custom','system'];if(!t||v.indexOf(t)<0)t='grad-ocean';var r=document.documentElement;var light=['light','cosmic-panda','sepia','grayscale','solarized-light','grad-candy','yt-2005','yt-2007','yt-2009','yt-2013','yt-2019','liquid-glass','windows-aero','frutiger-aero','web2-glossy','windows-xp-luna'].indexOf(t)>=0;r.dataset.theme=t;r.classList.toggle('dark',!light);r.style.colorScheme=light?'light':'dark';}catch(e){}})();`;
+const themeBootstrap = `(function(){try{var t=localStorage.getItem('corenetwork-theme-v3');var alias={retro2012:'cosmic-panda','youtube-2012':'cosmic-panda','yt-2012':'cosmic-panda',youtube2009:'cosmic-panda',youtube2019:'cornet'};var value=t&&alias[t] ? alias[t] : (t||'cornet');document.documentElement.dataset.theme = value;}catch(e){document.documentElement.dataset.theme='cornet';}})();`;
 
 function RootShell({ children }: { children: ReactNode }) {
   return <html lang="es" suppressHydrationWarning><head><HeadContent /><script dangerouslySetInnerHTML={{ __html: themeBootstrap }} /></head><body>{children}<Scripts /></body></html>;
 }
 
+function InstallPromptButton() {
+  const [promptEvent, setPromptEvent] = useState<BeforeInstallPromptEvent | null>(null);
+
+  useEffect(() => {
+    if (!("serviceWorker" in navigator)) return;
+
+    const registerServiceWorker = async () => {
+      try {
+        await navigator.serviceWorker.register("/sw.js", { scope: "/" });
+      } catch (error) {
+        console.warn("PWA service worker registration failed", error);
+      }
+    };
+
+    void registerServiceWorker();
+
+    const onBeforeInstallPrompt = (event: Event) => {
+      event.preventDefault();
+      setPromptEvent(event as BeforeInstallPromptEvent);
+    };
+
+    window.addEventListener("beforeinstallprompt", onBeforeInstallPrompt);
+    return () => window.removeEventListener("beforeinstallprompt", onBeforeInstallPrompt);
+  }, []);
+
+  if (!promptEvent) return null;
+
+  return (
+    <button
+      type="button"
+      onClick={async () => {
+        await promptEvent.prompt();
+        setPromptEvent(null);
+      }}
+      className="fixed bottom-4 right-4 z-50 rounded-full bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-lg"
+    >
+      Instalar app
+    </button>
+  );
+}
+
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
-  return <QueryClientProvider client={queryClient}><ThemeProvider><AuthProvider><DesignLibraryRuntime /><ShellErrorBoundary label="maintenance gate"><AccountModerationGate><MaintenanceGate><RouteContentBoundary><Outlet /></RouteContentBoundary></MaintenanceGate></AccountModerationGate></ShellErrorBoundary><ShellErrorBoundary label="mobile navigation"><GlobalMobileBottomBar /></ShellErrorBoundary><Toaster position="bottom-center" /></AuthProvider></ThemeProvider></QueryClientProvider>;
+  return (
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider>
+        <AuthProvider>
+          <DesignLibraryRuntime />
+          <ShellErrorBoundary label="maintenance gate">
+            <AccountModerationGate>
+              <MaintenanceGate>
+                <RouteContentBoundary>
+                  <Outlet />
+                </RouteContentBoundary>
+              </MaintenanceGate>
+            </AccountModerationGate>
+          </ShellErrorBoundary>
+          <GlobalMobileBottomBar />
+          <Toaster />
+          <InstallPromptButton />
+        </AuthProvider>
+      </ThemeProvider>
+    </QueryClientProvider>
+  );
 }
