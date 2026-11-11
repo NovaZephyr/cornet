@@ -85,6 +85,7 @@ function AppShellFrame({ children, hideSidebar = false, fullscreen = false, stud
         <ShellHeader
           mobileOpen={mobileOpen}
           cosmephant={theme === "cosmephant-2" || studioMode}
+          centeredSearch={theme === "liquid-glass"}
           onMenuClick={handleMenuClick}
           menuHidden={false}
           logo={<ShellLogo studio={studioMode} />}

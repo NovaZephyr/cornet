@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 
 export function useShellState(pathname: string, theme = "dark") {
-  const [sidebarOpen, setSidebarOpen] = useState(theme !== "cosmephant-2");
+  const [sidebarOpen, setSidebarOpen] = useState(theme !== "cosmephant-2" && theme !== "liquid-glass");
   const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
-    setSidebarOpen(theme !== "cosmephant-2");
+    setSidebarOpen(theme !== "cosmephant-2" && theme !== "liquid-glass");
   }, [theme]);
 
   useEffect(() => {
