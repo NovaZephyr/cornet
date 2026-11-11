@@ -1,0 +1,241 @@
+/* Liquid Glass shell structure.
+ * Mirrors Cosmephant 2.0's three-zone header and overlay drawer,
+ * while preserving Liquid Glass materials and the existing mobile glass dock. */
+
+html[data-theme="liquid-glass"] .cn-shell[data-theme-id="liquid-glass"] .cn-shell-header {
+  display: block;
+  min-height: 60px;
+  padding: 0 clamp(16px, 3vw, 36px);
+}
+
+html[data-theme="liquid-glass"] .cn-shell[data-theme-id="liquid-glass"] .cn-shell-header-main {
+  display: grid;
+  grid-template-columns: minmax(200px, 1fr) minmax(240px, min(30vw, 560px)) minmax(200px, 1fr);
+  align-items: center;
+  gap: clamp(8px, 1.4vw, 18px);
+  width: min(100%, 1680px);
+  min-height: 60px;
+  margin-inline: auto;
+}
+
+html[data-theme="liquid-glass"] .cn-shell[data-theme-id="liquid-glass"] .cn-shell-header-left {
+  grid-column: 1;
+  justify-self: start;
+  gap: 8px;
+}
+
+html[data-theme="liquid-glass"] .cn-shell[data-theme-id="liquid-glass"] .cn-shell-search--centered {
+  grid-column: 2;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 40px;
+  align-items: center;
+  justify-self: center;
+  gap: 8px;
+  width: 100%;
+  max-width: 560px;
+}
+
+html[data-theme="liquid-glass"] .cn-shell[data-theme-id="liquid-glass"] .cn-shell-search--centered > svg {
+  display: none;
+}
+
+html[data-theme="liquid-glass"] .cn-shell[data-theme-id="liquid-glass"] .cn-shell-search--centered input {
+  min-width: 0;
+  height: 38px;
+  min-height: 38px;
+  padding: 0 16px !important;
+  border: 1px solid var(--lg-glass-stroke);
+  border-radius: 999px;
+  background: var(--lg-glass-regular);
+  color: var(--foreground);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 88%), 0 5px 18px rgb(47 79 120 / 7%);
+}
+
+html[data-theme="liquid-glass"] .cn-shell[data-theme-id="liquid-glass"] .cn-shell-search--centered input::placeholder {
+  color: var(--muted-foreground);
+  opacity: 1;
+}
+
+html[data-theme="liquid-glass"] .cn-shell[data-theme-id="liquid-glass"] .cn-shell-search--centered button {
+  position: static;
+  width: 40px;
+  min-width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid var(--lg-glass-stroke);
+  border-radius: 50%;
+  background: linear-gradient(145deg, rgb(255 255 255 / 82%), rgb(229 240 253 / 60%));
+  color: #176fc0;
+  box-shadow: inset 0 1px 0 #fff, 0 5px 16px rgb(46 78 118 / 9%);
+}
+
+html[data-theme="liquid-glass"] .cn-shell[data-theme-id="liquid-glass"] .cn-shell-actions {
+  grid-column: 3;
+  justify-self: end;
+  gap: 10px;
+  white-space: nowrap;
+}
+
+html[data-theme="liquid-glass"] .cn-shell[data-theme-id="liquid-glass"] .cn-shell-layout {
+  position: relative;
+  display: block;
+  min-height: calc(100vh - 60px);
+}
+
+html[data-theme="liquid-glass"] .cn-shell[data-theme-id="liquid-glass"] .cn-shell-sidebar {
+  position: fixed;
+  inset: 60px auto 0 0;
+  z-index: 1050;
+  width: min(280px, 86vw);
+  height: auto;
+  padding: 16px 12px;
+  overflow-y: auto;
+  border: 1px solid var(--lg-glass-stroke);
+  border-left: 0;
+  border-radius: 0 24px 24px 0;
+  background:
+    linear-gradient(145deg, rgb(255 255 255 / 58%), rgb(255 255 255 / 12%) 55%),
+    var(--lg-glass-frosted);
+  box-shadow: 18px 0 42px rgb(34 58 91 / 16%), inset 0 1px 0 rgb(255 255 255 / 90%);
+  -webkit-backdrop-filter: blur(32px) saturate(175%);
+  backdrop-filter: blur(32px) saturate(175%);
+  transform: translateX(-105%);
+  transition: transform .2s ease;
+}
+
+html[data-theme="liquid-glass"] .cn-shell[data-theme-id="liquid-glass"] .cn-shell-sidebar-collapsed {
+  display: block;
+  width: min(280px, 86vw);
+}
+
+html[data-theme="liquid-glass"] .cn-shell[data-theme-id="liquid-glass"] .cn-shell-sidebar nav {
+  gap: 7px;
+}
+
+html[data-theme="liquid-glass"] .cn-shell[data-theme-id="liquid-glass"] .cn-shell-sidebar nav a {
+  min-height: 42px;
+  border: 1px solid transparent;
+  border-radius: 14px;
+  padding-inline: 12px;
+}
+
+html[data-theme="liquid-glass"] .cn-shell[data-theme-id="liquid-glass"] .cn-shell-sidebar-open .cn-shell-sidebar:not(.cn-shell-sidebar-collapsed),
+html[data-theme="liquid-glass"] .cn-shell[data-theme-id="liquid-glass"].cn-shell-sidebar-open .cn-shell-sidebar:not(.cn-shell-sidebar-collapsed),
+html[data-theme="liquid-glass"] .cn-shell[data-theme-id="liquid-glass"].cn-shell-mobile-open .cn-shell-sidebar:not(.cn-shell-sidebar-collapsed) {
+  transform: translateX(0);
+}
+
+@media (min-width: 701px) and (max-width: 1100px) {
+  html[data-theme="liquid-glass"] .cn-shell[data-theme-id="liquid-glass"] .cn-shell-header {
+    padding-inline: 14px;
+  }
+
+  html[data-theme="liquid-glass"] .cn-shell[data-theme-id="liquid-glass"] .cn-shell-header-main {
+    grid-template-columns: minmax(150px, auto) minmax(150px, 1fr) auto;
+    gap: 10px;
+  }
+
+  html[data-theme="liquid-glass"] .cn-shell[data-theme-id="liquid-glass"] .cn-shell-actions {
+    gap: 7px;
+  }
+}
+
+@media (min-width: 901px) {
+  html[data-theme="liquid-glass"] .cn-shell[data-theme-id="liquid-glass"].cn-shell-sidebar-open .cn-shell-layout:has(> .cn-shell-sidebar:not(.cn-shell-sidebar-collapsed))::before {
+    content: "";
+    position: fixed;
+    inset: 60px 0 0;
+    z-index: 1040;
+    background: rgb(24 42 63 / 22%);
+    -webkit-backdrop-filter: blur(3px);
+    backdrop-filter: blur(3px);
+  }
+}
+
+@media (max-width: 900px) {
+  html[data-theme="liquid-glass"] .cn-shell[data-theme-id="liquid-glass"] .cn-shell-header-main {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: 8px;
+  }
+
+  html[data-theme="liquid-glass"] .cn-shell[data-theme-id="liquid-glass"] .cn-shell-sidebar {
+    top: 60px;
+    bottom: calc(68px + env(safe-area-inset-bottom));
+    width: min(86vw, 320px);
+  }
+
+  html[data-theme="liquid-glass"] .cn-shell[data-theme-id="liquid-glass"].cn-shell-mobile-open .cn-shell-layout:has(> .cn-shell-sidebar:not(.cn-shell-sidebar-collapsed))::before {
+    content: "";
+    position: fixed;
+    inset: 60px 0 calc(68px + env(safe-area-inset-bottom));
+    z-index: 1040;
+    background: rgb(24 42 63 / 22%);
+    -webkit-backdrop-filter: blur(3px);
+    backdrop-filter: blur(3px);
+  }
+}
+
+@media (max-width: 700px) {
+  html[data-theme="liquid-glass"] .cn-shell[data-theme-id="liquid-glass"] .cn-shell-header {
+    min-height: calc(102px + env(safe-area-inset-top));
+    padding: env(safe-area-inset-top) 12px 0;
+  }
+
+  html[data-theme="liquid-glass"] .cn-shell[data-theme-id="liquid-glass"] .cn-shell-header-main {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "brand actions"
+      "search search";
+    gap: 3px 10px;
+    min-height: 98px;
+    padding-block: 5px 8px;
+  }
+
+  html[data-theme="liquid-glass"] .cn-shell[data-theme-id="liquid-glass"] .cn-shell-header-left {
+    grid-area: brand;
+    min-width: 0;
+  }
+
+  html[data-theme="liquid-glass"] .cn-shell[data-theme-id="liquid-glass"] .cn-shell-search--centered {
+    grid-area: search;
+    justify-self: stretch;
+    width: 100%;
+    max-width: none;
+  }
+
+  html[data-theme="liquid-glass"] .cn-shell[data-theme-id="liquid-glass"] .cn-shell-actions {
+    grid-area: actions;
+    justify-self: end;
+    gap: 6px;
+  }
+
+  html[data-theme="liquid-glass"] .cn-shell[data-theme-id="liquid-glass"] .cn-shell-logo {
+    gap: 7px;
+  }
+
+  html[data-theme="liquid-glass"] .cn-shell[data-theme-id="liquid-glass"] .cn-shell-logo img {
+    width: 30px;
+    height: 30px;
+  }
+
+  html[data-theme="liquid-glass"] .cn-shell[data-theme-id="liquid-glass"] .cn-shell-icon-button,
+  html[data-theme="liquid-glass"] .cn-shell[data-theme-id="liquid-glass"] .cn-shell-avatar-button {
+    width: 34px;
+    height: 34px;
+  }
+
+  html[data-theme="liquid-glass"] .cn-shell[data-theme-id="liquid-glass"] .cn-shell-sidebar {
+    top: calc(102px + env(safe-area-inset-top));
+    bottom: calc(76px + env(safe-area-inset-bottom));
+  }
+
+  html[data-theme="liquid-glass"] .cn-shell[data-theme-id="liquid-glass"].cn-shell-mobile-open .cn-shell-layout:has(> .cn-shell-sidebar:not(.cn-shell-sidebar-collapsed))::before {
+    inset: calc(102px + env(safe-area-inset-top)) 0 calc(76px + env(safe-area-inset-bottom));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-theme="liquid-glass"] .cn-shell[data-theme-id="liquid-glass"] .cn-shell-sidebar {
+    transition: none;
+  }
+}
