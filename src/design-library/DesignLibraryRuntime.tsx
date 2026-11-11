@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { getTheme } from "./index";
+import { isCustomTheme } from "@/themes/registry";
 
 const THEME_KEY = "corenetwork-theme-v3";
 const LOADED_LINKS = "data-cornet-design-library";
@@ -36,7 +37,7 @@ function loadStylesheets(stylesheets: string[]) {
 function syncTheme(themeId: string) {
   const theme = getTheme(themeId);
   removeLegacyGlobalLayoutStyles();
-  loadStylesheets([CORNET_THEME_PRESETS, ...theme.stylesheets]);
+  loadStylesheets([CORNET_THEME_PRESETS, ...(isCustomTheme(themeId) ? theme.stylesheets : [])]);
 }
 
 export function DesignLibraryRuntime() {

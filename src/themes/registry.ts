@@ -66,4 +66,15 @@ export const LEGACY_THEME_ALIASES={
 export type LegacyThemeId=keyof typeof LEGACY_THEME_ALIASES;
 export type ResolvableThemeId=ThemeId|LegacyThemeId;
 export function resolveThemeId(value:string):ThemeId|undefined{return value in THEME_REGISTRY?value as ThemeId:value in LEGACY_THEME_ALIASES?LEGACY_THEME_ALIASES[value as LegacyThemeId]:undefined;}
+/** True only for the dedicated Custom theme group and the free-form Custom Editor. */
+export function isCustomTheme(value: string): boolean {
+  if (value === "custom") return true;
+  const themeId = resolveThemeId(value);
+  return themeId ? THEME_REGISTRY[themeId].group === "custom" : false;
+}
+
+/** Built-in themes share Cosmephant's structure; custom themes keep their own UI. */
+export function usesCosmephantBaseLayout(value: string): boolean {
+  return value === "system" || (Boolean(resolveThemeId(value)) && !isCustomTheme(value));
+}
 export function isThemeId(value:string):value is ResolvableThemeId{return Boolean(resolveThemeId(value));}
