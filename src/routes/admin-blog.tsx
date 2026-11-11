@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { createFileRoute, Link, notFound, rootRouteId } from "@tanstack/react-router";
-import { BarChart3, CalendarClock, FileText, Image as ImageIcon, Loader2, Megaphone, Plus, Save, ShieldCheck, Trash2, Upload } from "lucide-react";
+import { createFileRoute, notFound, rootRouteId } from "@tanstack/react-router";
+import { BarChart3, FileText, Image as ImageIcon, Loader2, Plus, Save, ShieldCheck, Trash2, Upload } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { AppShell } from "@/components/AppShell";
@@ -28,7 +28,7 @@ const MAX_IMAGE_SIZE = 10 * 1024 * 1024;
 
 export const Route = createFileRoute("/admin-blog")({ component: AdminBlogPage });
 
-function AdminBlogPage() {
+export function AdminBlogPage() {
   const { user, roles, loading } = useAuth();
   const isStaff = roles.includes("admin") || roles.includes("moderator");
   const canEdit = roles.includes("admin");
@@ -215,27 +215,6 @@ function AdminBlogPage() {
           </p>
         </header>
 
-        <div className="grid gap-3 md:grid-cols-2">
-          <Link to="/admin-blog" className="rounded-2xl border border-primary/30 bg-primary/5 p-5 hover:bg-primary/10">
-            <div className="flex items-center gap-3">
-              <Megaphone className="h-5 w-5 text-primary" />
-              <div>
-                <p className="font-semibold">Nuevo anuncio</p>
-                <p className="text-sm text-muted-foreground">Publica una novedad oficial de Cornet.</p>
-              </div>
-            </div>
-          </Link>
-          <Link to="/admin-campaigns" className="rounded-2xl border border-border bg-surface p-5 hover:bg-muted">
-            <div className="flex items-center gap-3">
-              <CalendarClock className="h-5 w-5 text-primary" />
-              <div>
-                <p className="font-semibold">Nuevo evento</p>
-                <p className="text-sm text-muted-foreground">Gestiona eventos por separado dentro de Campañas.</p>
-              </div>
-            </div>
-          </Link>
-        </div>
-
         <section className="rounded-2xl border border-border bg-surface p-6 shadow-sm">
           <div className="mb-5 flex items-center gap-2">
             <Plus className="h-5 w-5 text-primary" />
@@ -284,9 +263,6 @@ function AdminBlogPage() {
           </div>
         </section>
 
-        <Button variant="outline" asChild>
-          <Link to="/admin">Volver al panel</Link>
-        </Button>
       </div>
     </AppShell>
   );
