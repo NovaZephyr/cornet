@@ -31,7 +31,7 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   head: () => ({
     meta: [
-      { charSet: "utf-8" }, { name: "viewport", content: "width=device-width, initial-scale=1" }, { title: "Cornet — comparte lo que te importa" },
+      { charSet: "utf-8" }, { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" }, { title: "Cornet — comparte lo que te importa" },
       { name: "description", content: "Videos, comunidad y espacios para compartir en Cornet." }, { name: "author", content: "Cornet" },
       { property: "og:title", content: "Cornet — comparte lo que te importa" }, { property: "og:description", content: "Una plataforma sencilla para ver videos, conversar y compartir." }, { property: "og:type", content: "website" }, { property: "og:url", content: "/" }, { property: "og:image", content: DEFAULT_SITE_EMBED_IMAGE }, { property: "og:image:alt", content: "Cornet — comparte lo que te importa" }, { property: "og:site_name", content: "Cornet" },
       { name: "twitter:card", content: "summary_large_image" }, { name: "twitter:title", content: "Cornet — comparte lo que te importa" }, { name: "twitter:description", content: "Una plataforma sencilla para ver videos, conversar y compartir." }, { name: "twitter:image", content: DEFAULT_SITE_EMBED_IMAGE },
