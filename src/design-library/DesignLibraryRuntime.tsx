@@ -42,12 +42,12 @@ function syncTheme(themeId: string) {
 export function DesignLibraryRuntime() {
   useEffect(() => {
     const root = document.documentElement;
-    const initialTheme = root.dataset.theme || window.localStorage.getItem(THEME_KEY) || "grad-ocean";
+    const initialTheme = root.dataset.theme || window.localStorage.getItem(THEME_KEY) || "cosmephant-2";
     syncTheme(initialTheme);
 
     const observer = new MutationObserver((records) => {
       if (records.some((record) => record.type === "attributes" && record.attributeName === "data-theme")) {
-        syncTheme(root.dataset.theme || "grad-ocean");
+        syncTheme(root.dataset.theme || "cosmephant-2");
       }
     });
     observer.observe(root, { attributes: true, attributeFilter: ["data-theme"] });

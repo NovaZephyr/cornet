@@ -1,6 +1,4 @@
 import "./core/theme-bridge.css";
-import "./core/dark.css";
-import "./core/light.css";
 import "./youtube/2005.css";
 import "./youtube/2007.css";
 import "./youtube/2009.css";
@@ -30,13 +28,12 @@ import "./custom/cosmephant-2.css";
 
 /** Visual theme registry. Themes never own structural/channel layout. */
 export const THEME_REGISTRY = {
-  dark:{group:"core",label:"Cornet Dark"}, light:{group:"core",label:"Cornet Light"},
   "yt-2005":{group:"youtube",label:"YouTube 2005"}, "yt-2007":{group:"youtube",label:"YouTube 2007"},
   "yt-classic":{group:"youtube",label:"YouTube Classic (2006–2007)"},
   "yt-2009":{group:"youtube",label:"YouTube 2009"},
   "yt-2013":{group:"youtube",label:"YouTube 2013"}, "yt-2019":{group:"youtube",label:"YouTube 2019"},
   "cosmic-panda":{group:"custom",label:"Cosmic Panda"},
-  "cornet-2016":{group:"custom",label:"Cornet 2016"}, "cosmephant-2":{group:"custom",label:"Cosmephant 2.0"},
+  "cornet-2016":{group:"custom",label:"Cornet 2016"}, "cosmephant-2":{group:"core",label:"Cosmephant 2.0"},
   "liquid-glass":{group:"custom",label:"Liquid Glass"},
   "grad-ocean":{group:"gradients",label:"Ocean"}, "grad-sunset":{group:"gradients",label:"Sunset"},
   "grad-neon":{group:"gradients",label:"Neon"}, "grad-candy":{group:"gradients",label:"Candy"},
@@ -53,6 +50,8 @@ export const THEME_REGISTRY = {
 
 export type ThemeId=keyof typeof THEME_REGISTRY;
 export const LEGACY_THEME_ALIASES={
+  dark:"cosmephant-2",
+  light:"cosmephant-2",
   "cornet-2009":"yt-2009",
   youtube2009:"yt-2009",
   "youtube-2009":"yt-2009",

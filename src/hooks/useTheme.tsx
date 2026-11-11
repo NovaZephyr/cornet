@@ -11,7 +11,7 @@ export type CustomTheme = { background: string; foreground: string; surface: str
 export const DEFAULT_CUSTOM_THEME: CustomTheme = { background: "#10131a", foreground: "#f5f7fb", surface: "#181d27", surfaceHover: "#222938", card: "#151a23", primary: "#5b8cff", secondary: "#2c3850", accent: "#7aa2ff", border: "#30394b", sidebar: "#0c0f15", gradientEnabled: false, gradientFrom: "#5b8cff", gradientTo: "#9b6cff", gradientAngle: 135 };
 const STORAGE_KEY = "corenetwork-theme-v3";
 const CUSTOM_STORAGE_KEY = "corenetwork-custom-theme-v1";
-const DEFAULT_THEME: PresetThemeId = "grad-ocean";
+const DEFAULT_THEME: PresetThemeId = "cosmephant-2";
 
 function readInitialTheme(): PresetThemeId | "custom" {
   if (typeof window === "undefined") return DEFAULT_THEME;
@@ -33,7 +33,7 @@ function apply(theme: PresetThemeId | "custom", customTheme: CustomTheme) {
   const mediaDark = theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches;
   root.dataset.theme = resolved;
   root.dataset.themeKind = themeKind;
-  root.classList.toggle("dark", theme === "system" ? mediaDark : theme !== "light" && theme !== "sepia" && theme !== "grayscale" && theme !== "solarized-light" && theme !== "yt-2009" && theme !== "yt-2013" && theme !== "yt-2019" && theme !== "liquid-glass" && theme !== "cornet-2016" && theme !== "windows-aero" && theme !== "frutiger-aero" && theme !== "web2-glossy" && theme !== "windows-xp-luna");
+  root.classList.toggle("dark", theme === "system" ? mediaDark : theme !== "sepia" && theme !== "grayscale" && theme !== "solarized-light" && theme !== "yt-2009" && theme !== "yt-2013" && theme !== "yt-2019" && theme !== "liquid-glass" && theme !== "cornet-2016" && theme !== "windows-aero" && theme !== "frutiger-aero" && theme !== "web2-glossy" && theme !== "windows-xp-luna");
   root.style.colorScheme = root.classList.contains("dark") ? "dark" : "light";
   if (theme !== "custom") {
     ["--background","--foreground","--surface","--surface-hover","--card","--card-foreground","--popover","--popover-foreground","--primary","--primary-foreground","--secondary","--secondary-foreground","--muted","--muted-foreground","--accent","--accent-foreground","--border","--input","--ring","--sidebar","--sidebar-foreground","--sidebar-primary","--sidebar-primary-foreground","--sidebar-accent","--sidebar-accent-foreground","--sidebar-border","--sidebar-ring","--verified","--partner","--cn-custom-gradient"].forEach((name) => root.style.removeProperty(name));
