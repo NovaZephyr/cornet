@@ -222,3 +222,13 @@ html[data-theme="liquid-glass"] .cn-shell-footer {
 @media (prefers-reduced-motion: reduce) {
   html[data-theme="liquid-glass"] .cn-shell-mobile-nav a { transition: none; }
 }
+
+/* Cornet typography hierarchy for the Liquid Glass theme. */
+html[data-theme="liquid-glass"] body,
+html[data-theme="liquid-glass"] .cn-shell {
+  font-family: "Lexend", ui-sans-serif, system-ui, sans-serif;
+}
+html[data-theme="liquid-glass"] :is(h1, h2, h3, .cn-shell-logo strong) {
+  font-family: "Lexend Extended", "Lexend", ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: -.035em;
+}
