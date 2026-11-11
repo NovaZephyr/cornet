@@ -18,6 +18,7 @@ type ShellHeaderProps = {
   historicalNavItems?: HistoricalNavItem[];
   historicalNavMode?: HistoricalNavMode;
   historicalSearch?: boolean;
+  centeredSearch?: boolean;
 };
 
 export function ShellHeader({
@@ -30,6 +31,7 @@ export function ShellHeader({
   historicalNavItems = [],
   historicalNavMode = "inline",
   historicalSearch = false,
+  centeredSearch = false,
 }: ShellHeaderProps) {
   const hasHistoricalRow = historicalNavItems.length > 0 && historicalNavMode === "row";
 
@@ -57,7 +59,7 @@ export function ShellHeader({
           )}
         </div>
 
-        <ShellSearch historical={historicalSearch} cosmephant={cosmephant} />
+        <ShellSearch historical={historicalSearch} cosmephant={cosmephant} centered={centeredSearch} />
         {actions}
       </div>
 
