@@ -115,7 +115,7 @@ export function WatchContent({ initialVideo }: { initialVideo: InitialWatchData 
             )}
 
             <h1 className="cn-watch-title">{data.video.title}</h1>
-            <p className="cn-watch-stats">{formatViews(data.video.views)} vistas · hace {timeAgo(data.video.created_at)}</p>
+            <p className="cn-watch-stats">{formatViews(data.video.views)} vistas · {timeAgo(data.video.created_at)}</p>
 
             <div className="cn-watch-channel-actions">
               <Link to="/c/$username" params={{ username: channel?.username ?? "" }} className="cn-watch-channel">
