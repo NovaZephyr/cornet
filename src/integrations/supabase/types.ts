@@ -425,23 +425,34 @@ export type Database = {
       hashtags: {
         Row: {
           created_at: string
+          created_by: string | null
           id: string
           name: string
           normalized_name: string
         }
         Insert: {
           created_at?: string
+          created_by?: string | null
           id?: string
           name: string
           normalized_name: string
         }
         Update: {
           created_at?: string
+          created_by?: string | null
           id?: string
           name?: string
           normalized_name?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "hashtags_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       home_spotlight: {
         Row: {
