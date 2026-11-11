@@ -13,14 +13,15 @@ export function AccountModerationGate({ children }: { children: ReactNode }) {
 
   if (loading || !user || !profile) return <>{children}</>;
 
-  const status: ModerationStatus = profile.is_banned ? "banned" : profile.moderation_status ?? "active";
+  const status: ModerationStatus = profile.moderation_status ?? (profile.is_banned ? "banned" : "active");
   if (status === "active") return <>{children}</>;
 
-  const suspendedUntil = status === "suspended" && profile.moderation_suspended_until
-    ? new Date(profile.moderation_suspended_until)
-    : null;
-  const suspensionEnded = Boolean(suspendedUntil && suspendedUntil.getTime() <= Date.now());
-  const canReactivate = status === "warning" || (status === "suspended" && suspensionEnded);
+  const restrictionEndsAt = status === "suspended"
+    ? profile.moderation_suspended_until
+    : status === "banned" ? profile.moderation_banned_until : null;
+  const restrictionEnd = restrictionEndsAt ? new Date(restrictionEndsAt) : null;
+  const restrictionEnded = Boolean(restrictionEnd && restrictionEnd.getTime() <= Date.now());
+  const canReactivate = status === "warning" || ((status === "suspended" || status === "banned") && restrictionEnded);
 
   const reactivate = async () => {
     setBusy(true);
@@ -49,10 +50,16 @@ export function AccountModerationGate({ children }: { children: ReactNode }) {
   const description = status === "banned"
     ? "Esta cuenta no puede reactivarse desde Cornet."
     : status === "suspended"
-      ? suspensionEnded
+      ? restrictionEnded
         ? "El tiempo de suspensión terminó. Ya puedes reactivar tu cuenta."
         : "La opción para reactivar tu cuenta estará disponible cuando termine la suspensión."
-      : "Revisa el motivo de la advertencia y reactiva tu cuenta para continuar.";
+      : status === "banned" && restrictionEnd
+        ? restrictionEnded
+          ? "El tiempo del baneo terminó. Ya puedes reactivar tu cuenta."
+          : "Esta cuenta está baneada temporalmente y podrá reactivarse cuando termine el plazo."
+        : status === "banned"
+          ? "Esta cuenta está baneada de forma permanente."
+          : "Revisa el motivo de la advertencia y reactiva tu cuenta para continuar.";
 
   return (
     <main className="cn-cosmephant-status grid min-h-screen place-items-center bg-background px-4 py-10 text-foreground">
@@ -73,14 +80,14 @@ export function AccountModerationGate({ children }: { children: ReactNode }) {
             <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Razón</p>
             <p className="mt-2 whitespace-pre-wrap text-sm leading-6">{profile.moderation_reason}</p>
             <p className="mt-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Afectado</p>
-            <p className="mt-1 text-sm">{status === "banned" ? "Suspensión permanente" : status === "suspended" ? "Suspensión temporal" : "Advertencia de cuenta"}</p>
+            <p className="mt-1 text-sm">{status === "banned" ? restrictionEnd ? "Baneo temporal" : "Baneo permanente" : status === "suspended" ? "Suspensión temporal" : "Advertencia de cuenta"}</p>
           </div>
         )}
 
-        {suspendedUntil && (
+        {restrictionEnd && (
           <p className="mt-4 flex items-center gap-2 text-sm text-muted-foreground">
             <Clock3 className="h-4 w-4 shrink-0" />
-            Termina el {new Intl.DateTimeFormat("es-CO", { dateStyle: "long", timeStyle: "short" }).format(suspendedUntil)}
+            Termina el {new Intl.DateTimeFormat("es-PE", { dateStyle: "long", timeStyle: "short" }).format(restrictionEnd)}
           </p>
         )}
 
