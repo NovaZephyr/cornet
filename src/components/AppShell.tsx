@@ -1,5 +1,6 @@
 import { useRouterState } from "@tanstack/react-router";
 import { useTheme } from "@/hooks/useTheme";
+import { usesCosmephantBaseLayout } from "@/themes/registry";
 import { useShellExperiments } from "@/hooks/useShellExperiments";
 import { useShellNavigation } from "@/hooks/useShellNavigation";
 import { useShellState } from "@/hooks/useShellState";
@@ -40,6 +41,7 @@ export function AppShell({ children, hideSidebar = false, fullscreen = false, st
 function AppShellFrame({ children, hideSidebar = false, fullscreen = false, studio = false }: AppShellProps) {
   const { user, profile, username, isStaff, signOut } = useShellUser();
   const { theme } = useTheme();
+  const cosmephantLayout = usesCosmephantBaseLayout(theme);
   const pathname = useRouterState({ select: (state) => state.location.pathname });
   const { sidebarOpen, mobileOpen, handleMenuClick } = useShellState(pathname, theme);
   const { shortsEnabled } = useShellExperiments();
@@ -52,8 +54,8 @@ function AppShellFrame({ children, hideSidebar = false, fullscreen = false, stud
     shortsEnabled,
   });
 
-  const isYoutube2009 = theme === "yt-2009";
-  const isYoutubeClassic = theme === "yt-classic";
+  const isYoutube2009 = !cosmephantLayout && theme === "yt-2009";
+  const isYoutubeClassic = !cosmephantLayout && theme === "yt-classic";
   const historicalNavItems = isYoutubeClassic
     ? [
         { to: "/explore", label: "Videos" },
@@ -80,11 +82,12 @@ function AppShellFrame({ children, hideSidebar = false, fullscreen = false, stud
         fullscreen && "cn-shell--fullscreen",
       )}
       data-theme-id={theme}
+      data-cornet-layout={cosmephantLayout ? "cosmephant" : undefined}
     >
       <ShellErrorBoundary label="header">
         <ShellHeader
           mobileOpen={mobileOpen}
-          cosmephant={theme === "cosmephant-2" || studioMode}
+          cosmephant={cosmephantLayout || studioMode}
           centeredSearch={theme === "liquid-glass"}
           onMenuClick={handleMenuClick}
           menuHidden={false}
