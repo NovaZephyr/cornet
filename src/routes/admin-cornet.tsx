@@ -11,7 +11,7 @@ const OFFICIAL_ACCOUNT_ID = "39fd9ef5-3716-4896-a555-a673abc712f4";
 
 export const Route = createFileRoute("/admin-cornet")({ component: AdminCornetPage });
 
-function AdminCornetPage() {
+export function AdminCornetPage() {
   const { user, profile, isAdmin, signOut } = useAuth();
   const navigate = useNavigate();
 
@@ -81,9 +81,6 @@ function AdminCornetPage() {
           <div className="mt-5 flex flex-wrap gap-2">
             <Button variant="outline" className="rounded-full" onClick={() => void navigate({ to: "/c/$username", params: { username: "cornet" } })}>
               Ver canal oficial <ExternalLink className="ml-1.5 h-3.5 w-3.5" />
-            </Button>
-            <Button variant="ghost" className="rounded-full" onClick={() => void navigate({ to: "/admin" })}>
-              Volver al panel
             </Button>
           </div>
         </div>

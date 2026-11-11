@@ -20,7 +20,7 @@ type Profile = { id: string; username: string; display_name: string; avatar_path
 type Video = { id: string; title: string };
 const labels: Record<string, string> = { inappropriate: "Contenido inapropiado", spam_abuse: "Spam o abusos", under_13: "Usuario menor de 13 años", violent_shocking: "Contenido violento o shockante", hate_speech: "Discurso de odio", other: "Otro" };
 
-function AdminReports() {
+export function AdminReports() {
   const { isAdmin, loading } = useAuth();
   const qc = useQueryClient();
   const { data: reports, isLoading, error: reportsError } = useQuery({ queryKey: ["admin-reports"], enabled: isAdmin, queryFn: async () => { const { data, error } = await supabase.from("content_reports").select("*").order("created_at", { ascending: false }); if (error) throw error; return (data ?? []) as Report[]; } });
