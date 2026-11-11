@@ -1,0 +1,382 @@
+/* Cosmephant 2.0 video watch page. All selectors stay inside /watch content. */
+.cn-shell[data-theme-id="cosmephant-2"] .cn-watch-page {
+  width: 100%;
+  padding: 24px 28px 40px;
+  color: inherit;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-watch-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 2.2fr) minmax(260px, .95fr);
+  align-items: start;
+  gap: 22px;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-watch-primary {
+  min-width: 0;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-watch-player {
+  width: 100%;
+  overflow: hidden;
+  border-radius: 14px;
+  background: #090909;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-watch-player video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: contain;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-watch-title {
+  margin: 13px 0 3px;
+  font-family: "Lexend Extended", "Lexend", ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(18px, 1.7vw, 23px);
+  font-weight: 600;
+  line-height: 1.35;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-watch-stats {
+  color: #a9a3a3;
+  font-size: 12px;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-watch-channel-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 15px;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-watch-channel {
+  display: inline-flex;
+  min-width: 150px;
+  align-items: center;
+  gap: 10px;
+  margin-right: 5px;
+  color: inherit;
+  text-decoration: none;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-watch-channel-name {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-watch-subscribers {
+  display: block;
+  margin-top: 2px;
+  color: #a9a3a3;
+  font-size: 11px;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-watch-subscribe {
+  min-height: 38px;
+  padding-inline: 22px;
+  border-radius: 999px;
+  background: #f4f3f4;
+  color: #171516;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-watch-actions {
+  display: flex;
+  flex: 1 1 360px;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-left: auto;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-watch-actions > button,
+.cn-shell[data-theme-id="cosmephant-2"] .cn-watch-actions [data-slot="dropdown-menu-trigger"] {
+  min-height: 36px;
+  gap: 7px;
+  padding-inline: 13px;
+  border: 0;
+  border-radius: 999px;
+  background: #242326;
+  color: #f4f2f3;
+  font-size: 12px;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-watch-actions svg {
+  width: 15px;
+  height: 15px;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-watch-reactions {
+  display: inline-flex;
+  overflow: hidden;
+  min-height: 36px;
+  align-items: center;
+  border-radius: 999px;
+  background: #242326;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-watch-reactions button {
+  display: inline-flex;
+  min-height: 36px;
+  align-items: center;
+  gap: 6px;
+  padding: 0 12px;
+  color: #f4f2f3;
+  font-size: 12px;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-watch-reactions button:hover,
+.cn-shell[data-theme-id="cosmephant-2"] .cn-watch-actions > button:hover {
+  background: #343236;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-watch-description {
+  margin-top: 17px;
+  padding: 16px;
+  border-radius: 14px;
+  background: #1b1a1e;
+  color: #f4f2f3;
+  font-size: 12px;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-watch-description h2 {
+  margin: 0 0 6px;
+  font-size: 15px;
+  font-weight: 600;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-watch-description > p {
+  margin-bottom: 12px;
+  color: #c2bec2;
+  font-size: 11px;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-watch-description-text {
+  color: #e0dcdf;
+  font-size: 13px;
+  line-height: 1.55;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-watch-comments {
+  margin-top: 25px;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-watch-comments-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-watch-comments-heading h2 {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 600;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-watch-comments-heading span {
+  color: #a9a3a3;
+  font-size: 18px;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-watch-comments form {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 20px;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-watch-comments form textarea {
+  min-height: 42px;
+  flex: 1;
+  resize: vertical;
+  border: 0;
+  border-bottom: 1px solid #5a5559;
+  border-radius: 0;
+  background: transparent;
+  color: inherit;
+  font-size: 13px;
+  box-shadow: none;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-watch-comments form > button {
+  min-height: 34px;
+  border-radius: 999px;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-watch-comment-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-watch-comment {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-watch-comment > div {
+  min-width: 0;
+  flex: 1;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-watch-comment-author {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0 0 4px;
+  color: #aaa5aa;
+  font-size: 11px;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-watch-comment-author span:first-child {
+  color: #f4f2f3;
+  font-weight: 600;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-watch-comment-text {
+  margin: 0;
+  color: #e6e2e5;
+  font-size: 13px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-watch-recommendations {
+  min-width: 0;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-watch-recommendations-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 13px;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-watch-recommendations-heading h2 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-watch-recommendations-heading span {
+  color: #aaa5aa;
+  font-size: 10px;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-watch-recommendations > .flex {
+  flex-direction: column;
+  gap: 9px;
+  padding: 0 0 13px;
+  border-bottom: 1px solid rgb(255 255 255 / .08);
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-watch-recommendations > .flex > a {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 7px;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-watch-recommendations > .flex > div {
+  min-width: 0;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-watch-recommendations > .flex a {
+  color: #f2eff1;
+  text-decoration: none;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-watch-recommendations > .flex p {
+  color: #aaa5aa;
+  font-size: 10px;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-watch-chapters {
+  margin-top: 10px;
+  padding: 12px;
+  border: 1px solid rgb(255 255 255 / .1);
+  border-radius: 12px;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-watch-chapters h2 {
+  margin: 0 0 8px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-watch-chapters > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-watch-chapters button {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 7px 10px;
+  border: 1px solid rgb(255 255 255 / .12);
+  border-radius: 8px;
+  text-align: left;
+  font-size: 11px;
+}
+.cn-shell[data-theme-id="cosmephant-2"] .cn-watch-chapters button span:last-child {
+  color: #aaa5aa;
+  font-size: 10px;
+}
+@media (max-width: 760px) {
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-watch-page {
+    padding: 16px 16px 80px;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-watch-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-watch-primary,
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-watch-recommendations {
+    width: 100%;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-watch-player {
+    margin-inline: -16px;
+    width: calc(100% + 32px);
+    border-radius: 0;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-watch-title {
+    margin-top: 14px;
+    font-size: 20px;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-watch-stats {
+    font-size: 12px;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-watch-channel-actions {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 12px 8px;
+    margin-top: 17px;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-watch-channel {
+    min-width: 0;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-watch-subscribe {
+    min-width: 105px;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-watch-actions {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    gap: 7px;
+    margin: 0;
+    overflow-x: auto;
+    padding-bottom: 2px;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-watch-actions > button,
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-watch-actions [data-slot="dropdown-menu-trigger"] {
+    flex: 0 0 auto;
+    min-height: 38px;
+    padding-inline: 12px;
+    font-size: 11px;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-watch-reactions {
+    flex: 0 0 auto;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-watch-description {
+    margin-top: 17px;
+    padding: 16px;
+    border-radius: 13px;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-watch-comments {
+    margin: 23px -16px 0;
+    padding: 18px 16px 22px;
+    border-top: 1px solid rgb(255 255 255 / .12);
+    border-bottom: 1px solid rgb(255 255 255 / .12);
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-watch-comments form {
+    gap: 7px;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-watch-comments form textarea {
+    min-width: 0;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-watch-comments form > button {
+    display: none;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-watch-recommendations {
+    padding-bottom: 25px;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-watch-recommendations > .flex {
+    flex-direction: column;
+    gap: 9px;
+    padding-bottom: 17px;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-watch-recommendations > .flex > a {
+    width: 100%;
+    border-radius: 9px;
+  }
+  .cn-shell[data-theme-id="cosmephant-2"] .cn-watch-recommendations > .flex > div {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+}
