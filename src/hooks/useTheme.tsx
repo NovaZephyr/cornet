@@ -1,5 +1,5 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
-import { THEME_REGISTRY, resolveThemeId, type ThemeId } from "@/themes/registry";
+import { THEME_REGISTRY, resolveThemeId, usesCosmephantBaseLayout, type ThemeId } from "@/themes/registry";
 
 export type { ThemeId };
 
@@ -33,6 +33,11 @@ function apply(theme: PresetThemeId | "custom", customTheme: CustomTheme) {
   const mediaDark = theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches;
   root.dataset.theme = resolved;
   root.dataset.themeKind = themeKind;
+  if (usesCosmephantBaseLayout(resolved)) {
+    root.dataset.cornetLayout = "cosmephant";
+  } else {
+    delete root.dataset.cornetLayout;
+  }
   root.classList.toggle("dark", theme === "system" ? mediaDark : theme !== "sepia" && theme !== "grayscale" && theme !== "solarized-light" && theme !== "yt-2009" && theme !== "yt-2013" && theme !== "yt-2019" && theme !== "liquid-glass" && theme !== "cornet-2016" && theme !== "windows-aero" && theme !== "frutiger-aero" && theme !== "web2-glossy" && theme !== "windows-xp-luna");
   root.style.colorScheme = root.classList.contains("dark") ? "dark" : "light";
   if (theme !== "custom") {
