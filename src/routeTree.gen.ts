@@ -38,6 +38,7 @@ import { Route as SeriesRouteImport } from './routes/series'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as ShortsRouteImport } from './routes/shorts'
 import { Route as StudioRouteImport } from './routes/studio'
+import { Route as SupportRouteImport } from './routes/support'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as UploadRouteImport } from './routes/upload'
 import { Route as WatchRouteImport } from './routes/watch'
@@ -197,6 +198,11 @@ const StudioRoute = StudioRouteImport.update({
   path: '/studio',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SupportRoute = SupportRouteImport.update({
+  id: '/support',
+  path: '/support',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
@@ -293,6 +299,7 @@ export interface FileRoutesByFullPath {
   '/settings': typeof SettingsRoute
   '/shorts': typeof ShortsRoute
   '/studio': typeof StudioRoute
+  '/support': typeof SupportRoute
   '/terms': typeof TermsRoute
   '/upload': typeof UploadRoute
   '/watch': typeof WatchRouteWithChildren
@@ -336,6 +343,7 @@ export interface FileRoutesByTo {
   '/settings': typeof SettingsRoute
   '/shorts': typeof ShortsRoute
   '/studio': typeof StudioRoute
+  '/support': typeof SupportRoute
   '/terms': typeof TermsRoute
   '/upload': typeof UploadRoute
   '/watch': typeof WatchRouteWithChildren
@@ -381,6 +389,7 @@ export interface FileRoutesById {
   '/settings': typeof SettingsRoute
   '/shorts': typeof ShortsRoute
   '/studio': typeof StudioRoute
+  '/support': typeof SupportRoute
   '/terms': typeof TermsRoute
   '/upload': typeof UploadRoute
   '/watch': typeof WatchRouteWithChildren
@@ -427,6 +436,7 @@ export interface FileRouteTypes {
     | '/settings'
     | '/shorts'
     | '/studio'
+    | '/support'
     | '/terms'
     | '/upload'
     | '/watch'
@@ -470,6 +480,7 @@ export interface FileRouteTypes {
     | '/settings'
     | '/shorts'
     | '/studio'
+    | '/support'
     | '/terms'
     | '/upload'
     | '/watch'
@@ -514,6 +525,7 @@ export interface FileRouteTypes {
     | '/settings'
     | '/shorts'
     | '/studio'
+    | '/support'
     | '/terms'
     | '/upload'
     | '/watch'
@@ -559,6 +571,7 @@ export interface RootRouteChildren {
   SettingsRoute: typeof SettingsRoute
   ShortsRoute: typeof ShortsRoute
   StudioRoute: typeof StudioRoute
+  SupportRoute: typeof SupportRoute
   TermsRoute: typeof TermsRoute
   UploadRoute: typeof UploadRoute
   WatchRoute: typeof WatchRouteWithChildren
@@ -773,6 +786,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StudioRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/support': {
+      id: '/support'
+      path: '/support'
+      fullPath: '/support'
+      preLoaderRoute: typeof SupportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/terms': {
       id: '/terms'
       path: '/terms'
@@ -933,6 +953,7 @@ const rootRouteChildren: RootRouteChildren = {
   SettingsRoute: SettingsRoute,
   ShortsRoute: ShortsRoute,
   StudioRoute: StudioRoute,
+  SupportRoute: SupportRoute,
   TermsRoute: TermsRoute,
   UploadRoute: UploadRoute,
   WatchRoute: WatchRouteWithChildren,
