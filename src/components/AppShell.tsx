@@ -102,7 +102,7 @@ function AppShellFrame({ children, hideSidebar = false, fullscreen = false, stud
               username={username}
               signOut={signOut}
               historical={isYoutubeClassic}
-              cosmephant={theme === "cosmephant-2" || studioMode}
+              cosmephant={cosmephantLayout || studioMode}
               studio={studioMode}
             />
           }
