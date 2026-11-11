@@ -425,18 +425,21 @@ export type Database = {
       hashtags: {
         Row: {
           created_at: string
+          created_by: string | null
           id: string
           name: string
           normalized_name: string
         }
         Insert: {
           created_at?: string
+          created_by?: string | null
           id?: string
           name: string
           normalized_name: string
         }
         Update: {
           created_at?: string
+          created_by?: string | null
           id?: string
           name?: string
           normalized_name?: string
@@ -850,6 +853,12 @@ export type Database = {
           gif_path: string | null
           id: string
           is_banned: boolean
+          moderation_status: string
+          moderation_reason: string | null
+          moderation_suspended_until: string | null
+          moderation_banned_until: string | null
+          moderation_updated_at: string | null
+          moderation_updated_by: string | null
           is_music_channel: boolean
           is_verified: boolean
           preferred_language: string
@@ -877,6 +886,12 @@ export type Database = {
           gif_path?: string | null
           id: string
           is_banned?: boolean
+          moderation_status?: string
+          moderation_reason?: string | null
+          moderation_suspended_until?: string | null
+          moderation_banned_until?: string | null
+          moderation_updated_at?: string | null
+          moderation_updated_by?: string | null
           is_music_channel?: boolean
           is_verified?: boolean
           preferred_language?: string
@@ -904,6 +919,12 @@ export type Database = {
           gif_path?: string | null
           id?: string
           is_banned?: boolean
+          moderation_status?: string
+          moderation_reason?: string | null
+          moderation_suspended_until?: string | null
+          moderation_banned_until?: string | null
+          moderation_updated_at?: string | null
+          moderation_updated_by?: string | null
           is_music_channel?: boolean
           is_verified?: boolean
           preferred_language?: string
