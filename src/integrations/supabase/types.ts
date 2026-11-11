@@ -444,15 +444,7 @@ export type Database = {
           name?: string
           normalized_name?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "hashtags_created_by_fkey"
-            columns: ["created_by"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       home_spotlight: {
         Row: {
