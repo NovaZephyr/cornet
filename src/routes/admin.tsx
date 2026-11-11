@@ -36,9 +36,6 @@ type AdminUser = Pick<Profile, "id" | "username" | "display_name" | "avatar_path
 type AdminVideo = { id: string; title: string; user_id: string; views: number | null; created_at: string; age_restricted: boolean };
 type AdminReport = { id: string; target_type: "video" | "channel"; reason: string; status: string; created_at: string };
 function isStaff(roles: AppRole[]) { return roles.includes("admin") || roles.includes("moderator"); }
-function toDateTimeLocal(date: Date) {
-  return new Date(date.getTime() - date.getTimezoneOffset() * 60_000).toISOString().slice(0, 16);
-}
 type ModerationAction = "warning" | "suspended" | "banned";
 
 function useAdminData(enabled: boolean) {
@@ -107,7 +104,7 @@ function AdminDashboard() {
 
   const openModeration = (item: AdminUser, status: ModerationAction) => {
     setModerationReason("");
-    setModerationEndAt(status === "suspended" ? toDateTimeLocal(new Date(Date.now() + 24 * 60 * 60 * 1000)) : "");
+    setModerationEndAt("");
     setModerationTarget({ item, status });
   };
 
