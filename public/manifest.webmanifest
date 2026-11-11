@@ -1,0 +1,27 @@
+{
+  "name": "Cornet",
+  "short_name": "Cornet",
+  "description": "Videos, comunidad y espacios para compartir en Cornet.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0b1020",
+  "theme_color": "#0f172a",
+  "lang": "es",
+  "id": "/",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "32x32",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/corenetwork-mark.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
