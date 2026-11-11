@@ -23,8 +23,7 @@ export type ChannelLayoutDefinition = {
 };
 
 export const themes: ThemeDefinition[] = [
-  { id: "dark", name: "Oscuro", category: "normal", kind: "theme", description: "Tema oscuro base de Cornet.", stylesheets: [] },
-  { id: "light", name: "Claro", category: "normal", kind: "theme", description: "Tema claro base de Cornet.", stylesheets: [] },
+  { id: "cosmephant-2", name: "Cosmephant 2.0", category: "normal", kind: "theme", description: "Tema principal de Cornet: la experiencia visual moderna de Cosmephant.", stylesheets: [], family: "cornet-native", pages: ["home", "watch", "shorts", "channel", "community", "settings", "explore", "playlists"] },
   { id: "grad-ocean", name: "Océano", category: "normal", kind: "theme", description: "Degradado azul del sistema normal.", stylesheets: [] },
   { id: "grad-sunset", name: "Atardecer", category: "normal", kind: "theme", description: "Degradado cálido del sistema normal.", stylesheets: [] },
   { id: "grad-neon", name: "Neón", category: "normal", kind: "theme", description: "Degradado vibrante del sistema normal.", stylesheets: [] },
@@ -37,7 +36,7 @@ export const themes: ThemeDefinition[] = [
   { id: "yt-2009", name: "YouTube 2009", category: "custom", kind: "theme", description: "Recreación visual del YouTube de 2009 con navegación histórica y shell propio.", stylesheets: ["/youtube2009-canonical.css"], family: "youtube-historical", pages: ["home", "watch", "shorts", "explore", "settings"] },
   { id: "yt-2013", name: "YouTube 2013", category: "custom", kind: "theme", description: "Recreación visual del YouTube de 2013 sin activar layouts históricos adicionales.", stylesheets: ["/feather-2013-enhanced.css"], family: "youtube-historical", pages: ["home", "watch", "shorts", "explore", "settings"] },
   { id: "yt-2019", name: "YouTube 2019 / Polymer", category: "custom", kind: "theme", description: "Tema claro e independiente con CSS propio y shell aislado.", stylesheets: ["/youtube-polymer-2019.css", "/youtube-polymer-2019-design-system.css", "/youtube-polymer-2019-home.css"], family: "youtube-polymer", pages: ["home", "watch", "shorts", "channel", "community", "settings", "explore", "playlists"] },
-  { id: "liquid-glass", name: "Liquid Glass", category: "custom", kind: "theme", description: "Cristal translúcido, profundidad suave y capas inspirado en interfaces de Apple, con identidad Cornet.", stylesheets: ["/liquid-glass-theme.css", "/liquid-glass-shell.css"], family: "apple-inspired", pages: ["home", "watch", "shorts", "channel", "community", "settings", "explore", "playlists"] },
+  { id: "liquid-glass", name: "Liquid Glass", category: "custom", kind: "theme", description: "Cristal translúcido, profundidad suave y capas inspirado en interfaces de Apple, con identidad Cornet.", stylesheets: ["/liquid-glass-theme.css", "/liquid-glass-shell.css", "/liquid-glass-watch.css"], family: "apple-inspired", pages: ["home", "watch", "shorts", "channel", "community", "settings", "explore", "playlists"] },
   { id: "windowsAero", name: "Windows Aero", category: "custom", kind: "theme", description: "Cristal, blur y chrome inspirado en Vista/7.", stylesheets: ["/custom-theme-packs.css"], family: "desktop-era", pages: ["home", "watch", "channel", "settings"] },
   { id: "frutigerAero", name: "Frutiger Aero", category: "custom", kind: "theme", description: "Naturaleza, agua, cielo y vidrio translúcido.", stylesheets: ["/custom-theme-packs.css"], family: "web-aesthetic", pages: ["home", "watch", "channel", "explore"] },
   { id: "web2Glossy", name: "Web 2.0 Glossy", category: "custom", kind: "theme", description: "Glossy, gradients, chrome y skeuomorfismo web.", stylesheets: ["/custom-theme-packs.css"], family: "web-aesthetic", pages: ["home", "watch", "channel", "explore"] },
@@ -80,7 +79,7 @@ export const channelLayouts: ChannelLayoutDefinition[] = [
   { id: "minimal-profile", name: "Minimal Profile", category: "special", kind: "layout", description: "Perfil limpio con poco chrome.", stylesheets: variantStyles },
 ];
 
-export function getTheme(themeId: string) { return themes.find((theme) => theme.id === themeId) ?? themes.find((theme) => theme.id === "grad-ocean")!; }
+export function getTheme(themeId: string) { return themes.find((theme) => theme.id === themeId) ?? themes.find((theme) => theme.id === "cosmephant-2")!; }
 export function getChannelLayout(layoutId: string) { return channelLayouts.find((layout) => layout.id === layoutId) ?? channelLayouts[0]; }
 export function getThemesByCategory(category: DesignCategory) { return themes.filter((theme) => theme.category === category); }
 export function getThemesByFamily(family: string) { return themes.filter((theme) => theme.category === "custom" && theme.family === family); }
