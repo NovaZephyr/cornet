@@ -100,14 +100,11 @@ html[data-theme="liquid-glass"] .cn-shell-sidebar {
 html[data-theme="liquid-glass"] .cn-shell-main {
   background: transparent;
 }
-html[data-theme="liquid-glass"] :is(.cn-explore-page, .cn-community-page, .cn-cosmephant-series, .cn-cosmephant-playlists, .cn-cosmephant-history, .cn-cosmephant-partner, .cn-cosmephant-messenger, .cn-studio-page) :is(.rounded-xl, .rounded-2xl, .rounded-3xl, [class*="Card"], [data-slot="card"]) {
-  border-color: rgb(255 255 255 / 76%);
-  background-color: rgb(255 255 255 / 54%);
-  box-shadow: 0 12px 34px rgb(44 75 115 / 9%), inset 0 1px 0 rgb(255 255 255 / 90%);
-  -webkit-backdrop-filter: blur(22px) saturate(165%);
-  backdrop-filter: blur(22px) saturate(165%);
-}
-html[data-theme="liquid-glass"] :is(button, [role="button"], input, textarea, select) {
+html[data-theme="liquid-glass"] :is(.cn-explore-page, .cn-community-page, .cn-cosmephant-series, .cn-cosmephant-playlists, .cn-cosmephant-history, .cn-cosmephant-partner, .cn-cosmephant-messenger, .cn-studio-page) :is([class*="Card"], [data-slot="card"]) {
+  border: 1px solid rgb(255 255 255 / 76%);
+  background-color: rgb(255 255 255 / 68%);
+  box-shadow: 0 10px 28px rgb(44 75 115 / 7%), inset 0 1px 0 rgb(255 255 255 / 82%);
+}html[data-theme="liquid-glass"] :is(button, [role="button"], input, textarea, select) {
   -webkit-tap-highlight-color: transparent;
 }
 html[data-theme="liquid-glass"] .cn-shell-search input,
@@ -231,4 +228,318 @@ html[data-theme="liquid-glass"] .cn-shell {
 html[data-theme="liquid-glass"] :is(h1, h2, h3, .cn-shell-logo strong) {
   font-family: "Lexend Extended", "Lexend", ui-sans-serif, system-ui, sans-serif;
   letter-spacing: -.035em;
+}
+
+
+/* Cornet Liquid Glass completion: glass belongs to functional chrome; content stays crisp. */
+html[data-theme="liquid-glass"] {
+  --lg-glass-regular: rgb(248 251 255 / 66%);
+  --lg-glass-clear: rgb(255 255 255 / 44%);
+  --lg-glass-frosted: rgb(248 251 255 / 84%);
+  --lg-glass-stroke: rgb(255 255 255 / 78%);
+  --lg-glass-highlight: rgb(255 255 255 / 64%);
+  --lg-glass-shadow: 0 12px 34px rgb(38 66 104 / 12%);
+  --lg-glass-blur: 28px;
+}
+
+/* Optical depth is simulated with layered light, a fine inner edge and restrained saturation. */
+html[data-theme="liquid-glass"] .cn-shell-header {
+  isolation: isolate;
+  background:
+    linear-gradient(135deg, rgb(255 255 255 / 56%), rgb(255 255 255 / 8%) 48%, rgb(255 255 255 / 18%)),
+    var(--lg-glass-regular);
+  border-color: var(--lg-glass-stroke);
+  box-shadow: 0 8px 28px rgb(40 67 105 / 9%), inset 0 1px 0 rgb(255 255 255 / 92%);
+  -webkit-backdrop-filter: blur(var(--lg-glass-blur)) saturate(175%);
+  backdrop-filter: blur(var(--lg-glass-blur)) saturate(175%);
+}
+html[data-theme="liquid-glass"] .cn-shell-sidebar {
+  background:
+    linear-gradient(145deg, rgb(255 255 255 / 42%), rgb(255 255 255 / 8%) 55%),
+    var(--lg-glass-regular);
+  border-color: var(--lg-glass-stroke);
+  box-shadow: 12px 0 34px rgb(38 66 104 / 8%), inset -1px 0 0 rgb(255 255 255 / 45%);
+  -webkit-backdrop-filter: blur(var(--lg-glass-blur)) saturate(165%);
+  backdrop-filter: blur(var(--lg-glass-blur)) saturate(165%);
+}
+html[data-theme="liquid-glass"] .cn-shell-footer {
+  position: relative;
+  isolation: isolate;
+  background: linear-gradient(145deg, rgb(255 255 255 / 36%), rgb(255 255 255 / 10%)), var(--lg-glass-clear);
+  border-color: rgb(255 255 255 / 62%);
+  -webkit-backdrop-filter: blur(22px) saturate(155%);
+  backdrop-filter: blur(22px) saturate(155%);
+}
+html[data-theme="liquid-glass"] :is(.cn-shell-header, .cn-shell-mobile-nav, .cn-global-mobile-bar)::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  background: linear-gradient(142deg, rgb(255 255 255 / 38%), transparent 36%, transparent 72%, rgb(255 255 255 / 10%));
+  pointer-events: none;
+}
+html[data-theme="liquid-glass"] :is(.cn-shell-header, .cn-shell-mobile-nav, .cn-global-mobile-bar) > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Shell navigation and controls use glass; the page's media and reading surfaces do not. */
+html[data-theme="liquid-glass"] .cn-shell-sidebar nav a {
+  min-height: 40px;
+  border-radius: 13px;
+  transition: background-color .18s ease, color .18s ease, box-shadow .18s ease, transform .18s ease;
+}
+html[data-theme="liquid-glass"] .cn-shell-sidebar nav a:hover {
+  background: rgb(255 255 255 / 52%);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 76%);
+}
+html[data-theme="liquid-glass"] .cn-shell-sidebar nav a[data-active="true"] {
+  background: linear-gradient(135deg, rgb(255 255 255 / 86%), rgb(226 241 255 / 70%));
+  color: #086fd3;
+  box-shadow: 0 5px 18px rgb(22 132 255 / 10%), inset 0 1px 0 #fff;
+}
+html[data-theme="liquid-glass"] .cn-shell :is(.cn-shell-icon-button, .cn-shell-avatar-button) {
+  transition: background-color .18s ease, border-color .18s ease, box-shadow .18s ease, transform .18s ease;
+}
+html[data-theme="liquid-glass"] .cn-shell :is(.cn-shell-icon-button, .cn-shell-avatar-button):active {
+  transform: scale(.94);
+}
+html[data-theme="liquid-glass"] .cn-shell-main button[class*="bg-primary"] {
+  border: 1px solid rgb(255 255 255 / 30%);
+  background-image: linear-gradient(135deg, rgb(255 255 255 / 28%), transparent 62%);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 32%), 0 5px 16px rgb(22 132 255 / 18%);
+  transition: transform .16s ease, box-shadow .16s ease, filter .16s ease;
+}
+html[data-theme="liquid-glass"] .cn-shell-main button[class*="border-input"] {
+  border-color: rgb(255 255 255 / 78%);
+  background: linear-gradient(140deg, rgb(255 255 255 / 74%), rgb(255 255 255 / 44%));
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 86%), 0 4px 14px rgb(46 78 118 / 6%);
+}
+html[data-theme="liquid-glass"] .cn-shell-main button[class*="bg-primary"]:active,
+html[data-theme="liquid-glass"] .cn-shell-main button[class*="border-input"]:active {
+  transform: scale(.975);
+}
+html[data-theme="liquid-glass"] :is(a, button, input, textarea, select, [role="button"]):focus-visible {
+  outline: 2px solid rgb(22 132 255 / 72%);
+  outline-offset: 3px;
+}
+
+/* Radix menus, popovers, selects and dialogs are floating functional surfaces. */
+html[data-theme="liquid-glass"] [data-radix-popper-content-wrapper] > *,
+html[data-theme="liquid-glass"] [role="dialog"],
+html[data-theme="liquid-glass"] [role="alertdialog"] {
+  border: 1px solid rgb(255 255 255 / 82%);
+  border-radius: 20px;
+  background:
+    linear-gradient(145deg, rgb(255 255 255 / 64%), rgb(255 255 255 / 16%) 58%),
+    var(--lg-glass-frosted);
+  color: #142033;
+  box-shadow: 0 18px 48px rgb(26 48 78 / 18%), inset 0 1px 0 rgb(255 255 255 / 92%);
+  -webkit-backdrop-filter: blur(30px) saturate(175%);
+  backdrop-filter: blur(30px) saturate(175%);
+}
+html[data-theme="liquid-glass"] [data-radix-dialog-overlay] {
+  background: rgb(15 28 46 / 38%);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+
+/* Video remains a sharp, dark media surface; only its controls and supporting panels receive glass. */
+html[data-theme="liquid-glass"] .cn-watch-page {
+  color: var(--foreground);
+}
+html[data-theme="liquid-glass"] .cn-watch-player {
+  overflow: hidden;
+  border: 1px solid rgb(255 255 255 / 18%);
+  border-radius: 20px;
+  background: #080d16;
+  box-shadow: 0 16px 42px rgb(25 47 75 / 16%);
+}
+html[data-theme="liquid-glass"] :is(.cn-watch-description, .cn-watch-chapters) {
+  border: 1px solid rgb(255 255 255 / 76%);
+  border-radius: 18px;
+  background: rgb(255 255 255 / 68%);
+  color: #142033;
+  box-shadow: 0 8px 24px rgb(44 75 115 / 7%), inset 0 1px 0 rgb(255 255 255 / 84%);
+}
+html[data-theme="liquid-glass"] .cn-watch-comments {
+  border-color: rgb(89 119 153 / 22%);
+}
+html[data-theme="liquid-glass"] .cn-watch-comments form textarea {
+  border: 1px solid rgb(255 255 255 / 82%);
+  border-radius: 15px;
+  background: rgb(255 255 255 / 70%);
+  color: #142033;
+  padding: 11px 13px;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 90%), 0 5px 16px rgb(47 79 120 / 6%);
+}
+html[data-theme="liquid-glass"] :is(.cn-watch-actions > button, .cn-watch-actions [role="button"], .cn-watch-chapters button) {
+  border: 1px solid rgb(255 255 255 / 78%);
+  border-radius: 999px;
+  background: rgb(255 255 255 / 66%);
+  color: #23405f;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 90%), 0 4px 14px rgb(46 78 118 / 7%);
+  transition: transform .16s ease, background-color .16s ease, box-shadow .16s ease;
+}
+html[data-theme="liquid-glass"] .cn-watch-reactions {
+  border: 1px solid rgb(255 255 255 / 78%);
+  border-radius: 999px;
+  background: rgb(255 255 255 / 66%);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 90%), 0 4px 14px rgb(46 78 118 / 7%);
+}
+html[data-theme="liquid-glass"] .cn-watch-reactions button {
+  color: #23405f;
+}
+html[data-theme="liquid-glass"] :is(.cn-watch-actions > button, .cn-watch-chapters button):active {
+  transform: scale(.975);
+}
+
+/* Cornet typography: Lexend for interface copy, Lexend Extended when that font is available. */
+html[data-theme="liquid-glass"] body,
+html[data-theme="liquid-glass"] .cn-shell,
+html[data-theme="liquid-glass"] .cn-watch-page {
+  font-family: "Lexend", ui-sans-serif, system-ui, sans-serif;
+}
+html[data-theme="liquid-glass"] :is(h1, h2, h3, .cn-shell-logo strong, .cn-watch-title) {
+  font-family: "Lexend Extended", "Lexend", ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: -.035em;
+}
+
+/* The app shell and root fallback nav share one floating navigation treatment. */
+@media (max-width: 900px) {
+  html[data-theme="liquid-glass"] .cn-shell-header {
+    padding-top: env(safe-area-inset-top);
+  }
+  html[data-theme="liquid-glass"] .cn-shell-mobile-nav,
+  html[data-theme="liquid-glass"] .cn-global-mobile-bar {
+    position: fixed;
+    z-index: 1100;
+    left: max(12px, env(safe-area-inset-left));
+    right: max(12px, env(safe-area-inset-right));
+    bottom: max(12px, env(safe-area-inset-bottom));
+    display: flex;
+    height: 66px;
+    min-height: 66px;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 8px;
+    border: 1px solid rgb(255 255 255 / 82%);
+    border-radius: 26px;
+    border-bottom: 1px solid rgb(255 255 255 / 82%);
+    background:
+      linear-gradient(135deg, rgb(255 255 255 / 60%), rgb(255 255 255 / 14%) 54%, rgb(255 255 255 / 28%)),
+      rgb(238 245 253 / 72%);
+    box-shadow: 0 12px 34px rgb(42 72 112 / 16%), inset 0 1px 0 rgb(255 255 255 / 96%);
+    -webkit-backdrop-filter: blur(32px) saturate(185%);
+    backdrop-filter: blur(32px) saturate(185%);
+  }
+  html[data-theme="liquid-glass"] .cn-shell-mobile-nav a,
+  html[data-theme="liquid-glass"] .cn-global-mobile-bar a {
+    display: flex;
+    flex: 1 1 0;
+    min-width: 0;
+    height: 52px;
+    margin: 0;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    border: 1px solid transparent;
+    border-radius: 18px;
+    background: transparent;
+    box-shadow: none;
+    color: #61758e;
+    font-size: 10px;
+    line-height: 1.1;
+    text-decoration: none;
+    transition: background-color .18s ease, color .18s ease, transform .18s ease;
+  }
+  html[data-theme="liquid-glass"] .cn-shell-mobile-nav a[data-active="true"],
+  html[data-theme="liquid-glass"] .cn-global-mobile-bar a[data-active="true"] {
+    border-color: rgb(255 255 255 / 78%);
+    background: linear-gradient(145deg, rgb(255 255 255 / 92%), rgb(255 255 255 / 58%));
+    color: #086fd3;
+    box-shadow: inset 0 1px 0 #fff, 0 4px 14px rgb(22 132 255 / 12%);
+  }
+  html[data-theme="liquid-glass"] .cn-shell-mobile-nav a:active,
+  html[data-theme="liquid-glass"] .cn-global-mobile-bar a:active {
+    transform: scale(.95);
+  }
+  html[data-theme="liquid-glass"] .cn-shell-mobile-nav svg,
+  html[data-theme="liquid-glass"] .cn-global-mobile-bar svg {
+    width: 20px;
+    height: 20px;
+    flex: 0 0 auto;
+  }
+  html[data-theme="liquid-glass"] .cn-shell-main {
+    padding-bottom: calc(104px + env(safe-area-inset-bottom));
+  }
+  html[data-theme="liquid-glass"] body {
+    padding-bottom: 0;
+  }
+}
+
+/* AppShell already renders its own mobile navigation; keep the root fallback from duplicating it. */
+@supports selector(body:has(.cn-shell-mobile-nav)) {
+  @media (max-width: 900px) {
+    html[data-theme="liquid-glass"] body:has(.cn-shell-mobile-nav) .cn-global-mobile-bar {
+      display: none !important;
+    }
+    html[data-theme="liquid-glass"] body:not(:has(.cn-shell-mobile-nav)) {
+      padding-bottom: calc(96px + env(safe-area-inset-bottom));
+    }
+  }
+}
+
+@media (max-width: 700px) {
+  html[data-theme="liquid-glass"] .cn-shell-header-main {
+    min-height: 58px;
+  }
+  html[data-theme="liquid-glass"] .cn-shell-mobile-nav,
+  html[data-theme="liquid-glass"] .cn-global-mobile-bar {
+    height: 64px;
+    min-height: 64px;
+    padding-inline: 5px;
+    border-radius: 24px;
+  }
+  html[data-theme="liquid-glass"] .cn-shell-mobile-nav a,
+  html[data-theme="liquid-glass"] .cn-global-mobile-bar a {
+    flex-direction: column;
+    gap: 3px;
+    font-size: 9px;
+  }
+}
+
+/* Older browsers retain an opaque, readable material instead of losing navigation contrast. */
+@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  html[data-theme="liquid-glass"] :is(.cn-shell-header, .cn-shell-sidebar, .cn-shell-footer, .cn-shell-mobile-nav, .cn-global-mobile-bar) {
+    background: rgb(245 249 255 / 96%);
+  }
+  html[data-theme="liquid-glass"] :is([data-radix-popper-content-wrapper] > *, [role="dialog"], [role="alertdialog"]) {
+    background: rgb(248 251 255 / 98%);
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  html[data-theme="liquid-glass"] :is(.cn-shell-header, .cn-shell-sidebar, .cn-shell-footer, .cn-shell-mobile-nav, .cn-global-mobile-bar) {
+    background: rgb(245 249 255 / 96%);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+  html[data-theme="liquid-glass"] :is([data-radix-popper-content-wrapper] > *, [role="dialog"], [role="alertdialog"]) {
+    background: rgb(248 251 255 / 98%);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-theme="liquid-glass"] *,
+  html[data-theme="liquid-glass"] *::before,
+  html[data-theme="liquid-glass"] *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
 }
