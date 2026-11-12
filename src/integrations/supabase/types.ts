@@ -1307,6 +1307,13 @@ export type Database = {
         Args: { p_channel_id: string }
         Returns: number
       }
+      community_post_like_counts: {
+        Args: { p_post_ids: string[] }
+        Returns: {
+          likes: number
+          post_id: string
+        }[]
+      }
       create_cornet_dm: { Args: { p_other_user: string }; Returns: string }
       create_cornet_group: {
         Args: { p_member_ids: string[]; p_name: string }
