@@ -1,7 +1,6 @@
 import { supabase } from "@/integrations/supabase/client";
 
 const FUNCTION_NAME = "b2-file-host";
-const UPLOAD_PROXY = "b2-upload-proxy";
 const PUBLIC_BUCKET = "community-public";
 
 type B2Response<T = Record<string, unknown>> = T & { error?: string };
@@ -13,16 +12,10 @@ async function invoke<T>(body: Record<string, unknown>): Promise<T> {
   return data as T;
 }
 
-export async function createB2UploadUrl(key: string, contentType: string) {
-  return invoke<{ url: string; key: string; expiresIn: number }>({
-    action: "upload-url",
-    key,
-    contentType,
-    expiresIn: 900,
-  });
-}
-
 export async function uploadToB2(key: string, file: File) {
+  if (file.size <= 0 || file.size > 100 * 1024 * 1024) {
+    throw new Error("El archivo supera el límite de 100 MB o está vacío.");
+  }
   const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
   if (sessionError) throw sessionError;
   const token = sessionData.session?.access_token;
@@ -34,9 +27,11 @@ export async function uploadToB2(key: string, file: File) {
     apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY ?? import.meta.env.VITE_SUPABASE_ANON_KEY ?? "",
     "Content-Type": file.type || "application/octet-stream",
     "x-file-key": key,
+    "x-file-size": String(file.size),
+    "x-b2-action": "upload",
   };
 
-  const response = await fetch(`${supabaseUrl}/functions/v1/${UPLOAD_PROXY}`, {
+  const response = await fetch(`${supabaseUrl}/functions/v1/${FUNCTION_NAME}`, {
     method: "POST",
     headers,
     body: file,

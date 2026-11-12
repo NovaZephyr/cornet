@@ -24,6 +24,14 @@ Deno.serve(async (req) => {
     if (row.user_id !== user.id) throw new Error("No tienes permiso para eliminar este archivo.");
 
     if (row.provider === "cloudinary" && row.provider_public_id) {
+      const mode = table === "community_temp_files" ? "temp" : "permanent";
+      const expectedPrefix = `corenetwork/${mode}/${user.id}/`;
+      if (typeof row.provider_public_id !== "string"
+        || row.provider_public_id.length > 240
+        || !row.provider_public_id.startsWith(expectedPrefix)
+        || row.provider_public_id.slice(expectedPrefix.length).includes("/")) {
+        throw new Error("La referencia del archivo no pertenece a tu espacio.");
+      }
       const cloudName = Deno.env.get("CLOUDINARY_CLOUD_NAME");
       const apiKey = Deno.env.get("CLOUDINARY_API_KEY");
       const apiSecret = Deno.env.get("CLOUDINARY_API_SECRET");

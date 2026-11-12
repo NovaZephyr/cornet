@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toPlayableCloudinaryVideoUrl } from "@/lib/cloudinary";
-import { createB2DownloadUrl, createB2UploadUrl } from "@/lib/b2";
+import { createB2DownloadUrl, uploadToB2 } from "@/lib/b2";
 
 const cache = new Map<string, { url: string; expires: number }>();
 const inflight = new Map<string, Promise<string | null>>();
@@ -165,15 +165,7 @@ export async function uploadFile(
   // readable through the compatibility branch in getSignedUrl().
   if (bucket === "videos") {
     const key = `videos/${userId}/${prefix}${crypto.randomUUID()}.${ext}`;
-    const { url } = await createB2UploadUrl(key, file.type || "application/octet-stream");
-    const response = await fetch(url, {
-      method: "PUT",
-      headers: { "Content-Type": file.type || "application/octet-stream" },
-      body: file,
-    });
-    if (!response.ok) {
-      throw new Error(`Backblaze upload failed (${response.status})`);
-    }
+    await uploadToB2(key, file);
     return `b2/${key}`;
   }
 

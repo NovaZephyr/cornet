@@ -1300,26 +1300,19 @@ export type Database = {
       }
     }
     Views: {
-      community_post_like_counts: {
-        Row: {
-          likes: number | null
-          post_id: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "post_likes_post_id_fkey"
-            columns: ["post_id"]
-            isOneToOne: false
-            referencedRelation: "community_posts"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
+      [_ in never]: never
     }
     Functions: {
       channel_subscriber_count: {
         Args: { p_channel_id: string }
         Returns: number
+      }
+      community_post_like_counts: {
+        Args: { p_post_ids: string[] }
+        Returns: {
+          likes: number
+          post_id: string
+        }[]
       }
       create_cornet_dm: { Args: { p_other_user: string }; Returns: string }
       create_cornet_group: {

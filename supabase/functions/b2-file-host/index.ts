@@ -14,7 +14,7 @@ const anonKey = Deno.env.get("SUPABASE_ANON_KEY");
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-file-key, x-file-size, x-b2-action",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
 };
 
@@ -70,15 +70,78 @@ function cleanFilename(value: unknown) {
   return cleaned || undefined;
 }
 
+function uploadLimits(key: string) {
+  if (key.startsWith("videos/")) return { maxBytes: 100 * 1024 * 1024, typePrefix: "video/" };
+  if (key.startsWith("temp/")) return { maxBytes: 100 * 1024 * 1024, typePrefix: null };
+  if (key.startsWith("files/") || key.startsWith("community/")) return { maxBytes: 50 * 1024 * 1024, typePrefix: null };
+  throw new Error("Uploads are not allowed for this object path");
+}
+
+const BLOCKED_EXTENSIONS = new Set(["exe", "dll", "com", "scr", "msi", "bat", "cmd", "ps1", "vbs", "js", "jar", "sh"]);
+const BLOCKED_MIME_TYPES = new Set([
+  "application/x-msdownload", "application/x-dosexec", "application/x-executable",
+  "application/x-sh", "application/x-shellscript", "application/x-bat",
+  "application/x-msi", "application/java-archive", "text/javascript",
+  "application/javascript", "application/x-httpd-php",
+]);
+
+function validateFileType(key: string, contentType: string) {
+  const filename = key.slice(key.lastIndexOf("/") + 1);
+  const extension = filename.split(".").pop()?.toLowerCase() ?? "";
+  if (BLOCKED_EXTENSIONS.has(extension) || BLOCKED_MIME_TYPES.has(contentType)) {
+    throw new Error("This file type is not allowed");
+  }
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
   if (req.method !== "POST") return json({ error: "Method not allowed" }, 405);
   try {
-    const body = await req.json();
-    const action = body?.action;
     const user = await currentUser(req);
     if (!user) return json({ error: "Authentication required" }, 401);
     const s3 = client();
+
+    if (req.headers.get("x-b2-action") === "upload") {
+      const key = validKey(req.headers.get("x-file-key"), user.id);
+      const { maxBytes, typePrefix } = uploadLimits(key);
+      const size = Number(req.headers.get("x-file-size"));
+      const contentType = (req.headers.get("content-type") || "application/octet-stream").trim().toLowerCase();
+      if (!Number.isSafeInteger(size) || size <= 0 || size > maxBytes) {
+        return json({ error: `File size must be between 1 byte and ${maxBytes} bytes` }, 400);
+      }
+      if (typePrefix && !contentType.startsWith(typePrefix)) {
+        return json({ error: "Invalid content type for this upload path" }, 400);
+      }
+      validateFileType(key, contentType);
+      if (!req.body) return json({ error: "Upload body is missing" }, 400);
+
+      let received = 0;
+      const boundedBody = req.body.pipeThrough(new TransformStream<Uint8Array, Uint8Array>({
+        transform(chunk, controller) {
+          received += chunk.byteLength;
+          if (received > size || received > maxBytes) {
+            controller.error(new Error("Upload exceeded its declared size"));
+            return;
+          }
+          controller.enqueue(chunk);
+        },
+        flush() {
+          if (received !== size) throw new Error("Upload size did not match its declaration");
+        },
+      }));
+
+      await s3.send(new PutObjectCommand({
+        Bucket: bucket!,
+        Key: key,
+        Body: boundedBody,
+        ContentLength: size,
+        ContentType: contentType,
+      }));
+      return json({ ok: true, key, size });
+    }
+
+    const body = await req.json();
+    const action = body?.action;
 
     if (action === "health") {
       await s3.send(new HeadBucketCommand({ Bucket: bucket! }));
@@ -88,16 +151,18 @@ Deno.serve(async (req) => {
     const key = validKey(body?.key, user.id);
 
     if (action === "upload-url") {
+      const { maxBytes, typePrefix } = uploadLimits(key);
+      const size = Number(body?.size);
+      if (!Number.isSafeInteger(size) || size <= 0 || size > maxBytes) {
+        return json({ error: `File size must be between 1 byte and ${maxBytes} bytes` }, 400);
+      }
       const contentType = typeof body?.contentType === "string" && body.contentType.length <= 255
-        ? body.contentType
+        ? body.contentType.trim().toLowerCase()
         : "application/octet-stream";
-      const expiresIn = Math.min(Math.max(Number(body?.expiresIn ?? 900), 60), 3600);
-      const url = await getSignedUrl(
-        s3,
-        new PutObjectCommand({ Bucket: bucket!, Key: key, ContentType: contentType }),
-        { expiresIn },
-      );
-      return json({ url, key, expiresIn });
+      if (!contentType || (typePrefix && !contentType.startsWith(typePrefix))) {
+        return json({ error: "Invalid content type for this upload path" }, 400);
+      }
+      return json({ error: "Direct upload URLs are disabled; use the size-limited upload request." }, 410);
     }
 
     if (action === "download-url") {

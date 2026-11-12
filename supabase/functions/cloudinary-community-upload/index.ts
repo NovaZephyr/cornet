@@ -20,6 +20,25 @@ function signParams(params: Record<string, string>, secret: string) {
   return sha1(`${canonical}${secret}`);
 }
 
+const BLOCKED_EXTENSIONS = new Set(["exe", "dll", "com", "scr", "msi", "bat", "cmd", "ps1", "vbs", "js", "jar", "sh"]);
+const BLOCKED_MIME_TYPES = new Set([
+  "application/x-msdownload", "application/x-dosexec", "application/x-executable",
+  "application/x-sh", "application/x-shellscript", "application/x-bat",
+  "application/x-msi", "application/java-archive", "text/javascript",
+  "application/javascript", "application/x-httpd-php",
+]);
+
+function validateUpload(file: File, mode: "temp" | "permanent") {
+  const extension = file.name.split(".").pop()?.toLowerCase() ?? "";
+  const mime = file.type.trim().toLowerCase();
+  if (!file.size || BLOCKED_EXTENSIONS.has(extension) || BLOCKED_MIME_TYPES.has(mime)) {
+    throw new Error("Este tipo de archivo no está permitido por seguridad.");
+  }
+  const maxBytes = mode === "temp" ? 100 * 1024 * 1024 : 50 * 1024 * 1024;
+  if (file.size > maxBytes) throw new Error(`El archivo supera el límite de ${Math.round(maxBytes / 1024 / 1024)} MB.`);
+  return file.name.replace(/[\\/\0]/g, "-").trim().slice(0, 180) || "archivo";
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
   if (req.method !== "POST") return new Response(JSON.stringify({ error: "Method not allowed" }), { status: 405, headers: { ...corsHeaders, "Content-Type": "application/json" } });
@@ -47,10 +66,7 @@ Deno.serve(async (req) => {
     const expiresAt = form.get("expires_at")?.toString() ?? "";
     if (!(file instanceof File)) throw new Error("Falta el archivo.");
 
-    const maxBytes = mode === "temp" ? 100 * 1024 * 1024 : 50 * 1024 * 1024;
-    if (file.size > maxBytes) throw new Error(`El archivo supera el límite de ${Math.round(maxBytes / 1024 / 1024)} MB.`);
-
-    const safeBase = file.name.replace(/[\\/\0]/g, "-").trim().slice(0, 180) || "archivo";
+    const safeBase = validateUpload(file, mode);
     const publicId = `corenetwork/${mode}/${user.id}/${crypto.randomUUID()}-${safeBase.replace(/\.[^.]+$/, "")}`;
     const timestamp = Math.floor(Date.now() / 1000).toString();
     const resourceType = "raw";
