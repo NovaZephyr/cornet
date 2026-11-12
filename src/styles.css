@@ -143,3 +143,30 @@
 }
 
 [data-theme="lavanda-oscuro"] body { background: #241d30; color: #f7f3fb; }
+
+
+/* Downloads · Cosmephant 2.0 */
+.cn-downloads-page { isolation: isolate; }
+.cn-downloads-hero {
+  background: radial-gradient(ellipse at 82% 12%, hsl(var(--primary) / .18), transparent 38%), radial-gradient(ellipse at 12% 100%, hsl(var(--primary) / .10), transparent 42%), hsl(var(--card) / .92);
+  box-shadow: 0 18px 55px hsl(var(--foreground) / .045);
+}
+.cn-downloads-orb { position: absolute; width: 17rem; height: 17rem; border-radius: 999px; filter: blur(58px); opacity: .34; pointer-events: none; }
+.cn-downloads-orb-one { top: -8rem; right: -4rem; background: hsl(var(--primary) / .42); }
+.cn-downloads-orb-two { bottom: -10rem; left: 8%; background: hsl(var(--accent) / .35); }
+.cn-download-card {
+  background: linear-gradient(145deg, hsl(var(--card) / .96), hsl(var(--background) / .78));
+  box-shadow: 0 10px 32px hsl(var(--foreground) / .045);
+  transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease;
+}
+.cn-download-card:hover { transform: translateY(-3px); border-color: hsl(var(--primary) / .48); box-shadow: 0 16px 38px hsl(var(--primary) / .10); }
+.cn-download-card-featured { background: radial-gradient(ellipse at 85% 18%, hsl(var(--primary) / .16), transparent 40%), linear-gradient(125deg, hsl(var(--card) / .98), hsl(var(--background) / .76)); }
+.cn-download-ios { background: radial-gradient(ellipse at 90% 0%, hsl(var(--primary) / .13), transparent 42%), hsl(var(--card) / .78); }
+html[data-theme-id="cosmephant-2"] .cn-downloads-hero,
+html[data-theme-id="cosmephant-2"] .cn-download-card,
+html[data-theme-id="cosmephant-2"] .cn-download-ios {
+  border-color: hsl(var(--border) / .72);
+  -webkit-backdrop-filter: blur(22px) saturate(145%);
+  backdrop-filter: blur(22px) saturate(145%);
+}
+@media (prefers-reduced-motion: reduce) { .cn-download-card { transition: none; } .cn-download-card:hover { transform: none; } }
