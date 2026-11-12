@@ -425,18 +425,21 @@ export type Database = {
       hashtags: {
         Row: {
           created_at: string
+          created_by: string | null
           id: string
           name: string
           normalized_name: string
         }
         Insert: {
           created_at?: string
+          created_by?: string | null
           id?: string
           name: string
           normalized_name: string
         }
         Update: {
           created_at?: string
+          created_by?: string | null
           id?: string
           name?: string
           normalized_name?: string
@@ -852,6 +855,12 @@ export type Database = {
           is_banned: boolean
           is_music_channel: boolean
           is_verified: boolean
+          moderation_banned_until: string | null
+          moderation_reason: string | null
+          moderation_status: string
+          moderation_suspended_until: string | null
+          moderation_updated_at: string | null
+          moderation_updated_by: string | null
           preferred_language: string
           social_links: Json
           subscriber_count: number
@@ -879,6 +888,12 @@ export type Database = {
           is_banned?: boolean
           is_music_channel?: boolean
           is_verified?: boolean
+          moderation_banned_until?: string | null
+          moderation_reason?: string | null
+          moderation_status?: string
+          moderation_suspended_until?: string | null
+          moderation_updated_at?: string | null
+          moderation_updated_by?: string | null
           preferred_language?: string
           social_links?: Json
           subscriber_count?: number
@@ -906,6 +921,12 @@ export type Database = {
           is_banned?: boolean
           is_music_channel?: boolean
           is_verified?: boolean
+          moderation_banned_until?: string | null
+          moderation_reason?: string | null
+          moderation_status?: string
+          moderation_suspended_until?: string | null
+          moderation_updated_at?: string | null
+          moderation_updated_by?: string | null
           preferred_language?: string
           social_links?: Json
           subscriber_count?: number
@@ -1350,6 +1371,16 @@ export type Database = {
         Args: { p_conversation_id: string; p_user_id: string }
         Returns: boolean
       }
+      moderate_account: {
+        Args: {
+          _banned_until?: string
+          _reason?: string
+          _status: string
+          _suspended_until?: string
+          _user_id: string
+        }
+        Returns: boolean
+      }
       notify_mentions: {
         Args: {
           _body?: string
@@ -1370,6 +1401,7 @@ export type Database = {
         }
         Returns: number
       }
+      reactivate_my_account: { Args: never; Returns: boolean }
       record_watch_history: {
         Args: {
           _completed?: boolean
@@ -1379,6 +1411,14 @@ export type Database = {
         Returns: string
       }
       request_account_deletion: { Args: never; Returns: boolean }
+      set_user_role: {
+        Args: {
+          _enabled: boolean
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
       submit_content_report: {
         Args: {
           _channel_id?: string
