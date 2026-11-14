@@ -90,13 +90,20 @@ function LiveStudio() {
     if (statusQuery.data && statusQuery.data !== stream?.status) {
       void streamQuery.refetch();
     }
-  }, [statusQuery.data, stream?.status, streamQuery]);
+  }, [statusQuery.data, stream?.status, streamQuery.refetch]);
 
   const invoke = async (action: "start" | "end") => {
     const { data, error } = await supabase.functions.invoke("live-stream", {
       body: { action, title: title.trim(), description: description.trim() },
     });
-    if (error) throw error;
+    if (error) {
+      const response = (error as Error & { context?: Response }).context;
+      if (response) {
+        const payload = await response.json().catch(() => null) as { error?: string } | null;
+        throw new Error(payload?.error || error.message);
+      }
+      throw error;
+    }
     if (data?.error) throw new Error(data.error);
     return data;
   };
