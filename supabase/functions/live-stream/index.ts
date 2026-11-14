@@ -22,7 +22,7 @@ serve(async (req) => {
 
   try {
     if (!CF_ACCOUNT_ID || !CF_API_TOKEN) {
-      return json({ error: "server_misconfigured" }, 500);
+      return json({ error: "Cloudflare Stream aún no está configurado en este proyecto. Añade CLOUDFLARE_ACCOUNT_ID y CLOUDFLARE_API_TOKEN en los secrets de Supabase." }, 503);
     }
 
     const authHeader = req.headers.get("Authorization") ?? "";
@@ -65,7 +65,7 @@ serve(async (req) => {
           headers: cfHeaders(),
           body: JSON.stringify({
             meta: { name: `cornet-${userId}` },
-            recording: { mode: "off" },
+            recording: { mode: "automatic", timeoutSeconds: 0 },
           }),
         });
         const cfData = await cfRes.json();
